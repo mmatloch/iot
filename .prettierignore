@@ -1,0 +1,6 @@
+*.d.ts
+.vscode
+dist
+node_modules
+.yarn
+.pnp.js
