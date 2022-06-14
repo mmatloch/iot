@@ -5,8 +5,13 @@ services:
     volumes:
       - ../server/src:/usr/app/packages/server/src
   nginx:
-    image: nginx
+    image: nginx:1.22
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - '8080:80'
+  mqtt:
+    image: eclipse-mosquitto:2.0
+    ports:
+      - '1883:1883'
+    command: 'mosquitto -c /mosquitto-no-auth.conf'
