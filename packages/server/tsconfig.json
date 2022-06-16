@@ -1,4 +1,7 @@
 {
+  "ts-node": {
+    "swc": true
+  },
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2022",
@@ -12,8 +15,6 @@
 
     "keyofStringsOnly": true,
     "esModuleInterop": true,
-    "noImplicitAny": true,
-    "noImplicitThis": true,
     "incremental": true,
 
     "moduleResolution": "node",

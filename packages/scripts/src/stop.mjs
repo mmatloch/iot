@@ -1,9 +1,9 @@
 import { $ } from 'zx';
 
-import { DOCKER_COMPOSE_PATH } from './utils/constants.mjs';
+import { DOCKER_COMPOSE_PATH, PROJECT_NAME } from './utils/constants.mjs';
 
 const main = async () => {
-    await $`docker compose -f ${DOCKER_COMPOSE_PATH} down`;
+    await $`docker compose -p ${PROJECT_NAME} -f ${DOCKER_COMPOSE_PATH} down --volumes`;
 };
 
 await main();

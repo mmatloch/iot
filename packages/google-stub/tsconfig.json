@@ -1,0 +1,28 @@
+{
+  "ts-node": {
+    "swc": true
+  },
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "ES2022",
+
+    "strict": true,
+
+    "keyofStringsOnly": true,
+    "esModuleInterop": true,
+    "incremental": true,
+
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    "noUnusedLocals": false,
+    "removeComments": true,
+    "noLib": false,
+    "forceConsistentCasingInFileNames": true,
+
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  }
+}

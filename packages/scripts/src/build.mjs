@@ -16,6 +16,18 @@ const dockerImages = [
             },
         ],
     },
+    {
+        name: 'Google services stub',
+        dockerfilePath: './packages/google-stub/Dockerfile',
+        imageName: `${PROJECT_NAME}/google-stub`,
+        imageTag: 'latest',
+        buildArgs: [
+            {
+                key: 'NODE_ENV',
+                value: argv.nodeEnv || 'development',
+            },
+        ],
+    },
 ];
 
 const buildDockerImage = ({ dockerfilePath, imageName, imageTag, buildArgs }) => {
