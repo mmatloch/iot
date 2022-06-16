@@ -3,7 +3,10 @@ services:
   server:
     image: ${PROJECT_NAME}/server
     volumes:
+      - ../server/config:/usr/app/packages/server/config
       - ../server/src:/usr/app/packages/server/src
+    environment:
+      - POSTGRES=postgresql://postgres:postgres@timescale:5432/${PROJECT_NAME}
   nginx:
     image: nginx:1.22
     volumes:
@@ -15,3 +18,9 @@ services:
     ports:
       - '1883:1883'
     command: 'mosquitto -c /mosquitto-no-auth.conf'
+  timescale:
+    image: timescale/timescaledb:2.7.0-pg14
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=password

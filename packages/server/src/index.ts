@@ -1,5 +1,7 @@
 import createFastify from 'fastify';
 
+import { getConfig } from './config';
+
 const fastify = createFastify({
     logger: true,
 });
@@ -9,6 +11,11 @@ fastify.get('/', async () => {
 });
 
 const start = async () => {
+    fastify.log.info({
+        msg: 'Configuration',
+        config: getConfig(),
+    });
+
     try {
         await fastify.listen({ port: 3000, host: '0.0.0.0' });
     } catch (err) {
