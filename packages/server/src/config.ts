@@ -1,8 +1,6 @@
 import { Plugins, createConfig } from '@common/config';
 import { Type } from '@sinclair/typebox';
 
-import { createValidator } from './validator';
-
 const schema = Type.Object({
     databases: Type.Object({
         timescale: Type.Object({
