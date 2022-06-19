@@ -1,0 +1,6 @@
+{
+  "oAuth2": {
+    "clientId": "test",
+    "clientSecret": "test"
+  }
+}
