@@ -1,7 +1,16 @@
-import { ErrorObject } from 'ajv';
 import { StatusCodes } from 'http-status-codes';
 
 import { HttpError } from './httpError';
+
+interface ErrorObject {
+    keyword: string;
+    instancePath: string;
+    schemaPath: string;
+    params: Record<string, unknown>;
+    propertyName?: string;
+    message?: string;
+    data?: unknown;
+}
 
 type ValidationErrorDetails = ErrorObject[] | null | undefined;
 

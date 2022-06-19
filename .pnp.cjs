@@ -21,8 +21,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:."\
       },\
       {\
+        "name": "@common/application",\
+        "reference": "workspace:packages/common-application"\
+      },\
+      {\
         "name": "@common/config",\
         "reference": "workspace:packages/common-config"\
+      },\
+      {\
+        "name": "@common/errors",\
+        "reference": "workspace:packages/common-errors"\
+      },\
+      {\
+        "name": "@common/validator",\
+        "reference": "workspace:packages/common-validator"\
       },\
       {\
         "name": "google-stub",\
@@ -40,7 +52,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     "enableTopLevelFallback": true,\
     "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
     "fallbackExclusionList": [\
+      ["@common/application", ["workspace:packages/common-application"]],\
       ["@common/config", ["workspace:packages/common-config"]],\
+      ["@common/errors", ["workspace:packages/common-errors"]],\
+      ["@common/validator", ["workspace:packages/common-validator"]],\
       ["google-stub", ["workspace:packages/google-stub"]],\
       ["iot", ["workspace:."]],\
       ["server", ["workspace:packages/server"]],\
@@ -815,6 +830,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@common/application", [\
+        ["workspace:packages/common-application", {\
+          "packageLocation": "./packages/common-application/",\
+          "packageDependencies": [\
+            ["@common/application", "workspace:packages/common-application"],\
+            ["@common/errors", "workspace:packages/common-errors"],\
+            ["@common/validator", "workspace:packages/common-validator"],\
+            ["@fastify/type-provider-typebox", "virtual:b3243dc81f5fcba05aa43916ecae2bf678075069b180082ad2788c5a3d395cb0f5f32d969b7a5a2f6b3f7d14e39850c7665ce8d5e95708e1992f39f0a85ec6e7#npm:1.0.0"],\
+            ["@types/lodash", "npm:4.14.182"],\
+            ["@types/node", "npm:17.0.42"],\
+            ["fastify", "npm:4.0.3"],\
+            ["http-status-codes", "npm:2.2.0"],\
+            ["lodash", "npm:4.17.21"],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
       ["@common/config", [\
         ["workspace:packages/common-config", {\
           "packageLocation": "./packages/common-config/",\
@@ -828,6 +861,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonpointer", "npm:5.0.0"],\
             ["lodash", "npm:4.17.21"],\
             ["nodemon", "npm:2.0.16"],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@common/errors", [\
+        ["workspace:packages/common-errors", {\
+          "packageLocation": "./packages/common-errors/",\
+          "packageDependencies": [\
+            ["@common/errors", "workspace:packages/common-errors"],\
+            ["@types/node", "npm:17.0.42"],\
+            ["http-status-codes", "npm:2.2.0"],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
+      ["@common/validator", [\
+        ["workspace:packages/common-validator", {\
+          "packageLocation": "./packages/common-validator/",\
+          "packageDependencies": [\
+            ["@common/validator", "workspace:packages/common-validator"],\
+            ["@common/errors", "workspace:packages/common-errors"],\
+            ["@sinclair/typebox", "npm:0.23.5"],\
+            ["@types/node", "npm:17.0.42"],\
+            ["ajv", "npm:8.11.0"],\
+            ["ajv-formats", "virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:2.1.1"],\
+            ["ajv-keywords", "virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:5.1.0"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
@@ -876,7 +937,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@fastify/ajv-compiler", "npm:3.1.0"],\
             ["ajv", "npm:8.11.0"],\
-            ["ajv-formats", "virtual:11ea9ca053bf29d25e1dace618d7ec83664c0ea6a9fc28743eb59cecdd5f85248cde82b422b51eb86b400d64cc9ee1db20260c3a242fbcfb75f6d910b5473f2f#npm:2.1.1"],\
+            ["ajv-formats", "virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:2.1.1"],\
             ["fast-uri", "npm:1.0.1"]\
           ],\
           "linkType": "HARD"\
@@ -927,6 +988,23 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/fastify", null],\
             ["@types/sinclair__typebox", null],\
             ["fastify", "npm:4.0.2"]\
+          ],\
+          "packagePeers": [\
+            "@sinclair/typebox",\
+            "@types/fastify",\
+            "@types/sinclair__typebox",\
+            "fastify"\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["virtual:b3243dc81f5fcba05aa43916ecae2bf678075069b180082ad2788c5a3d395cb0f5f32d969b7a5a2f6b3f7d14e39850c7665ce8d5e95708e1992f39f0a85ec6e7#npm:1.0.0", {\
+          "packageLocation": "./.yarn/__virtual__/@fastify-type-provider-typebox-virtual-4e91c635d9/0/cache/@fastify-type-provider-typebox-npm-1.0.0-1250cbcfe0-2dc1ea21cf.zip/node_modules/@fastify/type-provider-typebox/",\
+          "packageDependencies": [\
+            ["@fastify/type-provider-typebox", "virtual:b3243dc81f5fcba05aa43916ecae2bf678075069b180082ad2788c5a3d395cb0f5f32d969b7a5a2f6b3f7d14e39850c7665ce8d5e95708e1992f39f0a85ec6e7#npm:1.0.0"],\
+            ["@sinclair/typebox", null],\
+            ["@types/fastify", null],\
+            ["@types/sinclair__typebox", null],\
+            ["fastify", "npm:4.0.3"]\
           ],\
           "packagePeers": [\
             "@sinclair/typebox",\
@@ -1978,10 +2056,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:11ea9ca053bf29d25e1dace618d7ec83664c0ea6a9fc28743eb59cecdd5f85248cde82b422b51eb86b400d64cc9ee1db20260c3a242fbcfb75f6d910b5473f2f#npm:2.1.1", {\
-          "packageLocation": "./.yarn/__virtual__/ajv-formats-virtual-31fe33fb02/0/cache/ajv-formats-npm-2.1.1-3cec02eae9-4a287d937f.zip/node_modules/ajv-formats/",\
+        ["virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:2.1.1", {\
+          "packageLocation": "./.yarn/__virtual__/ajv-formats-virtual-28170c31b2/0/cache/ajv-formats-npm-2.1.1-3cec02eae9-4a287d937f.zip/node_modules/ajv-formats/",\
           "packageDependencies": [\
-            ["ajv-formats", "virtual:11ea9ca053bf29d25e1dace618d7ec83664c0ea6a9fc28743eb59cecdd5f85248cde82b422b51eb86b400d64cc9ee1db20260c3a242fbcfb75f6d910b5473f2f#npm:2.1.1"],\
+            ["ajv-formats", "virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:2.1.1"],\
             ["@types/ajv", null],\
             ["ajv", "npm:8.11.0"]\
           ],\
@@ -2000,10 +2078,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:5.1.0", {\
-          "packageLocation": "./.yarn/__virtual__/ajv-keywords-virtual-f85afd12d0/0/cache/ajv-keywords-npm-5.1.0-ee670a3944-c35193940b.zip/node_modules/ajv-keywords/",\
+        ["virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:5.1.0", {\
+          "packageLocation": "./.yarn/__virtual__/ajv-keywords-virtual-0e04f9b205/0/cache/ajv-keywords-npm-5.1.0-ee670a3944-c35193940b.zip/node_modules/ajv-keywords/",\
           "packageDependencies": [\
-            ["ajv-keywords", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:5.1.0"],\
+            ["ajv-keywords", "virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:5.1.0"],\
             ["@types/ajv", null],\
             ["ajv", "npm:8.11.0"],\
             ["fast-deep-equal", "npm:3.1.3"]\
@@ -2429,6 +2507,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["escalade", "npm:3.1.1"],\
             ["node-releases", "npm:2.0.5"],\
             ["picocolors", "npm:1.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["bs-logger", [\
+        ["npm:0.2.6", {\
+          "packageLocation": "./.yarn/cache/bs-logger-npm-0.2.6-7670f88b66-d34bdaf68c.zip/node_modules/bs-logger/",\
+          "packageDependencies": [\
+            ["bs-logger", "npm:0.2.6"],\
+            ["fast-json-stable-stringify", "npm:2.1.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -3781,7 +3869,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["fast-json-stringify", "npm:4.2.0"],\
             ["ajv", "npm:8.11.0"],\
-            ["ajv-formats", "virtual:11ea9ca053bf29d25e1dace618d7ec83664c0ea6a9fc28743eb59cecdd5f85248cde82b422b51eb86b400d64cc9ee1db20260c3a242fbcfb75f6d910b5473f2f#npm:2.1.1"],\
+            ["ajv-formats", "virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:2.1.1"],\
             ["deepmerge", "npm:4.2.2"],\
             ["fast-uri", "npm:2.1.0"],\
             ["rfdc", "npm:1.3.0"],\
@@ -3835,6 +3923,27 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["abstract-logging", "npm:2.0.1"],\
             ["avvio", "npm:8.1.3"],\
             ["fast-json-stringify", "npm:4.2.0"],\
+            ["find-my-way", "npm:6.3.0"],\
+            ["light-my-request", "npm:5.0.0"],\
+            ["pino", "npm:8.0.0"],\
+            ["process-warning", "npm:2.0.0"],\
+            ["proxy-addr", "npm:2.0.7"],\
+            ["rfdc", "npm:1.3.0"],\
+            ["secure-json-parse", "npm:2.4.0"],\
+            ["semver", "npm:7.3.7"],\
+            ["tiny-lru", "npm:8.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:4.0.3", {\
+          "packageLocation": "./.yarn/cache/fastify-npm-4.0.3-32f47ee365-8b449e2567.zip/node_modules/fastify/",\
+          "packageDependencies": [\
+            ["fastify", "npm:4.0.3"],\
+            ["@fastify/ajv-compiler", "npm:3.1.0"],\
+            ["@fastify/error", "npm:3.0.0"],\
+            ["@fastify/fast-json-stringify-compiler", "npm:3.0.1"],\
+            ["abstract-logging", "npm:2.0.1"],\
+            ["avvio", "npm:8.1.3"],\
             ["find-my-way", "npm:6.3.0"],\
             ["light-my-request", "npm:5.0.0"],\
             ["pino", "npm:8.0.0"],\
@@ -4271,6 +4380,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["http-status-codes", "npm:2.2.0"],\
             ["jsonwebtoken", "npm:8.5.1"],\
             ["lodash", "npm:4.17.21"],\
+            ["lru-cache", "npm:7.10.1"],\
             ["nodemon", "npm:2.0.16"],\
             ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.8.1"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
@@ -5931,6 +6041,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["lodash.memoize", [\
+        ["npm:4.1.2", {\
+          "packageLocation": "./.yarn/cache/lodash.memoize-npm-4.1.2-0e6250041f-9ff3942fee.zip/node_modules/lodash.memoize/",\
+          "packageDependencies": [\
+            ["lodash.memoize", "npm:4.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["lodash.merge", [\
         ["npm:4.6.2", {\
           "packageLocation": "./.yarn/cache/lodash.merge-npm-4.6.2-77cb4416bf-ad580b4bdb.zip/node_modules/lodash.merge/",\
@@ -7472,17 +7591,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/server/",\
           "packageDependencies": [\
             ["server", "workspace:packages/server"],\
+            ["@common/application", "workspace:packages/common-application"],\
             ["@common/config", "workspace:packages/common-config"],\
-            ["@fastify/type-provider-typebox", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:1.0.0"],\
+            ["@common/errors", "workspace:packages/common-errors"],\
+            ["@common/validator", "workspace:packages/common-validator"],\
             ["@sinclair/typebox", "npm:0.23.5"],\
             ["@swc/core", "npm:1.2.203"],\
             ["@types/jsonwebtoken", "npm:8.5.8"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
-            ["ajv", "npm:8.11.0"],\
-            ["ajv-formats", "virtual:11ea9ca053bf29d25e1dace618d7ec83664c0ea6a9fc28743eb59cecdd5f85248cde82b422b51eb86b400d64cc9ee1db20260c3a242fbcfb75f6d910b5473f2f#npm:2.1.1"],\
-            ["ajv-keywords", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:5.1.0"],\
-            ["fastify", "npm:4.0.2"],\
             ["http-status-codes", "npm:2.2.0"],\
             ["jsonwebtoken", "npm:8.5.1"],\
             ["lodash", "npm:4.17.21"],\
@@ -7934,6 +8051,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tests", "workspace:packages/tests"],\
             ["@common/config", "workspace:packages/common-config"],\
             ["@faker-js/faker", "npm:7.2.0"],\
+            ["@sinclair/typebox", "npm:0.23.5"],\
             ["@types/jest", "npm:28.1.2"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
@@ -7941,6 +8059,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["http-status-codes", "npm:2.2.0"],\
             ["jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.1.1"],\
             ["lodash", "npm:4.17.21"],\
+            ["ts-jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.0.5"],\
             ["whatwg-mimetype", "npm:3.0.0"]\
           ],\
           "linkType": "SOFT"\
@@ -8064,6 +8183,52 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["touch", "npm:3.1.0"],\
             ["nopt", "npm:1.0.10"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["ts-jest", [\
+        ["npm:28.0.5", {\
+          "packageLocation": "./.yarn/cache/ts-jest-npm-28.0.5-8c44d8b86f-53e05db5b7.zip/node_modules/ts-jest/",\
+          "packageDependencies": [\
+            ["ts-jest", "npm:28.0.5"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.0.5", {\
+          "packageLocation": "./.yarn/__virtual__/ts-jest-virtual-404ec240df/0/cache/ts-jest-npm-28.0.5-8c44d8b86f-53e05db5b7.zip/node_modules/ts-jest/",\
+          "packageDependencies": [\
+            ["ts-jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.0.5"],\
+            ["@babel/core", null],\
+            ["@types/babel-jest", null],\
+            ["@types/babel__core", null],\
+            ["@types/esbuild", null],\
+            ["@types/jest", "npm:28.1.2"],\
+            ["@types/typescript", null],\
+            ["babel-jest", null],\
+            ["bs-logger", "npm:0.2.6"],\
+            ["esbuild", null],\
+            ["fast-json-stable-stringify", "npm:2.1.0"],\
+            ["jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.1.1"],\
+            ["jest-util", "npm:28.1.1"],\
+            ["json5", "npm:2.2.1"],\
+            ["lodash.memoize", "npm:4.1.2"],\
+            ["make-error", "npm:1.3.6"],\
+            ["semver", "npm:7.3.7"],\
+            ["typescript", null],\
+            ["yargs-parser", "npm:21.0.1"]\
+          ],\
+          "packagePeers": [\
+            "@babel/core",\
+            "@types/babel-jest",\
+            "@types/babel__core",\
+            "@types/esbuild",\
+            "@types/jest",\
+            "@types/typescript",\
+            "babel-jest",\
+            "esbuild",\
+            "jest",\
+            "typescript"\
           ],\
           "linkType": "HARD"\
         }]\
