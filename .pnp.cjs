@@ -837,7 +837,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@common/application", "workspace:packages/common-application"],\
             ["@common/errors", "workspace:packages/common-errors"],\
             ["@common/validator", "workspace:packages/common-validator"],\
+            ["@fastify/formbody", "npm:7.0.1"],\
             ["@fastify/type-provider-typebox", "virtual:b3243dc81f5fcba05aa43916ecae2bf678075069b180082ad2788c5a3d395cb0f5f32d969b7a5a2f6b3f7d14e39850c7665ce8d5e95708e1992f39f0a85ec6e7#npm:1.0.0"],\
+            ["@sinclair/typebox", "npm:0.23.5"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
             ["fastify", "npm:4.0.3"],\
@@ -980,28 +982,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:1.0.0", {\
-          "packageLocation": "./.yarn/__virtual__/@fastify-type-provider-typebox-virtual-924b42ea32/0/cache/@fastify-type-provider-typebox-npm-1.0.0-1250cbcfe0-2dc1ea21cf.zip/node_modules/@fastify/type-provider-typebox/",\
-          "packageDependencies": [\
-            ["@fastify/type-provider-typebox", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:1.0.0"],\
-            ["@sinclair/typebox", "npm:0.23.5"],\
-            ["@types/fastify", null],\
-            ["@types/sinclair__typebox", null],\
-            ["fastify", "npm:4.0.2"]\
-          ],\
-          "packagePeers": [\
-            "@sinclair/typebox",\
-            "@types/fastify",\
-            "@types/sinclair__typebox",\
-            "fastify"\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["virtual:b3243dc81f5fcba05aa43916ecae2bf678075069b180082ad2788c5a3d395cb0f5f32d969b7a5a2f6b3f7d14e39850c7665ce8d5e95708e1992f39f0a85ec6e7#npm:1.0.0", {\
           "packageLocation": "./.yarn/__virtual__/@fastify-type-provider-typebox-virtual-4e91c635d9/0/cache/@fastify-type-provider-typebox-npm-1.0.0-1250cbcfe0-2dc1ea21cf.zip/node_modules/@fastify/type-provider-typebox/",\
           "packageDependencies": [\
             ["@fastify/type-provider-typebox", "virtual:b3243dc81f5fcba05aa43916ecae2bf678075069b180082ad2788c5a3d395cb0f5f32d969b7a5a2f6b3f7d14e39850c7665ce8d5e95708e1992f39f0a85ec6e7#npm:1.0.0"],\
-            ["@sinclair/typebox", null],\
+            ["@sinclair/typebox", "npm:0.23.5"],\
             ["@types/fastify", null],\
             ["@types/sinclair__typebox", null],\
             ["fastify", "npm:4.0.3"]\
@@ -3913,28 +3898,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["fastify", [\
-        ["npm:4.0.2", {\
-          "packageLocation": "./.yarn/cache/fastify-npm-4.0.2-957513e47f-142ee4df83.zip/node_modules/fastify/",\
-          "packageDependencies": [\
-            ["fastify", "npm:4.0.2"],\
-            ["@fastify/ajv-compiler", "npm:3.1.0"],\
-            ["@fastify/error", "npm:3.0.0"],\
-            ["@fastify/fast-json-stringify-compiler", "npm:3.0.1"],\
-            ["abstract-logging", "npm:2.0.1"],\
-            ["avvio", "npm:8.1.3"],\
-            ["fast-json-stringify", "npm:4.2.0"],\
-            ["find-my-way", "npm:6.3.0"],\
-            ["light-my-request", "npm:5.0.0"],\
-            ["pino", "npm:8.0.0"],\
-            ["process-warning", "npm:2.0.0"],\
-            ["proxy-addr", "npm:2.0.7"],\
-            ["rfdc", "npm:1.3.0"],\
-            ["secure-json-parse", "npm:2.4.0"],\
-            ["semver", "npm:7.3.7"],\
-            ["tiny-lru", "npm:8.0.2"]\
-          ],\
-          "linkType": "HARD"\
-        }],\
         ["npm:4.0.3", {\
           "packageLocation": "./.yarn/cache/fastify-npm-4.0.3-32f47ee365-8b449e2567.zip/node_modules/fastify/",\
           "packageDependencies": [\
@@ -4368,15 +4331,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/google-stub/",\
           "packageDependencies": [\
             ["google-stub", "workspace:packages/google-stub"],\
+            ["@common/application", "workspace:packages/common-application"],\
+            ["@common/config", "workspace:packages/common-config"],\
+            ["@common/errors", "workspace:packages/common-errors"],\
             ["@faker-js/faker", "npm:7.2.0"],\
-            ["@fastify/formbody", "npm:7.0.1"],\
-            ["@fastify/type-provider-typebox", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:1.0.0"],\
             ["@sinclair/typebox", "npm:0.23.5"],\
             ["@swc/core", "npm:1.2.203"],\
             ["@types/jsonwebtoken", "npm:8.5.8"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
-            ["fastify", "npm:4.0.2"],\
             ["http-status-codes", "npm:2.2.0"],\
             ["jsonwebtoken", "npm:8.5.1"],\
             ["lodash", "npm:4.17.21"],\
@@ -8060,6 +8023,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.1.1"],\
             ["lodash", "npm:4.17.21"],\
             ["ts-jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.0.5"],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
             ["whatwg-mimetype", "npm:3.0.0"]\
           ],\
           "linkType": "SOFT"\
@@ -8215,7 +8179,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lodash.memoize", "npm:4.1.2"],\
             ["make-error", "npm:1.3.6"],\
             ["semver", "npm:7.3.7"],\
-            ["typescript", null],\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
             ["yargs-parser", "npm:21.0.1"]\
           ],\
           "packagePeers": [\

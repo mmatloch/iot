@@ -1,8 +1,9 @@
 import { ValidationError } from '@common/errors';
 import { createValidator } from '@common/validator';
-import { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
+import formBody from '@fastify/formbody';
+import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import createFastify, {
-    FastifyInstance as Fastify,
+    FastifyInstance,
     FastifyLoggerInstance,
     RawReplyDefaultExpression,
     RawRequestDefaultExpression,
@@ -11,7 +12,7 @@ import createFastify, {
 
 import { transformError } from './errorTransformer';
 
-export type Application = Fastify<
+export type Application = FastifyInstance<
     RawServerDefault,
     RawRequestDefaultExpression<RawServerDefault>,
     RawReplyDefaultExpression<RawServerDefault>,
@@ -30,6 +31,8 @@ export const createApplication = async (opts: CreateApplicationOptions): Promise
     const app = createFastify({
         logger: true,
     }).withTypeProvider<TypeBoxTypeProvider>();
+
+    app.register(formBody);
 
     app.setValidatorCompiler(({ schema }) => {
         const validator = createValidator();
