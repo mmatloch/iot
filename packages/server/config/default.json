@@ -1,1 +1,9 @@
-{}
+{
+  "externalServices": {
+    "google": {
+      "oAuth2": {
+        "scope": "openid profile email"
+      }
+    }
+  }
+}

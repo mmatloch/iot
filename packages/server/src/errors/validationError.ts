@@ -1,4 +1,5 @@
 import { ErrorObject } from 'ajv';
+import { StatusCodes } from 'http-status-codes';
 
 import { HttpError } from './httpError';
 
@@ -18,7 +19,7 @@ export class ValidationError extends HttpError {
         super({
             message: message || 'Validation error',
             errorCode: validationErrorCode,
-            statusCode: 422,
+            statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
         });
 
         this.details = details;

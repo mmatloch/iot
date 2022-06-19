@@ -42,7 +42,7 @@ const main = async () => {
         try {
             return await $`zx ${scriptPath} ${serializeParams(scriptParams)}`;
         } catch (e) {
-            return print(e, 'red');
+            return print(e);
         }
     }
 
