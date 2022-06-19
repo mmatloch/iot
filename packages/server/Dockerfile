@@ -5,10 +5,15 @@ WORKDIR /usr/app
 
 COPY package.json .yarnrc.yml .pnp.* yarn.lock ./
 COPY .yarn/ .yarn/
+
+COPY ./packages/common-application ./packages/common-application
 COPY ./packages/common-config ./packages/common-config
+COPY ./packages/common-errors ./packages/common-errors
+COPY ./packages/common-validator ./packages/common-validator
+
 COPY ./packages/server ./packages/server
 
-RUN yarn workspaces focus server @common/config --production
+RUN yarn workspaces focus server @common/application @common/config @common/errors @common/validator --production
 
 EXPOSE 3000
 
