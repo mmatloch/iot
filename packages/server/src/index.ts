@@ -1,27 +1,14 @@
-import createFastify from 'fastify';
+import { createApplication } from '@common/application';
 
-import { getConfig } from './config';
+import { timescaleDataSource } from './dataSources/timescaleDataSource';
+import { createUsersRest } from './rest/usersRest';
 
-const fastify = createFastify({
-    logger: true,
+createApplication({
+    hooks: {
+        beforeReady: async (app) => {
+            await timescaleDataSource.initialize();
+
+            app.register(createUsersRest);
+        },
+    },
 });
-
-fastify.get('/', async () => {
-    return { hello: 'world' };
-});
-
-const start = async () => {
-    fastify.log.info({
-        msg: 'Configuration',
-        config: getConfig(),
-    });
-
-    try {
-        await fastify.listen({ port: 3000, host: '0.0.0.0' });
-    } catch (err) {
-        fastify.log.error(err);
-        process.exit(1);
-    }
-};
-
-start();

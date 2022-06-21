@@ -13,7 +13,7 @@ COPY ./packages/common-validator ./packages/common-validator
 
 COPY ./packages/server ./packages/server
 
-RUN yarn workspaces focus server @common/application @common/config @common/errors @common/validator --production
+RUN yarn workspaces focus server --production
 
 EXPOSE 3000
 

@@ -20,6 +20,12 @@ export class HttpError extends BaseError {
         this.statusCode = statusCode;
     }
 
+    static conflict = (opts: BaseErrorOptions) =>
+        new this({
+            ...opts,
+            statusCode: StatusCodes.CONFLICT,
+        });
+
     static internalServerError = (opts: BaseErrorOptions) =>
         new this({
             ...opts,

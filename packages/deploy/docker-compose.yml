@@ -3,12 +3,16 @@ services:
   server:
     image: ${PROJECT_NAME}/server
     volumes:
-      - ../server/config:/usr/app/packages/server/config
       - ../server/src:/usr/app/packages/server/src
     environment:
       POSTGRES: postgresql://postgres:postgres@timescale:5432/${PROJECT_NAME}
       GOOGLE_OAUTH2_CLIENT_ID: test.apps.googleusercontent.com
       GOOGLE_OAUTH2_CLIENT_SECRET: test
+      GOOGLE_OAUTH2_REDIRECT_URI: http://localhost:8080/auth/redirect/google
+      GOOGLE_OAUTH2_AUTH_BASE_URL: http://nginx/google/oauth2/auth
+      GOOGLE_OAUTH2_TOKEN_URL: http://nginx/google/oauth2/token
+    depends_on:
+      - timescale
 
   nginx:
     image: nginx:1.22
@@ -16,6 +20,9 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - '8080:80'
+    depends_on:
+      - server
+      - google_stub
 
   mqtt:
     image: eclipse-mosquitto:2.0
