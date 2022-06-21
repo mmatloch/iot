@@ -1,11 +1,11 @@
 {
   "resources": {
     "users": {
-      "baseUrl": "http://localhost:8080/api/",
+      "baseUrl": "http://nginx:8080/api/",
       "path": "users"
     },
     "googleOAuth2AuthorizationCode": {
-      "baseUrl": "http://localhost:8080/google/oauth2/",
+      "baseUrl": "http://nginx:8080/google/oauth2/",
       "path": "authorizationCode"
     }
   }

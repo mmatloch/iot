@@ -1,6 +1,6 @@
 import { $, argv, glob, os, path } from 'zx';
 
-import { multilinePrint, print } from './utils/print.mjs';
+import { multilinePrint } from './utils/print.mjs';
 
 const SCRIPTS_DIR = __dirname;
 const SCRIPTS_EXT = 'mjs';
@@ -42,7 +42,7 @@ const main = async () => {
         try {
             return await $`zx ${scriptPath} ${serializeParams(scriptParams)}`;
         } catch (e) {
-            return print(e);
+            process.exit(e.exitCode);
         }
     }
 
