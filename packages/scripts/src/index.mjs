@@ -1,6 +1,6 @@
 import { $, argv, glob, os, path } from 'zx';
 
-import { multilinePrint, print } from './utils/print.mjs';
+import { multilinePrint } from './utils/print.mjs';
 
 const SCRIPTS_DIR = __dirname;
 const SCRIPTS_EXT = 'mjs';
@@ -39,7 +39,11 @@ const main = async () => {
         // https://github.com/google/zx/blob/main/docs/known-issues.md#colors-in-subprocess
         process.env.FORCE_COLOR = '1';
 
-        return $`zx ${scriptPath} ${serializeParams(scriptParams)}`;
+        try {
+            return await $`zx ${scriptPath} ${serializeParams(scriptParams)}`;
+        } catch (e) {
+            process.exit(e.exitCode);
+        }
     }
 
     const msg = [

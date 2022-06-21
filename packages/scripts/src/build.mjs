@@ -28,12 +28,18 @@ const dockerImages = [
             },
         ],
     },
+    {
+        name: 'Tests',
+        dockerfilePath: './packages/tests/Dockerfile',
+        imageName: `${PROJECT_NAME}/tests`,
+        imageTag: 'latest',
+    },
 ];
 
 const buildDockerImage = ({ dockerfilePath, imageName, imageTag, buildArgs }) => {
-    const buildArg = buildArgs.flatMap(({ key, value }) => ['--build-arg', `${key}=${value}`]);
+    const buildArg = buildArgs?.flatMap(({ key, value }) => ['--build-arg', `${key}=${value}`]);
 
-    return $`docker build -f ${dockerfilePath} -t ${imageName}:${imageTag} ${buildArg} .`;
+    return $`docker build -f ${dockerfilePath} -t ${imageName}:${imageTag} ${buildArg || []} .`;
 };
 
 const main = async () => {

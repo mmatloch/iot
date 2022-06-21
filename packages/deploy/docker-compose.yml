@@ -9,8 +9,8 @@ services:
       GOOGLE_OAUTH2_CLIENT_ID: test.apps.googleusercontent.com
       GOOGLE_OAUTH2_CLIENT_SECRET: test
       GOOGLE_OAUTH2_REDIRECT_URI: http://localhost:8080/auth/redirect/google
-      GOOGLE_OAUTH2_AUTH_BASE_URL: http://nginx/google/oauth2/auth
-      GOOGLE_OAUTH2_TOKEN_URL: http://nginx/google/oauth2/token
+      GOOGLE_OAUTH2_AUTH_BASE_URL: http://nginx:8080/google/oauth2/auth
+      GOOGLE_OAUTH2_TOKEN_URL: http://nginx:8080/google/oauth2/token
     depends_on:
       - timescale
 
@@ -19,7 +19,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - '8080:80'
+      - 8080:8080
     depends_on:
       - server
       - google_stub
@@ -27,13 +27,13 @@ services:
   mqtt:
     image: eclipse-mosquitto:2.0
     ports:
-      - '1883:1883'
+      - 1883:1883
     command: 'mosquitto -c /mosquitto-no-auth.conf'
 
   timescale:
     image: timescale/timescaledb:2.7.0-pg14
     ports:
-      - '5432:5432'
+      - 5432:5432
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -48,6 +48,16 @@ services:
     environment:
       OAUTH2_CLIENT_ID: test.apps.googleusercontent.com
       OAUTH2_CLIENT_SECRET: test
+
+  tests:
+    image: ${PROJECT_NAME}/tests
+    volumes:
+      - ../tests/config:/usr/app/packages/tests/config
+      - ../tests/src:/usr/app/packages/tests/src
+    profiles:
+      - tests
+    environment:
+      FORCE_COLOR: true # https://github.com/facebook/jest/issues/3877
 
 volumes:
   postgres_data:
