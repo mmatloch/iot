@@ -5,7 +5,7 @@ import { createOAuth2Rest } from './rest/oAuth2Rest';
 
 createApplication({
     hooks: {
-        beforeListen: async (app) => {
+        beforeReady: async (app) => {
             createOAuth2Rest(app);
         },
     },

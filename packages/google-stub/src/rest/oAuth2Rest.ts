@@ -6,17 +6,12 @@ import { StatusCodes } from 'http-status-codes';
 import { createOAuth2Service } from '../services/oAuth2Service';
 
 const createTokenSchema = {
-    body: Type.Object(
-        {
-            code: Type.Optional(Type.String()),
-            grant_type: Type.Optional(Type.String()),
-            client_id: Type.Optional(Type.String()),
-            client_secret: Type.Optional(Type.String()),
-        },
-        {
-            additionalProperties: false,
-        },
-    ),
+    body: Type.Object({
+        code: Type.Optional(Type.String()),
+        grant_type: Type.Optional(Type.String()),
+        client_id: Type.Optional(Type.String()),
+        client_secret: Type.Optional(Type.String()),
+    }),
 };
 
 const createAuthorizationCodeSchema = {

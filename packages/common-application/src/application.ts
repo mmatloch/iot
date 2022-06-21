@@ -1,52 +1,20 @@
 import { ValidationError } from '@common/errors';
 import { createValidator } from '@common/validator';
 import formBody from '@fastify/formbody';
-import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
-import createFastify, {
-    FastifyInstance,
-    FastifyLoggerInstance,
-    RawReplyDefaultExpression,
-    RawRequestDefaultExpression,
-    RawServerDefault,
-} from 'fastify';
 
 import { transformError } from './errorTransformer';
-
-export type Application = FastifyInstance<
-    RawServerDefault,
-    RawRequestDefaultExpression<RawServerDefault>,
-    RawReplyDefaultExpression<RawServerDefault>,
-    FastifyLoggerInstance,
-    TypeBoxTypeProvider
->;
+import { createApplicationFromFastify } from './fastifyAbstract';
+import { Application } from './types';
 
 interface CreateApplicationOptions {
     hooks?: {
-        beforeListen?: (app: Application) => Promise<void>;
-        afterListen?: (app: Application) => Promise<void>;
+        beforeReady?: (app: Application) => Promise<void>;
+        afterReady?: (app: Application) => Promise<void>;
     };
 }
 
-export const createApplication = async (opts: CreateApplicationOptions): Promise<Application> => {
-    const app = createFastify({
-        logger: true,
-    }).withTypeProvider<TypeBoxTypeProvider>();
-
-    app.register(formBody);
-
-    app.setValidatorCompiler(({ schema }) => {
-        const validator = createValidator();
-        return validator.compile(schema);
-    });
-
-    app.setSchemaErrorFormatter((errors, dataVar) => {
-        console.log(dataVar, errors);
-
-        // @ts-expect-error fastify types mismatch
-        return new ValidationError({ details: errors, message: `Validation error in '${dataVar}'` });
-    });
-
-    app.setErrorHandler((error, _request, reply) => {
+const bootstrapApplication = (app: Application) => {
+    app.setErrorHandler(async (error, _request, reply) => {
         const { statusCode, body, headers } = transformError(error);
 
         app.log.error({
@@ -61,8 +29,27 @@ export const createApplication = async (opts: CreateApplicationOptions): Promise
         return reply.status(statusCode).headers(headers).send(body);
     });
 
-    if (opts.hooks?.beforeListen) {
-        await opts.hooks.beforeListen(app);
+    app.setValidatorCompiler(({ schema }) => {
+        const validator = createValidator();
+        return validator.compile(schema);
+    });
+
+    app.setSchemaErrorFormatter((errors, dataVar) => {
+        // @ts-expect-error fastify types mismatch
+        return new ValidationError({ details: errors, message: `Validation error in '${dataVar}'` });
+    });
+
+    app.register(formBody);
+};
+
+export const createApplication = async (opts: CreateApplicationOptions): Promise<Application> => {
+    const app = createApplicationFromFastify();
+
+    bootstrapApplication(app);
+    await app.after();
+
+    if (opts.hooks?.beforeReady) {
+        await opts.hooks.beforeReady(app);
     }
 
     try {
@@ -72,8 +59,8 @@ export const createApplication = async (opts: CreateApplicationOptions): Promise
         process.exit(1);
     }
 
-    if (opts.hooks?.afterListen) {
-        await opts.hooks.afterListen(app);
+    if (opts.hooks?.afterReady) {
+        await opts.hooks.afterReady(app);
     }
 
     return app;
