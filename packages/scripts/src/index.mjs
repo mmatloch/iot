@@ -39,11 +39,7 @@ const main = async () => {
         // https://github.com/google/zx/blob/main/docs/known-issues.md#colors-in-subprocess
         process.env.FORCE_COLOR = '1';
 
-        try {
-            return await $`zx ${scriptPath} ${serializeParams(scriptParams)}`;
-        } catch (e) {
-            return print(e);
-        }
+        return $`zx ${scriptPath} ${serializeParams(scriptParams)}`;
     }
 
     const msg = [
