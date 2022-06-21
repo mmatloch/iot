@@ -23,4 +23,5 @@ jobs:
       - name: Run tests
         run: yarn script test
       - name: Stop containers
+        if: always()
         run: yarn script stop
