@@ -11,7 +11,7 @@ on:
       - '*.md'
 
 jobs:
-  test:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -23,5 +23,4 @@ jobs:
       - name: Run tests
         run: yarn script test
       - name: Stop containers
-        if: always()
         run: yarn script stop
