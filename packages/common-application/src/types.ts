@@ -1,44 +1,26 @@
-import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import type {
-    FastifyInstance,
-    FastifyLoggerInstance,
-    FastifyPluginAsync,
-    FastifyPluginOptions,
-    RawReplyDefaultExpression,
-    RawRequestDefaultExpression,
-    RawServerDefault,
-} from 'fastify';
+    DefaultFastifyInstance,
+    DefaultFastifyInstanceWithTypeProvider,
+    DefaultLogger,
+    RawServer,
+} from './fastifyAbstract';
 
-export interface Application
-    extends Omit<
-        FastifyInstance<
-            RawServerDefault,
-            RawRequestDefaultExpression<RawServerDefault>,
-            RawReplyDefaultExpression<RawServerDefault>,
-            FastifyLoggerInstance,
-            TypeBoxTypeProvider
-        >,
-        'register' | 'withTypeProvider'
-    > {
-    register: ApplicationRegister;
-    withTypeProvider(): Application;
+export interface Application extends Omit<DefaultFastifyInstance, 'withTypeProvider'> {
+    withTypeProvider(): Omit<DefaultFastifyInstanceWithTypeProvider, 'withTypeProvider'>;
 }
 
 type DefaultPluginOptions = Record<never, never>;
+export type ApplicationPluginOptions = Record<string, unknown>;
 
-export type ApplicationPlugin<Options extends ApplicationPluginOptions = DefaultPluginOptions> = FastifyPluginAsync<
-    Options,
-    RawServerDefault,
-    TypeBoxTypeProvider
->;
-export type ApplicationPluginOptions = FastifyPluginOptions;
+export type ApplicationPlugin<Options extends ApplicationPluginOptions = DefaultPluginOptions> = (
+    instance: Application,
+    opts: Options,
+) => Promise<void>;
 
-export type ApplicationRegister = <Options extends ApplicationPluginOptions = DefaultPluginOptions>(
-    plugin: ApplicationPlugin<Options>,
-    opts?: Options,
-) => Application;
-
-// https://github.com/fastify/fastify/issues/3636
 declare module 'fastify' {
-    function fastify(opts?: FastifyServerOptions<RawServerDefault, FastifyLoggerInstance>): Application;
+    // https://github.com/fastify/fastify/issues/3636
+    function fastify(opts?: FastifyServerOptions<RawServer, DefaultLogger>): Application & PromiseLike<Application>;
+
+    // https://github.com/fastify/fastify/issues/2110
+    interface FastifyRequest extends Record<string, unknown> {}
 }

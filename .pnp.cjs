@@ -843,6 +843,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
             ["fastify", "npm:4.0.3"],\
+            ["fastify-plugin", "npm:3.0.1"],\
             ["http-status-codes", "npm:2.2.0"],\
             ["lodash", "npm:4.17.21"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\

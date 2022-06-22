@@ -415,6 +415,7 @@ __metadata:
     "@types/lodash": ^4.14.182
     "@types/node": ^17.0.42
     fastify: ^4.0.3
+    fastify-plugin: ^3.0.1
     http-status-codes: ^2.2.0
     lodash: ^4.17.21
     typescript: ^4.7.3
@@ -2919,7 +2920,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fastify-plugin@npm:^3.0.0":
+"fastify-plugin@npm:^3.0.0, fastify-plugin@npm:^3.0.1":
   version: 3.0.1
   resolution: "fastify-plugin@npm:3.0.1"
   checksum: 131ba0a388f777829c3fb0fd5b75cf057688ce6d0ca354fb1ebf829767a8c853b0825762b9185b5200097454df0ede2f3095da2efe1aa1b3736d07f194e6d374
