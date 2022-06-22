@@ -20,6 +20,12 @@ export class HttpError extends BaseError {
         this.statusCode = statusCode;
     }
 
+    static unauthorized = (opts: BaseErrorOptions) =>
+        new this({
+            ...opts,
+            statusCode: StatusCodes.UNAUTHORIZED,
+        });
+
     static conflict = (opts: BaseErrorOptions) =>
         new this({
             ...opts,

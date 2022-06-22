@@ -22,7 +22,7 @@ interface ValidationErrorOptions {
 const validationErrorCode = 'VLD-1';
 
 export class ValidationError extends HttpError {
-    public details: ValidationErrorDetails;
+    public validationDetails: ValidationErrorDetails;
 
     constructor({ details, message }: ValidationErrorOptions) {
         super({
@@ -31,6 +31,6 @@ export class ValidationError extends HttpError {
             statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
         });
 
-        this.details = details;
+        this.validationDetails = details;
     }
 }
