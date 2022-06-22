@@ -11,6 +11,7 @@ services:
       GOOGLE_OAUTH2_REDIRECT_URI: http://localhost:8080/auth/redirect/google
       GOOGLE_OAUTH2_AUTH_BASE_URL: http://nginx:8080/google/oauth2/auth
       GOOGLE_OAUTH2_TOKEN_URL: http://nginx:8080/google/oauth2/token
+      JWT_SECRET: secret
     depends_on:
       - timescale
 

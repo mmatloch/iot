@@ -1,13 +1,10 @@
 import { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
-import { QueryFailedError } from 'typeorm';
 
-import { userSchema } from '../entities/userEntity';
-import { Errors } from '../errors';
 import { createUsersService } from '../services/usersService';
 
-const userDtoSchema = Type.Object(
+const tokenDtoSchema = Type.Object(
     {
         authorizationCode: Type.String(),
     },
@@ -16,33 +13,30 @@ const userDtoSchema = Type.Object(
     },
 );
 
-const createUserSchema = {
-    body: userDtoSchema,
+const tokenSchema = Type.Object(
+    {
+        token: Type.String(),
+        expiresIn: Type.Number(),
+        tokenType: Type.String(),
+    },
+    {
+        additionalProperties: false,
+    },
+);
+
+const createTokenSchema = {
+    body: tokenDtoSchema,
+
     response: {
-        [StatusCodes.CREATED]: userSchema,
+        [StatusCodes.CREATED]: tokenSchema,
     },
 };
 
 export const createUsersRest: ApplicationPlugin = async (app) => {
-    app.setErrorHandler(async (error) => {
-        if (error instanceof QueryFailedError) {
-            switch (error.code) {
-                case '23505': {
-                    throw Errors.userAlreadyExists({
-                        message: error.driverError.detail,
-                        cause: error,
-                    });
-                }
-            }
-        }
-
-        throw error;
-    });
-
-    app.post('/users', { schema: createUserSchema }, async (request, reply) => {
+    app.withTypeProvider().post('/users/token', { schema: createTokenSchema }, async (request, reply) => {
         const service = createUsersService();
 
-        const user = await service.create(request.body);
-        return reply.status(StatusCodes.CREATED).send(user);
+        const token = await service.createToken(request.body);
+        return reply.status(StatusCodes.CREATED).send(token);
     });
 };

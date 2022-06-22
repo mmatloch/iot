@@ -21,3 +21,5 @@ export const genericEntitySchema = Type.Object({
     _createdAt: Type.String(),
     _updatedAt: Type.String(),
 });
+
+export type GenericEntityDto<TEntity> = Omit<TEntity, '_id' | '_version' | '_createdAt' | '_updatedAt'>;
