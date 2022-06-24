@@ -842,10 +842,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@sinclair/typebox", "npm:0.23.5"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
+            ["@types/qs", "npm:6.9.7"],\
             ["fastify", "npm:4.0.3"],\
             ["fastify-plugin", "npm:3.0.1"],\
             ["http-status-codes", "npm:2.2.0"],\
             ["lodash", "npm:4.17.21"],\
+            ["qs", "npm:6.10.5"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
@@ -1859,6 +1861,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-ps-tree-npm-1.1.2-2a246ae059-575c3b2b83.zip/node_modules/@types/ps-tree/",\
           "packageDependencies": [\
             ["@types/ps-tree", "npm:1.1.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/qs", [\
+        ["npm:6.9.7", {\
+          "packageLocation": "./.yarn/cache/@types-qs-npm-6.9.7-4a3e6ca0d0-7fd6f9c250.zip/node_modules/@types/qs/",\
+          "packageDependencies": [\
+            ["@types/qs", "npm:6.9.7"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -7195,6 +7206,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["qs", [\
+        ["npm:6.10.5", {\
+          "packageLocation": "./.yarn/cache/qs-npm-6.10.5-e366a4a410-b3873189a1.zip/node_modules/qs/",\
+          "packageDependencies": [\
+            ["qs", "npm:6.10.5"],\
+            ["side-channel", "npm:1.0.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["queue-microtask", [\
         ["npm:1.2.3", {\
           "packageLocation": "./.yarn/cache/queue-microtask-npm-1.2.3-fcc98e4e2d-b676f8c040.zip/node_modules/queue-microtask/",\
@@ -8022,7 +8043,9 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chalk", "npm:5.0.1"],\
             ["http-status-codes", "npm:2.2.0"],\
             ["jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.1.1"],\
+            ["jsonwebtoken", "npm:8.5.1"],\
             ["lodash", "npm:4.17.21"],\
+            ["qs", "npm:6.10.5"],\
             ["ts-jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.0.5"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
             ["whatwg-mimetype", "npm:3.0.0"]\

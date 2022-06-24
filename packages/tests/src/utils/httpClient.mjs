@@ -2,6 +2,15 @@ import _ from 'lodash';
 import MimeType from 'whatwg-mimetype';
 
 export const createHttpClient = () => {
+    let authorizationStrategy = {
+        name: 'None',
+        getAuthorizationHeader: () => undefined,
+    };
+
+    const useAuthorizationStrategy = (strategy) => {
+        authorizationStrategy = strategy;
+    };
+
     const serializeResponseHeaders = (headers) => {
         return Object.fromEntries(headers.entries());
     };
@@ -20,6 +29,11 @@ export const createHttpClient = () => {
         const defaultHeaders = {
             ...headers,
         };
+
+        const authorizationHeader = authorizationStrategy.getAuthorizationHeader();
+        if (authorizationHeader) {
+            defaultHeaders.authorization = authorizationHeader;
+        }
 
         if (!body) {
             return {
@@ -73,8 +87,12 @@ export const createHttpClient = () => {
             headers: responseHeaders,
             body: await parseResponseBody(response, responseHeaders),
             request: requestOptions,
+            authorizationStrategy,
         };
     };
 
-    return request;
+    return {
+        request,
+        useAuthorizationStrategy,
+    };
 };

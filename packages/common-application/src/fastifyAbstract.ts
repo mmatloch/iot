@@ -9,6 +9,7 @@ import {
 } from 'fastify';
 import fp from 'fastify-plugin';
 import _ from 'lodash';
+import Qs from 'qs';
 
 export type RawServer = RawServerDefault;
 export type DefaultLogger = FastifyLoggerInstance;
@@ -31,6 +32,7 @@ export type DefaultFastifyInstanceWithTypeProvider = FastifyInstance<
 export const createApplicationFromFastify = () => {
     return fastify({
         logger: true,
+        querystringParser: (str) => Qs.parse(str),
     });
 };
 

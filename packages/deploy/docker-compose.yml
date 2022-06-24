@@ -59,6 +59,7 @@ services:
       - tests
     environment:
       FORCE_COLOR: true # https://github.com/facebook/jest/issues/3877
+      JWT_SECRET: secret
 
 volumes:
   postgres_data:
