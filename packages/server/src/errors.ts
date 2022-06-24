@@ -2,7 +2,8 @@ import { HttpError, HttpErrorOptions } from '@common/errors';
 
 enum ErrorCode {
     GenericInternalError = 1,
-    UserAlreadyExists,
+    Unauthorized,
+    Forbidden,
 }
 const prefix = 'SRV';
 
@@ -15,9 +16,14 @@ export const Errors = {
             errorCode: getErrorCode(ErrorCode.GenericInternalError),
         }),
 
-    userAlreadyExists: (opts: Partial<HttpErrorOptions>): HttpError =>
-        HttpError.conflict({
+    unauthorized: (opts: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.unauthorized({
             ...opts,
-            errorCode: getErrorCode(ErrorCode.UserAlreadyExists),
+            errorCode: getErrorCode(ErrorCode.Unauthorized),
+        }),
+
+    forbidden: (): HttpError =>
+        HttpError.forbidden({
+            errorCode: getErrorCode(ErrorCode.Forbidden),
         }),
 };

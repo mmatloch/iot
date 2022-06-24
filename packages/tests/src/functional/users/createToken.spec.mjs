@@ -2,13 +2,20 @@ import { faker } from '@faker-js/faker';
 
 import { generateGoogleUserInfo } from '../../dataGenerators/googleDataGenerators.mjs';
 import { generateUserPostPayload } from '../../dataGenerators/usersDataGenerators.mjs';
-import { createGoogleOAuth2AuthorizationCodeHelpers, createUsersHelpers } from '../../helpers/helpers.mjs';
+import { createGoogleOAuth2AuthorizationCodeHelpers, createUserHelpers } from '../../helpers/helpers.mjs';
 
-const H = createUsersHelpers();
+const H = createUserHelpers({
+    path: 'users/token',
+});
+const authorizedUserHelpers = createUserHelpers();
 const authorizationCodeHelpers = createGoogleOAuth2AuthorizationCodeHelpers();
 
-describe('Users createUser', () => {
-    it('should create a user', async () => {
+describe('Users createToken', () => {
+    beforeAll(() => {
+        authorizedUserHelpers.authorizeHttpClient();
+    });
+
+    it('should create a token', async () => {
         // given
         const userInfo = generateGoogleUserInfo();
         const {
@@ -22,11 +29,11 @@ describe('Users createUser', () => {
         const { body } = await H.post(payload).expectSuccess();
 
         // then
-        const expectedProperties = ['email', 'name', 'lastName', 'firstName'];
+        const expectedProperties = ['token', 'expiresIn', 'tokenType'];
         expectedProperties.forEach((property) => expect(body).toHaveProperty(property));
     });
 
-    it('should return 409 if a user with the same email already exists', async () => {
+    it('should create a user if it does not exist', async () => {
         // given
         const userInfo = generateGoogleUserInfo();
         const {
@@ -36,13 +43,41 @@ describe('Users createUser', () => {
         const payload = generateUserPostPayload();
         payload.authorizationCode = code;
 
+        const searchQuery = {
+            email: userInfo.email,
+        };
+
+        await authorizedUserHelpers.search(searchQuery).expectHits(0);
+
+        // when
         await H.post(payload).expectSuccess();
 
-        // when & then
-        await H.post(payload).expectConflict({
-            errorCode: `SRV-2`,
-            message: `Key (email)=(${userInfo.email}) already exists.`,
-        });
+        // then
+        await authorizedUserHelpers.search(searchQuery).expectHits(1);
+    });
+
+    it('should not create another user if a user with this email exists', async () => {
+        // given
+        const userInfo = generateGoogleUserInfo();
+        const {
+            body: { code },
+        } = await authorizationCodeHelpers.post(userInfo).expectSuccess();
+
+        const payload = generateUserPostPayload();
+        payload.authorizationCode = code;
+
+        const searchQuery = {
+            email: userInfo.email,
+        };
+
+        await H.post(payload).expectSuccess();
+        await authorizedUserHelpers.search(searchQuery).expectHits(1);
+
+        // when
+        await H.post(payload).expectSuccess();
+
+        // then
+        await authorizedUserHelpers.search(searchQuery).expectHits(1);
     });
 
     it('should return 500 if the authorizationCode is invalid', async () => {

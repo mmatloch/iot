@@ -1,7 +1,12 @@
 import { Type } from '@sinclair/typebox';
 import { Column, Entity, Index } from 'typeorm';
 
-import { GenericEntity, genericEntitySchema } from './genericEntity';
+import { GenericEntity, GenericEntityDto, genericEntitySchema } from './genericEntity';
+
+export enum UserRole {
+    Admin = 'ADMIN',
+    User = 'USER'
+}
 
 @Entity({ name: 'users' })
 export class User extends GenericEntity {
@@ -17,6 +22,9 @@ export class User extends GenericEntity {
     @Column('text')
     @Index({ unique: true })
     email!: string;
+
+    @Column('text')
+    role!: string;
 }
 
 export const userSchema = Type.Intersect([
@@ -28,3 +36,5 @@ export const userSchema = Type.Intersect([
     }),
     genericEntitySchema,
 ]);
+
+export type UserDto = GenericEntityDto<User>;

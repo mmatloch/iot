@@ -9,6 +9,11 @@ const schema = Type.Object({
             }),
         }),
     }),
+    authorization: Type.Object({
+        jwtSecret: Type.String({
+            environment: 'JWT_SECRET',
+        }),
+    }),
     externalServices: Type.Object({
         google: Type.Object({
             oAuth2: Type.Object({

@@ -25,9 +25,15 @@ const getStatusCode = (error: Error): number => {
     return StatusCodes.INTERNAL_SERVER_ERROR;
 };
 
-const getDetails = (error: Error): string | undefined => {
-    if (_.has(error, 'details')) {
-        return _.get(error, 'details');
+const getDetail = (error: Error): string | undefined => {
+    if (_.has(error, 'detail')) {
+        return _.get(error, 'detail');
+    }
+};
+
+const getValidationDetails = (error: Error): Record<string, unknown> | undefined => {
+    if (_.has(error, 'validationDetails')) {
+        return _.get(error, 'validationDetails');
     }
 };
 
@@ -35,7 +41,8 @@ const buildErrorBody = (error: Error): Record<string, unknown> => {
     return {
         errorCode: getErrorCode(error),
         message: error.message,
-        details: getDetails(error),
+        detail: getDetail(error),
+        validationDetails: getValidationDetails(error),
         stack: error.stack,
         cause: error.cause ? buildErrorBody(error.cause) : undefined,
     };

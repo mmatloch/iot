@@ -3,8 +3,8 @@ import { createValidator } from '@common/validator';
 import formBody from '@fastify/formbody';
 
 import { transformError } from './errorTransformer';
-import { createApplicationFromFastify } from './fastifyAbstract';
-import { Application } from './types';
+import { createApplicationFromFastify, createFastifyPlugin } from './fastifyAbstract';
+import { Application, ApplicationPlugin, ApplicationPluginOptions } from './types';
 
 interface CreateApplicationOptions {
     hooks?: {
@@ -64,4 +64,16 @@ export const createApplication = async (opts: CreateApplicationOptions): Promise
     }
 
     return app;
+};
+
+interface CreateApplicationPluginOptions {
+    name: string;
+    dependencies?: string[];
+}
+
+export const createApplicationPlugin = <PluginOptions extends ApplicationPluginOptions>(
+    plugin: ApplicationPlugin<PluginOptions>,
+    opts: CreateApplicationPluginOptions,
+) => {
+    return createFastifyPlugin(plugin, opts);
 };
