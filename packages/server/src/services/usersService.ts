@@ -1,5 +1,6 @@
 import JWT from 'jsonwebtoken';
 
+import { SearchResponse, createSearchResponse } from '../apis/searchApi';
 import { getConfig } from '../config';
 import { User, UserDto, UserRole } from '../entities/userEntity';
 import { createUsersRepository } from '../repositories/usersRepository';
@@ -7,6 +8,10 @@ import { createGoogleOAuth2Service } from './googleOAuth2Service';
 
 interface TokenDto {
     authorizationCode: string;
+}
+
+interface UsersSearchQuery {
+    email?: string;
 }
 
 export const createUsersService = () => {
@@ -32,7 +37,7 @@ export const createUsersService = () => {
         if (!user) {
             user = await create({
                 ...userInfo,
-                role: UserRole.User
+                role: UserRole.User,
             });
         }
 
@@ -56,7 +61,20 @@ export const createUsersService = () => {
         };
     };
 
+    const search = async (query: UsersSearchQuery): Promise<SearchResponse<User>> => {
+        const [users, totalHits] = await repository.findAndCountBy(query);
+
+        return createSearchResponse({
+            links: {},
+            meta: {
+                totalHits,
+            },
+            hits: users,
+        });
+    };
+
     return {
         createToken,
+        search,
     };
 };

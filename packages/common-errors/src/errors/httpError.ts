@@ -26,6 +26,12 @@ export class HttpError extends BaseError {
             statusCode: StatusCodes.UNAUTHORIZED,
         });
 
+    static forbidden = (opts: BaseErrorOptions) =>
+        new this({
+            ...opts,
+            statusCode: StatusCodes.FORBIDDEN,
+        });
+
     static conflict = (opts: BaseErrorOptions) =>
         new this({
             ...opts,

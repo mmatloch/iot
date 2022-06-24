@@ -1,5 +1,5 @@
 import { ApplicationPlugin, createApplicationPlugin } from '@common/application';
-import JWT from 'jsonwebtoken';
+import JWT, { JsonWebTokenError } from 'jsonwebtoken';
 import _ from 'lodash';
 
 import { getConfig } from '../config';
@@ -19,24 +19,36 @@ const requestUserPlugin: ApplicationPlugin = async (app) => {
         const [tokenType, token] = authorizationHeader.split(' ');
 
         if (!tokenType || !token) {
-            throw Errors.invalidAuthorizationHeader();
+            throw Errors.unauthorized({ detail: 'Invalid authorization header' });
         }
 
         if (tokenType === 'JWT' && token) {
-            const decodedToken = JWT.verify(token, config.authorization.jwtSecret, {
-                algorithms: ['HS256'],
-                complete: false,
-            });
+            let decodedToken: string | JWT.JwtPayload;
+
+            try {
+                decodedToken = JWT.verify(token, config.authorization.jwtSecret, {
+                    algorithms: ['HS256'],
+                    complete: false,
+                });
+            } catch (e) {
+                let detail = 'Invalid access token';
+
+                if (e instanceof JsonWebTokenError) {
+                    detail += `: ${e.message}`;
+                }
+
+                throw Errors.unauthorized({ detail, cause: e });
+            }
 
             if (_.isString(decodedToken)) {
-                throw Errors.invalidAccessToken('jwt malformed');
+                throw Errors.unauthorized({ detail: 'Invalid access token: jwt malformed' });
             }
 
             const requiredFields = ['sub', 'email', 'role'];
 
             requiredFields.forEach((field) => {
                 if (!_.has(decodedToken, field)) {
-                    throw Errors.invalidAccessToken('jwt malformed');
+                    throw Errors.unauthorized({ detail: 'Invalid access token: jwt malformed' });
                 }
             });
 
@@ -50,7 +62,7 @@ const requestUserPlugin: ApplicationPlugin = async (app) => {
             return;
         }
 
-        throw Errors.invalidAuthorizationHeader();
+        throw Errors.unauthorized({ detail: 'Invalid authorization header' });
     });
 };
 

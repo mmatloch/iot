@@ -2,8 +2,8 @@ import { HttpError, HttpErrorOptions } from '@common/errors';
 
 enum ErrorCode {
     GenericInternalError = 1,
-    InvalidAuthorizationHeader,
-    InvalidAccessToken,
+    Unauthorized,
+    Forbidden,
 }
 const prefix = 'SRV';
 
@@ -16,14 +16,14 @@ export const Errors = {
             errorCode: getErrorCode(ErrorCode.GenericInternalError),
         }),
 
-    invalidAuthorizationHeader: (): HttpError =>
+    unauthorized: (opts: Partial<HttpErrorOptions>): HttpError =>
         HttpError.unauthorized({
-            errorCode: getErrorCode(ErrorCode.InvalidAuthorizationHeader),
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.Unauthorized),
         }),
 
-    invalidAccessToken: (detail: string): HttpError =>
-        HttpError.unauthorized({
-            detail,
-            errorCode: getErrorCode(ErrorCode.InvalidAccessToken),
+    forbidden: (): HttpError =>
+        HttpError.forbidden({
+            errorCode: getErrorCode(ErrorCode.Forbidden),
         }),
 };
