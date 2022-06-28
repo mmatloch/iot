@@ -13,4 +13,4 @@ COPY ./packages/tests ./packages/tests
 RUN yarn workspaces focus tests --production
 
 WORKDIR /usr/app/packages/tests
-CMD yarn node --experimental-vm-modules $(yarn bin jest)
+ENTRYPOINT ["yarn", "jest"]

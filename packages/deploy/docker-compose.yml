@@ -60,6 +60,8 @@ services:
     environment:
       FORCE_COLOR: true # https://github.com/facebook/jest/issues/3877
       JWT_SECRET: secret
+      NODE_OPTIONS: --experimental-vm-modules
+      NODE_NO_WARNINGS: 1
 
 volumes:
   postgres_data:
