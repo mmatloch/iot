@@ -1,6 +1,8 @@
+import { faker } from '@faker-js/faker';
 import JWT from 'jsonwebtoken';
 
 import { getConfig } from '../config.mjs';
+import { TEST_USER_EMAIL } from '../constants.mjs';
 import { createHttpClient } from '../utils/httpClient.mjs';
 import { createHttpHelpers } from './httpHelpers.mjs';
 
@@ -13,11 +15,12 @@ const createHelpers = (resourceName, resourceConfigOverrides = {}) => {
         ...resourceConfigOverrides,
     };
 
-    const authorizeHttpClient = () => {
+    const authorizeHttpClient = (overrides) => {
         const testUser = {
-            _id: 1_000_000,
-            email: 'test@example.com',
+            _id: faker.datatype.number({ min: 100_000_000 }),
+            email: TEST_USER_EMAIL,
             role: 'ADMIN',
+            ...overrides,
         };
 
         const token = JWT.sign(testUser, config.authorization.jwtSecret, {

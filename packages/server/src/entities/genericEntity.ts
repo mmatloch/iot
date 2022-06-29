@@ -1,7 +1,28 @@
-import { Type } from '@sinclair/typebox';
-import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn, VersionColumn } from 'typeorm';
+import { Validator, createValidator } from '@common/validator';
+import { TObject, TProperties, Type } from '@sinclair/typebox';
+import _ from 'lodash';
+import {
+    BeforeInsert,
+    BeforeUpdate,
+    CreateDateColumn,
+    PrimaryGeneratedColumn,
+    UpdateDateColumn,
+    VersionColumn,
+} from 'typeorm';
 
 export abstract class GenericEntity {
+    private validator: Validator;
+    private entitySchema: TObject<TProperties>;
+    private dtoSchema: TObject<TProperties>;
+
+    constructor(entitySchema: TObject<TProperties>) {
+        this.validator = createValidator();
+
+        // https://github.com/typeorm/typeorm/issues/7150
+        this.entitySchema = Type.Omit(entitySchema, ['_createdAt', '_updatedAt']);
+        this.dtoSchema = Type.Omit(this.entitySchema, ['_id', '_version']);
+    }
+
     @PrimaryGeneratedColumn()
     _id!: number;
 
@@ -13,6 +34,16 @@ export abstract class GenericEntity {
 
     @UpdateDateColumn()
     _updatedAt!: string;
+
+    @BeforeInsert()
+    protected validateDto() {
+        this.validator.validateOrThrow(this.dtoSchema, this);
+    }
+
+    @BeforeUpdate()
+    protected validateEntity() {
+        this.validator.validateOrThrow(this.entitySchema, this);
+    }
 }
 
 export const genericEntitySchema = Type.Object({
@@ -21,5 +52,3 @@ export const genericEntitySchema = Type.Object({
     _createdAt: Type.String(),
     _updatedAt: Type.String(),
 });
-
-export type GenericEntityDto<TEntity> = Omit<TEntity, '_id' | '_version' | '_createdAt' | '_updatedAt'>;

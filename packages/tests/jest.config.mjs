@@ -13,7 +13,12 @@ export default {
             moduleNameMapper: {
                 '^(\\.{1,2}/.*)\\.js$': '$1',
             },
-            setupFilesAfterEnv: ['<rootDir>/src/jest/expectWithMessage.mjs'],
+            setupFilesAfterEnv: [
+                'jest-date',
+                '<rootDir>/src/jest/expectWithMessage.mjs',
+                '<rootDir>/src/jest/setup.mjs',
+            ],
+            runner: 'groups',
         },
     ],
 };

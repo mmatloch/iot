@@ -32,6 +32,12 @@ export class HttpError extends BaseError {
             statusCode: StatusCodes.FORBIDDEN,
         });
 
+    static notFound = (opts: BaseErrorOptions) =>
+        new this({
+            ...opts,
+            statusCode: StatusCodes.NOT_FOUND,
+        });
+
     static conflict = (opts: BaseErrorOptions) =>
         new this({
             ...opts,

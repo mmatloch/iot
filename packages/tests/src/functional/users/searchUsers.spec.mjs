@@ -1,28 +1,14 @@
 import _ from 'lodash';
 
-import { generateGoogleUserInfo } from '../../dataGenerators/googleDataGenerators.mjs';
-import { generateUserPostPayload } from '../../dataGenerators/usersDataGenerators.mjs';
-import { createGoogleOAuth2AuthorizationCodeHelpers, createUserHelpers } from '../../helpers/helpers.mjs';
+import { createUserHelpers } from '../../helpers/helpers.mjs';
+import { createUserUtils } from '../../utils/userUtils.mjs';
 
 const H = createUserHelpers();
-const userTokenHelpers = createUserHelpers({
-    path: 'users/token',
-});
-const authorizationCodeHelpers = createGoogleOAuth2AuthorizationCodeHelpers();
+const { createUser } = createUserUtils();
 
-const createUser = async () => {
-    const userInfo = generateGoogleUserInfo();
-    const {
-        body: { code },
-    } = await authorizationCodeHelpers.post(userInfo).expectSuccess();
-
-    const payload = generateUserPostPayload();
-    payload.authorizationCode = code;
-
-    await userTokenHelpers.post(payload).expectSuccess();
-
-    return userInfo;
-};
+/**
+ * @group users/searchUsers
+ */
 
 describe('Users searchUsers', () => {
     beforeAll(() => {

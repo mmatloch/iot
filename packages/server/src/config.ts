@@ -13,6 +13,11 @@ const schema = Type.Object({
         jwtSecret: Type.String({
             environment: 'JWT_SECRET',
         }),
+        rootUserEmail: Type.Optional(
+            Type.String({
+                environment: 'ROOT_USER_EMAIL',
+            }),
+        ),
     }),
     externalServices: Type.Object({
         google: Type.Object({

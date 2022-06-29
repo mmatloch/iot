@@ -56,6 +56,12 @@ export const createHttpHelpers = (httpClient, { resourceConfig }) => {
         return getByLocation(url, requestOptions);
     };
 
+    const getById = (id, requestOptions) => {
+        const url = new URL(`${resourceConfig.path}/${id}`, resourceConfig.baseUrl);
+
+        return getByLocation(url, requestOptions);
+    };
+
     const search = (query, requestOptions) => {
         const url = new URL(resourceConfig.path, resourceConfig.baseUrl);
 
@@ -84,12 +90,38 @@ export const createHttpHelpers = (httpClient, { resourceConfig }) => {
         };
     };
 
+    const patchByLocation = (location, payload, requestOptions) => {
+        const url = new URL(location);
+
+        const requestOptionsWithBody = {
+            ...requestOptions,
+            url,
+            body: payload,
+            method: 'PATCH',
+        };
+
+        const sendRequest = () => httpClient.request(requestOptionsWithBody);
+
+        return createHttpRequestAssertions(sendRequest, requestOptionsWithBody, {
+            successStatusCode: StatusCodes.OK,
+        });
+    };
+
+    const patchById = (id, payload, requestOptions) => {
+        const url = new URL(`${resourceConfig.path}/${id}`, resourceConfig.baseUrl);
+
+        return patchByLocation(url, payload, requestOptions);
+    };
+
     return {
         postByLocation,
         post,
         getByLocation,
         get,
+        getById,
         searchByLocation,
         search,
+        patchByLocation,
+        patchById,
     };
 };

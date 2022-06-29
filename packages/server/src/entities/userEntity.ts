@@ -1,15 +1,26 @@
-import { Type } from '@sinclair/typebox';
+import { Static, Type } from '@sinclair/typebox';
 import { Column, Entity, Index } from 'typeorm';
 
-import { GenericEntity, GenericEntityDto, genericEntitySchema } from './genericEntity';
+import { mergeSchemas } from '../utils/schemaUtils';
+import { GenericEntity, genericEntitySchema } from './genericEntity';
 
 export enum UserRole {
     Admin = 'ADMIN',
-    User = 'USER'
+    User = 'USER',
+}
+
+export enum UserState {
+    Active = 'ACTIVE',
+    Inactive = 'INACTIVE',
+    PendingApproval = 'PENDING_APPROVAL',
 }
 
 @Entity({ name: 'users' })
 export class User extends GenericEntity {
+    constructor() {
+        super(userSchema);
+    }
+
     @Column('text')
     firstName!: string;
 
@@ -24,17 +35,21 @@ export class User extends GenericEntity {
     email!: string;
 
     @Column('text')
-    role!: string;
+    role!: UserRole;
+
+    @Column('text')
+    state!: UserState;
 }
 
-export const userSchema = Type.Intersect([
-    Type.Object({
-        name: Type.String(),
-        firstName: Type.String(),
-        lastName: Type.String(),
-        email: Type.String({ format: 'email' }),
-    }),
-    genericEntitySchema,
-]);
+export const userDtoSchema = Type.Object({
+    name: Type.String(),
+    firstName: Type.String(),
+    lastName: Type.String(),
+    email: Type.String({ format: 'email' }),
+    role: Type.Enum(UserRole),
+    state: Type.Enum(UserState),
+});
 
-export type UserDto = GenericEntityDto<User>;
+export const userSchema = mergeSchemas(userDtoSchema, genericEntitySchema);
+
+export type UserDto = Static<typeof userDtoSchema>;

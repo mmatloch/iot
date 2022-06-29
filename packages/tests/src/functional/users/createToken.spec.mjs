@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 
+import { TEST_USER_EMAIL } from '../../constants.mjs';
 import { generateGoogleUserInfo } from '../../dataGenerators/googleDataGenerators.mjs';
 import { generateUserPostPayload } from '../../dataGenerators/usersDataGenerators.mjs';
 import { createGoogleOAuth2AuthorizationCodeHelpers, createUserHelpers } from '../../helpers/helpers.mjs';
@@ -10,32 +11,21 @@ const H = createUserHelpers({
 const authorizedUserHelpers = createUserHelpers();
 const authorizationCodeHelpers = createGoogleOAuth2AuthorizationCodeHelpers();
 
+/**
+ * @group users/createToken
+ */
+
 describe('Users createToken', () => {
     beforeAll(() => {
         authorizedUserHelpers.authorizeHttpClient();
     });
 
-    it('should create a token', async () => {
+    // currently, there is no way to test this
+    it.skip('should create a user if it does not exist', async () => {
         // given
         const userInfo = generateGoogleUserInfo();
-        const {
-            body: { code },
-        } = await authorizationCodeHelpers.post(userInfo).expectSuccess();
+        userInfo.email = TEST_USER_EMAIL;
 
-        const payload = generateUserPostPayload();
-        payload.authorizationCode = code;
-
-        // when
-        const { body } = await H.post(payload).expectSuccess();
-
-        // then
-        const expectedProperties = ['token', 'expiresIn', 'tokenType'];
-        expectedProperties.forEach((property) => expect(body).toHaveProperty(property));
-    });
-
-    it('should create a user if it does not exist', async () => {
-        // given
-        const userInfo = generateGoogleUserInfo();
         const {
             body: { code },
         } = await authorizationCodeHelpers.post(userInfo).expectSuccess();
@@ -59,6 +49,8 @@ describe('Users createToken', () => {
     it('should not create another user if a user with this email exists', async () => {
         // given
         const userInfo = generateGoogleUserInfo();
+        userInfo.email = TEST_USER_EMAIL;
+
         const {
             body: { code },
         } = await authorizationCodeHelpers.post(userInfo).expectSuccess();
@@ -75,6 +67,34 @@ describe('Users createToken', () => {
 
         // when
         await H.post(payload).expectSuccess();
+
+        // then
+        await authorizedUserHelpers.search(searchQuery).expectHits(1);
+    });
+
+    it('should not create a token for a newly created account', async () => {
+        // given
+        const userInfo = generateGoogleUserInfo();
+
+        const {
+            body: { code },
+        } = await authorizationCodeHelpers.post(userInfo).expectSuccess();
+
+        const payload = generateUserPostPayload();
+        payload.authorizationCode = code;
+
+        const searchQuery = {
+            email: userInfo.email,
+        };
+
+        await authorizedUserHelpers.search(searchQuery).expectHits(0);
+
+        // when
+        await H.post(payload).expectConflict({
+            errorCode: 'SRV-4',
+            message: `Can't create access token for this user`,
+            detail: 'PENDING_APPROVAL',
+        });
 
         // then
         await authorizedUserHelpers.search(searchQuery).expectHits(1);

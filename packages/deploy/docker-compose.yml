@@ -12,6 +12,7 @@ services:
       GOOGLE_OAUTH2_AUTH_BASE_URL: http://nginx:8080/google/oauth2/auth
       GOOGLE_OAUTH2_TOKEN_URL: http://nginx:8080/google/oauth2/token
       JWT_SECRET: secret
+      ROOT_USER_EMAIL: test@example.com
     depends_on:
       - timescale
 
