@@ -54,11 +54,13 @@ export const generateDeviceType = () => {
     return faker.helpers.arrayElement(['UNKNOWN', 'COORDINATOR', 'END_DEVICE', 'ROUTER']);
 };
 
+export const generateDeviceDisplayName = () => `${faker.commerce.productName()}${faker.random.alpha(10)}`;
+
 export const generateDevicePostPayload = () => {
     const generateSensorData = faker.helpers.arrayElement(sensorDataGenerators);
 
     return {
-        displayName: `${faker.commerce.productName()}${faker.random.alpha(10)}`,
+        displayName: generateDeviceDisplayName(),
         model: faker.vehicle.model(),
         vendor: faker.company.companyName(),
         description: faker.commerce.productDescription(),

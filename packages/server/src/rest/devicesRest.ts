@@ -25,6 +25,15 @@ const searchDevicesSchema = {
     },
 };
 
+const getDeviceSchema = {
+    params: Type.Object({
+        id: Type.Integer(),
+    }),
+    response: {
+        [StatusCodes.OK]: deviceSchema,
+    },
+};
+
 export const createDevicesRest: ApplicationPlugin = async (app) => {
     app.register(errorHandlerPlugin, { entityName: 'Device' });
 
@@ -48,5 +57,15 @@ export const createDevicesRest: ApplicationPlugin = async (app) => {
         const searchResult = await service.search(request.query);
 
         return reply.status(StatusCodes.OK).send(searchResult);
+    });
+
+    app.withTypeProvider().get('/devices/:id', { schema: getDeviceSchema }, async (request, reply) => {
+        const accessControl = createAccessControl(request.user);
+        accessControl.authorize();
+
+        const service = createDevicesService();
+        const device = await service.findByIdOrFail(request.params.id);
+
+        return reply.status(StatusCodes.OK).send(device);
     });
 };

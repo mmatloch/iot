@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import _ from 'lodash';
 
 import {
+    generateDeviceDisplayName,
     generateDevicePostPayload,
     generateDevicePowerSource,
     generateDeviceType,
@@ -13,7 +14,7 @@ const H = createDeviceHelpers();
 const searchableFields = [
     {
         field: 'displayName',
-        generateValue: faker.commerce.productName,
+        generateValue: generateDeviceDisplayName,
     },
     {
         field: 'model',

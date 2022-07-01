@@ -23,8 +23,15 @@ export const createDevicesService = () => {
         });
     };
 
+    const findByIdOrFail = async (_id: number): Promise<Device> => {
+        return repository.findOneByOrFail({
+            _id,
+        });
+    };
+
     return {
         create,
         search,
+        findByIdOrFail,
     };
 };
