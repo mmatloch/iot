@@ -10,17 +10,16 @@ import {
     VersionColumn,
 } from 'typeorm';
 
+const validator: Validator = createValidator();
+
 export abstract class GenericEntity {
-    private validator: Validator;
-    private entitySchema: TObject<TProperties>;
-    private dtoSchema: TObject<TProperties>;
+    #entitySchema: TObject<TProperties>;
+    #dtoSchema: TObject<TProperties>;
 
     constructor(entitySchema: TObject<TProperties>) {
-        this.validator = createValidator();
-
         // https://github.com/typeorm/typeorm/issues/7150
-        this.entitySchema = Type.Omit(entitySchema, ['_createdAt', '_updatedAt']);
-        this.dtoSchema = Type.Omit(this.entitySchema, ['_id', '_version']);
+        this.#entitySchema = Type.Omit(entitySchema, ['_createdAt', '_updatedAt']);
+        this.#dtoSchema = Type.Omit(this.#entitySchema, ['_id', '_version']);
     }
 
     @PrimaryGeneratedColumn()
@@ -37,12 +36,12 @@ export abstract class GenericEntity {
 
     @BeforeInsert()
     protected validateDto() {
-        this.validator.validateOrThrow(this.dtoSchema, this);
+        validator.validateOrThrow(this.#dtoSchema, this);
     }
 
     @BeforeUpdate()
     protected validateEntity() {
-        this.validator.validateOrThrow(this.entitySchema, this);
+        validator.validateOrThrow(this.#entitySchema, this);
     }
 }
 
