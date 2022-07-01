@@ -46,23 +46,25 @@ const sensorDataGenerators = [
     () => ({}), // empty object
 ];
 
+export const generateDevicePowerSource = () => {
+    return faker.helpers.arrayElement(['UNKNOWN', 'BATTERY', 'MAINS_SINGLE_PHASE', 'MAINS_THREE_PHASE', 'DC']);
+};
+
+export const generateDeviceType = () => {
+    return faker.helpers.arrayElement(['UNKNOWN', 'COORDINATOR', 'END_DEVICE', 'ROUTER']);
+};
+
 export const generateDevicePostPayload = () => {
     const generateSensorData = faker.helpers.arrayElement(sensorDataGenerators);
 
     return {
-        displayName: faker.commerce.productName(),
+        displayName: `${faker.commerce.productName()}${faker.random.alpha(10)}`,
         model: faker.vehicle.model(),
         vendor: faker.company.companyName(),
         description: faker.commerce.productDescription(),
         ieeeAddress: faker.vehicle.vin(),
-        powerSource: faker.helpers.arrayElement([
-            'UNKNOWN',
-            'BATTERY',
-            'MAINS_SINGLE_PHASE',
-            'MAINS_THREE_PHASE',
-            'DC',
-        ]),
-        type: faker.helpers.arrayElement(['UNKNOWN', 'COORDINATOR', 'END_DEVICE', 'ROUTER']),
+        powerSource: generateDevicePowerSource(),
+        type: generateDeviceType(),
         protocol: 'ZIGBEE',
         state: 'ACTIVE',
         sensorData: generateSensorData(),
