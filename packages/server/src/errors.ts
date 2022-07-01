@@ -5,8 +5,8 @@ enum ErrorCode {
     Unauthorized,
     Forbidden,
     CannotCreateTokenForUser,
-    UserNotFound,
-    UserAlreadyExists,
+    EntityNotFound,
+    EntityAlreadyExists,
     NoPermissionToUpdateField,
 }
 
@@ -39,17 +39,17 @@ export const Errors = {
             message: `Can't create access token for this user`,
         }),
 
-    userNotFound: (opts: Partial<HttpErrorOptions>): HttpError =>
+    entityNotFound: (entityName: string, opts: Partial<HttpErrorOptions>): HttpError =>
         HttpError.notFound({
             ...opts,
-            errorCode: getErrorCode(ErrorCode.UserNotFound),
-            message: 'User does not exist',
+            errorCode: getErrorCode(ErrorCode.EntityNotFound),
+            message: `${entityName} does not exist`,
         }),
 
-    userAlreadyExists: (opts: Partial<HttpErrorOptions>): HttpError =>
+    entityAlreadyExists: (opts: Partial<HttpErrorOptions>): HttpError =>
         HttpError.conflict({
             ...opts,
-            errorCode: getErrorCode(ErrorCode.UserAlreadyExists),
+            errorCode: getErrorCode(ErrorCode.EntityAlreadyExists),
         }),
 
     noPermissionToUpdateField: (opts: Partial<HttpErrorOptions>): HttpError =>

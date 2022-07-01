@@ -14,6 +14,7 @@ const schema = Type.Object({
     }),
     resources: Type.Object({
         users: resourceConfigSchema,
+        devices: resourceConfigSchema,
         googleOAuth2AuthorizationCode: resourceConfigSchema,
     }),
 });

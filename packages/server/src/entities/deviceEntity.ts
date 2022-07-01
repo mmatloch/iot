@@ -72,7 +72,23 @@ export class Device extends GenericEntity {
     sensorData!: Record<string, unknown>;
 }
 
-export const deviceDtoSchema = Type.Object({});
+export const deviceDtoSchema = Type.Object(
+    {
+        displayName: Type.String(),
+        model: Type.String(),
+        vendor: Type.String(),
+        description: Type.String(),
+        ieeeAddress: Type.String(),
+        powerSource: Type.Enum(DevicePowerSource),
+        type: Type.Enum(DeviceType),
+        protocol: Type.Enum(DeviceProtocol),
+        state: Type.Enum(DeviceState),
+        sensorData: Type.Optional(Type.Record(Type.String(), Type.Unknown())),
+    },
+    {
+        additionalProperties: false,
+    },
+);
 
 export const deviceSchema = mergeSchemas(deviceDtoSchema, genericEntitySchema);
 

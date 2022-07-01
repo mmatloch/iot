@@ -1,12 +1,12 @@
 import { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
-import { EntityNotFoundError, QueryFailedError } from 'typeorm';
 
 import { AccessControlSubject, createAccessControl } from '../accessControl';
 import { createSearchResponseSchema } from '../apis/searchApi';
 import { UserDto, UserRole, userDtoSchema, userSchema } from '../entities/userEntity';
 import { Errors } from '../errors';
+import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createUsersService } from '../services/usersService';
 
 const tokenDtoSchema = Type.Object(
@@ -90,27 +90,7 @@ const getUserIdFromParams = (id: 'me' | number, subject: AccessControlSubject): 
 };
 
 export const createUsersRest: ApplicationPlugin = async (app) => {
-    app.setErrorHandler(async (error) => {
-        if (error instanceof EntityNotFoundError) {
-            throw Errors.userNotFound({
-                message: error.message,
-                cause: error,
-            });
-        }
-
-        if (error instanceof QueryFailedError) {
-            switch (error.code) {
-                case '23505': {
-                    throw Errors.userAlreadyExists({
-                        message: error.driverError.detail,
-                        cause: error,
-                    });
-                }
-            }
-        }
-
-        throw error;
-    });
+    app.register(errorHandlerPlugin, { entityName: 'User' });
 
     app.withTypeProvider().post('/users/token', { schema: createTokenSchema }, async (request, reply) => {
         const service = createUsersService();
