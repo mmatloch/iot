@@ -8,6 +8,10 @@
       "baseUrl": "http://nginx:8080/api/",
       "path": "devices"
     },
+    "events": {
+      "baseUrl": "http://nginx:8080/api/",
+      "path": "events"
+    },
     "googleOAuth2AuthorizationCode": {
       "baseUrl": "http://nginx:8080/google/oauth2/",
       "path": "authorizationCode"

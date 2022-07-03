@@ -43,5 +43,6 @@ const createHelpers = (resourceName, resourceConfigOverrides = {}) => {
 
 export const createUserHelpers = (...opts) => createHelpers('users', ...opts);
 export const createDeviceHelpers = (...opts) => createHelpers('devices', ...opts);
+export const createEventHelpers = (...opts) => createHelpers('events', ...opts);
 export const createGoogleOAuth2AuthorizationCodeHelpers = (...opts) =>
     createHelpers('googleOAuth2AuthorizationCode', ...opts);
