@@ -27,7 +27,7 @@ const assertResponseStatusCode = (request, response, expectedStatusCode) => {
 
 const assertResponseBodyError = (request, response, expectedError) => {
     const assertionMessageFactory = (key, value, expectedValue) => () =>
-        `Unexpected ${chalk.cyan(key)} ${chalk.red(value)} in response body from ${chalk.white.bold(
+        `Unexpected ${chalk.cyan(key)} with value ${chalk.red(value)} in response body from ${chalk.white.bold(
             request.method,
         )} ${chalk.white.bold(request.url)}, expected ${chalk.green(expectedValue)} \n\n  Response: ${stringifyResponse(
             response,

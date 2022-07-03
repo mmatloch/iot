@@ -46,9 +46,10 @@ export const Errors = {
             message: `${entityName} does not exist`,
         }),
 
-    entityAlreadyExists: (opts: Partial<HttpErrorOptions>): HttpError =>
+    entityAlreadyExists: (entityName: string, opts: Partial<HttpErrorOptions>): HttpError =>
         HttpError.conflict({
             ...opts,
+            message: `${entityName} already exists`,
             errorCode: getErrorCode(ErrorCode.EntityAlreadyExists),
         }),
 

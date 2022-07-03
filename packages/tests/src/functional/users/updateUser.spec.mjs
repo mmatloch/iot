@@ -73,7 +73,8 @@ describe('Users updateUser', () => {
 
             // when & then
             await H.patchById(secondUser._id, payload).expectConflict({
-                message: `Key (email)=(${firstUser.email}) already exists.`,
+                message: `User already exists`,
+                detail: `Key (email)=(${firstUser.email}) already exists.`,
                 errorCode: 'SRV-6',
             });
         });

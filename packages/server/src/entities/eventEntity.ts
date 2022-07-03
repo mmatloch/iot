@@ -39,8 +39,8 @@ export const eventDtoSchema = Type.Object({
     name: Type.String(),
     triggerType: Type.Enum(EventTriggerType),
     triggerFilters: Type.Record(Type.String(), Type.Unknown()),
-    conditionDefinition: Type.Record(Type.String(), Type.Unknown()),
-    actionDefinition: Type.Record(Type.String(), Type.Unknown()),
+    conditionDefinition: Type.String(),
+    actionDefinition: Type.String(),
 });
 
 export const eventSchema = mergeSchemas(eventDtoSchema, genericEntitySchema);

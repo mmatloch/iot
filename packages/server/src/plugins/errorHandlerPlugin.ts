@@ -18,8 +18,8 @@ const errorHandlerPlugin: ApplicationPlugin<ErrorHandlerPluginOptions> = async (
         if (error instanceof QueryFailedError) {
             switch (error.code) {
                 case '23505': {
-                    throw Errors.entityAlreadyExists({
-                        message: error.driverError.detail,
+                    throw Errors.entityAlreadyExists(entityName, {
+                        detail: error.driverError.detail,
                         cause: error,
                     });
                 }

@@ -28,7 +28,7 @@ describe('Devices createDevice', () => {
             expect(device).toHaveProperty('_updatedAt');
         });
 
-        it('should return an error if a device with this displayName already exists', async () => {
+        it('should return an error if a device with this `displayName` already exists', async () => {
             // given
             const payload = generateDevicePostPayload();
             await H.post(payload).expectSuccess();
@@ -36,7 +36,8 @@ describe('Devices createDevice', () => {
             // when & then
             await H.post(payload).expectConflict({
                 errorCode: 'SRV-6',
-                message: `Key ("displayName")=(${payload.displayName}) already exists.`,
+                message: `Device already exists`,
+                detail: `Key ("displayName")=(${payload.displayName}) already exists.`,
             });
         });
     });
