@@ -34,6 +34,10 @@ export interface ConfigOptions<T extends TSchema> {
     configDirectoryPath?: string;
     nodeEnv?: string;
     plugins?: ConfigPlugin[];
+    createValidator?: () => {
+        addKeyword: (definition: string) => unknown;
+        validate: <T extends TSchema>(schema: T, data: unknown) => data is Static<T>;
+    };
 }
 
 const getNodeEnv = () => {
@@ -71,8 +75,16 @@ export const createConfig = <T extends TSchema>(opts: ConfigOptions<T>): Static<
 
         const validator = optsWithDefaults.createValidator();
 
-        validator.addVocabulary(['modifier', 'kind']); // typebox keywords
-        validator.addVocabulary(pluginsVocabulary);
+        const addVocabulary = (definitions: string[]) => {
+            definitions.forEach((def) => {
+                if (!validator.RULES.keywords[def]) {
+                    validator.addKeyword(def);
+                }
+            });
+        };
+
+        addVocabulary(['modifier', 'kind']); // typebox keywords
+        addVocabulary(pluginsVocabulary);
 
         if (!validator.validate(schema, config)) {
             throw new ConfigValidationError({
