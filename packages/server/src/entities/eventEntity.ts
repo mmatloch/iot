@@ -4,7 +4,7 @@ import { Column, Entity, Index } from 'typeorm';
 import { mergeSchemas } from '../utils/schemaUtils';
 import { GenericEntity, genericEntitySchema } from './genericEntity';
 
-enum EventTriggerType {
+export enum EventTriggerType {
     IncomingDeviceData = 'INCOMING_DEVICE_DATA',
     OutgoingDeviceData = 'OUTGOING_DEVICE_DATA',
 }

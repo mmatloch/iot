@@ -44,6 +44,12 @@ export class HttpError extends BaseError {
             statusCode: StatusCodes.CONFLICT,
         });
 
+    static unprocessableEntity = (opts: BaseErrorOptions) =>
+        new this({
+            ...opts,
+            statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
+        });
+
     static internalServerError = (opts: BaseErrorOptions) =>
         new this({
             ...opts,

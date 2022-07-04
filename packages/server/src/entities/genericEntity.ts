@@ -12,7 +12,7 @@ import {
 
 const validator: Validator = createValidator();
 
-export abstract class GenericEntity {
+abstract class AbstractGenericEntity {
     #entitySchema: TObject<TProperties>;
     #dtoSchema: TObject<TProperties>;
 
@@ -22,6 +22,23 @@ export abstract class GenericEntity {
         this.#dtoSchema = Type.Omit(this.#entitySchema, ['_id', '_version']);
     }
 
+    @BeforeInsert()
+    protected validateDto() {
+        validator.validateOrThrow(this.#dtoSchema, this);
+    }
+
+    @BeforeUpdate()
+    protected validateEntity() {
+        validator.validateOrThrow(this.#entitySchema, this);
+    }
+
+    abstract _id: number;
+    abstract _version: number;
+    abstract _createdAt: string;
+    abstract _updatedAt: string;
+}
+
+export class GenericEntity extends AbstractGenericEntity {
     @PrimaryGeneratedColumn()
     _id!: number;
 
@@ -33,16 +50,22 @@ export abstract class GenericEntity {
 
     @UpdateDateColumn()
     _updatedAt!: string;
+}
 
-    @BeforeInsert()
-    protected validateDto() {
-        validator.validateOrThrow(this.#dtoSchema, this);
-    }
+export class GenericTimeseriesEntity extends AbstractGenericEntity {
+    @PrimaryGeneratedColumn()
+    _id!: number;
 
-    @BeforeUpdate()
-    protected validateEntity() {
-        validator.validateOrThrow(this.#entitySchema, this);
-    }
+    @CreateDateColumn({
+        primary: true,
+    })
+    _createdAt!: string;
+
+    @VersionColumn()
+    _version!: number;
+
+    @UpdateDateColumn()
+    _updatedAt!: string;
 }
 
 export const genericEntitySchema = Type.Object({

@@ -8,6 +8,9 @@ enum ErrorCode {
     EntityNotFound,
     EntityAlreadyExists,
     NoPermissionToUpdateField,
+    FailedToRunCondition,
+    FailedToRunAction,
+    EventTriggerCircularReference,
 }
 
 const prefix = 'SRV';
@@ -58,5 +61,27 @@ export const Errors = {
             ...opts,
             errorCode: getErrorCode(ErrorCode.NoPermissionToUpdateField),
             message: `You don't have permission to update this field`,
+        }),
+
+    failedToRunCondition: (opts: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.internalServerError({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.FailedToRunCondition),
+            message: `Error occurred during the event condition`,
+        }),
+
+    failedToRunAction: (opts: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.internalServerError({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.FailedToRunAction),
+            message: `Error occurred during the event action`,
+        }),
+
+    eventTriggerCircularReference: (eventId: number, opts?: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.unprocessableEntity({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.EventTriggerCircularReference),
+            message: `Circular reference in the event trigger chain`,
+            detail: `Detected that event ${eventId} is trying to run again in the same event chain. This is regarded as undesirable because it can lead to an infinite loop`,
         }),
 };

@@ -1,7 +1,13 @@
+import { transformError } from '@common/application/src/errorTransformer';
+
+import { SearchResponse, createSearchResponse } from '../apis/searchApi';
 import { Event, EventDto } from '../entities/eventEntity';
 import { createEventsRepository } from '../repositories/eventsRepository';
+import { GenericService } from './genericService';
 
-export const createEventsService = () => {
+export interface EventsService extends Pick<GenericService<Event, EventDto>, 'create' | 'search'> {}
+
+export const createEventsService = (): EventsService => {
     const repository = createEventsRepository();
 
     const create = async (dto: EventDto): Promise<Event> => {
@@ -10,7 +16,20 @@ export const createEventsService = () => {
         return repository.save(event);
     };
 
+    const search = async (query: Partial<Event>): Promise<SearchResponse<Event>> => {
+        const [users, totalHits] = await repository.findAndCountBy(query);
+
+        return createSearchResponse({
+            links: {},
+            meta: {
+                totalHits,
+            },
+            hits: users,
+        });
+    };
+
     return {
         create,
+        search,
     };
 };

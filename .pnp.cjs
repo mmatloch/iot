@@ -7925,7 +7925,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["reflect-metadata", "npm:0.1.13"],\
             ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.8.1"],\
             ["typeorm", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.6"],\
-            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
+            ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
+            ["vm2", "npm:3.9.9"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8959,6 +8960,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@jridgewell/trace-mapping", "npm:0.3.13"],\
             ["@types/istanbul-lib-coverage", "npm:2.0.4"],\
             ["convert-source-map", "npm:1.8.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["vm2", [\
+        ["npm:3.9.9", {\
+          "packageLocation": "./.yarn/cache/vm2-npm-3.9.9-03fd1f4dc5-ea48595656.zip/node_modules/vm2/",\
+          "packageDependencies": [\
+            ["vm2", "npm:3.9.9"],\
+            ["acorn", "npm:8.7.1"],\
+            ["acorn-walk", "npm:8.2.0"]\
           ],\
           "linkType": "HARD"\
         }]\
