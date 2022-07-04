@@ -33,14 +33,14 @@ const hook: ConfigHook = (config, opts) => {
             return;
         }
 
-        if (!_.isString(schema.type)) {
-            throw new Error(`The schema with environment variable '${schema.environment}' is missing a type`);
-        }
-
         const envValue = opts.environment[schema.environment];
 
         if (envValue) {
-            const parsedEnvValue = parseValueToSchemaType(envValue, schema.type);
+            let parsedEnvValue: unknown = envValue;
+
+            if (_.isString(schema.type)) {
+                parsedEnvValue = parseValueToSchemaType(envValue, schema.type);
+            }
 
             JsonPointer.set(config, schemaPtrToConfigPtr(propertyPath), parsedEnvValue);
         }

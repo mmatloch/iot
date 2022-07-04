@@ -1,7 +1,16 @@
 import { Plugins, createConfig } from '@common/config';
+import { createValidator } from '@common/validator';
 import { Type } from '@sinclair/typebox';
 
+import { ApplicationEnv } from './constants';
+
 const schema = Type.Object({
+    app: Type.Object({
+        env: Type.Enum(ApplicationEnv, {
+            environment: 'NODE_ENV',
+            transform: ['toUpperCase'],
+        }),
+    }),
     databases: Type.Object({
         timescale: Type.Object({
             url: Type.String({
@@ -46,6 +55,7 @@ const schema = Type.Object({
 const config = createConfig({
     schema,
     plugins: [Plugins.envVariables],
+    createValidator,
 });
 
 export const getConfig = () => config;
