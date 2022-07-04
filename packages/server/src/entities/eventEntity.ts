@@ -17,6 +17,10 @@ export class Event extends GenericEntity {
 
     @Column('text')
     @Index({ unique: true })
+    displayName!: string;
+
+    @Column('text')
+    @Index({ unique: true })
     name!: string;
 
     @Column('text')
@@ -36,6 +40,7 @@ export class Event extends GenericEntity {
 }
 
 export const eventDtoSchema = Type.Object({
+    displayName: Type.String(),
     name: Type.String(),
     triggerType: Type.Enum(EventTriggerType),
     triggerFilters: Type.Record(Type.String(), Type.Unknown()),
