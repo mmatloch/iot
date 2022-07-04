@@ -18,15 +18,15 @@ const searchableFields = [
     },
     {
         field: 'model',
-        generateValue: faker.vehicle.model,
+        generateValue: () => faker.random.alpha(15),
     },
     {
         field: 'vendor',
-        generateValue: faker.company.companyName,
+        generateValue: () => faker.random.alpha(15),
     },
     {
         field: 'description',
-        generateValue: faker.commerce.productDescription,
+        generateValue: () => faker.random.alpha(15),
     },
     {
         field: 'ieeeAddress',
@@ -66,34 +66,37 @@ describe('Devices searchDevices', () => {
         expect(body._hits.length).toBeGreaterThanOrEqual(1);
     });
 
-    it.each(searchableFields)(`should find the device by '$field'`, async ({ field, generateValue, isUnique }) => {
-        // given
-        const newValue = generateValue();
+    it.each(searchableFields)(
+        `should find the device by '$field'`,
+        async ({ field, generateValue, isUnique = true }) => {
+            // given
+            const newValue = generateValue();
 
-        const devicePayload = generateDevicePostPayload();
-        devicePayload[field] = newValue;
+            const devicePayload = generateDevicePostPayload();
+            devicePayload[field] = newValue;
 
-        await H.post(devicePayload).expectSuccess();
+            await H.post(devicePayload).expectSuccess();
 
-        // when
-        const searchFn = H.search({
-            [field]: newValue,
-        });
+            // when
+            const searchFn = H.search({
+                [field]: newValue,
+            });
 
-        let _hits;
+            let _hits;
 
-        if (isUnique) {
-            ({
-                body: { _hits },
-            } = await searchFn.expectHits(1));
-        } else {
-            ({
-                body: { _hits },
-            } = await searchFn.expectSuccess());
-        }
+            if (isUnique) {
+                ({
+                    body: { _hits },
+                } = await searchFn.expectHits(1));
+            } else {
+                ({
+                    body: { _hits },
+                } = await searchFn.expectSuccess());
+            }
 
-        _hits.forEach((hit) => {
-            expect(hit).toHaveProperty(field, newValue);
-        });
-    });
+            _hits.forEach((hit) => {
+                expect(hit).toHaveProperty(field, newValue);
+            });
+        },
+    );
 });

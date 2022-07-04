@@ -30,14 +30,31 @@ describe('Events createEvent', () => {
 
         it('should return an error if a event with this `name` already exists', async () => {
             // given
+            const { body: firstEvent } = await H.post(generateEventPostPayload()).expectSuccess();
+
             const payload = generateEventPostPayload();
-            await H.post(payload).expectSuccess();
+            payload.name = firstEvent.name;
 
             // when & then
             await H.post(payload).expectConflict({
                 errorCode: 'SRV-6',
                 message: 'Event already exists',
                 detail: `Key (name)=(${payload.name}) already exists.`,
+            });
+        });
+
+        it('should return an error if a event with this `displayName` already exists', async () => {
+            // given
+            const { body: firstEvent } = await H.post(generateEventPostPayload()).expectSuccess();
+
+            const payload = generateEventPostPayload();
+            payload.displayName = firstEvent.displayName;
+
+            // when & then
+            await H.post(payload).expectConflict({
+                errorCode: 'SRV-6',
+                message: 'Event already exists',
+                detail: `Key ("displayName")=(${payload.displayName}) already exists.`,
             });
         });
     });
