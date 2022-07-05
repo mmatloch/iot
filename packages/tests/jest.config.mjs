@@ -14,6 +14,7 @@ export default {
                 '^(\\.{1,2}/.*)\\.js$': '$1',
             },
             setupFilesAfterEnv: [
+                'jest-extended/all',
                 'jest-date',
                 '<rootDir>/src/jest/expectWithMessage.mjs',
                 '<rootDir>/src/jest/setup.mjs',

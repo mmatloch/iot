@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 import { getConfig } from '../config';
 import { Device } from '../entities/deviceEntity';
 import { Event } from '../entities/eventEntity';
-import { EventInstance } from '../entities/eventInstance';
+import { EventInstance } from '../entities/eventInstanceEntity';
 import { User } from '../entities/userEntity';
 
 const config = getConfig();

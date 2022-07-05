@@ -22,9 +22,11 @@ export const generateEventPostPayload = () => {
 
 export const generateEventTriggerPayload = () => {
     return {
-        type: generateEventTriggerType(),
         filters: {
-            ieeeAddress: faker.vehicle.vin(),
+            triggerType: generateEventTriggerType(),
+            triggerFilters: {
+                ieeeAddress: faker.vehicle.vin(),
+            },
         },
         context: {
             sensorData: generateSensorData(),

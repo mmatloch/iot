@@ -1,5 +1,5 @@
 import { SearchResponse, createSearchResponse } from '../apis/searchApi';
-import { EventInstance, EventInstanceDto } from '../entities/eventInstance';
+import { EventInstance, EventInstanceDto } from '../entities/eventInstanceEntity';
 import { createEventInstancesRepository } from '../repositories/eventInstancesRepository';
 import { GenericService } from './genericService';
 

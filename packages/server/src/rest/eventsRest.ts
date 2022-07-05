@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { createAccessControl } from '../accessControl';
 import { createSearchResponseSchema } from '../apis/searchApi';
 import { EventDto, EventTriggerType, eventDtoSchema, eventSchema } from '../entities/eventEntity';
-import { eventInstanceSchema } from '../entities/eventInstance';
+import { eventInstanceSchema } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
 import { createEventRunner } from '../events/eventRunner';
@@ -148,7 +148,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
         const result = await eventRunner.trigger(request.body);
 
-        return reply.status(StatusCodes.OK).send(result);
+        return reply.status(StatusCodes.CREATED).send(result);
     });
 
     app.withTypeProvider().get(

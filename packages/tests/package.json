@@ -15,6 +15,7 @@
     "jest": "^28.1.1",
     "jest-date": "^1.1.4",
     "jest-docblock": "^28.1.1",
+    "jest-extended": "^2.0.0",
     "jest-runner": "^28.1.2",
     "jest-runner-groups": "^2.2.0",
     "jsonpointer": "^5.0.0",
