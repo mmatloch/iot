@@ -85,10 +85,25 @@ export const Errors = {
             message: `Condition not met`,
         }),
 
-    eventTriggerCircularReference: (eventId: number): BaseError =>
-        new BaseError({
+    eventTriggerCircularReference: (
+        eventId: number,
+        triggeredByEvent?: number,
+        previouslyTriggeredByEvent?: number,
+    ): BaseError => {
+        let eventMsg = `event ${eventId}`;
+
+        if (triggeredByEvent) {
+            eventMsg += `, triggered by event ${triggeredByEvent}`;
+        }
+
+        if (previouslyTriggeredByEvent) {
+            eventMsg += `, previously triggered by event ${previouslyTriggeredByEvent}`;
+        }
+
+        return new BaseError({
             errorCode: getErrorCode(ErrorCode.EventTriggerCircularReference),
             message: `Circular reference in the event trigger chain`,
-            detail: `Detected that event ${eventId} is trying to run again in the same event chain. This is regarded as undesirable because it can lead to an infinite loop`,
-        }),
+            detail: `Detected that ${eventMsg} is trying to run again in the same event chain. This is regarded as undesirable because it can lead to an infinite loop`,
+        });
+    },
 };

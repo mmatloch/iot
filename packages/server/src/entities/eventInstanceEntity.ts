@@ -13,6 +13,20 @@ export enum EventInstanceState {
     ConditionNotMet = 'CONDITION_NOT_MET',
 }
 
+interface EventInstancePerformanceMetricsStep {
+    name: string;
+    executionStartTime: string;
+    executionEndTime: string;
+    executionDuration: number;
+}
+
+interface EventInstancePerformanceMetrics {
+    executionStartTime: string;
+    executionEndTime: string;
+    executionDuration: number;
+    steps: EventInstancePerformanceMetricsStep[];
+}
+
 @Entity({ name: 'eventinstances' })
 @Index(['eventId', '_createdAt'])
 export class EventInstance extends GenericTimeseriesEntity {
@@ -38,6 +52,16 @@ export class EventInstance extends GenericTimeseriesEntity {
         nullable: true,
     })
     error?: TransformedErrorBody;
+
+    @Column('jsonb')
+    performanceMetrics!: EventInstancePerformanceMetrics;
+
+    @Column({
+        type: 'integer',
+        nullable: true,
+        default: null,
+    })
+    triggeredByEventId?: number;
 }
 
 export const eventInstanceDtoSchema = Type.Object({
@@ -45,6 +69,20 @@ export const eventInstanceDtoSchema = Type.Object({
     triggerContext: Type.Record(Type.String(), Type.Unknown()),
     state: Type.Enum(EventInstanceState),
     error: Type.Optional(Type.Any()),
+    performanceMetrics: Type.Object({
+        executionStartTime: Type.String(),
+        executionEndTime: Type.String(),
+        executionDuration: Type.Number(),
+        steps: Type.Array(
+            Type.Object({
+                name: Type.String(),
+                executionStartTime: Type.String(),
+                executionDuration: Type.Number(),
+                executionEndTime: Type.String(),
+            }),
+        ),
+    }),
+    triggeredByEventId: Type.Optional(Type.Integer()),
 });
 
 export const eventInstanceSchema = mergeSchemas(eventInstanceDtoSchema, genericEntitySchema);

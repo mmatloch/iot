@@ -1,9 +1,8 @@
 export default {
     projects: [
         {
-            displayName: 'Functional tests',
+            displayName: 'Functional',
             testMatch: ['<rootDir>/src/functional/**/*.mjs'],
-
             preset: 'ts-jest/presets/default-esm',
             globals: {
                 'ts-jest': {

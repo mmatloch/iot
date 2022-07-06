@@ -9,10 +9,9 @@ export const createProcessedEventsSummary = (processedEventsList: EventRunnerPro
         return processedEventsList.find((e) => e.event._id === event._id);
     };
 
-    const addEvent = (event: Event, triggeredBy?: Event) => {
+    const addEvent = (event: Event) => {
         processedEventsList.push({
             event,
-            triggeredBy,
             processedEvents: [],
         });
     };

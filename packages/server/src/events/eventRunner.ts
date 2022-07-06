@@ -3,7 +3,7 @@ import { BaseError } from '@common/errors';
 import _ from 'lodash';
 
 import { Event } from '../entities/eventEntity';
-import { EventInstanceState } from '../entities/eventInstanceEntity';
+import { EventInstance, EventInstanceState } from '../entities/eventInstanceEntity';
 import { ErrorCode, Errors, getErrorCode } from '../errors';
 import { EventInstancesService } from '../services/eventInstancesService';
 import { EventsService } from '../services/eventsService';
@@ -12,13 +12,34 @@ import { EventRunnerProcessedEvent, EventRunnerSummary, EventRunnerTriggerOption
 import { createProcessedEventsSummary } from './eventRunnerUtils';
 
 export const createEventRunner = (eventsService: EventsService, eventInstancesService: EventInstancesService) => {
-    const summary: EventRunnerSummary = {
+    const runnerSummary: EventRunnerSummary = {
         processedEvents: [],
     };
 
-    const checkCircularReference = (event: Event) => {
-        if (summary.processedEvents.find((e) => e.event._id === event._id)) {
-            throw Errors.eventTriggerCircularReference(event._id);
+    const findEventDuplicate = (
+        processedEventsList: EventRunnerProcessedEvent[],
+        event: Event,
+    ): EventRunnerProcessedEvent | undefined => {
+        for (const e of processedEventsList) {
+            if (e.processedEvents && e.processedEvents.length) {
+                const duplicate = findEventDuplicate(e.processedEvents, event);
+
+                if (duplicate) {
+                    return duplicate;
+                }
+            }
+
+            if (e.event._id === event._id) {
+                return e;
+            }
+        }
+    };
+
+    const checkCircularReference = (event: Event, triggeredBy?: Event) => {
+        const duplicate = findEventDuplicate(runnerSummary.processedEvents, event);
+
+        if (duplicate) {
+            throw Errors.eventTriggerCircularReference(event._id, triggeredBy?._id, duplicate.triggeredBy?._id);
         }
     };
 
@@ -28,10 +49,10 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
 
             await Promise.all(
                 events.map(async (event) => {
-                    checkCircularReference(event);
+                    checkCircularReference(event, triggeredBy);
 
                     const summary = createProcessedEventsSummary(processedEventsList);
-                    summary.addEvent(event, triggeredBy);
+                    summary.addEvent(event);
 
                     const childProcessedEventsList = summary.findByEvent(event);
 
@@ -45,9 +66,23 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
                         },
                     };
 
+                    const performanceMetrics: EventInstance['performanceMetrics'] = {
+                        executionStartTime: new Date().toISOString(),
+                        executionEndTime: '',
+                        executionDuration: 0,
+                        steps: [],
+                    };
+
+                    const processStart = performance.now();
+
                     try {
-                        await createEventProcessor().process(event, sdk, context);
+                        await createEventProcessor().process({ event, sdk, context, performanceMetrics });
+                        performanceMetrics.executionEndTime = new Date().toISOString();
+                        performanceMetrics.executionDuration = performance.now() - processStart;
                     } catch (e) {
+                        performanceMetrics.executionEndTime = new Date().toISOString();
+                        performanceMetrics.executionDuration = performance.now() - processStart;
+
                         const errorBody = transformErrorBody(e as Error);
 
                         let eventInstanceState = EventInstanceState.UnknownError;
@@ -69,6 +104,8 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
                             triggerContext: context,
                             state: eventInstanceState,
                             error: addError ? errorBody : undefined,
+                            triggeredByEventId: triggeredBy?._id,
+                            performanceMetrics,
                         });
 
                         summary.addEventInstance(event, eventInstance);
@@ -79,6 +116,8 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
                         eventId: event._id,
                         triggerContext: context,
                         state: EventInstanceState.Success,
+                        triggeredByEventId: triggeredBy?._id,
+                        performanceMetrics,
                     });
 
                     summary.addEventInstance(event, eventInstance);
@@ -92,9 +131,9 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
     };
 
     const trigger = async (opts: EventRunnerTriggerOptions): Promise<EventRunnerSummary> => {
-        await runInNewContext(summary.processedEvents).trigger(opts);
+        await runInNewContext(runnerSummary.processedEvents).trigger(opts);
 
-        return summary;
+        return runnerSummary;
     };
 
     return {
