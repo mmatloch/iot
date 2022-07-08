@@ -4,10 +4,13 @@ import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
 import { createSearchResponseSchema } from '../apis/searchApi';
-import { EventDto, eventDtoSchema, eventSchema } from '../entities/eventEntity';
+import { EventDto, EventTriggerType, eventDtoSchema, eventSchema } from '../entities/eventEntity';
+import { eventInstanceSchema } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
+import { createEventRunner } from '../events/eventRunner';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
+import { createEventInstancesService } from '../services/eventInstancesService';
 import { createEventsService } from '../services/eventsService';
 
 const createEventSchema = {
@@ -42,6 +45,35 @@ const updateEventSchema = {
     body: partialEventDtoSchema,
     response: {
         [StatusCodes.OK]: eventSchema,
+    },
+};
+
+const triggerEventSchema = {
+    body: Type.Object(
+        {
+            filters: Type.Object(
+                {
+                    triggerType: Type.Enum(EventTriggerType),
+                    triggerFilters: Type.Record(Type.String(), Type.Unknown()),
+                },
+                {
+                    additionalProperties: false,
+                },
+            ),
+            context: Type.Record(Type.String(), Type.Unknown()),
+        },
+        {
+            additionalProperties: false,
+        },
+    ),
+};
+
+const searchEventInstancesSchema = {
+    params: Type.Object({
+        id: Type.Integer(),
+    }),
+    response: {
+        [StatusCodes.OK]: createSearchResponseSchema(eventInstanceSchema),
     },
 };
 
@@ -107,4 +139,36 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
         return reply.status(StatusCodes.OK).send(updatedEvent);
     });
+
+    app.withTypeProvider().post('/events/trigger', { schema: triggerEventSchema }, async (request, reply) => {
+        const accessControl = createAccessControl(request.user);
+        accessControl.authorize({
+            role: UserRole.Admin,
+        });
+
+        const eventsService = createEventsService();
+        const eventInstancesService = createEventInstancesService();
+
+        const eventRunner = createEventRunner(eventsService, eventInstancesService);
+
+        const result = await eventRunner.trigger(request.body);
+
+        return reply.status(StatusCodes.CREATED).send(result);
+    });
+
+    app.withTypeProvider().get(
+        '/events/:id/instances',
+        { schema: searchEventInstancesSchema },
+        async (request, reply) => {
+            const accessControl = createAccessControl(request.user);
+            accessControl.authorize({
+                role: UserRole.Admin,
+            });
+
+            const service = createEventInstancesService();
+            const searchResult = await service.search({ eventId: request.params.id });
+
+            return reply.status(StatusCodes.OK).send(searchResult);
+        },
+    );
 };

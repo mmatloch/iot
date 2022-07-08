@@ -1,5 +1,7 @@
 import { faker } from '@faker-js/faker';
 
+import { generateSensorData } from './sensorDataGenerators.mjs';
+
 export const generateEventName = () => `${faker.commerce.productName()}${faker.random.alpha(10)}`;
 export const generateEventDisplayName = () => `${faker.commerce.productName()}${faker.random.alpha(10)}`;
 export const generateEventTriggerType = () =>
@@ -15,5 +17,19 @@ export const generateEventPostPayload = () => {
         },
         conditionDefinition: 'return true',
         actionDefinition: 'return true',
+    };
+};
+
+export const generateEventTriggerPayload = () => {
+    return {
+        filters: {
+            triggerType: generateEventTriggerType(),
+            triggerFilters: {
+                ieeeAddress: faker.vehicle.vin(),
+            },
+        },
+        context: {
+            sensorData: generateSensorData(),
+        },
     };
 };

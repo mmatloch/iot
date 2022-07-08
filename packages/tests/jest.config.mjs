@@ -1,9 +1,8 @@
 export default {
     projects: [
         {
-            displayName: 'Functional tests',
+            displayName: 'Functional',
             testMatch: ['<rootDir>/src/functional/**/*.mjs'],
-
             preset: 'ts-jest/presets/default-esm',
             globals: {
                 'ts-jest': {
@@ -14,6 +13,7 @@ export default {
                 '^(\\.{1,2}/.*)\\.js$': '$1',
             },
             setupFilesAfterEnv: [
+                'jest-extended/all',
                 'jest-date',
                 '<rootDir>/src/jest/expectWithMessage.mjs',
                 '<rootDir>/src/jest/setup.mjs',

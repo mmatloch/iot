@@ -1,6 +1,6 @@
-import { HttpError, HttpErrorOptions } from '@common/errors';
+import { BaseError, BaseErrorOptions, HttpError, HttpErrorOptions } from '@common/errors';
 
-enum ErrorCode {
+export enum ErrorCode {
     GenericInternalError = 1,
     Unauthorized,
     Forbidden,
@@ -8,11 +8,15 @@ enum ErrorCode {
     EntityNotFound,
     EntityAlreadyExists,
     NoPermissionToUpdateField,
+    FailedToRunCondition,
+    FailedToRunAction,
+    ConditionNotMet,
+    EventTriggerCircularReference,
 }
 
 const prefix = 'SRV';
 
-const getErrorCode = (errorCode: ErrorCode) => `${prefix}-${errorCode}`;
+export const getErrorCode = (errorCode: ErrorCode) => `${prefix}-${errorCode}`;
 
 export const Errors = {
     genericInternalError: (opts: Partial<HttpErrorOptions>): HttpError =>
@@ -59,4 +63,47 @@ export const Errors = {
             errorCode: getErrorCode(ErrorCode.NoPermissionToUpdateField),
             message: `You don't have permission to update this field`,
         }),
+
+    failedToRunCondition: (opts: Partial<BaseErrorOptions>): BaseError =>
+        new BaseError({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.FailedToRunCondition),
+            message: `Error occurred during the event condition`,
+        }),
+
+    failedToRunAction: (opts: Partial<BaseErrorOptions>): BaseError =>
+        new BaseError({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.FailedToRunAction),
+            message: `Error occurred during the event action`,
+        }),
+
+    conditionNotMet: (opts?: Partial<BaseErrorOptions>): BaseError =>
+        new BaseError({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.ConditionNotMet),
+            message: `Condition not met`,
+        }),
+
+    eventTriggerCircularReference: (
+        eventId: number,
+        triggeredByEvent?: number,
+        previouslyTriggeredByEvent?: number,
+    ): BaseError => {
+        let eventMsg = `event ${eventId}`;
+
+        if (triggeredByEvent) {
+            eventMsg += `, triggered by event ${triggeredByEvent}`;
+        }
+
+        if (previouslyTriggeredByEvent) {
+            eventMsg += `, previously triggered by event ${previouslyTriggeredByEvent}`;
+        }
+
+        return new BaseError({
+            errorCode: getErrorCode(ErrorCode.EventTriggerCircularReference),
+            message: `Circular reference in the event trigger chain`,
+            detail: `Detected that ${eventMsg} is trying to run again in the same event chain. This is regarded as undesirable because it can lead to an infinite loop`,
+        });
+    },
 };

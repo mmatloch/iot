@@ -26,7 +26,7 @@ const bootstrapApplication = (app: Application) => {
             msg: 'Error',
         });
 
-        return reply.status(statusCode).headers(headers).send(body);
+        return reply.status(statusCode).headers(headers).send(JSON.stringify(body));
     });
 
     app.setValidatorCompiler(({ schema }) => {

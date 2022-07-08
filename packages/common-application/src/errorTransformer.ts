@@ -1,10 +1,19 @@
 import { StatusCodes } from 'http-status-codes';
 import _ from 'lodash';
 
-interface TransformedError {
+export interface TransformedErrorBody {
+    message: string;
+    errorCode?: string;
+    detail?: string;
+    validationDetails?: Record<string, unknown>;
+    stack?: string;
+    cause?: TransformedErrorBody;
+}
+
+export interface TransformedError {
     statusCode: number;
     headers: Record<string, unknown>;
-    body: string;
+    body: TransformedErrorBody & { statusCode: number };
 }
 
 const getErrorCode = (error: Error): string | undefined => {
@@ -37,14 +46,14 @@ const getValidationDetails = (error: Error): Record<string, unknown> | undefined
     }
 };
 
-const buildErrorBody = (error: Error): Record<string, unknown> => {
+export const transformErrorBody = (error: Error): TransformedErrorBody => {
     return {
         errorCode: getErrorCode(error),
         message: error.message,
         detail: getDetail(error),
         validationDetails: getValidationDetails(error),
         stack: error.stack,
-        cause: error.cause ? buildErrorBody(error.cause) : undefined,
+        cause: error.cause ? transformErrorBody(error.cause) : undefined,
     };
 };
 
@@ -57,12 +66,12 @@ export const transformError = (error: Error): TransformedError => {
 
     const body = {
         statusCode: statusCode,
-        ...buildErrorBody(error),
+        ...transformErrorBody(error),
     };
 
     return {
         statusCode,
         headers,
-        body: JSON.stringify(body),
+        body,
     };
 };
