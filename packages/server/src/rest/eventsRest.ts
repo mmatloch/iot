@@ -51,10 +51,15 @@ const updateEventSchema = {
 const triggerEventSchema = {
     body: Type.Object(
         {
-            filters: Type.Object({
-                triggerType: Type.Enum(EventTriggerType),
-                triggerFilters: Type.Record(Type.String(), Type.Unknown()),
-            }),
+            filters: Type.Object(
+                {
+                    triggerType: Type.Enum(EventTriggerType),
+                    triggerFilters: Type.Record(Type.String(), Type.Unknown()),
+                },
+                {
+                    additionalProperties: false,
+                },
+            ),
             context: Type.Record(Type.String(), Type.Unknown()),
         },
         {
