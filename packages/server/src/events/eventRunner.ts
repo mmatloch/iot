@@ -67,8 +67,8 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
                     };
 
                     const performanceMetrics: EventInstance['performanceMetrics'] = {
-                        executionStartTime: new Date().toISOString(),
-                        executionEndTime: '',
+                        executionStartDate: new Date().toISOString(),
+                        executionEndDate: '',
                         executionDuration: 0,
                         steps: [],
                     };
@@ -77,10 +77,10 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
 
                     try {
                         await createEventProcessor().process({ event, sdk, context, performanceMetrics });
-                        performanceMetrics.executionEndTime = new Date().toISOString();
+                        performanceMetrics.executionEndDate = new Date().toISOString();
                         performanceMetrics.executionDuration = performance.now() - processStart;
                     } catch (e) {
-                        performanceMetrics.executionEndTime = new Date().toISOString();
+                        performanceMetrics.executionEndDate = new Date().toISOString();
                         performanceMetrics.executionDuration = performance.now() - processStart;
 
                         const errorBody = transformErrorBody(e as Error);

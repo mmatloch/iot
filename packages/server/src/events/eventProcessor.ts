@@ -48,8 +48,8 @@ export const createEventProcessor = () => {
 
         performanceMetrics.steps.push({
             name: 'runCondition',
-            executionStartTime: runConditionStart,
-            executionEndTime: new Date().toISOString(),
+            executionStartDate: runConditionStart,
+            executionEndDate: new Date().toISOString(),
             executionDuration: performance.now() - runConditionDurationStart,
         });
 
@@ -64,8 +64,8 @@ export const createEventProcessor = () => {
 
         performanceMetrics.steps.push({
             name: 'runAction',
-            executionStartTime: runActionStart,
-            executionEndTime: new Date().toISOString(),
+            executionStartDate: runActionStart,
+            executionEndDate: new Date().toISOString(),
             executionDuration: performance.now() - runActionDurationStart,
         });
     };

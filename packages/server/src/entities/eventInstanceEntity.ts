@@ -15,14 +15,14 @@ export enum EventInstanceState {
 
 interface EventInstancePerformanceMetricsStep {
     name: string;
-    executionStartTime: string;
-    executionEndTime: string;
+    executionStartDate: string;
+    executionEndDate: string;
     executionDuration: number;
 }
 
 interface EventInstancePerformanceMetrics {
-    executionStartTime: string;
-    executionEndTime: string;
+    executionStartDate: string;
+    executionEndDate: string;
     executionDuration: number;
     steps: EventInstancePerformanceMetricsStep[];
 }
@@ -70,15 +70,15 @@ export const eventInstanceDtoSchema = Type.Object({
     state: Type.Enum(EventInstanceState),
     error: Type.Optional(Type.Any()),
     performanceMetrics: Type.Object({
-        executionStartTime: Type.String(),
-        executionEndTime: Type.String(),
+        executionStartDate: Type.String(),
+        executionEndDate: Type.String(),
         executionDuration: Type.Number(),
         steps: Type.Array(
             Type.Object({
                 name: Type.String(),
-                executionStartTime: Type.String(),
+                executionStartDate: Type.String(),
+                executionEndDate: Type.String(),
                 executionDuration: Type.Number(),
-                executionEndTime: Type.String(),
             }),
         ),
     }),
