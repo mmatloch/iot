@@ -13,6 +13,7 @@ services:
       GOOGLE_OAUTH2_TOKEN_URL: http://nginx:8080/google/oauth2/token
       JWT_SECRET: secret
       ROOT_USER_EMAIL: test@example.com
+      MQTT: mqtt://mqtt:1883
     depends_on:
       - timescale
 

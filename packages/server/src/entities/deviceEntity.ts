@@ -4,7 +4,7 @@ import { Column, Entity, Index } from 'typeorm';
 import { mergeSchemas } from '../utils/schemaUtils';
 import { GenericEntity, genericEntitySchema } from './genericEntity';
 
-enum DeviceType {
+export enum DeviceType {
     Unknown = 'UNKNOWN',
     Coordinator = 'COORDINATOR',
     EndDevice = 'END_DEVICE',
@@ -12,20 +12,21 @@ enum DeviceType {
     Virtual = 'VIRTUAL',
 }
 
-enum DevicePowerSource {
+export enum DevicePowerSource {
     Unknown = 'UNKNOWN',
     Battery = 'BATTERY',
     MainsSinglePhase = 'MAINS_SINGLE_PHASE',
     MainsThreePhase = 'MAINS_THREE_PHASE',
+    EmergencyMains = 'EMERGENCY_MAINS',
     Dc = 'DC',
     Virtual = 'VIRTUAL',
 }
 
-enum DeviceProtocol {
+export enum DeviceProtocol {
     Zigbee = 'ZIGBEE',
 }
 
-enum DeviceState {
+export enum DeviceState {
     Active = 'ACTIVE',
     Inactive = 'INACTIVE',
     Unconfigured = 'UNCONFIGURED',

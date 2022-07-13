@@ -1,5 +1,7 @@
 import { createApplication } from '@common/application';
 
+import { createZigbeeBridge } from './bridges/zigbeeBridge';
+import { createMqttClient } from './clients/mqttClient';
 import { getConfig } from './config';
 import { ApplicationEnv } from './constants';
 import { timescaleDataSource } from './dataSources/timescaleDataSource';
@@ -13,6 +15,9 @@ createApplication({
         beforeReady: async (app) => {
             await timescaleDataSource.initialize();
 
+            const mqttClient = createMqttClient();
+            await mqttClient.initialize();
+
             if (getConfig().app.env === ApplicationEnv.Development) {
                 await timescaleDataSource.synchronize();
                 await timescaleDataSource.runMigrations();
@@ -22,6 +27,8 @@ createApplication({
             app.register(createUsersRest);
             app.register(createDevicesRest);
             app.register(createEventsRest);
+
+            await createZigbeeBridge(mqttClient).initialize();
         },
     },
 });

@@ -18,6 +18,11 @@ const schema = Type.Object({
             }),
         }),
     }),
+    mqttBroker: Type.Object({
+        url: Type.String({
+            environment: 'MQTT',
+        }),
+    }),
     authorization: Type.Object({
         jwtSecret: Type.String({
             environment: 'JWT_SECRET',
