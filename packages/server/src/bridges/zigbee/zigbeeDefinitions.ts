@@ -1,7 +1,7 @@
 import { Static, Type } from '@sinclair/typebox';
 import _ from 'lodash';
 
-import { mergeSchemas } from '../utils/schemaUtils';
+import { mergeSchemas } from '../../utils/schemaUtils';
 
 export enum ZigbeeTopic {
     BridgeDevices = 'zigbee2mqtt/bridge/devices',

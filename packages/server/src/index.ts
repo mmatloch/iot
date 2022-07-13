@@ -1,6 +1,6 @@
 import { createApplication } from '@common/application';
 
-import { createZigbeeBridge } from './bridges/zigbeeBridge';
+import { createZigbeeBridge } from './bridges/zigbee/zigbeeBridge';
 import { createMqttClient } from './clients/mqttClient';
 import { getConfig } from './config';
 import { ApplicationEnv } from './constants';

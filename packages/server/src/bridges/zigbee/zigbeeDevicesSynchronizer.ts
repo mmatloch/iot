@@ -8,8 +8,8 @@ import {
     DeviceProtocol,
     DeviceState,
     DeviceType,
-} from '../entities/deviceEntity';
-import { createDevicesService } from '../services/devicesService';
+} from '../../entities/deviceEntity';
+import { createDevicesService } from '../../services/devicesService';
 import { ZigbeeDevice, ZigbeeDeviceType, ZigbeePowerSource } from './zigbeeDefinitions';
 import { getZigbeeInfo } from './zigbeeInfo';
 

@@ -1,4 +1,4 @@
-import { MqttClient } from '../clients/mqttClient';
+import { MqttClient } from '../../clients/mqttClient';
 import { ZigbeeTopic, zigbeeDevicesSchema, zigbeeInfoSchema } from './zigbeeDefinitions';
 import { onDevicesErrorHandler, onDevicesHandler } from './zigbeeHandlers/zigbeeDevicesHandler';
 import { onInfoErrorHandler, onInfoHandler } from './zigbeeHandlers/zigbeeInfoHandler';
@@ -6,17 +6,16 @@ import { onInfoErrorHandler, onInfoHandler } from './zigbeeHandlers/zigbeeInfoHa
 export const createZigbeeBridge = (mqttClient: MqttClient) => {
     const initialize = async () => {
         await mqttClient.onMessage({
-            handler: onDevicesHandler,
-            errorHandler: onDevicesErrorHandler,
-            topic: ZigbeeTopic.BridgeDevices,
-            schema: zigbeeDevicesSchema,
-        });
-
-        await mqttClient.onMessage({
             handler: onInfoHandler,
             errorHandler: onInfoErrorHandler,
             topic: ZigbeeTopic.BridgeInfo,
             schema: zigbeeInfoSchema,
+        });
+        await mqttClient.onMessage({
+            handler: onDevicesHandler,
+            errorHandler: onDevicesErrorHandler,
+            topic: ZigbeeTopic.BridgeDevices,
+            schema: zigbeeDevicesSchema,
         });
     };
 
