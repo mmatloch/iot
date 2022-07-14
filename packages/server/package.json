@@ -9,6 +9,7 @@
     "@common/application": "workspace:packages/common-application",
     "@common/config": "workspace:packages/common-config",
     "@common/errors": "workspace:packages/common-errors",
+    "@common/logger": "workspace:packages/common-logger",
     "@common/validator": "workspace:packages/common-validator",
     "@sinclair/typebox": "^0.23.5",
     "@swc/core": "^1.2.203",

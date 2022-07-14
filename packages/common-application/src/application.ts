@@ -1,4 +1,5 @@
 import { ValidationError } from '@common/errors';
+import type { Logger } from '@common/logger';
 import { createValidator } from '@common/validator';
 import formBody from '@fastify/formbody';
 
@@ -7,6 +8,7 @@ import { createApplicationFromFastify, createFastifyPlugin } from './fastifyAbst
 import { Application, ApplicationPlugin, ApplicationPluginOptions } from './types';
 
 interface CreateApplicationOptions {
+    logger: Logger;
     hooks?: {
         beforeReady?: (app: Application) => Promise<void>;
         afterReady?: (app: Application) => Promise<void>;
@@ -43,7 +45,9 @@ const bootstrapApplication = (app: Application) => {
 };
 
 export const createApplication = async (opts: CreateApplicationOptions): Promise<Application> => {
-    const app = createApplicationFromFastify();
+    const app = createApplicationFromFastify({
+        logger: opts.logger,
+    });
 
     bootstrapApplication(app);
     await app.after();

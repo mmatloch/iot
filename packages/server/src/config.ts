@@ -6,9 +6,20 @@ import { ApplicationEnv } from './constants';
 
 const schema = Type.Object({
     app: Type.Object({
+        name: Type.String(),
         env: Type.Enum(ApplicationEnv, {
             environment: 'NODE_ENV',
             transform: ['toUpperCase'],
+        }),
+    }),
+    logger: Type.Object({
+        level: Type.String({
+            environment: 'LOG_LEVEL',
+            default: 'info',
+        }),
+        rotationFrequency: Type.String({
+            environment: 'LOG_ROTATION_FREQUENCY',
+            default: 'daily',
         }),
     }),
     databases: Type.Object({

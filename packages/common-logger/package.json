@@ -1,0 +1,14 @@
+{
+  "name": "@common/logger",
+  "version": "1.0.0",
+  "description": "A logger module",
+  "private": true,
+  "author": "Mateusz Matloch",
+  "dependencies": {
+    "@types/node": "^17.0.42",
+    "pino": "^8.1.0",
+    "pino-pretty": "^8.1.0",
+    "pino-roll": "^1.0.0-rc.1",
+    "typescript": "^4.7.3"
+  }
+}

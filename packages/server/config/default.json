@@ -1,4 +1,8 @@
 {
+  "app": {
+    "name": "server"
+  },
+  "logger": {},
   "externalServices": {
     "google": {
       "oAuth2": {
