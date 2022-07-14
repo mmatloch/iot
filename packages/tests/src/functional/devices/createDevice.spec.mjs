@@ -30,8 +30,10 @@ describe('Devices createDevice', () => {
 
         it('should return an error if a device with this `displayName` already exists', async () => {
             // given
+            const { body: device } = await H.post(generateDevicePostPayload()).expectSuccess();
+
             const payload = generateDevicePostPayload();
-            await H.post(payload).expectSuccess();
+            payload.displayName = device.displayName;
 
             // when & then
             await H.post(payload).expectConflict({
