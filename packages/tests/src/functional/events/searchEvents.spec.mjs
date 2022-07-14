@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import _ from 'lodash';
 
+import { generateDeviceIeeeAddress } from '../../dataGenerators/devicesDataGenerators.mjs';
 import {
     generateEventDisplayName,
     generateEventName,
@@ -28,7 +29,7 @@ const searchableFields = [
     {
         field: 'triggerFilters',
         generateValue: () => ({
-            ieeeAddress: faker.vehicle.vin(),
+            ieeeAddress: generateDeviceIeeeAddress(),
         }),
     },
 ];

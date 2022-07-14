@@ -3,6 +3,7 @@ import _ from 'lodash';
 
 import {
     generateDeviceDisplayName,
+    generateDeviceIeeeAddress,
     generateDevicePostPayload,
     generateDevicePowerSource,
     generateDeviceType,
@@ -30,7 +31,7 @@ const searchableFields = [
     },
     {
         field: 'ieeeAddress',
-        generateValue: faker.vehicle.vin,
+        generateValue: generateDeviceIeeeAddress,
     },
     {
         field: 'powerSource',

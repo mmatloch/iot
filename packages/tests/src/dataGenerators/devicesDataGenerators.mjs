@@ -11,6 +11,7 @@ export const generateDeviceType = () => {
 };
 
 export const generateDeviceDisplayName = () => `${faker.commerce.productName()}${faker.random.alpha(10)}`;
+export const generateDeviceIeeeAddress = () => `0x${faker.random.alpha(16)}`;
 
 export const generateDevicePostPayload = () => {
     return {
@@ -18,7 +19,7 @@ export const generateDevicePostPayload = () => {
         model: faker.vehicle.model(),
         vendor: faker.company.companyName(),
         description: faker.commerce.productDescription(),
-        ieeeAddress: faker.vehicle.vin(),
+        ieeeAddress: generateDeviceIeeeAddress(),
         powerSource: generateDevicePowerSource(),
         type: generateDeviceType(),
         protocol: 'ZIGBEE',
