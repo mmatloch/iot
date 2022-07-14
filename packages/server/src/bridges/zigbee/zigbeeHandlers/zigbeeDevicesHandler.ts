@@ -1,6 +1,7 @@
 import _ from 'lodash';
 
 import { ZigbeeDevice } from '../zigbeeDefinitions';
+import { ZigbeeDeviceManager } from '../zigbeeDeviceManager';
 import { createDeviceSynchronizer } from '../zigbeeDevicesSynchronizer';
 
 // improve readability, until this is merged https://github.com/ajv-validator/ajv/issues/1346
@@ -12,13 +13,15 @@ const removeAdditionalProperties = (zigbeeDevices: ZigbeeDevice[]): void => {
     });
 };
 
-export const onDevicesHandler = async (devices: ZigbeeDevice[]) => {
-    removeAdditionalProperties(devices);
+export const createDevicesHandler = (zigbeeDeviceManager: ZigbeeDeviceManager) => {
+    return async (devices: ZigbeeDevice[]) => {
+        removeAdditionalProperties(devices);
 
-    await createDeviceSynchronizer().syncDevices(devices);
+        await createDeviceSynchronizer(zigbeeDeviceManager).syncDevices(devices);
+    };
 };
 
 // TODO add logger
 export const onDevicesErrorHandler = async (error: unknown) => {
-    console.log(JSON.stringify(error, null, 2));
+    console.log('onDevicesErrorHandler',error);
 };

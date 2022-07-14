@@ -3,7 +3,7 @@ import { Device, DeviceDto } from '../entities/deviceEntity';
 import { createDevicesRepository } from '../repositories/devicesRepository';
 import { GenericService } from './genericService';
 
-interface DevicesService extends GenericService<Device, DeviceDto> {}
+export interface DevicesService extends GenericService<Device, DeviceDto> {}
 
 export const createDevicesService = (): DevicesService => {
     const repository = createDevicesRepository();

@@ -10,6 +10,8 @@ import {
     VersionColumn,
 } from 'typeorm';
 
+import { mergeSchemas } from '../utils/schemaUtils';
+
 const validator: Validator = createValidator();
 
 abstract class AbstractGenericEntity {
@@ -18,8 +20,14 @@ abstract class AbstractGenericEntity {
 
     constructor(entitySchema: TObject<TProperties>) {
         // https://github.com/typeorm/typeorm/issues/7150
-        this.#entitySchema = Type.Omit(entitySchema, ['_createdAt', '_updatedAt']);
-        this.#dtoSchema = Type.Omit(this.#entitySchema, ['_id', '_version']);
+        this.#entitySchema = mergeSchemas(
+            Type.Omit(entitySchema, ['_createdAt', '_updatedAt']),
+            Type.Object({
+                _createdAt: Type.Unknown(),
+                _updatedAt: Type.Unknown(),
+            }),
+        );
+        this.#dtoSchema = Type.Omit(this.#entitySchema, ['_id', '_version', '_createdAt', '_updatedAt']);
     }
 
     @BeforeInsert()

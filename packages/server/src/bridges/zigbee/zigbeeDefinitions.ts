@@ -3,10 +3,12 @@ import _ from 'lodash';
 
 import { mergeSchemas } from '../../utils/schemaUtils';
 
-export enum ZigbeeTopic {
-    BridgeDevices = 'zigbee2mqtt/bridge/devices',
-    BridgeInfo = 'zigbee2mqtt/bridge/info',
-}
+export const ZIGBEE_TOPIC_PREFIX = 'zigbee2mqtt';
+
+export const ZigbeeTopic = {
+    BridgeDevices: `${ZIGBEE_TOPIC_PREFIX}/bridge/devices`,
+    BridgeInfo: `${ZIGBEE_TOPIC_PREFIX}/bridge/info`,
+};
 
 const genericDeviceSchema = Type.Object({
     ieeeAddress: Type.String(),
@@ -109,3 +111,6 @@ export const zigbeeInfoSchema = Type.Object({
 });
 
 export type ZigbeeInfo = Static<typeof zigbeeInfoSchema>;
+
+export const zigbeeDeviceDataSchema = Type.Record(Type.String(), Type.Unknown());
+export type ZigbeeDeviceData = Static<typeof zigbeeDeviceDataSchema>;

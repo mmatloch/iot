@@ -5,11 +5,13 @@ import _ from 'lodash';
 import { Event } from '../entities/eventEntity';
 import { EventInstance, EventInstanceState } from '../entities/eventInstanceEntity';
 import { ErrorCode, Errors, getErrorCode } from '../errors';
+import { createDevicesService } from '../services/devicesService';
 import { EventInstancesService } from '../services/eventInstancesService';
 import { EventsService } from '../services/eventsService';
 import { createEventProcessor } from './eventProcessor';
 import { EventRunnerProcessedEvent, EventRunnerSummary, EventRunnerTriggerOptions } from './eventRunnerDefinitions';
 import { createProcessedEventsSummary } from './eventRunnerUtils';
+import { createDevicesSdk } from './sdks/devicesSdk';
 
 export const createEventRunner = (eventsService: EventsService, eventInstancesService: EventInstancesService) => {
     const runnerSummary: EventRunnerSummary = {
@@ -64,6 +66,7 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
                         eventRunner: {
                             trigger: runInNewContext(childProcessedEventsList.processedEvents, event).trigger,
                         },
+                        devices: createDevicesSdk(),
                     };
 
                     const performanceMetrics: EventInstance['performanceMetrics'] = {
@@ -76,7 +79,7 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
                     const processStart = performance.now();
 
                     try {
-                        await createEventProcessor().process({ event, sdk, context, performanceMetrics });
+                        await createEventProcessor(sdk).process({ event, context, performanceMetrics });
                         performanceMetrics.executionEndDate = new Date().toISOString();
                         performanceMetrics.executionDuration = performance.now() - processStart;
                     } catch (e) {

@@ -41,7 +41,7 @@ export const createMqttClient = (): MqttClient => {
 
     const initialize = async (): Promise<void> => {
         client.on('message', async (topic, payload) => {
-            console.log('received message from topic', topic);
+            console.log('Received message from topic', topic);
             const messageHandler = messageHandlers.get(topic);
 
             if (!messageHandler) {
@@ -96,7 +96,7 @@ export const createMqttClient = (): MqttClient => {
             schema,
         });
 
-        console.log('subscribing to topic', topic);
+        console.log('Subscribing to topic', topic);
         await subscribe(topic);
     };
 

@@ -7,5 +7,5 @@ export const onInfoHandler = async (info: ZigbeeInfo) => {
 
 // TODO add logger
 export const onInfoErrorHandler = async (error: unknown) => {
-    console.log(JSON.stringify(error, null, 2));
+    console.log('onInfoErrorHandler', JSON.stringify(error, null, 2));
 };
