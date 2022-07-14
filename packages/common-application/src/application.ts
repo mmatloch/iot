@@ -1,32 +1,23 @@
-import { ValidationError } from '@common/errors';
+import { ValidationError, transformError } from '@common/errors';
 import type { Logger } from '@common/logger';
 import { createValidator } from '@common/validator';
 import formBody from '@fastify/formbody';
 
-import { transformError } from './errorTransformer';
-import { createApplicationFromFastify, createFastifyPlugin } from './fastifyAbstract';
-import { Application, ApplicationPlugin, ApplicationPluginOptions } from './types';
+import { createApplicationFromFastify } from './fastifyAbstract';
+import loggerPlugin from './plugins/loggerPlugin';
+import { Application } from './types';
 
 interface CreateApplicationOptions {
     logger: Logger;
     hooks?: {
         beforeReady?: (app: Application) => Promise<void>;
-        afterReady?: (app: Application) => Promise<void>;
+        beforeBootstrap?: (app: Application) => Promise<void>;
     };
 }
 
 const bootstrapApplication = (app: Application) => {
     app.setErrorHandler(async (error, _request, reply) => {
         const { statusCode, body, headers } = transformError(error);
-
-        app.log.error({
-            response: {
-                statusCode,
-                headers,
-                body,
-            },
-            msg: 'Error',
-        });
 
         return reply.status(statusCode).headers(headers).send(JSON.stringify(body));
     });
@@ -42,12 +33,18 @@ const bootstrapApplication = (app: Application) => {
     });
 
     app.register(formBody);
+    app.register(loggerPlugin);
 };
 
 export const createApplication = async (opts: CreateApplicationOptions): Promise<Application> => {
     const app = createApplicationFromFastify({
         logger: opts.logger,
     });
+
+    if (opts.hooks?.beforeBootstrap) {
+        await opts.hooks.beforeBootstrap(app);
+        await app.after();
+    }
 
     bootstrapApplication(app);
     await app.after();
@@ -63,21 +60,5 @@ export const createApplication = async (opts: CreateApplicationOptions): Promise
         process.exit(1);
     }
 
-    if (opts.hooks?.afterReady) {
-        await opts.hooks.afterReady(app);
-    }
-
     return app;
-};
-
-interface CreateApplicationPluginOptions {
-    name: string;
-    dependencies?: string[];
-}
-
-export const createApplicationPlugin = <PluginOptions extends ApplicationPluginOptions>(
-    plugin: ApplicationPlugin<PluginOptions>,
-    opts: CreateApplicationPluginOptions,
-) => {
-    return createFastifyPlugin(plugin, opts);
 };

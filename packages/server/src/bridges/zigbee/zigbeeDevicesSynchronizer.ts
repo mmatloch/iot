@@ -1,41 +1,55 @@
 import _ from 'lodash';
 
 import { Device } from '../../entities/deviceEntity';
+import { getLogger } from '../../logger';
 import { ZigbeeDevice } from './zigbeeDefinitions';
 import { ZigbeeDeviceManager } from './zigbeeDeviceManager';
 
+const logger = getLogger();
+
 export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManager) => {
-    const syncDevice = async (zigbeeDevice: ZigbeeDevice, devices: Device[]) => {
-        const [device] = devices;
+    const syncDevice = async (zigbeeDevice: ZigbeeDevice, device: Device | undefined) => {
+        if (!device) {
+            logger.info(`The device with ieeeAddress '${zigbeeDevice.ieeeAddress}' does not exist`);
 
-        if (devices.length === 0) {
-            console.log(`Device with ieeeAddress=${zigbeeDevice.ieeeAddress} does not exist`);
             const createdDevice = await zigbeeDeviceManager.create(zigbeeDevice);
-            console.log(`Created device with id ${createdDevice._id} and ieeeAddress=${createdDevice.ieeeAddress}`);
-        } else if (devices.length > 1) {
-            console.log(`Found multiple devices with ieeeAddress=${zigbeeDevice.ieeeAddress}`);
-        } else {
-            console.log(`Found device with id ${device._id} and ieeeAddress=${zigbeeDevice.ieeeAddress}`);
 
-            const updatedDevice = await zigbeeDeviceManager.update(device, zigbeeDevice);
-            if (updatedDevice._version === device._version) {
-                console.log(`Device with id ${device._id} and ieeeAddress=${zigbeeDevice.ieeeAddress} has not changed`);
-            } else {
-                console.log(`Device with id ${device._id} and ieeeAddress=${zigbeeDevice.ieeeAddress} has changed`);
-            }
+            logger.warn({
+                msg: `Created a device with ieeeAddress '${createdDevice.ieeeAddress}'`,
+                device: createdDevice,
+            });
+            return;
+        }
+
+        logger.debug({
+            msg: `Found device with ieeeAddress '${device.ieeeAddress}'`,
+            device,
+        });
+
+        const updatedDevice = await zigbeeDeviceManager.update(device, zigbeeDevice);
+        if (updatedDevice._version === device._version) {
+            logger.debug({
+                msg: `The device with ieeeAddress '${updatedDevice.ieeeAddress}' has not changed`,
+                device,
+            });
+        } else {
+            logger.warn({
+                msg: `Updated the device with ieeeAddress '${updatedDevice.ieeeAddress}'`,
+                device,
+            });
         }
     };
 
     const syncDevices = async (zigbeeDevices: ZigbeeDevice[]) => {
         const allDevices = await zigbeeDeviceManager.searchByIeeeAddresses(zigbeeDevices.map((d) => d.ieeeAddress));
 
-        console.log(`Found ${allDevices.length} devices`);
+        logger.debug(`Found ${allDevices.length} devices for synchronization`);
 
         await Promise.all(
             zigbeeDevices.map((zigbeeDevice) => {
-                const devices = allDevices.filter((d) => d.ieeeAddress === zigbeeDevice.ieeeAddress);
+                const device = allDevices.find((d) => d.ieeeAddress === zigbeeDevice.ieeeAddress);
 
-                return syncDevice(zigbeeDevice, devices);
+                return syncDevice(zigbeeDevice, device);
             }),
         );
     };

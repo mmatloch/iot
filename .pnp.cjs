@@ -892,8 +892,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/common-errors/",\
           "packageDependencies": [\
             ["@common/errors", "workspace:packages/common-errors"],\
+            ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
             ["http-status-codes", "npm:2.2.0"],\
+            ["lodash", "npm:4.17.21"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"]\
           ],\
           "linkType": "SOFT"\
@@ -904,7 +906,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/common-logger/",\
           "packageDependencies": [\
             ["@common/logger", "workspace:packages/common-logger"],\
+            ["@common/errors", "workspace:packages/common-errors"],\
+            ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
+            ["lodash", "npm:4.17.21"],\
             ["pino", "npm:8.1.0"],\
             ["pino-pretty", "npm:8.1.0"],\
             ["pino-roll", "npm:1.0.0-rc.1"],\

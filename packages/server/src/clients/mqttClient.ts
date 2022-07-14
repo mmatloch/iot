@@ -7,8 +7,10 @@ import _ from 'lodash';
 import { IClientSubscribeOptions, ISubscriptionGrant, connect } from 'mqtt';
 
 import { getConfig } from '../config';
+import { getLogger } from '../logger';
 
 const config = getConfig();
+const logger = getLogger();
 const validator: Validator = createValidator();
 
 type SubscribeFn = (topic: string | string[], opts?: IClientSubscribeOptions) => Promise<ISubscriptionGrant[]>;
@@ -41,10 +43,13 @@ export const createMqttClient = (): MqttClient => {
 
     const initialize = async (): Promise<void> => {
         client.on('message', async (topic, payload) => {
-            console.log('Received message from topic', topic);
+            logger.trace(`Received a message from the topic '${topic}'`);
+
             const messageHandler = messageHandlers.get(topic);
 
             if (!messageHandler) {
+                logger.warn(`No message handler found for the topic '${topic}'`);
+
                 return;
             }
 
@@ -96,7 +101,7 @@ export const createMqttClient = (): MqttClient => {
             schema,
         });
 
-        console.log('Subscribing to topic', topic);
+        logger.debug(`Subscribing to the topic '${topic}'`);
         await subscribe(topic);
     };
 

@@ -1,11 +1,16 @@
+import { getLogger } from '../../../logger';
 import { ZigbeeInfo } from '../zigbeeDefinitions';
 import { setZigbeeInfo } from '../zigbeeInfo';
+
+const logger = getLogger();
 
 export const onInfoHandler = async (info: ZigbeeInfo) => {
     setZigbeeInfo(info);
 };
 
-// TODO add logger
-export const onInfoErrorHandler = async (error: unknown) => {
-    console.log('onInfoErrorHandler', JSON.stringify(error, null, 2));
+export const onInfoErrorHandler = async (e: unknown) => {
+    logger.error({
+        msg: `An error occurred while handling information from the Zigbee bridge`,
+        err: e,
+    });
 };

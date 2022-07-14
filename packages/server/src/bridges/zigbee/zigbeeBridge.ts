@@ -1,4 +1,5 @@
 import { MqttClient } from '../../clients/mqttClient';
+import { getLogger } from '../../logger';
 import {
     ZIGBEE_TOPIC_PREFIX,
     ZigbeeTopic,
@@ -13,6 +14,8 @@ import {
     createIncomingDeviceDataHandler,
 } from './zigbeeHandlers/zigbeeIncomingDeviceDataHandler';
 import { onInfoErrorHandler, onInfoHandler } from './zigbeeHandlers/zigbeeInfoHandler';
+
+const logger = getLogger();
 
 export const createZigbeeBridge = (mqttClient: MqttClient) => {
     const deviceSubMap: Map<number, string> = new Map();
@@ -38,7 +41,6 @@ export const createZigbeeBridge = (mqttClient: MqttClient) => {
             const ieeeAddress = deviceSubMap.get(device._id);
 
             if (ieeeAddress === device.ieeeAddress) {
-                console.log(`Already subscribed for device ${device._id}`);
                 return;
             }
 
@@ -54,7 +56,11 @@ export const createZigbeeBridge = (mqttClient: MqttClient) => {
 
                 deviceSubMap.set(device._id, device.ieeeAddress);
             } catch (e) {
-                console.log(`Failed to subscribe ${topic} for device ${device._id}`, e);
+                logger.error({
+                    msg: `Failed to subscribe to the topic '${topic}'`,
+                    err: e,
+                    device,
+                });
             }
         });
     };

@@ -51,7 +51,10 @@ export class Device extends GenericEntity {
     @Column('text')
     description!: string;
 
-    @Column('text')
+    @Column({
+        type: 'text',
+        unique: true,
+    })
     ieeeAddress!: string;
 
     @Column('text')

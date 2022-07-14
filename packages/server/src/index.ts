@@ -14,6 +14,9 @@ import { createUsersRest } from './rest/usersRest';
 createApplication({
     logger: getLogger(),
     hooks: {
+        beforeBootstrap: async (app) => {
+            app.register(requestUserPlugin);
+        },
         beforeReady: async (app) => {
             await timescaleDataSource.initialize();
 
@@ -25,7 +28,6 @@ createApplication({
                 await timescaleDataSource.runMigrations();
             }
 
-            app.register(requestUserPlugin);
             app.register(createUsersRest);
             app.register(createDevicesRest);
             app.register(createEventsRest);

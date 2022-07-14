@@ -4,6 +4,10 @@ services:
     image: ${PROJECT_NAME}/server
     volumes:
       - ../server/src:/usr/app/packages/server/src
+      - ../common-application/src:/usr/app/packages/common-application/src
+      - ../common-errors/src:/usr/app/packages/common-errors/src
+      - ../common-logger/src:/usr/app/packages/common-logger/src
+      - ../common-config/src:/usr/app/packages/common-config/src
     environment:
       POSTGRES: postgresql://postgres:postgres@timescale:5432/${PROJECT_NAME}
       GOOGLE_OAUTH2_CLIENT_ID: test.apps.googleusercontent.com

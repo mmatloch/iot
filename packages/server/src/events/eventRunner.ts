@@ -1,17 +1,18 @@
-import { transformErrorBody } from '@common/application';
-import { BaseError } from '@common/errors';
+import { BaseError, transformErrorBody } from '@common/errors';
 import _ from 'lodash';
 
 import { Event } from '../entities/eventEntity';
 import { EventInstance, EventInstanceState } from '../entities/eventInstanceEntity';
 import { ErrorCode, Errors, getErrorCode } from '../errors';
-import { createDevicesService } from '../services/devicesService';
+import { getLogger } from '../logger';
 import { EventInstancesService } from '../services/eventInstancesService';
 import { EventsService } from '../services/eventsService';
 import { createEventProcessor } from './eventProcessor';
 import { EventRunnerProcessedEvent, EventRunnerSummary, EventRunnerTriggerOptions } from './eventRunnerDefinitions';
 import { createProcessedEventsSummary } from './eventRunnerUtils';
 import { createDevicesSdk } from './sdks/devicesSdk';
+
+const logger = getLogger();
 
 export const createEventRunner = (eventsService: EventsService, eventInstancesService: EventInstancesService) => {
     const runnerSummary: EventRunnerSummary = {
@@ -47,7 +48,15 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
 
     const runInNewContext = (processedEventsList: EventRunnerProcessedEvent[], triggeredBy?: Event) => {
         const trigger = async ({ filters, context }: EventRunnerTriggerOptions): Promise<void> => {
+            logger.debug(
+                `Triggering events with type ${filters.triggerType} and filters ${JSON.stringify(
+                    filters.triggerFilters,
+                )}`,
+            );
+
             const { _hits: events } = await eventsService.search(filters);
+
+            logger.debug(`Found ${events.length} events that satisfy the filters`);
 
             await Promise.all(
                 events.map(async (event) => {
@@ -82,9 +91,24 @@ export const createEventRunner = (eventsService: EventsService, eventInstancesSe
                         await createEventProcessor(sdk).process({ event, context, performanceMetrics });
                         performanceMetrics.executionEndDate = new Date().toISOString();
                         performanceMetrics.executionDuration = performance.now() - processStart;
+
+                        logger.debug({
+                            msg: `Successfully processed the event. It took ${performanceMetrics.executionDuration.toFixed(
+                                2,
+                            )} ms`,
+                            event,
+                        });
                     } catch (e) {
                         performanceMetrics.executionEndDate = new Date().toISOString();
                         performanceMetrics.executionDuration = performance.now() - processStart;
+
+                        logger.warn({
+                            msg: `An error occurred while processing the event. It took ${performanceMetrics.executionDuration.toFixed(
+                                2,
+                            )} ms`,
+                            err: e,
+                            event,
+                        });
 
                         const errorBody = transformErrorBody(e as Error);
 
