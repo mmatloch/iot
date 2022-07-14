@@ -2,6 +2,7 @@ import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import {
     FastifyInstance,
     FastifyLoggerInstance,
+    FastifyServerOptions,
     RawReplyDefaultExpression,
     RawRequestDefaultExpression,
     RawServerDefault,
@@ -29,10 +30,11 @@ export type DefaultFastifyInstanceWithTypeProvider = FastifyInstance<
     TypeBoxTypeProvider
 >;
 
-export const createApplicationFromFastify = () => {
+export const createApplicationFromFastify = (opts: FastifyServerOptions) => {
     return fastify({
         logger: true,
         querystringParser: (str) => Qs.parse(str),
+        ...opts,
     });
 };
 
