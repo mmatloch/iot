@@ -1,4 +1,8 @@
 {
+  "app": {
+    "name": "google-stub"
+  },
+  "logger": {},
   "oAuth2": {
     "clientId": "test",
     "clientSecret": "test"

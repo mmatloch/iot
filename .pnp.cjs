@@ -4640,6 +4640,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@common/application", "workspace:packages/common-application"],\
             ["@common/config", "workspace:packages/common-config"],\
             ["@common/errors", "workspace:packages/common-errors"],\
+            ["@common/logger", "workspace:packages/common-logger"],\
+            ["@common/validator", "workspace:packages/common-validator"],\
             ["@faker-js/faker", "npm:7.2.0"],\
             ["@sinclair/typebox", "npm:0.23.5"],\
             ["@swc/core", "npm:1.2.203"],\
