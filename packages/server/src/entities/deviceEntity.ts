@@ -1,5 +1,6 @@
 import { Static, Type } from '@sinclair/typebox';
-import { Column, Entity, Index } from 'typeorm';
+import _ from 'lodash';
+import { AfterInsert, AfterLoad, Column, Entity, Index } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
 import { GenericEntity, genericEntitySchema } from './genericEntity';
@@ -120,6 +121,14 @@ export class Device extends GenericEntity {
         nullable: true,
     })
     deactivatedBy?: DeviceDeactivatedBy;
+
+    @AfterLoad()
+    @AfterInsert()
+    protected removeNulls() {
+        if (_.isNull(this.deactivatedBy)) {
+            this.deactivatedBy = undefined;
+        }
+    }
 }
 
 const deactivatedByBridgeSchema = Type.Object({

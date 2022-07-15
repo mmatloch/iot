@@ -16,7 +16,7 @@ import { createEventsService } from '../services/eventsService';
 const createEventSchema = {
     body: eventDtoSchema,
     response: {
-        [StatusCodes.OK]: eventSchema,
+        [StatusCodes.CREATED]: eventSchema,
     },
 };
 

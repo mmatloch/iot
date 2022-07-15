@@ -1,6 +1,7 @@
-import { TransformedErrorBody } from '@common/application';
+import { TransformedErrorBody } from '@common/errors';
 import { Static, Type } from '@sinclair/typebox';
-import { Column, Entity, Index } from 'typeorm';
+import _ from 'lodash';
+import { AfterInsert, AfterLoad, Column, Entity, Index } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
 import { GenericTimeseriesEntity, genericEntitySchema } from './genericEntity';
@@ -58,10 +59,22 @@ export class EventInstance extends GenericTimeseriesEntity {
 
     @Column({
         type: 'integer',
-        nullable: true,
         default: null,
+        nullable: true,
     })
     triggeredByEventId?: number;
+
+    @AfterLoad()
+    @AfterInsert()
+    protected removeNulls() {
+        if (_.isNull(this.triggeredByEventId)) {
+            this.triggeredByEventId = undefined;
+        }
+
+        if (_.isNull(this.error)) {
+            this.error = undefined;
+        }
+    }
 }
 
 export const eventInstanceDtoSchema = Type.Object({
