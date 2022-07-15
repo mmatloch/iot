@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { Device } from '../../entities/deviceEntity';
+import { Device, DeviceDeactivatedByType, DeviceState } from '../../entities/deviceEntity';
 import { getLogger } from '../../logger';
 import { ZigbeeDevice } from './zigbeeDefinitions';
 import { ZigbeeDeviceManager } from './zigbeeDeviceManager';
@@ -12,46 +12,128 @@ export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManage
         if (!device) {
             logger.info(`The device with ieeeAddress '${zigbeeDevice.ieeeAddress}' does not exist`);
 
-            const createdDevice = await zigbeeDeviceManager.create(zigbeeDevice);
+            let createdDevice;
+            try {
+                createdDevice = await zigbeeDeviceManager.create(zigbeeDevice);
+            } catch (e) {
+                logger.error({
+                    msg: `Failed to create a device with ieeeAddress '${zigbeeDevice.ieeeAddress}'`,
+                    device,
+                });
+
+                return;
+            }
 
             logger.warn({
-                msg: `Created a device with ieeeAddress '${createdDevice.ieeeAddress}'`,
+                msg: `Created a device with displayName '${createdDevice.displayName}' and ieeeAddress '${createdDevice.ieeeAddress}'`,
                 device: createdDevice,
             });
+
             return;
         }
 
         logger.debug({
-            msg: `Found device with ieeeAddress '${device.ieeeAddress}'`,
+            msg: `Found device with displayName '${device.displayName}' and ieeeAddress '${device.ieeeAddress}'`,
             device,
         });
 
-        const updatedDevice = await zigbeeDeviceManager.update(device, zigbeeDevice);
+        if (device.state === DeviceState.Inactive) {
+            if (device.deactivatedBy?.type !== DeviceDeactivatedByType.Bridge) {
+                logger.debug({
+                    msg: `The '${device.displayName}' device is inactive and cannot be activated by the bridge because it has been deactivated by ${device.deactivatedBy?.type}`,
+                    device,
+                });
+
+                return;
+            }
+
+            logger.debug({
+                msg: `The '${device.displayName}' device is inactive and will be activated by the bridge`,
+                device,
+            });
+        }
+
+        let updatedDevice;
+        try {
+            updatedDevice = await zigbeeDeviceManager.update(device, zigbeeDevice);
+        } catch (e) {
+            logger.error({
+                msg: `Failed to update the '${device.displayName}' device`,
+                device,
+            });
+
+            return;
+        }
+
         if (updatedDevice._version === device._version) {
             logger.debug({
-                msg: `The device with ieeeAddress '${updatedDevice.ieeeAddress}' has not changed`,
+                msg: `The '${updatedDevice.displayName}' device has not changed`,
                 device,
             });
         } else {
             logger.warn({
-                msg: `Updated the device with ieeeAddress '${updatedDevice.ieeeAddress}'`,
+                msg: `Updated the '${updatedDevice.displayName}' device`,
                 device,
             });
         }
     };
 
+    const deactivateDevice = async (device: Device) => {
+        if (device.state === DeviceState.Inactive) {
+            return;
+        }
+
+        logger.warn({
+            msg: `Deactivating the '${device.displayName}' device, as it was removed from the network`,
+            device,
+        });
+
+        try {
+            await zigbeeDeviceManager.deactivate(device);
+        } catch (e) {
+            logger.error({
+                msg: `Failed to deactivate the '${device.displayName}' device`,
+                device,
+                err: e,
+            });
+
+            return;
+        }
+
+        logger.debug({
+            msg: `The '${device.displayName}' device has been deactivated`,
+            device,
+        });
+    };
+
     const syncDevices = async (zigbeeDevices: ZigbeeDevice[]) => {
-        const allDevices = await zigbeeDeviceManager.searchByIeeeAddresses(zigbeeDevices.map((d) => d.ieeeAddress));
+        const allDevices = await zigbeeDeviceManager.findAll();
 
         logger.debug(`Found ${allDevices.length} devices for synchronization`);
 
+        const findAndRemove = (predicate: (value: Device) => unknown): Device | undefined => {
+            const index = allDevices.findIndex(predicate);
+
+            if (index >= 0) {
+                const [device] = allDevices.splice(index, 1);
+
+                return device;
+            }
+
+            return;
+        };
+
+        // Newly added and existing
         await Promise.all(
             zigbeeDevices.map((zigbeeDevice) => {
-                const device = allDevices.find((d) => d.ieeeAddress === zigbeeDevice.ieeeAddress);
+                const device = findAndRemove((d) => d.ieeeAddress === zigbeeDevice.ieeeAddress);
 
                 return syncDevice(zigbeeDevice, device);
             }),
         );
+
+        // Removed from the bridge
+        await Promise.all(allDevices.map((device) => deactivateDevice(device)));
     };
 
     return {

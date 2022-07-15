@@ -1,9 +1,8 @@
 import { EOL } from 'node:os';
 
-import { In } from 'typeorm';
-
 import {
     Device,
+    DeviceDeactivatedByType,
     DeviceDto,
     DevicePowerSource,
     DeviceProtocol,
@@ -29,6 +28,7 @@ const buildDeviceType = (zigbeeType: ZigbeeDeviceType): DeviceType => {
             return DeviceType.Unknown;
     }
 };
+
 const buildDevicePowerSource = (zigbeePowerSource: ZigbeePowerSource): DevicePowerSource => {
     switch (zigbeePowerSource) {
         case ZigbeePowerSource.Battery:
@@ -52,6 +52,18 @@ const buildDevicePowerSource = (zigbeePowerSource: ZigbeePowerSource): DevicePow
     }
 };
 
+const buildDeviceState = (zigbeeDevice: ZigbeeDevice): DeviceState => {
+    if (zigbeeDevice.interviewing) {
+        return DeviceState.Interviewing;
+    }
+
+    if (zigbeeDevice.interviewCompleted) {
+        return DeviceState.Unconfigured;
+    }
+
+    return DeviceState.New;
+};
+
 const buildActionDefinition = (device: Device) => {
     const code: string[] = [`const deviceId = ${device._id}`, 'await sdk.devices.createSensorData(deviceId, context)'];
 
@@ -68,10 +80,10 @@ type WatchCallback = (device: Device) => Promise<void>;
 
 export interface ZigbeeDeviceManager {
     create: (zigbeeDevice: ZigbeeDevice) => Promise<Device>;
+    deactivate: (device: Device) => Promise<void>;
     update: (existingDevice: Device, zigbeeDevice: ZigbeeDevice) => Promise<Device>;
-    searchByIeeeAddresses: (ieeeAddresses: string[]) => Promise<Device[]>;
+    findAll: () => Promise<Device[]>;
     watch: (cb: WatchCallback) => void;
-    build: (zigbeeDevice: ZigbeeDevice) => DeviceDto;
 }
 
 export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
@@ -79,14 +91,14 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
     const devicesService = createDevicesService();
     const eventsService = createEventsService();
 
-    const create = async (zigbeeDevice: ZigbeeDevice) => {
-        const device = await devicesService.create(build(zigbeeDevice));
+    const create: ZigbeeDeviceManager['create'] = async (zigbeeDevice) => {
+        const device = await devicesService.create(buildToCreate(zigbeeDevice));
         await eventsService.create({
             displayName: `Incoming device data - ${device.ieeeAddress}`,
             name: `${EventTriggerType.IncomingDeviceData}_${device.ieeeAddress}`,
             triggerType: EventTriggerType.IncomingDeviceData,
             triggerFilters: {
-                ieeeAddress: device.ieeeAddress,
+                deviceId: device._id,
             },
             actionDefinition: buildActionDefinition(device),
             conditionDefinition: buildConditionDefinition(),
@@ -97,17 +109,23 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
         return device;
     };
 
-    const update = async (existingDevice: Device, zigbeeDevice: ZigbeeDevice) => {
-        const device = await devicesService.update(existingDevice, build(zigbeeDevice));
+    const update: ZigbeeDeviceManager['update'] = async (existingDevice, zigbeeDevice) => {
+        const newDevice = buildToUpdate(zigbeeDevice);
+
+        if (existingDevice.state === DeviceState.Inactive) {
+            newDevice.state = buildDeviceState(zigbeeDevice);
+        }
+
+        const device = await devicesService.update(existingDevice, newDevice);
 
         setImmediate(() => triggerWatch(device));
 
         return device;
     };
 
-    const searchByIeeeAddresses = async (ieeeAddresses: string[]): Promise<Device[]> => {
+    const findAll: ZigbeeDeviceManager['findAll'] = async () => {
         const { _hits } = await devicesService.search({
-            ieeeAddress: In(ieeeAddresses),
+            protocol: DeviceProtocol.Zigbee,
         });
 
         return _hits;
@@ -117,11 +135,11 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
         watchCallbacks.forEach((cb) => cb(device));
     };
 
-    const watch = (cb: WatchCallback): void => {
+    const watch: ZigbeeDeviceManager['watch'] = (cb) => {
         watchCallbacks.add(cb);
     };
 
-    const build = (zigbeeDevice: ZigbeeDevice): DeviceDto => {
+    const buildToCreate = (zigbeeDevice: ZigbeeDevice): DeviceDto => {
         if (zigbeeDevice.type === ZigbeeDeviceType.Coordinator) {
             const bridgeInfo = getZigbeeInfo();
 
@@ -142,7 +160,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 displayName: zigbeeDevice.friendlyName,
                 description: zigbeeDevice.definition.description,
                 ieeeAddress: zigbeeDevice.ieeeAddress,
-                state: DeviceState.Unconfigured,
+                state: DeviceState.New,
                 protocol: DeviceProtocol.Zigbee,
                 model: zigbeeDevice.definition.model,
                 vendor: zigbeeDevice.definition.vendor,
@@ -151,11 +169,41 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
         }
     };
 
+    const buildToUpdate = (zigbeeDevice: ZigbeeDevice): Partial<DeviceDto> => {
+        if (zigbeeDevice.type === ZigbeeDeviceType.Coordinator) {
+            const bridgeInfo = getZigbeeInfo();
+
+            return {
+                model: bridgeInfo?.coordinator.type || 'Unknown',
+                vendor: 'Unknown',
+                state: buildDeviceState(zigbeeDevice),
+            };
+        } else {
+            return {
+                type: buildDeviceType(zigbeeDevice.type),
+                model: zigbeeDevice.definition.model,
+                vendor: zigbeeDevice.definition.vendor,
+                powerSource: buildDevicePowerSource(zigbeeDevice.powerSource),
+                state: buildDeviceState(zigbeeDevice),
+            };
+        }
+    };
+
+    const deactivate: ZigbeeDeviceManager['deactivate'] = async (device) => {
+        await devicesService.update(device, {
+            state: DeviceState.Inactive,
+            deactivatedBy: {
+                type: DeviceDeactivatedByType.Bridge,
+                name: 'Zigbee',
+            },
+        });
+    };
+
     return {
         create,
         update,
-        searchByIeeeAddresses,
+        findAll,
         watch,
-        build,
+        deactivate,
     };
 };

@@ -18,7 +18,7 @@ export const createIncomingDeviceDataHandler = (device: Device) => {
             filters: {
                 triggerType: EventTriggerType.IncomingDeviceData,
                 triggerFilters: {
-                    ieeeAddress: device.ieeeAddress,
+                    deviceId: device._id,
                 },
             },
             context: deviceData,

@@ -27,10 +27,49 @@ export enum DeviceProtocol {
 }
 
 export enum DeviceState {
+    /**
+     * The device is configured and running fine
+     */
     Active = 'ACTIVE',
+    /**
+     * The device was turned off by the user or the bridge. No data is received or sent to it
+     */
     Inactive = 'INACTIVE',
+    /**
+     * The device has been successfully interviewed but not configured by the user.
+     * It has a default `displayName`, etc.
+     */
     Unconfigured = 'UNCONFIGURED',
+    /**
+     * The device is being interviewed by an external bridge
+     */
+    Interviewing = 'INTERVIEWING',
+    /**
+     * An error occurred while adding, interviewing, or configuring the device.
+     *
+     * Not used at this point.
+     */
+    Error = 'ERROR',
+    /**
+     * The newly added device. This state has a device that hasn't been interviewed yet
+     */
+    New = 'NEW',
 }
+
+export enum DeviceDeactivatedByType {
+    Bridge = 'BRIDGE',
+    User = 'USER',
+}
+
+type DeviceDeactivatedBy =
+    | {
+          type: DeviceDeactivatedByType.Bridge;
+          name: string;
+      }
+    | {
+          type: DeviceDeactivatedByType.User;
+          id: number;
+      };
 
 @Entity({ name: 'devices' })
 export class Device extends GenericEntity {
@@ -74,7 +113,26 @@ export class Device extends GenericEntity {
         default: '{}',
     })
     sensorData!: Record<string, unknown>;
+
+    @Column({
+        type: 'jsonb',
+        default: null,
+        nullable: true,
+    })
+    deactivatedBy?: DeviceDeactivatedBy;
 }
+
+const deactivatedByBridgeSchema = Type.Object({
+    type: Type.Literal(DeviceDeactivatedByType.Bridge),
+    name: Type.String(),
+});
+
+const deactivatedByUserSchema = Type.Object({
+    type: Type.Literal(DeviceDeactivatedByType.User),
+    id: Type.Integer(),
+});
+
+const deactivatedBySchema = Type.Union([deactivatedByBridgeSchema, deactivatedByUserSchema]);
 
 export const deviceDtoSchema = Type.Object(
     {
@@ -88,6 +146,7 @@ export const deviceDtoSchema = Type.Object(
         protocol: Type.Enum(DeviceProtocol),
         state: Type.Enum(DeviceState),
         sensorData: Type.Optional(Type.Record(Type.String(), Type.Unknown())),
+        deactivatedBy: Type.Optional(deactivatedBySchema),
     },
     {
         additionalProperties: false,
