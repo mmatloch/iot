@@ -89,6 +89,9 @@ export class Device extends GenericEntity {
     vendor!: string;
 
     @Column('text')
+    manufacturer!: string;
+
+    @Column('text')
     description!: string;
 
     @Column({
@@ -148,6 +151,7 @@ export const deviceDtoSchema = Type.Object(
         displayName: Type.String(),
         model: Type.String(),
         vendor: Type.String(),
+        manufacturer: Type.String(),
         description: Type.String(),
         ieeeAddress: Type.String(),
         powerSource: Type.Enum(DevicePowerSource),

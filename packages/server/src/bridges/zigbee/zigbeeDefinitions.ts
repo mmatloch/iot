@@ -50,6 +50,7 @@ const routerSchema = mergeSchemas(
     Type.Object({
         type: Type.Literal(ZigbeeDeviceType.Router),
 
+        manufacturer: Type.String(),
         powerSource: powerSourceSchema,
         definition: definitionSchema,
     }),
@@ -60,6 +61,7 @@ const endDeviceSchema = mergeSchemas(
     Type.Object({
         type: Type.Literal(ZigbeeDeviceType.EndDevice),
 
+        manufacturer: Type.String(),
         powerSource: powerSourceSchema,
         definition: definitionSchema,
     }),
@@ -77,6 +79,7 @@ const greenPowerSchema = mergeSchemas(
     Type.Object({
         type: Type.Literal(ZigbeeDeviceType.GreenPower),
 
+        manufacturer: Type.String(),
         powerSource: powerSourceSchema,
         definition: definitionSchema,
     }),
@@ -87,6 +90,7 @@ const unknownDeviceSchema = mergeSchemas(
     Type.Object({
         type: Type.Literal(ZigbeeDeviceType.Unknown),
 
+        manufacturer: Type.String(),
         powerSource: powerSourceSchema,
         definition: definitionSchema,
     }),

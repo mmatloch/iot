@@ -152,6 +152,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 protocol: DeviceProtocol.Zigbee,
                 model: bridgeInfo?.coordinator.type || 'Unknown',
                 vendor: 'Unknown',
+                manufacturer: 'Unknown',
                 powerSource: DevicePowerSource.Dc,
             };
         } else {
@@ -160,10 +161,11 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 displayName: zigbeeDevice.friendlyName,
                 description: zigbeeDevice.definition.description,
                 ieeeAddress: zigbeeDevice.ieeeAddress,
-                state: DeviceState.New,
+                state: buildDeviceState(zigbeeDevice),
                 protocol: DeviceProtocol.Zigbee,
                 model: zigbeeDevice.definition.model,
                 vendor: zigbeeDevice.definition.vendor,
+                manufacturer: zigbeeDevice.manufacturer,
                 powerSource: buildDevicePowerSource(zigbeeDevice.powerSource),
             };
         }
@@ -183,6 +185,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 type: buildDeviceType(zigbeeDevice.type),
                 model: zigbeeDevice.definition.model,
                 vendor: zigbeeDevice.definition.vendor,
+                manufacturer: zigbeeDevice.manufacturer,
                 powerSource: buildDevicePowerSource(zigbeeDevice.powerSource),
                 state: buildDeviceState(zigbeeDevice),
             };

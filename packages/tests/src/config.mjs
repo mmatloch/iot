@@ -18,6 +18,14 @@ const schema = Type.Object({
         events: resourceConfigSchema,
         googleOAuth2AuthorizationCode: resourceConfigSchema,
     }),
+    mqttBroker: Type.Object({
+        url: Type.String(),
+    }),
+    zigbee: Type.Object({
+        topicPrefix: Type.String(),
+        bridgeDevicesTopic: Type.String(),
+        bridgeInfoTopic: Type.String(),
+    }),
 });
 
 const config = createConfig({

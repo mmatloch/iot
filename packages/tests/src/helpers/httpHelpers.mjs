@@ -1,7 +1,19 @@
+import { faker } from '@faker-js/faker';
+import async from 'async';
 import { StatusCodes } from 'http-status-codes';
+import JWT from 'jsonwebtoken';
+import _ from 'lodash';
 import Qs from 'qs';
 
+import { getConfig } from '../config.mjs';
+import { TEST_USER_EMAIL } from '../constants.mjs';
 import { createHttpRequestAssertions } from '../utils/httpAssertions.mjs';
+import { createHttpClient } from '../utils/httpClient.mjs';
+
+const RETRY_OPTIONS = {
+    times: 10,
+    interval: 200,
+};
 
 const serializeQuery = (query) => {
     return Qs.stringify(query, {
@@ -10,7 +22,36 @@ const serializeQuery = (query) => {
     });
 };
 
-export const createHttpHelpers = (httpClient, { resourceConfig }) => {
+export const createHttpHelpers = (defaultResourceConfig, resourceConfigOverrides = {}) => {
+    const config = getConfig();
+
+    const resourceConfig = {
+        ...defaultResourceConfig,
+        ...resourceConfigOverrides,
+    };
+
+    const httpClient = createHttpClient();
+
+    const authorizeHttpClient = (overrides) => {
+        const testUser = {
+            _id: faker.datatype.number({ min: 100_000_000 }),
+            email: TEST_USER_EMAIL,
+            role: 'ADMIN',
+            ...overrides,
+        };
+
+        const token = JWT.sign(testUser, config.authorization.jwtSecret, {
+            algorithm: 'HS256',
+            expiresIn: '14d',
+            subject: String(testUser._id),
+        });
+
+        httpClient.useAuthorizationStrategy({
+            name: 'Test JWT token',
+            getAuthorizationHeader: () => `JWT ${token}`,
+        });
+    };
+
     const postByLocation = (location, payload, requestOptions) => {
         const url = new URL(location);
 
@@ -90,6 +131,12 @@ export const createHttpHelpers = (httpClient, { resourceConfig }) => {
         };
     };
 
+    const repeatSearch = (query, requestOptions) => {
+        const makeRetryable = (fn) => async.retryable(RETRY_OPTIONS, fn);
+
+        return _.mapValues(search(query, requestOptions), makeRetryable);
+    };
+
     const patchByLocation = (location, payload, requestOptions) => {
         const url = new URL(location);
 
@@ -114,6 +161,8 @@ export const createHttpHelpers = (httpClient, { resourceConfig }) => {
     };
 
     return {
+        authorizeHttpClient,
+
         postByLocation,
         post,
         getByLocation,
@@ -121,6 +170,7 @@ export const createHttpHelpers = (httpClient, { resourceConfig }) => {
         getById,
         searchByLocation,
         search,
+        repeatSearch,
         patchByLocation,
         patchById,
     };

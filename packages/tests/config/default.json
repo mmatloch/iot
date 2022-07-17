@@ -16,5 +16,13 @@
       "baseUrl": "http://nginx:8080/google/oauth2/",
       "path": "authorizationCode"
     }
+  },
+  "mqttBroker": {
+    "url": "mqtt://mqtt:1883"
+  },
+  "zigbee": {
+    "topicPrefix": "zigbee2mqtt",
+    "bridgeDevicesTopic": "zigbee2mqtt/bridge/devices",
+    "bridgeInfoTopic": "zigbee2mqtt/bridge/info"
   }
 }

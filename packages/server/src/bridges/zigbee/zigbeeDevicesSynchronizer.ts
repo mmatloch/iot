@@ -19,6 +19,7 @@ export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManage
                 logger.error({
                     msg: `Failed to create a device with ieeeAddress '${zigbeeDevice.ieeeAddress}'`,
                     device,
+                    err: e,
                 });
 
                 return;
@@ -60,6 +61,7 @@ export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManage
             logger.error({
                 msg: `Failed to update the '${device.displayName}' device`,
                 device,
+                err: e
             });
 
             return;

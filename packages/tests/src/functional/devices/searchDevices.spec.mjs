@@ -22,6 +22,10 @@ const searchableFields = [
         generateValue: () => faker.random.alpha(15),
     },
     {
+        field: 'manufacturer',
+        generateValue: () => faker.random.alpha(15),
+    },
+    {
         field: 'vendor',
         generateValue: () => faker.random.alpha(15),
     },

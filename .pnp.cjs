@@ -2419,6 +2419,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["async", [\
+        ["npm:3.2.4", {\
+          "packageLocation": "./.yarn/cache/async-npm-3.2.4-aba13508f9-43d07459a4.zip/node_modules/async/",\
+          "packageDependencies": [\
+            ["async", "npm:3.2.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["atomic-sleep", [\
         ["npm:1.0.0", {\
           "packageLocation": "./.yarn/cache/atomic-sleep-npm-1.0.0-17d8a762a3-b95275afb2.zip/node_modules/atomic-sleep/",\
@@ -8859,6 +8868,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/jest", "npm:28.1.2"],\
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
+            ["async", "npm:3.2.4"],\
             ["chalk", "npm:5.0.1"],\
             ["http-status-codes", "npm:2.2.0"],\
             ["jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.1.1"],\
@@ -8870,6 +8880,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["jsonpointer", "npm:5.0.0"],\
             ["jsonwebtoken", "npm:8.5.1"],\
             ["lodash", "npm:4.17.21"],\
+            ["mqtt", "npm:4.3.7"],\
             ["qs", "npm:6.10.5"],\
             ["ts-jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:28.0.5"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
