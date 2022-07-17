@@ -15,3 +15,5 @@ export const createGoogleOAuth2AuthorizationCodeHelpers = (...opts) =>
 export const createZigbeeBridgeDevicesHelpers = (...opts) =>
     createMqttHelpers(config.zigbee.bridgeDevicesTopic, ...opts);
 export const createZigbeeBridgeInfoHelpers = (...opts) => createMqttHelpers(config.zigbee.bridgeInfoTopic, ...opts);
+
+export const createZigbeeHelpers = (topic, ...opts) => createMqttHelpers(topic, ...opts);

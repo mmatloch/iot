@@ -5,6 +5,7 @@ import {
 } from '../../dataGenerators/zigbeeDataGenerators.mjs';
 import {
     createDeviceHelpers,
+    createEventHelpers,
     createZigbeeBridgeDevicesHelpers,
     createZigbeeBridgeInfoHelpers,
 } from '../../helpers/helpers.mjs';
@@ -13,6 +14,7 @@ import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mj
 const H = createZigbeeBridgeDevicesHelpers();
 const deviceHelpers = createDeviceHelpers();
 const zigbeeInfoHelpers = createZigbeeBridgeInfoHelpers();
+const eventHelpers = createEventHelpers();
 
 /**
  * @group zigbeeBridge/createDevice
@@ -21,6 +23,7 @@ const zigbeeInfoHelpers = createZigbeeBridgeInfoHelpers();
 describe('Zigbee bridge createDevice', () => {
     beforeAll(async () => {
         deviceHelpers.authorizeHttpClient();
+        eventHelpers.authorizeHttpClient();
         await connectToBroker();
     });
 
@@ -174,5 +177,33 @@ describe('Zigbee bridge createDevice', () => {
         });
 
         expect(device).not.toHaveProperty('deactivatedBy');
+    });
+
+    it('should create default events', async () => {
+        // given
+        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const deviceQuery = {
+            ieeeAddress: zigbeeDevice.ieee_address,
+        };
+
+        // when
+        await H.publish([zigbeeDevice]);
+
+        // then
+        const {
+            body: { _hits: devices },
+        } = await deviceHelpers.repeatSearch(deviceQuery).expectHits(1);
+        const [device] = devices;
+
+        const incomingDeviceDataEventQuery = {
+            triggerType: 'INCOMING_DEVICE_DATA',
+        };
+        const {
+            body: { _hits: incomingDeviceDataEvents },
+        } = await eventHelpers.search(incomingDeviceDataEventQuery).expectSuccess();
+
+        const incomingDeviceDataEvent = incomingDeviceDataEvents.find((e) => e.triggerFilters.deviceId === device._id);
+
+        expect(incomingDeviceDataEvent).toBeTruthy();
     });
 });
