@@ -6,4 +6,4 @@ const main = async () => {
     await $`docker compose -p ${PROJECT_NAME} -f ${DOCKER_COMPOSE_PATH} down --volumes --remove-orphans`;
 };
 
-await main();
+export default main;

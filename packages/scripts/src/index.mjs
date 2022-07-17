@@ -1,7 +1,6 @@
-import { $, glob, os, path } from 'zx';
+import { argv, glob, os, path } from 'zx';
 
-import { parseInput, serializeParams } from './utils/params.mjs';
-import { multilinePrint } from './utils/print.mjs';
+import { multilinePrint, print } from './utils/print.mjs';
 
 const SCRIPTS_DIR = __dirname;
 const SCRIPTS_EXT = 'mjs';
@@ -14,25 +13,49 @@ const getAvailableScripts = async () => {
         .filter((script) => script !== 'index'); // this script
 };
 
+export const parseInput = () => {
+    const { _, ...params } = argv;
+
+    const [, scriptName] = _; // the first element is the path to the script
+    const [moduleName, command] = scriptName.split(':');
+
+    if (command) {
+        return {
+            scriptName: moduleName,
+            scriptParams: params,
+            command,
+        };
+    }
+
+    return {
+        scriptName,
+        scriptParams: params,
+        command: 'default',
+    };
+};
+
 const main = async () => {
     const availableScripts = await getAvailableScripts();
 
-    const {
-        argv: [, scriptName], // the first element is the path to the script
-        params: scriptParams,
-    } = parseInput();
+    const { scriptName, command, scriptParams } = parseInput();
 
     if (availableScripts.includes(scriptName)) {
         const scriptPath = path.join(SCRIPTS_DIR, `${scriptName}.${SCRIPTS_EXT}`);
 
-        // https://github.com/google/zx/blob/main/docs/known-issues.md#colors-in-subprocess
-        process.env.FORCE_COLOR = '1';
+        const module = await import(scriptPath);
+        const commandFn = module[command];
+
+        if (typeof commandFn !== 'function') {
+            throw new Error(`Command "${command}" doesn't exist in script "${scriptName}"`);
+        }
 
         try {
-            return await $`zx ${scriptPath} ${serializeParams(scriptParams)}`.stdio('inherit', 'inherit', 'inherit');
+            await commandFn(scriptParams);
         } catch (e) {
             process.exit(e.exitCode);
         }
+
+        return;
     }
 
     const msg = [
@@ -45,4 +68,11 @@ const main = async () => {
     multilinePrint(msg, 'red');
 };
 
-await main();
+// https://github.com/google/zx/blob/main/docs/known-issues.md#colors-in-subprocess
+process.env.FORCE_COLOR = '1';
+
+try {
+    await main();
+} catch (e) {
+    print(e, 'red');
+}
