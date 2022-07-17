@@ -61,7 +61,7 @@ export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManage
             logger.error({
                 msg: `Failed to update the '${device.displayName}' device`,
                 device,
-                err: e
+                err: e,
             });
 
             return;
@@ -70,12 +70,12 @@ export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManage
         if (updatedDevice._version === device._version) {
             logger.debug({
                 msg: `The '${updatedDevice.displayName}' device has not changed`,
-                device,
+                device: updatedDevice,
             });
         } else {
             logger.warn({
                 msg: `Updated the '${updatedDevice.displayName}' device`,
-                device,
+                device: updatedDevice,
             });
         }
     };

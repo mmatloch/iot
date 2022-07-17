@@ -177,7 +177,6 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
 
             return {
                 model: bridgeInfo?.coordinator.type || 'Unknown',
-                vendor: 'Unknown',
                 state: buildDeviceState(zigbeeDevice),
             };
         } else {

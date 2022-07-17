@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 import { SearchResponse, createSearchResponse } from '../apis/searchApi';
 import { Device, DeviceDto } from '../entities/deviceEntity';
 import { createDevicesRepository } from '../repositories/devicesRepository';
@@ -33,7 +35,8 @@ export const createDevicesService = (): DevicesService => {
     };
 
     const update = (device: Device, updatedDevice: Partial<Device>) => {
-        return repository.save(repository.merge(device, updatedDevice));
+        const deviceClone = repository.create(device);
+        return repository.save(repository.merge(deviceClone, updatedDevice));
     };
 
     return {
