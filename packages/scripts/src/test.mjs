@@ -1,23 +1,53 @@
 import { $ } from 'zx';
 
 import { DOCKER_COMPOSE_PATH, PROJECT_NAME } from './utils/constants.mjs';
-import { parseInput, serializeParams } from './utils/params.mjs';
+import { serializeParams } from './utils/params.mjs';
 
-const main = async () => {
-    const { params } = parseInput();
-
+const getArgs = (scriptParams) => {
     const composeArgs = [`-p`, PROJECT_NAME, `-f`, DOCKER_COMPOSE_PATH];
     const runArgs = [];
 
-    if (params['watchAll']) {
+    if (scriptParams['watchAll']) {
         runArgs.push('-it');
     }
 
-    await $`docker compose ${composeArgs} run ${runArgs} tests ${serializeParams(params)}`.stdio(
+    return {
+        composeArgs,
+        runArgs,
+    };
+};
+
+const runTests = ({ composeArgs, runArgs, scriptParams }) =>
+    $`docker compose ${composeArgs} run ${runArgs} tests ${serializeParams(scriptParams)}`.stdio(
         'inherit',
         'inherit',
         'inherit',
     );
+
+const main = async (scriptParams) => {
+    await functional(scriptParams);
+    await integration(scriptParams);
 };
 
-await main();
+export const functional = async (scriptParams) => {
+    await runTests({
+        ...getArgs(scriptParams),
+        scriptParams: {
+            ...scriptParams,
+            selectProjects: 'functional',
+        },
+    });
+};
+
+export const integration = async (scriptParams) => {
+    await runTests({
+        ...getArgs(scriptParams),
+        scriptParams: {
+            ...scriptParams,
+            selectProjects: 'integration',
+            runInBand: true,
+        },
+    });
+};
+
+export default main;
