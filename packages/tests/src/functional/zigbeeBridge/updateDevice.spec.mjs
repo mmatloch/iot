@@ -90,9 +90,14 @@ describe('Zigbee bridge updateDevice', () => {
 
         // deactivate
         await H.publish([]);
-        await findDevice({
+        const inactiveDevice = await findDevice({
             ...query,
             state: 'INACTIVE',
+        });
+
+        expect(inactiveDevice).toHaveProperty('deactivatedBy', {
+            type: 'BRIDGE',
+            name: 'Zigbee',
         });
 
         // when
