@@ -1,3 +1,5 @@
+import { access } from 'node:fs';
+
 import { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
@@ -54,7 +56,7 @@ const triggerEventSchema = {
         {
             filters: Type.Object(
                 {
-                    triggerType: Type.Enum(EventTriggerType),
+                    triggerType: Type.Enum(EventTriggerType, { default: EventTriggerType.Api }),
                     triggerFilters: Type.Record(Type.String(), Type.Unknown()),
                 },
                 {
@@ -141,9 +143,11 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
     app.withTypeProvider().post('/events/trigger', { schema: triggerEventSchema }, async (request, reply) => {
         const accessControl = createAccessControl(request.user);
-        accessControl.authorize({
-            role: UserRole.Admin,
-        });
+        accessControl.authorize();
+
+        if (request.body.filters.triggerType !== EventTriggerType.Api && !accessControl.hasRole(UserRole.Admin)) {
+            throw Errors.forbidden();
+        }
 
         const eventsService = createEventsService();
         const eventInstancesService = createEventInstancesService();

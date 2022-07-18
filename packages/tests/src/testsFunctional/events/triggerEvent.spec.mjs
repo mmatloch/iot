@@ -17,9 +17,10 @@ describe('Events triggerEvent', () => {
             });
         });
 
-        it('should receive an error when trying to trigger a event', async () => {
+        it(`should return an error when trying to trigger an event with triggerType other than 'API'`, async () => {
             // given
             const payload = generateEventTriggerPayload();
+            payload.filters.triggerType = 'INCOMING_DEVICE_DATA';
 
             // when & then
             await H.post(payload).expectForbidden({
@@ -34,7 +35,7 @@ describe('Events triggerEvent', () => {
             eventHelpers.authorizeHttpClient();
         });
 
-        it('should trigger a event', async () => {
+        it('should trigger an event', async () => {
             // given
             const postPayload = generateEventPostPayload();
             const { body: event } = await eventHelpers.post(postPayload).expectSuccess();
@@ -169,6 +170,24 @@ describe('Events triggerEvent', () => {
 
             const [thirdProcessedEvent] = secondProcessedEvent.processedEvents;
             expectPerformanceMetrics(thirdProcessedEvent);
+        });
+
+        it(`should trigger an event with triggerType other than 'API'`, async () => {
+            // given
+            const postPayload = generateEventPostPayload();
+            postPayload.triggerType === 'INCOMING_DEVICE_DATA';
+
+            const { body: event } = await eventHelpers.post(postPayload).expectSuccess();
+
+            const payload = generateEventTriggerPayload();
+            payload.filters.triggerType = event.triggerType;
+            payload.filters.triggerFilters = event.triggerFilters;
+
+            // when
+            const { body: triggerResult } = await H.post(payload).expectSuccess();
+
+            // then
+            expect(triggerResult.processedEvents).toBeArrayOfSize(1);
         });
 
         describe('circular reference', () => {
