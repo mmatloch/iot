@@ -1,7 +1,9 @@
 import { GenericDataPublisher } from '../../bridges/generic/genericDataPublisher';
 import { getZigbeeDataPublisher } from '../../bridges/zigbee/zigbeeDataPublisher';
 import { Device, DeviceProtocol } from '../../entities/deviceEntity';
+import { SensorData } from '../../entities/sensorDataEntity';
 import { createDevicesService } from '../../services/devicesService';
+import { createSensorDataService } from '../../services/sensorDataService';
 
 const getDataPublisher = (device: Device): GenericDataPublisher => {
     switch (device.protocol) {
@@ -20,9 +22,12 @@ export const createDevicesSdk = () => {
         return devicesService.findByIdOrFail(id);
     };
 
-    const createSensorData = async (device: Device, sensorData: Device['sensorData']) => {
-        await devicesService.update(device, {
-            sensorData,
+    const createSensorData = async (device: Device, data: SensorData['data']) => {
+        const sensorDataService = createSensorDataService();
+
+        await sensorDataService.create({
+            deviceId: device._id,
+            data,
         });
     };
 

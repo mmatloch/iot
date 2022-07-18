@@ -1,7 +1,5 @@
 import { faker } from '@faker-js/faker';
 
-import { generateSensorData } from './sensorDataGenerators.mjs';
-
 export const generateDevicePowerSource = () => {
     return faker.helpers.arrayElement(['UNKNOWN', 'BATTERY', 'MAINS_SINGLE_PHASE', 'MAINS_THREE_PHASE', 'DC']);
 };
@@ -25,6 +23,5 @@ export const generateDevicePostPayload = () => {
         type: generateDeviceType(),
         protocol: 'ZIGBEE',
         state: 'ACTIVE',
-        sensorData: generateSensorData(),
     };
 };

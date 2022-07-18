@@ -58,7 +58,6 @@ describe('Zigbee bridge createDevice', () => {
             manufacturer: 'Unknown',
             description: 'Coordinator',
             ieeeAddress: zigbeeDevice.ieee_address,
-            sensorData: {},
         });
 
         expect(device).not.toHaveProperty('deactivatedBy');
@@ -95,7 +94,6 @@ describe('Zigbee bridge createDevice', () => {
             manufacturer: zigbeeDevice.manufacturer,
             description: zigbeeDevice.definition.description,
             ieeeAddress: zigbeeDevice.ieee_address,
-            sensorData: {},
         });
 
         expect(device).not.toHaveProperty('deactivatedBy');
@@ -132,7 +130,6 @@ describe('Zigbee bridge createDevice', () => {
             manufacturer: zigbeeDevice.manufacturer,
             description: zigbeeDevice.definition.description,
             ieeeAddress: zigbeeDevice.ieee_address,
-            sensorData: {},
         });
 
         expect(device).not.toHaveProperty('deactivatedBy');
@@ -169,7 +166,6 @@ describe('Zigbee bridge createDevice', () => {
             manufacturer: zigbeeDevice.manufacturer,
             description: zigbeeDevice.definition.description,
             ieeeAddress: zigbeeDevice.ieee_address,
-            sensorData: {},
         });
 
         expect(device).not.toHaveProperty('deactivatedBy');

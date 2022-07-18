@@ -15,6 +15,7 @@ const schema = Type.Object({
     resources: Type.Object({
         users: resourceConfigSchema,
         devices: resourceConfigSchema,
+        sensorData: resourceConfigSchema,
         events: resourceConfigSchema,
         eventInstances: resourceConfigSchema,
         eventTrigger: resourceConfigSchema,

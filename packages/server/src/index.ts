@@ -9,6 +9,7 @@ import { getLogger } from './logger';
 import requestUserPlugin from './plugins/requestUserPlugin';
 import { createDevicesRest } from './rest/devicesRest';
 import { createEventsRest } from './rest/eventsRest';
+import { createSensorDataRest } from './rest/sensorDataRest';
 import { createUsersRest } from './rest/usersRest';
 
 createApplication({
@@ -31,6 +32,7 @@ createApplication({
             app.register(createUsersRest);
             app.register(createDevicesRest);
             app.register(createEventsRest);
+            app.register(createSensorDataRest);
 
             await createZigbeeBridge(mqttClient).initialize();
         },

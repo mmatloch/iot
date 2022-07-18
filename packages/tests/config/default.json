@@ -8,6 +8,10 @@
       "baseUrl": "http://nginx:8080/api/",
       "path": "devices"
     },
+    "sensorData": {
+      "baseUrl": "http://nginx:8080/api/",
+      "path": "devices/sensorData"
+    },
     "events": {
       "baseUrl": "http://nginx:8080/api/",
       "path": "events"

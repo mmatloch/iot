@@ -1,21 +1,21 @@
-import { getConfig } from '../../config.mjs';
 import { generateZigbeeDevice, generateZigbeeIncomingData } from '../../dataGenerators/zigbeeDataGenerators.mjs';
 import {
     createDeviceHelpers,
     createEventHelpers,
     createEventInstanceHelpers,
     createMqttHelpers,
+    createSensorDataHelpers,
     createZigbeeBridgeDevicesHelpers,
 } from '../../helpers/helpers.mjs';
 import { sleep } from '../../utils/commonUtils.mjs';
 import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mjs';
 import { getZigbeeTopic } from '../../utils/zigbeeUtils.mjs';
 
-const config = getConfig();
 const zigbeeDeviceHelpers = createZigbeeBridgeDevicesHelpers();
 const deviceHelpers = createDeviceHelpers();
 const eventHelpers = createEventHelpers();
 const eventInstanceHelpers = createEventInstanceHelpers();
+const sensorDataHelpers = createSensorDataHelpers();
 
 const findDevice = async (query) => {
     const {
@@ -41,7 +41,13 @@ const findEventInstance = async (query) => {
     return _hits[0];
 };
 
-const createTopic = (device) => `${config.zigbee.topicPrefix}/${device.ieeeAddress}`;
+const findSensorData = async (query) => {
+    const {
+        body: { _hits },
+    } = await sensorDataHelpers.repeatSearch(query).expectHits(1);
+
+    return _hits[0];
+};
 
 /**
  * @group zigbeeBridge/incomingDeviceData
@@ -52,6 +58,7 @@ describe('Zigbee bridge incomingDeviceData', () => {
         deviceHelpers.authorizeHttpClient();
         eventHelpers.authorizeHttpClient();
         eventInstanceHelpers.authorizeHttpClient();
+        sensorDataHelpers.authorizeHttpClient();
         await connectToBroker();
     });
 
@@ -59,7 +66,7 @@ describe('Zigbee bridge incomingDeviceData', () => {
         await disconnectFromBroker();
     });
 
-    it(`should update 'sensorData'`, async () => {
+    it(`should create a SensorData`, async () => {
         // given
         const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         await zigbeeDeviceHelpers.publish([zigbeeDevice]);
@@ -93,14 +100,17 @@ describe('Zigbee bridge incomingDeviceData', () => {
             triggerContext: sensorData,
         });
 
-        const updatedDevice = await findDevice(deviceQuery);
-        expect(updatedDevice).toHaveProperty('sensorData', sensorData);
+        const sensorDataQuery = {
+            deviceId: device._id,
+        };
+
+        const createdSensorData = await findSensorData(sensorDataQuery);
+        expect(createdSensorData).toHaveProperty('data', sensorData);
     });
 
-    it(`should not update 'sensorData' when the device is inactive`, async () => {
+    it(`should not create SensorData when the device is inactive`, async () => {
         // given
         const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
-        zigbeeDevice.friendly_name === 'Testowe';
 
         // create a device
         await zigbeeDeviceHelpers.publish([zigbeeDevice]);
@@ -128,6 +138,10 @@ describe('Zigbee bridge incomingDeviceData', () => {
         await H.publish(sensorData);
 
         // then
+        const sensorDataQuery = {
+            deviceId: device._id,
+        };
+
         const eventInstanceQuery = {
             eventId: event._id,
         };
@@ -135,6 +149,7 @@ describe('Zigbee bridge incomingDeviceData', () => {
         // wait for processing
         await sleep(1000);
         await eventInstanceHelpers.search(eventInstanceQuery).expectHits(0);
+        await sensorDataHelpers.search(sensorDataQuery).expectHits(0);
 
         // activate the device
         await zigbeeDeviceHelpers.publish([zigbeeDevice]);
@@ -144,5 +159,6 @@ describe('Zigbee bridge incomingDeviceData', () => {
         await H.publish(sensorData);
 
         await eventInstanceHelpers.repeatSearch(eventInstanceQuery).expectHits(1);
+        await sensorDataHelpers.search(sensorDataQuery).expectHits(1);
     });
 });

@@ -114,12 +114,6 @@ export class Device extends GenericEntity {
 
     @Column({
         type: 'jsonb',
-        default: '{}',
-    })
-    sensorData!: Record<string, unknown>;
-
-    @Column({
-        type: 'jsonb',
         default: null,
         nullable: true,
     })
@@ -158,7 +152,6 @@ export const deviceDtoSchema = Type.Object(
         type: Type.Enum(DeviceType),
         protocol: Type.Enum(DeviceProtocol),
         state: Type.Enum(DeviceState),
-        sensorData: Type.Optional(Type.Record(Type.String(), Type.Unknown())),
         deactivatedBy: Type.Optional(deactivatedBySchema),
     },
     {
