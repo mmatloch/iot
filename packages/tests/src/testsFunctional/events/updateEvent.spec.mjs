@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 
+import { generateDeviceIeeeAddress } from '../../dataGenerators/devicesDataGenerators.mjs';
 import {
     generateEventDisplayName,
     generateEventName,
@@ -20,7 +21,7 @@ const updatableFields = [
     {
         field: 'triggerFilters',
         generateValue: () => ({
-            ieeeAddress: faker.vehicle.vin(),
+            ieeeAddress: generateDeviceIeeeAddress(),
         }),
     },
     {

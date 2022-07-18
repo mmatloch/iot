@@ -12,7 +12,7 @@ import { createDevicesService } from '../services/devicesService';
 const createDeviceSchema = {
     body: deviceDtoSchema,
     response: {
-        [StatusCodes.OK]: deviceSchema,
+        [StatusCodes.CREATED]: deviceSchema,
     },
 };
 

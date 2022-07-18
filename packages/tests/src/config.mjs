@@ -16,7 +16,16 @@ const schema = Type.Object({
         users: resourceConfigSchema,
         devices: resourceConfigSchema,
         events: resourceConfigSchema,
+        eventInstances: resourceConfigSchema,
         googleOAuth2AuthorizationCode: resourceConfigSchema,
+    }),
+    mqttBroker: Type.Object({
+        url: Type.String(),
+    }),
+    zigbee: Type.Object({
+        topicPrefix: Type.String(),
+        bridgeDevicesTopic: Type.String(),
+        bridgeInfoTopic: Type.String(),
     }),
 });
 

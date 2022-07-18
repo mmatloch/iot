@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { generateDeviceIeeeAddress } from './devicesDataGenerators.mjs';
 
 import { generateSensorData } from './sensorDataGenerators.mjs';
 
@@ -13,7 +14,7 @@ export const generateEventPostPayload = () => {
         displayName: generateEventDisplayName(),
         triggerType: generateEventTriggerType(),
         triggerFilters: {
-            ieeeAddress: faker.vehicle.vin(),
+            ieeeAddress: generateDeviceIeeeAddress(),
         },
         conditionDefinition: 'return true',
         actionDefinition: 'return true',
@@ -25,7 +26,7 @@ export const generateEventTriggerPayload = () => {
         filters: {
             triggerType: generateEventTriggerType(),
             triggerFilters: {
-                ieeeAddress: faker.vehicle.vin(),
+                ieeeAddress: generateDeviceIeeeAddress(),
             },
         },
         context: {

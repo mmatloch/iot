@@ -1,8 +1,13 @@
+import _ from 'lodash';
+
 import { SearchResponse, createSearchResponse } from '../apis/searchApi';
 import { Device, DeviceDto } from '../entities/deviceEntity';
 import { createDevicesRepository } from '../repositories/devicesRepository';
+import { GenericService } from './genericService';
 
-export const createDevicesService = () => {
+export interface DevicesService extends GenericService<Device, DeviceDto> {}
+
+export const createDevicesService = (): DevicesService => {
     const repository = createDevicesRepository();
 
     const create = async (dto: DeviceDto): Promise<Device> => {
@@ -29,9 +34,15 @@ export const createDevicesService = () => {
         });
     };
 
+    const update = (device: Device, updatedDevice: Partial<Device>) => {
+        const deviceClone = repository.create(device);
+        return repository.save(repository.merge(deviceClone, updatedDevice));
+    };
+
     return {
         create,
         search,
         findByIdOrFail,
+        update,
     };
 };

@@ -34,6 +34,8 @@ export const createApplicationFromFastify = (opts: FastifyServerOptions) => {
     return fastify({
         logger: true,
         querystringParser: (str) => Qs.parse(str),
+        trustProxy: true,
+        disableRequestLogging: true,
         ...opts,
     });
 };

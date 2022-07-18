@@ -10,19 +10,18 @@ const sandbox = createSandbox();
 
 interface ProcessOptions {
     event: Event;
-    sdk: EventRunnerCodeSdk;
     context: EventContext;
     performanceMetrics: EventInstance['performanceMetrics'];
 }
 
-export const createEventProcessor = () => {
-    const runCode = (code: string, sdk: EventRunnerCodeSdk, context: EventContext): Promise<unknown> => {
+export const createEventProcessor = (sdk: EventRunnerCodeSdk) => {
+    const runCode = (code: string, context: EventContext): Promise<unknown> => {
         return sandbox.run(`(async function(sdk, context) {${code}})`).call(undefined, sdk, context);
     };
 
-    const runCondition = async (event: Event, sdk: EventRunnerCodeSdk, context: EventContext) => {
+    const runCondition = async (event: Event, context: EventContext) => {
         try {
-            return await runCode(event.conditionDefinition, sdk, context);
+            return await runCode(event.conditionDefinition, context);
         } catch (e) {
             throw Errors.failedToRunCondition({
                 cause: e,
@@ -30,9 +29,9 @@ export const createEventProcessor = () => {
         }
     };
 
-    const runAction = async (event: Event, sdk: EventRunnerCodeSdk, context: EventContext) => {
+    const runAction = async (event: Event, context: EventContext) => {
         try {
-            await runCode(event.actionDefinition, sdk, context);
+            await runCode(event.actionDefinition, context);
         } catch (e) {
             throw Errors.failedToRunAction({
                 cause: e,
@@ -40,11 +39,11 @@ export const createEventProcessor = () => {
         }
     };
 
-    const process = async ({ event, sdk, context, performanceMetrics }: ProcessOptions) => {
+    const process = async ({ event, context, performanceMetrics }: ProcessOptions) => {
         const runConditionStart = new Date().toISOString();
         const runConditionDurationStart = performance.now();
 
-        const condition = await runCondition(event, sdk, context);
+        const condition = await runCondition(event, context);
 
         performanceMetrics.steps.push({
             name: 'runCondition',
@@ -60,7 +59,7 @@ export const createEventProcessor = () => {
         const runActionStart = new Date().toISOString();
         const runActionDurationStart = performance.now();
 
-        await runAction(event, sdk, context);
+        await runAction(event, context);
 
         performanceMetrics.steps.push({
             name: 'runAction',

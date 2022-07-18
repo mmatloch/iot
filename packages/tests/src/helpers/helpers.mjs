@@ -1,48 +1,20 @@
-import { faker } from '@faker-js/faker';
-import JWT from 'jsonwebtoken';
-
 import { getConfig } from '../config.mjs';
-import { TEST_USER_EMAIL } from '../constants.mjs';
-import { createHttpClient } from '../utils/httpClient.mjs';
 import { createHttpHelpers } from './httpHelpers.mjs';
+import { createMqttHelpers } from './mqttHelpers.mjs';
 
-const createHelpers = (resourceName, resourceConfigOverrides = {}) => {
-    const config = getConfig();
-    const httpClient = createHttpClient();
+const config = getConfig();
 
-    const resourceConfig = {
-        ...config.resources[resourceName],
-        ...resourceConfigOverrides,
-    };
-
-    const authorizeHttpClient = (overrides) => {
-        const testUser = {
-            _id: faker.datatype.number({ min: 100_000_000 }),
-            email: TEST_USER_EMAIL,
-            role: 'ADMIN',
-            ...overrides,
-        };
-
-        const token = JWT.sign(testUser, config.authorization.jwtSecret, {
-            algorithm: 'HS256',
-            expiresIn: '14d',
-            subject: String(testUser._id),
-        });
-
-        httpClient.useAuthorizationStrategy({
-            name: 'Test JWT token',
-            getAuthorizationHeader: () => `JWT ${token}`,
-        });
-    };
-
-    return {
-        authorizeHttpClient,
-        ...createHttpHelpers(httpClient, { resourceConfig }),
-    };
-};
-
-export const createUserHelpers = (...opts) => createHelpers('users', ...opts);
-export const createDeviceHelpers = (...opts) => createHelpers('devices', ...opts);
-export const createEventHelpers = (...opts) => createHelpers('events', ...opts);
+// HTTP API
+export const createUserHelpers = (...opts) => createHttpHelpers(config.resources.users, ...opts);
+export const createDeviceHelpers = (...opts) => createHttpHelpers(config.resources.devices, ...opts);
+export const createEventHelpers = (...opts) => createHttpHelpers(config.resources.events, ...opts);
+export const createEventInstanceHelpers = (...opts) => createHttpHelpers(config.resources.eventInstances, ...opts);
 export const createGoogleOAuth2AuthorizationCodeHelpers = (...opts) =>
-    createHelpers('googleOAuth2AuthorizationCode', ...opts);
+    createHttpHelpers(config.resources.googleOAuth2AuthorizationCode, ...opts);
+
+// MQTT Zigbee
+export const createZigbeeBridgeDevicesHelpers = (...opts) =>
+    createMqttHelpers(config.zigbee.bridgeDevicesTopic, ...opts);
+export const createZigbeeBridgeInfoHelpers = (...opts) => createMqttHelpers(config.zigbee.bridgeInfoTopic, ...opts);
+
+export const createZigbeeHelpers = (topic, ...opts) => createMqttHelpers(topic, ...opts);
