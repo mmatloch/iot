@@ -1,9 +1,7 @@
 import { generateEventPostPayload, generateEventTriggerPayload } from '../../dataGenerators/eventsDataGenerators.mjs';
-import { createEventHelpers } from '../../helpers/helpers.mjs';
+import { createEventHelpers, createEventTriggerHelpers } from '../../helpers/helpers.mjs';
 
-const H = createEventHelpers({
-    path: 'events/trigger',
-});
+const H = createEventTriggerHelpers();
 
 const eventHelpers = createEventHelpers();
 

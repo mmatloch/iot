@@ -9,7 +9,17 @@ export const createMqttHelpers = (topic) => {
         await mqttClient.publish(topic, message);
     };
 
+    const subscribe = async (topic) => {
+        const messages = [];
+
+        const handler = (payload) => messages.push(payload);
+        await mqttClient.subscribe(topic, handler);
+
+        return messages;
+    };
+
     return {
         publish,
+        subscribe,
     };
 };

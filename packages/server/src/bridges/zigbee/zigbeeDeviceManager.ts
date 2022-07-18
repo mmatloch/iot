@@ -65,7 +65,11 @@ const buildDeviceState = (zigbeeDevice: ZigbeeDevice): DeviceState => {
 };
 
 const buildActionDefinition = (device: Device) => {
-    const code: string[] = [`const deviceId = ${device._id}`, 'await sdk.devices.createSensorData(deviceId, context)'];
+    const code: string[] = [
+        `const deviceId = ${device._id}`,
+        'const device = await sdk.devices.findByIdOrFail(deviceId)',
+        'await sdk.devices.createSensorData(device, context)',
+    ];
 
     return code.join(`; ${EOL}`);
 };

@@ -4,11 +4,12 @@ import {
     createDeviceHelpers,
     createEventHelpers,
     createEventInstanceHelpers,
+    createMqttHelpers,
     createZigbeeBridgeDevicesHelpers,
-    createZigbeeHelpers,
 } from '../../helpers/helpers.mjs';
 import { sleep } from '../../utils/commonUtils.mjs';
 import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mjs';
+import { getZigbeeTopic } from '../../utils/zigbeeUtils.mjs';
 
 const config = getConfig();
 const zigbeeDeviceHelpers = createZigbeeBridgeDevicesHelpers();
@@ -74,7 +75,7 @@ describe('Zigbee bridge incomingDeviceData', () => {
         const device = await findDevice(deviceQuery);
         const event = await findEvent(eventQuery);
 
-        const H = createZigbeeHelpers(createTopic(device));
+        const H = createMqttHelpers(getZigbeeTopic(device).toReceiveData);
 
         const sensorData = generateZigbeeIncomingData.temperatureAndHumiditySensor();
 
@@ -119,7 +120,7 @@ describe('Zigbee bridge incomingDeviceData', () => {
         const device = await findDevice(deviceQuery);
         const event = await findEvent(eventQuery);
 
-        const H = createZigbeeHelpers(createTopic(device));
+        const H = createMqttHelpers(getZigbeeTopic(device).toReceiveData);
 
         const sensorData = generateZigbeeIncomingData.temperatureAndHumiditySensor();
 

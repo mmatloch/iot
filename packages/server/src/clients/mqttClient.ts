@@ -16,6 +16,7 @@ const validator: Validator = createValidator();
 
 type SubscribeFn = (topic: string | string[], opts?: IClientSubscribeOptions) => Promise<void>;
 type UnsubscribeFn = (topic: string | string[]) => Promise<unknown>;
+type PublishFn = (topic: string, data: unknown) => Promise<void>;
 
 interface AddHandlerOptions<Schema extends TSchema> {
     onMessage: (payload: Static<Schema>) => Promise<void>;
@@ -35,13 +36,15 @@ export interface MqttClient {
     removeHandler: RemoveHandlerFn;
     subscribe: SubscribeFn;
     unsubscribe: UnsubscribeFn;
+    publish: PublishFn;
 }
 
 export const createMqttClient = (): MqttClient => {
     const client = connect(config.mqttBroker.url);
 
-    const subscribePromise = promisify(client.subscribe).bind(client);
-    const unsubscribePromise = promisify(client.unsubscribe).bind(client);
+    const subscribeAsPromised = promisify(client.subscribe).bind(client);
+    const unsubscribeAsPromised = promisify(client.unsubscribe).bind(client);
+    const publishAsPromised = promisify(client.publish).bind(client);
 
     const handlerMap: HandlerMap = new Map();
     const subscriptionSet: Set<string> = new Set();
@@ -86,12 +89,12 @@ export const createMqttClient = (): MqttClient => {
 
     const subscribe: SubscribeFn = async (topics) => {
         _.castArray(topics).forEach((topic) => logger.debug(`Subscribing to the topic '${topic}'`));
-        await subscribePromise(topics);
+        await subscribeAsPromised(topics);
     };
 
     const unsubscribe: UnsubscribeFn = async (topics) => {
         _.castArray(topics).forEach((topic) => logger.debug(`Unubscribing from the topic '${topic}'`));
-        await unsubscribePromise(topics);
+        await unsubscribeAsPromised(topics);
     };
 
     const parseMessage = (message: Buffer): unknown => {
@@ -138,11 +141,18 @@ export const createMqttClient = (): MqttClient => {
         }
     };
 
+    const publish: PublishFn = async (topic, data) => {
+        logger.debug(`Publishing to the topic '${topic}'`);
+
+        await publishAsPromised(topic, JSON.stringify(data));
+    };
+
     return {
         initialize,
         addHandler,
         removeHandler,
         unsubscribe,
         subscribe,
+        publish,
     };
 };

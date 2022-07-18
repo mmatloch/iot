@@ -40,13 +40,44 @@ export const disconnectFromBroker = async () => {
 };
 
 export const createMqttClient = () => {
-    const publish = async (topic, message) => {
-        const publishPromise = promisify(client.publish).bind(client);
+    const handlerMap = new Map();
+    let isInitialized = false;
 
-        return publishPromise(topic, JSON.stringify(message));
+    const initialize = () => {
+        if (isInitialized) {
+            return;
+        }
+
+        client.on('message', (topic, payload) => {
+            const handler = handlerMap.get(topic);
+
+            if (!handler) {
+                return;
+            }
+
+            handler(JSON.parse(payload));
+        });
+
+        isInitialized = true;
+    };
+
+    const publish = async (topic, message) => {
+        const publishAsPromised = promisify(client.publish).bind(client);
+
+        return publishAsPromised(topic, JSON.stringify(message));
+    };
+
+    const subscribe = async (topic, onMessage) => {
+        initialize();
+
+        handlerMap.set(topic, onMessage);
+
+        const subscribeAsPromised = promisify(client.subscribe).bind(client);
+        await subscribeAsPromised(topic);
     };
 
     return {
         publish,
+        subscribe,
     };
 };

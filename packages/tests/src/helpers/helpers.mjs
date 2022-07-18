@@ -9,6 +9,7 @@ export const createUserHelpers = (...opts) => createHttpHelpers(config.resources
 export const createDeviceHelpers = (...opts) => createHttpHelpers(config.resources.devices, ...opts);
 export const createEventHelpers = (...opts) => createHttpHelpers(config.resources.events, ...opts);
 export const createEventInstanceHelpers = (...opts) => createHttpHelpers(config.resources.eventInstances, ...opts);
+export const createEventTriggerHelpers = (...opts) => createHttpHelpers(config.resources.eventTrigger, ...opts);
 export const createGoogleOAuth2AuthorizationCodeHelpers = (...opts) =>
     createHttpHelpers(config.resources.googleOAuth2AuthorizationCode, ...opts);
 
@@ -17,4 +18,4 @@ export const createZigbeeBridgeDevicesHelpers = (...opts) =>
     createMqttHelpers(config.zigbee.bridgeDevicesTopic, ...opts);
 export const createZigbeeBridgeInfoHelpers = (...opts) => createMqttHelpers(config.zigbee.bridgeInfoTopic, ...opts);
 
-export const createZigbeeHelpers = (topic, ...opts) => createMqttHelpers(topic, ...opts);
+export { createMqttHelpers };
