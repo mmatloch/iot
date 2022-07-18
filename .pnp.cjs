@@ -8371,6 +8371,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/lodash", "npm:4.14.182"],\
             ["@types/node", "npm:17.0.42"],\
             ["camelcase-keys", "npm:7.0.2"],\
+            ["fastq", "npm:1.13.0"],\
             ["http-status-codes", "npm:2.2.0"],\
             ["jsonwebtoken", "npm:8.5.1"],\
             ["lodash", "npm:4.17.21"],\

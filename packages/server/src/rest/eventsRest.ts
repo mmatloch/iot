@@ -5,7 +5,7 @@ import { StatusCodes } from 'http-status-codes';
 import { createAccessControl } from '../accessControl';
 import { createSearchResponseSchema } from '../apis/searchApi';
 import { EventDto, EventTriggerType, eventDtoSchema, eventSchema } from '../entities/eventEntity';
-import { eventInstanceSchema } from '../entities/eventInstanceEntity';
+import { eventInstanceDtoSchema, eventInstanceSchema } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
 import { createEventRunner } from '../events/eventRunner';
@@ -30,6 +30,7 @@ const getEventSchema = {
 };
 
 const partialEventDtoSchema = Type.Partial(eventDtoSchema);
+const partialEventInstanceDtoSchema = Type.Partial(eventInstanceDtoSchema);
 
 const searchEventsSchema = {
     querystring: partialEventDtoSchema,
@@ -69,9 +70,7 @@ const triggerEventSchema = {
 };
 
 const searchEventInstancesSchema = {
-    params: Type.Object({
-        id: Type.Integer(),
-    }),
+    querystring: partialEventInstanceDtoSchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(eventInstanceSchema),
     },
@@ -156,19 +155,15 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
         return reply.status(StatusCodes.CREATED).send(result);
     });
 
-    app.withTypeProvider().get(
-        '/events/:id/instances',
-        { schema: searchEventInstancesSchema },
-        async (request, reply) => {
-            const accessControl = createAccessControl(request.user);
-            accessControl.authorize({
-                role: UserRole.Admin,
-            });
+    app.withTypeProvider().get('/events/instances', { schema: searchEventInstancesSchema }, async (request, reply) => {
+        const accessControl = createAccessControl(request.user);
+        accessControl.authorize({
+            role: UserRole.Admin,
+        });
 
-            const service = createEventInstancesService();
-            const searchResult = await service.search({ eventId: request.params.id });
+        const service = createEventInstancesService();
+        const searchResult = await service.search(request.query);
 
-            return reply.status(StatusCodes.OK).send(searchResult);
-        },
-    );
+        return reply.status(StatusCodes.OK).send(searchResult);
+    });
 };

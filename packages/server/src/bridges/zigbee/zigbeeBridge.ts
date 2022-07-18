@@ -1,4 +1,5 @@
 import { MqttClient } from '../../clients/mqttClient';
+import { DeviceState } from '../../entities/deviceEntity';
 import { getLogger } from '../../logger';
 import {
     ZIGBEE_TOPIC_PREFIX,
@@ -18,46 +19,61 @@ import { onInfoErrorHandler, onInfoHandler } from './zigbeeHandlers/zigbeeInfoHa
 const logger = getLogger();
 
 export const createZigbeeBridge = (mqttClient: MqttClient) => {
-    const deviceSubMap: Map<number, string> = new Map();
+    const deviceSubMap: Map<number, DeviceState> = new Map();
 
     const initialize = async () => {
-        await mqttClient.onMessage({
-            handler: onInfoHandler,
-            errorHandler: onInfoErrorHandler,
+        await mqttClient.addHandler({
+            onMessage: onInfoHandler,
+            onError: onInfoErrorHandler,
             topic: ZigbeeTopic.BridgeInfo,
             schema: zigbeeInfoSchema,
         });
 
         const zigbeeDeviceManager = createZigbeeDeviceManager();
 
-        await mqttClient.onMessage({
-            handler: createDevicesHandler(zigbeeDeviceManager),
-            errorHandler: onDevicesErrorHandler,
+        await mqttClient.addHandler({
+            onMessage: createDevicesHandler(zigbeeDeviceManager),
+            onError: onDevicesErrorHandler,
             topic: ZigbeeTopic.BridgeDevices,
             schema: zigbeeDevicesSchema,
         });
 
         zigbeeDeviceManager.watch(async (device) => {
-            const ieeeAddress = deviceSubMap.get(device._id);
+            const previousState = deviceSubMap.get(device._id);
 
-            if (ieeeAddress === device.ieeeAddress) {
+            if (previousState === device.state) {
                 return;
             }
 
             const topic = `${ZIGBEE_TOPIC_PREFIX}/${device.ieeeAddress}`;
 
+            if (previousState && device.state === DeviceState.Inactive) {
+                try {
+                    await mqttClient.removeHandler(topic);
+                    deviceSubMap.set(device._id, device.state);
+                } catch (e) {
+                    logger.error({
+                        msg: `Failed to remove handler from the topic '${topic}'`,
+                        err: e,
+                        device,
+                    });
+                }
+
+                return;
+            }
+
             try {
-                await mqttClient.onMessage({
-                    handler: createIncomingDeviceDataHandler(device),
-                    errorHandler: createIncomingDeviceDataErrorHandler(device),
+                await mqttClient.addHandler({
+                    onMessage: createIncomingDeviceDataHandler(device),
+                    onError: createIncomingDeviceDataErrorHandler(device),
                     topic: topic,
                     schema: zigbeeDeviceDataSchema,
                 });
 
-                deviceSubMap.set(device._id, device.ieeeAddress);
+                deviceSubMap.set(device._id, device.state);
             } catch (e) {
                 logger.error({
-                    msg: `Failed to subscribe to the topic '${topic}'`,
+                    msg: `Failed to add handler to the topic '${topic}'`,
                     err: e,
                     device,
                 });

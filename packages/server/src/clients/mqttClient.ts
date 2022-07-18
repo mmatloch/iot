@@ -3,8 +3,9 @@ import { promisify } from 'util';
 import { Validator, createValidator } from '@common/validator';
 import { Static, TSchema } from '@sinclair/typebox';
 import toCamelCase from 'camelcase-keys';
+import fastq, { queueAsPromised } from 'fastq';
 import _ from 'lodash';
-import { IClientSubscribeOptions, ISubscriptionGrant, connect } from 'mqtt';
+import { IClientSubscribeOptions, connect } from 'mqtt';
 
 import { getConfig } from '../config';
 import { getLogger } from '../logger';
@@ -13,60 +14,51 @@ const config = getConfig();
 const logger = getLogger();
 const validator: Validator = createValidator();
 
-type SubscribeFn = (topic: string | string[], opts?: IClientSubscribeOptions) => Promise<ISubscriptionGrant[]>;
+type SubscribeFn = (topic: string | string[], opts?: IClientSubscribeOptions) => Promise<void>;
+type UnsubscribeFn = (topic: string | string[]) => Promise<unknown>;
 
-interface OnMessageOptions<Schema extends TSchema> {
-    handler: (payload: Static<Schema>) => Promise<void>;
-    errorHandler: (error: unknown) => Promise<void>;
+interface AddHandlerOptions<Schema extends TSchema> {
+    onMessage: (payload: Static<Schema>) => Promise<void>;
+    onError: (error: unknown) => Promise<void>;
     schema: Schema;
     topic: string;
 }
-type OnMessageFn = <Schema extends TSchema>(opts: OnMessageOptions<Schema>) => Promise<void>;
 
-type MessageHandlerMap = Map<
-    string,
-    {
-        schema: TSchema;
-        handler: (payload: Static<TSchema>) => Promise<void>;
-        errorHandler: (error: unknown) => Promise<void>;
-    }
->;
+type AddHandlerFn = <Schema extends TSchema>(opts: AddHandlerOptions<Schema>) => Promise<void>;
+type RemoveHandlerFn = (topic: string) => Promise<void>;
+
+type HandlerMap = Map<string, queueAsPromised<unknown, void>>;
 
 export interface MqttClient {
     initialize: () => Promise<void>;
-    onMessage: OnMessageFn;
+    addHandler: AddHandlerFn;
+    removeHandler: RemoveHandlerFn;
+    subscribe: SubscribeFn;
+    unsubscribe: UnsubscribeFn;
 }
 
 export const createMqttClient = (): MqttClient => {
     const client = connect(config.mqttBroker.url);
-    const messageHandlers: MessageHandlerMap = new Map();
+
+    const subscribePromise = promisify(client.subscribe).bind(client);
+    const unsubscribePromise = promisify(client.unsubscribe).bind(client);
+
+    const handlerMap: HandlerMap = new Map();
+    const subscriptionSet: Set<string> = new Set();
 
     const initialize = async (): Promise<void> => {
         client.on('message', async (topic, payload) => {
             logger.trace(`Received a message from the topic '${topic}'`);
 
-            const messageHandler = messageHandlers.get(topic);
+            const handler = handlerMap.get(topic);
 
-            if (!messageHandler) {
-                logger.warn(`No message handler found for the topic '${topic}'`);
+            if (!handler) {
+                logger.warn(`No handler found for the topic '${topic}'`);
 
                 return;
             }
 
-            const parsePayload = (payload: Buffer): unknown => {
-                const parsedPayload = JSON.parse(payload.toString());
-
-                return toCamelCase(parsedPayload, { deep: true });
-            };
-
-            try {
-                const parsedPayload = parsePayload(payload);
-
-                validator.validateOrThrow(messageHandler.schema, parsedPayload);
-                await messageHandler.handler(parsedPayload);
-            } catch (e) {
-                await messageHandler.errorHandler(e);
-            }
+            await handler.push(payload);
         });
 
         return new Promise((resolve, reject) => {
@@ -92,21 +84,65 @@ export const createMqttClient = (): MqttClient => {
         });
     };
 
-    const subscribe: SubscribeFn = promisify(client.subscribe).bind(client);
+    const subscribe: SubscribeFn = async (topics) => {
+        _.castArray(topics).forEach((topic) => logger.debug(`Subscribing to the topic '${topic}'`));
+        await subscribePromise(topics);
+    };
 
-    const onMessage: OnMessageFn = async ({ topic, handler, errorHandler, schema }) => {
-        messageHandlers.set(topic, {
-            handler,
-            errorHandler,
-            schema,
-        });
+    const unsubscribe: UnsubscribeFn = async (topics) => {
+        _.castArray(topics).forEach((topic) => logger.debug(`Unubscribing from the topic '${topic}'`));
+        await unsubscribePromise(topics);
+    };
 
-        logger.debug(`Subscribing to the topic '${topic}'`);
-        await subscribe(topic);
+    const parseMessage = (message: Buffer): unknown => {
+        const parsedPayload = JSON.parse(message.toString());
+
+        return toCamelCase(parsedPayload, { deep: true });
+    };
+
+    const addHandler: AddHandlerFn = async ({ topic, onMessage, onError, schema }) => {
+        const concurrency = 1;
+
+        const wrappedOnMessage = (message: Buffer) => {
+            const parsedPayload = parseMessage(message);
+            validator.validateOrThrow(schema, parsedPayload);
+
+            return onMessage(parsedPayload);
+        };
+
+        const wrappedOnError = (error: Error) => {
+            if (error) {
+                return onError(error);
+            }
+
+            return;
+        };
+
+        const queue = fastq.promise(wrappedOnMessage, concurrency);
+        queue.error(wrappedOnError);
+
+        handlerMap.set(topic, queue);
+
+        if (!subscriptionSet.has(topic)) {
+            await subscribe(topic);
+            subscriptionSet.add(topic);
+        }
+    };
+
+    const removeHandler: RemoveHandlerFn = async (topic) => {
+        handlerMap.delete(topic);
+
+        if (subscriptionSet.has(topic)) {
+            await unsubscribe(topic);
+            subscriptionSet.delete(topic);
+        }
     };
 
     return {
         initialize,
-        onMessage,
+        addHandler,
+        removeHandler,
+        unsubscribe,
+        subscribe,
     };
 };

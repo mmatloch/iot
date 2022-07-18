@@ -90,8 +90,10 @@ export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManage
             device,
         });
 
+        let updatedDevice;
+
         try {
-            await zigbeeDeviceManager.deactivate(device);
+            updatedDevice = await zigbeeDeviceManager.deactivate(device);
         } catch (e) {
             logger.error({
                 msg: `Failed to deactivate the '${device.displayName}' device`,
@@ -103,8 +105,8 @@ export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManage
         }
 
         logger.debug({
-            msg: `The '${device.displayName}' device has been deactivated`,
-            device,
+            msg: `The '${updatedDevice.displayName}' device has been deactivated`,
+            device: updatedDevice,
         });
     };
 

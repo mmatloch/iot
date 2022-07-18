@@ -16,6 +16,7 @@ const schema = Type.Object({
         users: resourceConfigSchema,
         devices: resourceConfigSchema,
         events: resourceConfigSchema,
+        eventInstances: resourceConfigSchema,
         googleOAuth2AuthorizationCode: resourceConfigSchema,
     }),
     mqttBroker: Type.Object({

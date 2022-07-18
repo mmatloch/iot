@@ -80,7 +80,7 @@ type WatchCallback = (device: Device) => Promise<void>;
 
 export interface ZigbeeDeviceManager {
     create: (zigbeeDevice: ZigbeeDevice) => Promise<Device>;
-    deactivate: (device: Device) => Promise<void>;
+    deactivate: (device: Device) => Promise<Device>;
     update: (existingDevice: Device, zigbeeDevice: ZigbeeDevice) => Promise<Device>;
     findAll: () => Promise<Device[]>;
     watch: (cb: WatchCallback) => void;
@@ -192,13 +192,17 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
     };
 
     const deactivate: ZigbeeDeviceManager['deactivate'] = async (device) => {
-        await devicesService.update(device, {
+        const updatedDevice = await devicesService.update(device, {
             state: DeviceState.Inactive,
             deactivatedBy: {
                 type: DeviceDeactivatedByType.Bridge,
                 name: 'Zigbee',
             },
         });
+
+        setImmediate(() => triggerWatch(updatedDevice));
+
+        return updatedDevice;
     };
 
     return {

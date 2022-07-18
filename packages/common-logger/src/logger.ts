@@ -13,7 +13,7 @@ export interface LoggerOptions {
 }
 
 const eventFields = ['_id', '_version', 'displayName', 'name'];
-const deviceFields = ['_id', '_version', 'displayName', 'description', 'protocol'];
+const deviceFields = ['_id', '_version', 'displayName', 'description', 'protocol', 'state'];
 const requestFields = ['method', 'url', 'params', 'query', 'headers', 'user', 'ip'];
 const replyFields = ['statusCode', 'request.user', 'request.ip'];
 

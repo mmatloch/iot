@@ -8,6 +8,7 @@ const config = getConfig();
 export const createUserHelpers = (...opts) => createHttpHelpers(config.resources.users, ...opts);
 export const createDeviceHelpers = (...opts) => createHttpHelpers(config.resources.devices, ...opts);
 export const createEventHelpers = (...opts) => createHttpHelpers(config.resources.events, ...opts);
+export const createEventInstanceHelpers = (...opts) => createHttpHelpers(config.resources.eventInstances, ...opts);
 export const createGoogleOAuth2AuthorizationCodeHelpers = (...opts) =>
     createHttpHelpers(config.resources.googleOAuth2AuthorizationCode, ...opts);
 

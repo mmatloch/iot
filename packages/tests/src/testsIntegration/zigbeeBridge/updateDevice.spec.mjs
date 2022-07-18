@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import _ from 'lodash';
 
-import { generateZigbeeTemperatureAndHumiditySensorPayload } from '../../dataGenerators/zigbeeDataGenerators.mjs';
+import { generateZigbeeDevice } from '../../dataGenerators/zigbeeDataGenerators.mjs';
 import { createDeviceHelpers, createZigbeeBridgeDevicesHelpers } from '../../helpers/helpers.mjs';
 import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mjs';
 
@@ -32,7 +32,7 @@ describe('Zigbee bridge updateDevice', () => {
 
     it(`should update the device's common fields`, async () => {
         // given
-        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         await H.publish([zigbeeDevice]);
 
         const query = {
@@ -73,7 +73,7 @@ describe('Zigbee bridge updateDevice', () => {
 
     it('should activate the device deactivated by the bridge', async () => {
         // given
-        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interview_completed = true;
         zigbeeDevice.interviewing = false;
 
@@ -112,7 +112,7 @@ describe('Zigbee bridge updateDevice', () => {
 
     it('should update the state to "INTERVIEWING" if the device has entered the interviewing phase', async () => {
         // given
-        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interview_completed = false;
         zigbeeDevice.interviewing = false;
 
@@ -143,7 +143,7 @@ describe('Zigbee bridge updateDevice', () => {
 
     it('should update the state to "UNCONFIGURED" if the device has finished the interviewing phase', async () => {
         // given
-        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interview_completed = false;
         zigbeeDevice.interviewing = false;
 

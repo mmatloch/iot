@@ -1,8 +1,4 @@
-import {
-    generateZigbeeBridgeInfoPayload,
-    generateZigbeeCoordinatorPayload,
-    generateZigbeeTemperatureAndHumiditySensorPayload,
-} from '../../dataGenerators/zigbeeDataGenerators.mjs';
+import { generateZigbeeBridgeInfo, generateZigbeeDevice } from '../../dataGenerators/zigbeeDataGenerators.mjs';
 import {
     createDeviceHelpers,
     createEventHelpers,
@@ -33,8 +29,8 @@ describe('Zigbee bridge createDevice', () => {
 
     it('should create a device from the Zigbee coordinator', async () => {
         // given
-        const zigbeeDevice = generateZigbeeCoordinatorPayload();
-        const bridgeInfo = generateZigbeeBridgeInfoPayload();
+        const zigbeeDevice = generateZigbeeDevice.coordinator();
+        const bridgeInfo = generateZigbeeBridgeInfo();
 
         const query = {
             ieeeAddress: zigbeeDevice.ieee_address,
@@ -70,7 +66,7 @@ describe('Zigbee bridge createDevice', () => {
 
     it(`should create a device with 'UNCONFIGURED' state if the Zigbee device has been interviewed`, async () => {
         // given
-        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interviewing = false;
         zigbeeDevice.interview_completed = true;
 
@@ -107,7 +103,7 @@ describe('Zigbee bridge createDevice', () => {
 
     it(`should create a device with 'INTERVIEWING' state if the Zigbee device is being interviewed`, async () => {
         // given
-        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interviewing = true;
         zigbeeDevice.interview_completed = false;
 
@@ -144,7 +140,7 @@ describe('Zigbee bridge createDevice', () => {
 
     it(`should create a device with 'NEW' state if the Zigbee device has not been interviewed yet`, async () => {
         // given
-        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interviewing = false;
         zigbeeDevice.interview_completed = false;
 
@@ -181,7 +177,7 @@ describe('Zigbee bridge createDevice', () => {
 
     it('should create default events', async () => {
         // given
-        const zigbeeDevice = generateZigbeeTemperatureAndHumiditySensorPayload();
+        const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         const deviceQuery = {
             ieeeAddress: zigbeeDevice.ieee_address,
         };
