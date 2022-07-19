@@ -1,0 +1,50 @@
+version: '3.8'
+services:
+  server:
+    image: ${PROJECT_NAME}/server
+    environment:
+      POSTGRES: ${POSTGRES}
+      GOOGLE_OAUTH2_CLIENT_ID: ${GOOGLE_OAUTH2_CLIENT_ID}
+      GOOGLE_OAUTH2_CLIENT_SECRET: ${GOOGLE_OAUTH2_CLIENT_SECRET}
+      GOOGLE_OAUTH2_REDIRECT_URI: http://localhost:8080/auth/redirect/google
+      JWT_SECRET: ${JWT_SECRET}
+      ROOT_USER_EMAIL: ${ROOT_USER_EMAIL}
+      MQTT: ${MOSQUITTO}
+    depends_on:
+      - nginx
+      - mosquitto
+      - postgres
+
+  nginx:
+    image: nginx:1.22
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 8080:8080
+
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    ports:
+      - 1883:1883
+    environment:
+      MOSQUITTO_USERNAME: ${MOSQUITTO_USERNAME}
+      MOSQUITTO_PASSWORD: ${MOSQUITTO_PASSWORD}
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - ./mosquitto-entrypoint.sh:/docker-entrypoint.sh
+      - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
+
+  postgres:
+    image: timescale/timescaledb:2.7.0-pg14
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${PROJECT_NAME}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+  mosquitto_data:

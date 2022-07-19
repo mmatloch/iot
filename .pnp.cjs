@@ -45,6 +45,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/google-stub"\
       },\
       {\
+        "name": "scripts",\
+        "reference": "workspace:packages/scripts"\
+      },\
+      {\
         "name": "server",\
         "reference": "workspace:packages/server"\
       },\
@@ -63,6 +67,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@common/validator", ["workspace:packages/common-validator"]],\
       ["google-stub", ["workspace:packages/google-stub"]],\
       ["iot", ["workspace:."]],\
+      ["scripts", ["workspace:packages/scripts"]],\
       ["server", ["workspace:packages/server"]],\
       ["tests", ["workspace:packages/tests"]]\
     ],\
@@ -82,7 +87,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.6.2"],\
             ["prettier-plugin-sorted", "virtual:021c7a3fd26dab991e2e062d2df84c7a5c4e5a3419cc7b9526fcaa006172a26382e60020e741602b200642bca191845d93f75a72aff2ac743cf0f2074b7bc91f#npm:2.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
-            ["zx", "npm:7.0.0"]\
+            ["zx", "npm:7.0.7"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -5113,7 +5118,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["prettier", "npm:2.6.2"],\
             ["prettier-plugin-sorted", "virtual:021c7a3fd26dab991e2e062d2df84c7a5c4e5a3419cc7b9526fcaa006172a26382e60020e741602b200642bca191845d93f75a72aff2ac743cf0f2074b7bc91f#npm:2.0.0"],\
             ["typescript", "patch:typescript@npm%3A4.7.3#~builtin<compat/typescript>::version=4.7.3&hash=7ad353"],\
-            ["zx", "npm:7.0.0"]\
+            ["zx", "npm:7.0.7"]\
           ],\
           "linkType": "SOFT"\
         }]\
@@ -8312,6 +8317,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["scripts", [\
+        ["workspace:packages/scripts", {\
+          "packageLocation": "./packages/scripts/",\
+          "packageDependencies": [\
+            ["scripts", "workspace:packages/scripts"],\
+            ["@types/lodash", "npm:4.14.182"],\
+            ["async", "npm:3.2.4"],\
+            ["lodash", "npm:4.17.21"],\
+            ["zx", "npm:7.0.7"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
       ["secure-json-parse", [\
         ["npm:2.4.0", {\
           "packageLocation": "./.yarn/cache/secure-json-parse-npm-2.4.0-161f104c50-efaafcaa08.zip/node_modules/secure-json-parse/",\
@@ -9768,10 +9786,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["zx", [\
-        ["npm:7.0.0", {\
-          "packageLocation": "./.yarn/cache/zx-npm-7.0.0-f550ae662a-2483373a8a.zip/node_modules/zx/",\
+        ["npm:7.0.7", {\
+          "packageLocation": "./.yarn/cache/zx-npm-7.0.7-25bee4a931-0b03f05b93.zip/node_modules/zx/",\
           "packageDependencies": [\
-            ["zx", "npm:7.0.0"],\
+            ["zx", "npm:7.0.7"],\
             ["@types/fs-extra", "npm:9.0.13"],\
             ["@types/minimist", "npm:1.2.2"],\
             ["@types/node", "npm:17.0.42"],\

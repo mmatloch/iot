@@ -16,7 +16,7 @@ const getAvailableScripts = async () => {
 export const parseInput = () => {
     const { _, ...params } = argv;
 
-    const [, scriptName] = _; // the first element is the path to the script
+    const [scriptName] = _;
     const [moduleName, command] = scriptName.split(':');
 
     if (command) {
@@ -52,6 +52,7 @@ const main = async () => {
         try {
             await commandFn(scriptParams);
         } catch (e) {
+            console.log(e);
             process.exit(e.exitCode);
         }
 

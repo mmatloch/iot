@@ -6,6 +6,8 @@
   "externalServices": {
     "google": {
       "oAuth2": {
+        "tokenUrl": "https://oauth2.googleapis.com/token",
+        "authBaseUrl": "https://accounts.google.com/o/oauth2/v2/auth",
         "scope": "openid profile email"
       }
     }

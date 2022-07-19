@@ -4024,7 +4024,7 @@ __metadata:
     prettier: ^2.6.2
     prettier-plugin-sorted: ^2.0.0
     typescript: ^4.7.3
-    zx: ^7.0.0
+    zx: ^7.0.7
   languageName: unknown
   linkType: soft
 
@@ -6817,6 +6817,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"scripts@workspace:packages/scripts":
+  version: 0.0.0-use.local
+  resolution: "scripts@workspace:packages/scripts"
+  dependencies:
+    "@types/lodash": ^4.14.182
+    async: ^3.2.4
+    lodash: ^4.17.21
+    zx: ^7.0.7
+  languageName: unknown
+  linkType: soft
+
 "secure-json-parse@npm:^2.4.0":
   version: 2.4.0
   resolution: "secure-json-parse@npm:2.4.0"
@@ -8105,9 +8116,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zx@npm:^7.0.0":
-  version: 7.0.0
-  resolution: "zx@npm:7.0.0"
+"zx@npm:^7.0.7":
+  version: 7.0.7
+  resolution: "zx@npm:7.0.7"
   dependencies:
     "@types/fs-extra": ^9.0.13
     "@types/minimist": ^1.2.2
@@ -8124,6 +8135,6 @@ __metadata:
     yaml: ^2.1.1
   bin:
     zx: build/cli.js
-  checksum: 2483373a8a8e9a8abe9d427ebb61259ef0efa17db8bb5707c33cfcc7b7dd80a83a0c7ed988c7647c585ccee7c31bdc5531335e0e71d296f9e5ced0766f48c52c
+  checksum: 0b03f05b9392c09297594bd9cc0afb4c878429cb6feb2358e613df7fe9e184bb3c966c3a4447e987b87a7baf5f875d8abbc088c708526836aaf8349722de38d5
   languageName: node
   linkType: hard
