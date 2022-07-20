@@ -10,17 +10,31 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       ROOT_USER_EMAIL: ${ROOT_USER_EMAIL}
       MQTT: ${MOSQUITTO}
+      TZ: ${TZ}
     depends_on:
       - nginx
       - mosquitto
       - postgres
+      - zigbee2mqtt
+
+  zigbee2mqtt:
+    image: koenkk/zigbee2mqtt:1.26.0
+    volumes:
+      - zigbee2mqtt_data:/app/data
+      - ./zigbee2mqtt-configuration.yaml:/app/data/configuration.yaml
+    ports:
+      - 8080:8080
+    devices:
+      - ${ZIGBEE_ADAPTER_LOCATION}:/dev/ttyUSB0
 
   nginx:
     image: nginx:1.22
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
-      - 8080:8080
+      - 80:8080
+    environment:
+      TZ: ${TZ}
 
   mosquitto:
     image: eclipse-mosquitto:2.0
@@ -29,6 +43,7 @@ services:
     environment:
       MOSQUITTO_USERNAME: ${MOSQUITTO_USERNAME}
       MOSQUITTO_PASSWORD: ${MOSQUITTO_PASSWORD}
+      TZ: ${TZ}
     volumes:
       - mosquitto_data:/mosquitto/data
       - ./mosquitto-entrypoint.sh:/docker-entrypoint.sh
@@ -42,9 +57,13 @@ services:
       POSTGRES_USER: ${POSTGRES_USERNAME}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${PROJECT_NAME}
+      TZ: ${TZ}
+      PGTZ: ${TZ}
+
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
   mosquitto_data:
+  zigbee2mqtt_data:

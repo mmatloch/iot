@@ -3,7 +3,7 @@ import { URL } from 'node:url';
 
 import async from 'async';
 import _ from 'lodash';
-import { chalk, fs, os, path, question } from 'zx';
+import { $, chalk, fs, os, path, question } from 'zx';
 
 import { PROJECT_NAME } from './utils/constants.mjs';
 import { print } from './utils/print.mjs';
@@ -13,6 +13,10 @@ const STATE_PATH = '.cache/setupState.json';
 const TEMLATES_PATH = './packages/scripts/setupTemplates';
 const FILES_DEST_PATH = './packages/deploy/prod';
 const FILES_BACKUP_PATH = './packages/deploy/prod/backup';
+
+$.verbose = false;
+const TIME_ZONE = (await $`cat /etc/timezone`).toString().trim();
+$.verbose = true;
 
 const setDefaults = (scriptParams) =>
     _.defaults(scriptParams, {
@@ -50,7 +54,7 @@ const createStateCacheManager = () => {
     };
 
     const save = () => {
-        fs.outputJsonSync(STATE_PATH, cache.rawData);
+        fs.outputFileSync(STATE_PATH, JSON.stringify(cache.rawData, null, 2));
     };
 
     return {
@@ -70,16 +74,28 @@ const stateUtils = {
 };
 
 const Step = {
+    General: 'GENERAL',
     SetupGoogleOAuth: 'SETUP_GOOGLE_OAUTH',
     SetupServerAuth: 'SETUP_SERVER_AUTH',
     SetupPostgresAuth: 'SETUP_POSTGRES_AUTH',
     SetupMosquittoAuth: 'SETUP_MOSQUITTO_AUTH',
+    SetupZigbee: 'SETUP_ZIGBEE',
 };
 
 const generateUsername = () => crypto.randomBytes(12).toString('hex');
 const generatePassword = () => crypto.randomBytes(31).toString('hex');
 
 const questions = {
+    [Step.General]: {
+        name: 'General information',
+        data: {
+            timeZone: {
+                askQuestion: () => question(`Your time zone (${TIME_ZONE} when empty): ${os.EOL}`),
+                scriptParam: 'timeZone',
+                generateValue: () => TIME_ZONE,
+            },
+        },
+    },
     [Step.SetupGoogleOAuth]: {
         name: 'Setup Google OAuth 2.0',
         guideUrl: 'https://support.google.com/cloud/answer/6158849',
@@ -141,6 +157,17 @@ const questions = {
             },
         },
     },
+
+    [Step.SetupZigbee]: {
+        name: 'Setup Zigbee',
+        data: {
+            zigbeeAdapterLocation: {
+                askQuestion: () => question(`Zigbee adapter location: ${os.EOL}`),
+                scriptParam: 'zigbeeAdapterLocation',
+                guideUrl: 'https://www.zigbee2mqtt.io/guide/getting-started/#_1-find-the-zigbee-adapter',
+            },
+        },
+    },
 };
 
 const createFileFromTemplate = (filename, opts) => {
@@ -166,40 +193,69 @@ const createFileFromTemplate = (filename, opts) => {
     }
 };
 
-const generateDotEnv = (state) => {
+const createEnvVariables = (state) => {
+    const { timeZone } = state.getStepData(Step.General);
     const { postgresUsername, postgresPassword } = state.getStepData(Step.SetupPostgresAuth);
-    const { mosquittoUser, mosquittoPassword } = state.getStepData(Step.SetupMosquittoAuth);
+    const { mosquittoUsername, mosquittoPassword } = state.getStepData(Step.SetupMosquittoAuth);
     const { googleClientId, googleClientSecret } = state.getStepData(Step.SetupGoogleOAuth);
     const { jwtSecret, rootUserEmail } = state.getStepData(Step.SetupServerAuth);
+    const { zigbeeAdapterLocation } = state.getStepData(Step.SetupZigbee);
 
     const postgresUrl = new URL(`postgresql://postgres:5432/${PROJECT_NAME}`);
     postgresUrl.username = postgresUsername;
     postgresUrl.password = postgresPassword;
 
     const mosquittoUrl = new URL(`mqtt://mosquitto:1883`);
-    mosquittoUrl.username = mosquittoUser;
+    mosquittoUrl.username = mosquittoUsername;
     mosquittoUrl.password = mosquittoPassword;
 
-    const dotEnvContent = [
-        `PROJECT_NAME=${PROJECT_NAME}`,
+    return {
+        PROJECT_NAME: PROJECT_NAME,
+        TZ: timeZone,
 
-        `GOOGLE_OAUTH2_CLIENT_ID=${googleClientId}`,
-        `GOOGLE_OAUTH2_CLIENT_SECRET=${googleClientSecret}`,
+        GOOGLE_OAUTH2_CLIENT_ID: googleClientId,
+        GOOGLE_OAUTH2_CLIENT_SECRET: googleClientSecret,
 
-        `JWT_SECRET=${jwtSecret}`,
-        `ROOT_USER_EMAIL=${rootUserEmail}`,
+        JWT_SECRET: jwtSecret,
+        ROOT_USER_EMAIL: rootUserEmail,
 
-        `POSTGRES=${postgresUrl}`,
-        `POSTGRES_USERNAME=${postgresUsername}`,
-        `POSTGRES_PASSWORD=${postgresPassword}`,
+        POSTGRES: postgresUrl,
+        POSTGRES_USERNAME: postgresUsername,
+        POSTGRES_PASSWORD: postgresPassword,
 
-        `MOSQUITTO=${mosquittoUrl}`,
-        `MOSQUITTO_USERNAME=${mosquittoUser}`,
-        `MOSQUITTO_PASSWORD=${mosquittoPassword}`,
-    ];
+        MOSQUITTO: mosquittoUrl,
+        MOSQUITTO_USERNAME: mosquittoUsername,
+        MOSQUITTO_PASSWORD: mosquittoPassword,
 
-    createFileFromTemplate('.env');
-    fs.writeFileSync(path.join(FILES_DEST_PATH, '.env'), dotEnvContent.join(os.EOL));
+        ZIGBEE_ADAPTER_LOCATION: zigbeeAdapterLocation,
+    };
+};
+
+const generateDotEnv = (state) => {
+    const envVar = createEnvVariables(state);
+
+    const content = Object.entries(envVar)
+        .map(([key, value]) => `${key}=${value}`)
+        .join(os.EOL);
+
+    const filename = '.env';
+    createFileFromTemplate(filename);
+    fs.writeFileSync(path.join(FILES_DEST_PATH, filename), content);
+};
+
+const generateZigbeeConfig = (state) => {
+    const envVar = createEnvVariables(state);
+
+    const filename = 'zigbee2mqtt-configuration.yaml';
+
+    const content = fs
+        .readFileSync(path.join(TEMLATES_PATH, filename), { encoding: 'utf-8' })
+        .replaceAll(/\${(\w*)}/g, (_template, key) => {
+            return envVar[key] || '';
+        });
+
+    createFileFromTemplate(filename);
+    fs.writeFileSync(path.join(FILES_DEST_PATH, filename), content);
 };
 
 const generateOtherFiles = () => {
@@ -260,6 +316,7 @@ const main = async (scriptParams) => {
     });
 
     generateDotEnv(state);
+    generateZigbeeConfig(state);
     generateOtherFiles();
 
     print('Done!', 'green');
