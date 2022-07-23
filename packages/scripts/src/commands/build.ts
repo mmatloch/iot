@@ -8,6 +8,7 @@ import { PATH, PROJECT_NAME } from '../utils/constants';
 
 interface Flags {
     nodeEnv: string;
+    onlyServer: boolean;
 }
 
 const createDockerImages = (flags: Flags) => [
@@ -35,14 +36,14 @@ const createDockerImages = (flags: Flags) => [
                 value: flags.nodeEnv,
             },
         ],
-        buildCondition: () => flags.nodeEnv === 'development',
+        buildCondition: () => !flags.onlyServer,
     },
     {
         name: 'Tests',
         dockerfilePath: join(PATH.Packages, 'tests', 'Dockerfile'),
         imageName: `${PROJECT_NAME}/tests`,
         imageTag: 'latest',
-        buildCondition: () => flags.nodeEnv === 'development',
+        buildCondition: () => !flags.onlyServer,
     },
 ];
 
@@ -54,6 +55,10 @@ export class BuildCommand extends Command {
             required: true,
             default: 'production',
             options: ['development', 'production'],
+        }),
+        onlyServer: Flags.boolean({
+            required: true,
+            default: true,
         }),
     };
 
