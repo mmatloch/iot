@@ -29,7 +29,7 @@ export const waitForServer = async (url: URL) => {
 
         retries--;
         if (retries === 0) {
-            throw new Error(`The server '${url}' is not operational`);
+            throw new Error(`The server '${url}' is not operational. Last statusCode: ${statusCode}`);
         }
 
         await sleep();
