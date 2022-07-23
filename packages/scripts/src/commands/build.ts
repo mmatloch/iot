@@ -9,6 +9,7 @@ import { PATH, PROJECT_NAME } from '../utils/constants';
 interface Flags {
     nodeEnv: string;
     onlyServer: boolean;
+    ci: boolean;
 }
 
 const createDockerImages = (flags: Flags) => [
@@ -36,14 +37,14 @@ const createDockerImages = (flags: Flags) => [
                 value: flags.nodeEnv,
             },
         ],
-        buildCondition: () => !flags.onlyServer,
+        buildCondition: () => flags.ci || !flags.onlyServer,
     },
     {
         name: 'Tests',
         dockerfilePath: join(PATH.Packages, 'tests', 'Dockerfile'),
         imageName: `${PROJECT_NAME}/tests`,
         imageTag: 'latest',
-        buildCondition: () => !flags.onlyServer,
+        buildCondition: () => flags.ci || !flags.onlyServer,
     },
 ];
 
@@ -60,20 +61,15 @@ export class BuildCommand extends Command {
             required: true,
             default: true,
         }),
-    };
-
-    private generateEnv = () => {
-        this.log(cyan(`Generating environment files`));
-        const envVariables = [`PROJECT_NAME=${PROJECT_NAME}`];
-        writeFileSync(PATH.DeployLocal.DotEnv, envVariables.join(EOL));
+        ci: Flags.boolean({
+            required: true,
+            default: false,
+            env: 'CI',
+        }),
     };
 
     async run() {
         const { flags } = await this.parse<Flags, Record<string, unknown>>(BuildCommand);
-
-        if (flags.nodeEnv === 'development') {
-            this.generateEnv();
-        }
 
         for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of createDockerImages(
             flags,

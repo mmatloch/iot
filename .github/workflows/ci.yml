@@ -15,11 +15,11 @@ jobs:
       - name: Install dependencies
         run: yarn install
       - name: Build the stack
-        run: yarn script build --onlyServer=false
+        run: yarn script build
       - name: Start containers
-        run: yarn script start --env=local
+        run: yarn script start
       - name: Run tests
         run: yarn script test
       - name: Stop containers
         if: always()
-        run: yarn script stop --env=local
+        run: yarn script stop
