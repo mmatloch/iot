@@ -2,10 +2,29 @@
   "name": "scripts",
   "private": true,
   "version": "1.0.0",
+  "oclif": {
+    "commands": "./src/commands",
+    "bin": "yarn script",
+    "plugins": [
+      "@oclif/plugin-not-found"
+    ]
+  },
+  "scripts": {
+    "cli": "ts-node --swc ./src/index.ts"
+  },
   "dependencies": {
+    "@oclif/core": "^1.12.1",
+    "@oclif/plugin-not-found": "^2.3.1",
+    "@swc/core": "^1.2.218",
+    "@types/fs-extra": "^9.0.13",
     "@types/lodash": "^4.14.182",
+    "@types/node": "^18.0.6",
     "async": "^3.2.4",
+    "chalk": "^4.1.2",
+    "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
-    "zx": "^7.0.7"
+    "qqjs": "^0.3.11",
+    "ts-node": "^10.8.1",
+    "typescript": "^4.7.3"
   }
 }

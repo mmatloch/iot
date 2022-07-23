@@ -11,6 +11,7 @@ advanced:
   legacy_availability_payload: false
   log_level: info
   network_key: GENERATE
+  pan_id: GENERATE
 device_options:
   legacy: false
 frontend: true
