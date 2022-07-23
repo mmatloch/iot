@@ -5,6 +5,7 @@ import formBody from '@fastify/formbody';
 
 import { createApplicationFromFastify } from './fastifyAbstract';
 import loggerPlugin from './plugins/loggerPlugin';
+import statusPlugin from './plugins/statusPlugin';
 import { Application } from './types';
 
 interface CreateApplicationOptions {
@@ -34,6 +35,7 @@ const bootstrapApplication = (app: Application) => {
 
     app.register(formBody);
     app.register(loggerPlugin);
+    app.register(statusPlugin);
 };
 
 export const createApplication = async (opts: CreateApplicationOptions): Promise<Application> => {
