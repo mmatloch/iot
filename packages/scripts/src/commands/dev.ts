@@ -29,18 +29,10 @@ export default class DevCommand extends Command {
         }),
     };
 
-    private generateEnv = () => {
-        this.log(cyan(`Generating environment files`));
-        const envVariables = [`PROJECT_NAME=${PROJECT_NAME}`];
-        writeFileSync(PATH.DeployLocal.DotEnv, envVariables.join(EOL));
-    };
-
     async run(): Promise<void> {
         const { flags } = await this.parse(DevCommand);
 
         await x('yarn install');
-
-        this.generateEnv();
 
         if (flags.build) {
             await BuildCommand.run(['--nodeEnv', 'development']);

@@ -57,8 +57,18 @@ export class BuildCommand extends Command {
         }),
     };
 
+    private generateEnv = () => {
+        this.log(cyan(`Generating environment files`));
+        const envVariables = [`PROJECT_NAME=${PROJECT_NAME}`];
+        writeFileSync(PATH.DeployLocal.DotEnv, envVariables.join(EOL));
+    };
+
     async run() {
         const { flags } = await this.parse<Flags, Record<string, unknown>>(BuildCommand);
+
+        if (flags.nodeEnv === 'development') {
+            this.generateEnv();
+        }
 
         for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of createDockerImages(
             flags,
