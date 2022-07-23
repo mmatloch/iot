@@ -9,7 +9,7 @@ import { PATH, PROJECT_NAME } from '../utils/constants';
 interface Flags {
     nodeEnv: string;
     onlyServer: boolean;
-    ci: boolean;
+    ci: string;
 }
 
 const createDockerImages = (flags: Flags) => [
@@ -61,15 +61,16 @@ export class BuildCommand extends Command {
             required: true,
             default: true,
         }),
-        ci: Flags.boolean({
+        ci: Flags.string({
             required: true,
-            default: false,
+            default: '',
             env: 'CI',
         }),
     };
 
     async run() {
         const { flags } = await this.parse<Flags, Record<string, unknown>>(BuildCommand);
+        console.log(flags);
 
         for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of createDockerImages(
             flags,

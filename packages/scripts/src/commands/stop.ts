@@ -5,7 +5,7 @@ import { PATH, PROJECT_NAME } from '../utils/constants';
 
 interface Flags {
     env: string;
-    ci: boolean;
+    ci: string;
 }
 
 export class StopCommand extends Command {
@@ -17,9 +17,9 @@ export class StopCommand extends Command {
             default: 'production',
             options: ['local', 'production'],
         }),
-        ci: Flags.boolean({
+        ci: Flags.string({
             required: true,
-            default: false,
+            default: '',
             env: 'CI',
         }),
     };
