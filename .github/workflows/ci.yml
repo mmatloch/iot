@@ -17,9 +17,9 @@ jobs:
       - name: Build the stack
         run: yarn script build
       - name: Start containers
-        run: yarn script start
+        run: yarn script start --env=local
       - name: Run tests
         run: yarn script test
       - name: Stop containers
         if: always()
-        run: yarn script stop
+        run: yarn script stop --env=local
