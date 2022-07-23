@@ -60,6 +60,8 @@ export class BuildCommand extends Command {
     async run() {
         const { flags } = await this.parse<Flags, Record<string, unknown>>(BuildCommand);
 
+        await x('yarn install');
+
         for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of createDockerImages(
             flags,
         )) {
