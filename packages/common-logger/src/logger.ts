@@ -1,12 +1,8 @@
 import { transformErrorBody } from '@common/errors';
 import _ from 'lodash';
-import { SerializerFn, TransportTargetOptions, levels, pino } from 'pino';
+import { SerializerFn, TransportTargetOptions, pino } from 'pino';
 
 export interface LoggerOptions {
-    development: {
-        enable: boolean;
-        level: string;
-    };
     level: string;
     filePath: string;
     rotationFrequency: string;
@@ -28,9 +24,7 @@ const replySerializer: SerializerFn = (value) => {
     };
 };
 
-export const createLogger = ({ development, level, filePath, rotationFrequency }: LoggerOptions) => {
-    let minLogLevel = level;
-
+export const createLogger = ({ level, filePath, rotationFrequency }: LoggerOptions) => {
     const targets: TransportTargetOptions[] = [
         {
             target: 'pino-roll',
@@ -41,26 +35,19 @@ export const createLogger = ({ development, level, filePath, rotationFrequency }
                 mkdir: true,
             },
         },
-    ];
-
-    if (development.enable) {
-        if (levels.values[development.level] < levels.values[level]) {
-            minLogLevel = development.level;
-        }
-
-        targets.push({
+        {
             target: 'pino-pretty',
-            level: development.level,
+            level,
             options: {
                 colorize: true,
                 translateTime: 'yyyy-mm-dd HH:MM:ss.l',
                 ignore: 'pid,hostname',
             },
-        });
-    }
+        },
+    ];
 
     return pino({
-        level: minLogLevel,
+        level,
         transport: {
             targets,
         },

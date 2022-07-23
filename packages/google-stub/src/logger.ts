@@ -5,10 +5,6 @@ import { getConfig } from './config';
 const config = getConfig();
 
 const logger = createLogger({
-    development: {
-        enable: true,
-        level: 'trace',
-    },
     level: config.logger.level,
     filePath: `/var/log/${config.app.name}/log`,
     rotationFrequency: config.logger.rotationFrequency,

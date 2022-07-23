@@ -33,7 +33,7 @@ const createAuthorizationCodeSchema = {
 };
 
 export const createOAuth2Rest = (app: Application) => {
-    app.post('/oauth2/token', { schema: createTokenSchema }, async (request, reply) => {
+    app.withTypeProvider().post('/oauth2/token', { schema: createTokenSchema }, async (request, reply) => {
         const service = createOAuth2Service();
 
         try {
@@ -55,11 +55,15 @@ export const createOAuth2Rest = (app: Application) => {
         }
     });
 
-    app.post('/oauth2/authorizationCode', { schema: createAuthorizationCodeSchema }, async (request, reply) => {
-        const service = createOAuth2Service();
+    app.withTypeProvider().post(
+        '/oauth2/authorizationCode',
+        { schema: createAuthorizationCodeSchema },
+        async (request, reply) => {
+            const service = createOAuth2Service();
 
-        const authorizationCode = service.createAuthorizationCode(request.body);
+            const authorizationCode = service.createAuthorizationCode(request.body);
 
-        return reply.status(StatusCodes.CREATED).send(authorizationCode);
-    });
+            return reply.status(StatusCodes.CREATED).send(authorizationCode);
+        },
+    );
 };

@@ -3,7 +3,8 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "start:development": "nodemon ./src/index.ts"
+    "start:development": "nodemon --swc ./src/index.ts",
+    "start:production": "ts-node ./src/index.ts"
   },
   "dependencies": {
     "@common/application": "workspace:packages/common-application",

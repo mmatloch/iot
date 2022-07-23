@@ -106,23 +106,18 @@ export const createMqttClient = (): MqttClient => {
     const addHandler: AddHandlerFn = async ({ topic, onMessage, onError, schema }) => {
         const concurrency = 1;
 
-        const wrappedOnMessage = (message: Buffer) => {
-            const parsedPayload = parseMessage(message);
-            validator.validateOrThrow(schema, parsedPayload);
+        const wrappedOnMessage = async (message: Buffer) => {
+            try {
+                const parsedPayload = parseMessage(message);
+                validator.validateOrThrow(schema, parsedPayload);
 
-            return onMessage(parsedPayload);
-        };
-
-        const wrappedOnError = (error: Error) => {
-            if (error) {
-                return onError(error);
+                return await onMessage(parsedPayload);
+            } catch (e) {
+                return onError(e);
             }
-
-            return;
         };
 
         const queue = fastq.promise(wrappedOnMessage, concurrency);
-        queue.error(wrappedOnError);
 
         handlerMap.set(topic, queue);
 
