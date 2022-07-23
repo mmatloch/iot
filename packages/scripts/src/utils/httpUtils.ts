@@ -20,7 +20,7 @@ export const waitForServer = async (url: URL) => {
     let isOk = false;
     let retries = 10;
 
-    const sleep = () => new Promise((r) => setTimeout(r, 1000));
+    const sleep = () => new Promise((r) => setTimeout(r, 2000));
 
     while (!isOk) {
         const statusCode = (await sendRequest(url)) || 500;
