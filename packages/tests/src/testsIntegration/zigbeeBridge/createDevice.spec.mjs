@@ -58,9 +58,8 @@ describe('Zigbee bridge createDevice', () => {
             manufacturer: 'Unknown',
             description: 'Coordinator',
             ieeeAddress: zigbeeDevice.ieee_address,
+            deactivatedBy: null,
         });
-
-        expect(device).not.toHaveProperty('deactivatedBy');
     });
 
     it(`should create a device with 'UNCONFIGURED' state if the Zigbee device has been interviewed`, async () => {
@@ -94,9 +93,8 @@ describe('Zigbee bridge createDevice', () => {
             manufacturer: zigbeeDevice.manufacturer,
             description: zigbeeDevice.definition.description,
             ieeeAddress: zigbeeDevice.ieee_address,
+            deactivatedBy: null,
         });
-
-        expect(device).not.toHaveProperty('deactivatedBy');
     });
 
     it(`should create a device with 'INTERVIEWING' state if the Zigbee device is being interviewed`, async () => {
@@ -130,9 +128,8 @@ describe('Zigbee bridge createDevice', () => {
             manufacturer: zigbeeDevice.manufacturer,
             description: zigbeeDevice.definition.description,
             ieeeAddress: zigbeeDevice.ieee_address,
+            deactivatedBy: null,
         });
-
-        expect(device).not.toHaveProperty('deactivatedBy');
     });
 
     it(`should create a device with 'NEW' state if the Zigbee device has not been interviewed yet`, async () => {
@@ -166,9 +163,8 @@ describe('Zigbee bridge createDevice', () => {
             manufacturer: zigbeeDevice.manufacturer,
             description: zigbeeDevice.definition.description,
             ieeeAddress: zigbeeDevice.ieee_address,
+            deactivatedBy: null,
         });
-
-        expect(device).not.toHaveProperty('deactivatedBy');
     });
 
     it('should create default events', async () => {
@@ -197,5 +193,40 @@ describe('Zigbee bridge createDevice', () => {
         const incomingDeviceDataEvent = incomingDeviceDataEvents.find((e) => e.triggerFilters.deviceId === device._id);
 
         expect(incomingDeviceDataEvent).toBeTruthy();
+    });
+
+    it('should create an unknown device', async () => {
+        // given
+        const zigbeeDevice = generateZigbeeDevice.unknown();
+        zigbeeDevice.interviewing = false;
+        zigbeeDevice.interview_completed = false;
+
+        const query = {
+            ieeeAddress: zigbeeDevice.ieee_address,
+        };
+
+        // when
+        await H.publish([zigbeeDevice]);
+
+        // then
+        const {
+            body: { _hits },
+        } = await deviceHelpers.repeatSearch(query).expectHits(1);
+
+        const [device] = _hits;
+        expect(device).toMatchObject({
+            state: 'NEW',
+
+            displayName: zigbeeDevice.friendly_name,
+            ieeeAddress: zigbeeDevice.ieee_address,
+            protocol: 'ZIGBEE',
+            powerSource: 'UNKNOWN',
+            type: 'UNKNOWN',
+            model: 'Unknown',
+            vendor: 'Unknown',
+            manufacturer: 'Unknown',
+            description: 'Unknown device',
+            deactivatedBy: null,
+        });
     });
 });

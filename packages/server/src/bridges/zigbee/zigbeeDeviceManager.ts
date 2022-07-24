@@ -108,21 +108,22 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
             conditionDefinition: buildConditionDefinition(),
         });
 
-        setImmediate(() => triggerWatch(device));
+        triggerWatch(device);
 
         return device;
     };
 
     const update: ZigbeeDeviceManager['update'] = async (existingDevice, zigbeeDevice) => {
-        const newDevice = buildToUpdate(zigbeeDevice);
+        const newDevice = buildToUpdate(existingDevice, zigbeeDevice);
 
         if (existingDevice.state === DeviceState.Inactive) {
             newDevice.state = buildDeviceState(zigbeeDevice);
+            newDevice.deactivatedBy = null;
         }
 
         const device = await devicesService.update(existingDevice, newDevice);
 
-        setImmediate(() => triggerWatch(device));
+        triggerWatch(device);
 
         return device;
     };
@@ -136,7 +137,9 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
     };
 
     const triggerWatch = (device: Device) => {
-        watchCallbacks.forEach((cb) => cb(device));
+        setImmediate(() => {
+            watchCallbacks.forEach((cb) => cb(device));
+        });
     };
 
     const watch: ZigbeeDeviceManager['watch'] = (cb) => {
@@ -159,6 +162,19 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 manufacturer: 'Unknown',
                 powerSource: DevicePowerSource.Dc,
             };
+        } else if (zigbeeDevice.type === ZigbeeDeviceType.Unknown) {
+            return {
+                type: buildDeviceType(zigbeeDevice.type),
+                displayName: zigbeeDevice.friendlyName,
+                description: 'Unknown device',
+                ieeeAddress: zigbeeDevice.ieeeAddress,
+                state: buildDeviceState(zigbeeDevice),
+                protocol: DeviceProtocol.Zigbee,
+                model: 'Unknown',
+                vendor: 'Unknown',
+                manufacturer: 'Unknown',
+                powerSource: DevicePowerSource.Unknown,
+            };
         } else {
             return {
                 type: buildDeviceType(zigbeeDevice.type),
@@ -175,7 +191,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
         }
     };
 
-    const buildToUpdate = (zigbeeDevice: ZigbeeDevice): Partial<DeviceDto> => {
+    const buildToUpdate = (device: Device, zigbeeDevice: ZigbeeDevice): Partial<DeviceDto> => {
         if (zigbeeDevice.type === ZigbeeDeviceType.Coordinator) {
             const bridgeInfo = getZigbeeInfo();
 
@@ -183,7 +199,16 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 model: bridgeInfo?.coordinator.type || 'Unknown',
                 state: buildDeviceState(zigbeeDevice),
             };
+        } else if (zigbeeDevice.type === ZigbeeDeviceType.Unknown) {
+            return {
+                type: buildDeviceType(zigbeeDevice.type),
+                state: buildDeviceState(zigbeeDevice),
+            };
         } else {
+            // update the description only once
+            let description =
+                device.type === DeviceType.Unknown ? zigbeeDevice.definition.description : device.description;
+
             return {
                 type: buildDeviceType(zigbeeDevice.type),
                 model: zigbeeDevice.definition.model,
@@ -191,6 +216,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 manufacturer: zigbeeDevice.manufacturer,
                 powerSource: buildDevicePowerSource(zigbeeDevice.powerSource),
                 state: buildDeviceState(zigbeeDevice),
+                description,
             };
         }
     };
@@ -204,7 +230,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
             },
         });
 
-        setImmediate(() => triggerWatch(updatedDevice));
+        triggerWatch(updatedDevice);
 
         return updatedDevice;
     };

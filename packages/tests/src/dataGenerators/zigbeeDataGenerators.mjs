@@ -172,6 +172,19 @@ export const generateZigbeeDevice = {
             type: 'EndDevice',
         };
     },
+
+    unknown: () => {
+        const ieeeAddress = generateZigbeeIeeeAddress();
+
+        return {
+            friendly_name: ieeeAddress,
+            ieee_address: ieeeAddress,
+            interview_completed: true,
+            interviewing: false,
+            supported: true,
+            type: 'Unknown',
+        };
+    },
 };
 
 export const generateZigbeeDevices = (count = 1) =>

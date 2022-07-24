@@ -89,10 +89,6 @@ const greenPowerSchema = mergeSchemas(
 const unknownDeviceSchema = mergeSchemas(
     Type.Object({
         type: Type.Literal(ZigbeeDeviceType.Unknown),
-
-        manufacturer: Type.String(),
-        powerSource: powerSourceSchema,
-        definition: definitionSchema,
     }),
     genericDeviceSchema,
 );

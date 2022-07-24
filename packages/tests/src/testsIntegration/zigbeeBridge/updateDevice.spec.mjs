@@ -104,10 +104,12 @@ describe('Zigbee bridge updateDevice', () => {
         await H.publish([zigbeeDevice]);
 
         // then
-        await findDevice({
+        const activeDevice = await findDevice({
             ...query,
             state: 'UNCONFIGURED',
         });
+
+        expect(activeDevice).toHaveProperty('deactivatedBy', null);
     });
 
     it('should update the state to "INTERVIEWING" if the device has entered the interviewing phase', async () => {
@@ -170,5 +172,35 @@ describe('Zigbee bridge updateDevice', () => {
             ...query,
             state: 'UNCONFIGURED',
         });
+    });
+
+    it('should update the description when the device switches from "unknown" type', async () => {
+        // given
+        const unknownZigbeeDevice = generateZigbeeDevice.unknown();
+
+        const query = {
+            ieeeAddress: unknownZigbeeDevice.ieee_address,
+        };
+
+        await H.publish([unknownZigbeeDevice]);
+        const createdDevice = await findDevice({
+            ...query,
+            type: 'UNKNOWN',
+        });
+
+        const knownZigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
+        knownZigbeeDevice.ieee_address = unknownZigbeeDevice.ieee_address;
+
+        // when
+        await H.publish([knownZigbeeDevice]);
+
+        // then
+        const updatedDevice = await findDevice({
+            ...query,
+            type: 'END_DEVICE',
+        });
+
+        expect(createdDevice).toHaveProperty('description', 'Unknown device');
+        expect(updatedDevice).toHaveProperty('description', knownZigbeeDevice.definition.description);
     });
 });
