@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
 import { createSearchResponseSchema } from '../apis/searchApi';
-import { deviceDtoSchema, deviceSchema } from '../entities/deviceEntity';
+import { deviceDtoSchema, deviceSchema, deviceSearchQuerySchema } from '../entities/deviceEntity';
 import { UserRole } from '../entities/userEntity';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createDevicesService } from '../services/devicesService';
@@ -16,10 +16,8 @@ const createDeviceSchema = {
     },
 };
 
-const partialDeviceDtoSchema = Type.Partial(deviceDtoSchema);
-
 const searchDevicesSchema = {
-    querystring: partialDeviceDtoSchema,
+    querystring: deviceSearchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(deviceSchema),
     },

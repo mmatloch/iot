@@ -154,3 +154,6 @@ export const deviceDtoSchema = Type.Object(
 export const deviceSchema = mergeSchemas(deviceDtoSchema, genericEntitySchema);
 
 export type DeviceDto = Static<typeof deviceDtoSchema>;
+
+export const deviceSearchQuerySchema = Type.Partial(Type.Omit(deviceDtoSchema, ['deactivatedBy']));
+export type DeviceSearchQuery = Static<typeof deviceSearchQuerySchema>;
