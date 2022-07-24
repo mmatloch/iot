@@ -1,11 +1,8 @@
 import { EOL } from 'node:os';
 
 import { Command, Flags } from '@oclif/core';
-import { cyan } from 'chalk';
-import { writeFileSync } from 'fs-extra';
 import { x } from 'qqjs';
 
-import { PATH, PROJECT_NAME } from '../utils/constants';
 import { BuildCommand } from './build';
 import { StartCommand } from './start';
 
@@ -35,7 +32,7 @@ export default class DevCommand extends Command {
         await x('yarn install');
 
         if (flags.build) {
-            await BuildCommand.run(['--nodeEnv', 'development']);
+            await BuildCommand.run(['--no-production']);
         }
 
         await StartCommand.run(['--env', 'local']);

@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "start:development": "nodemon --swc ./src/index.ts",
-    "start:production": "ts-node ./src/index.ts"
+    "start:production": "ts-node ./src/index.ts",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@common/application": "workspace:packages/common-application",

@@ -10,7 +10,7 @@
 
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "skipLibCheck": false,
+    "skipLibCheck": true,
     "allowJs": false,
 
     "keyofStringsOnly": true,

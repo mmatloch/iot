@@ -69,6 +69,7 @@ export class BuildCommand extends Command {
         production: Flags.boolean({
             required: true,
             default: true,
+            allowNo: true,
         }),
         ci: Flags.string({
             required: true,
