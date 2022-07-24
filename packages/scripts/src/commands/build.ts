@@ -8,7 +8,7 @@ import { PATH, PROJECT_NAME } from '../utils/constants';
 
 interface Flags {
     nodeEnv: string;
-    onlyServer: boolean;
+    production: boolean;
     ci: string;
 }
 
@@ -27,6 +27,15 @@ const createDockerImages = (flags: Flags) => [
         buildCondition: () => true,
     },
     {
+        name: 'Frontend',
+        dockerfilePath: flags.production
+            ? join(PATH.Packages, 'frontend', 'Dockerfile')
+            : join(PATH.Packages, 'frontend', 'Dockerfile.dev'),
+        imageName: `${PROJECT_NAME}/frontend`,
+        imageTag: 'latest',
+        buildCondition: () => true,
+    },
+    {
         name: 'Google services stub',
         dockerfilePath: join(PATH.Packages, 'google-stub', 'Dockerfile'),
         imageName: `${PROJECT_NAME}/google-stub`,
@@ -37,14 +46,14 @@ const createDockerImages = (flags: Flags) => [
                 value: flags.nodeEnv,
             },
         ],
-        buildCondition: () => flags.ci || !flags.onlyServer,
+        buildCondition: () => flags.ci || !flags.production,
     },
     {
         name: 'Tests',
         dockerfilePath: join(PATH.Packages, 'tests', 'Dockerfile'),
         imageName: `${PROJECT_NAME}/tests`,
         imageTag: 'latest',
-        buildCondition: () => flags.ci || !flags.onlyServer,
+        buildCondition: () => flags.ci || !flags.production,
     },
 ];
 
@@ -57,7 +66,7 @@ export class BuildCommand extends Command {
             default: 'production',
             options: ['development', 'production'],
         }),
-        onlyServer: Flags.boolean({
+        production: Flags.boolean({
             required: true,
             default: true,
         }),
