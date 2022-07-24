@@ -7,7 +7,7 @@
   "dependencies": {
     "@common/errors": "workspace:packages/common-errors",
     "@sinclair/typebox": "^0.23.5",
-    "@types/node": "^17.0.42",
+    "@types/node": "^18.0.6",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
     "ajv-keywords": "^5.1.0",

@@ -27,7 +27,12 @@ abstract class AbstractGenericEntity {
                 _updatedAt: Type.Unknown(),
             }),
         );
-        this.#dtoSchema = Type.Omit(this.#entitySchema, ['_id', '_version', '_createdAt', '_updatedAt']);
+
+        // https://github.com/ajv-validator/ajv/issues/1240
+        this.#dtoSchema = mergeSchemas(
+            Type.Omit(this.#entitySchema, ['_id', '_version', '_createdAt', '_updatedAt']),
+            Type.Partial(Type.Pick(this.#entitySchema, ['_id', '_version', '_createdAt', '_updatedAt'])),
+        );
     }
 
     @BeforeInsert()
