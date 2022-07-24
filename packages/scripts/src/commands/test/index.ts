@@ -1,7 +1,7 @@
 import { Command } from '@oclif/core';
 
-import { FunctionalTestCommand } from './functional';
-import { IntegrationTestCommand } from './integration';
+import { TestFunctionalCommand } from './functional';
+import { TestIntegrationCommand } from './integration';
 
 export class TestCommand extends Command {
     static description = 'Run all tests';
@@ -9,7 +9,7 @@ export class TestCommand extends Command {
     static strict = false;
 
     async run() {
-        await FunctionalTestCommand.run(this.argv);
-        await IntegrationTestCommand.run(this.argv);
+        await TestFunctionalCommand.run(this.argv);
+        await TestIntegrationCommand.run(this.argv);
     }
 }

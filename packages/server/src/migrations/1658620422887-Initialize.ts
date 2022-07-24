@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class initialize1658620422887 implements MigrationInterface {
-    name = 'initialize1658620422887';
+export class Initialize1658620422887 implements MigrationInterface {
+    name = 'Initialize1658620422887';
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE;`);
@@ -46,7 +46,7 @@ export class initialize1658620422887 implements MigrationInterface {
         );
 
         await queryRunner.query(`SELECT create_hypertable('sensordata', '_createdAt');`);
-        await queryRunner.query(`CREATE INDEX IDX_data_gin ON sensordata USING GIN (data);`);
+        await queryRunner.query(`CREATE INDEX IDX_sensordata_data_gin ON sensordata USING GIN (data);`);
 
         /**
          * Users
@@ -61,6 +61,7 @@ export class initialize1658620422887 implements MigrationInterface {
         await queryRunner.query(`DROP INDEX "public"."IDX_97672ac88f789774dd47f7c8be"`);
         await queryRunner.query(`DROP TABLE "users"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_87239200e7c9d6b1201be776f9"`);
+        await queryRunner.query(`DROP INDEX "public"."IDX_sensordata_data_gin"`);
         await queryRunner.query(`DROP TABLE "sensordata"`);
         await queryRunner.query(`DROP INDEX "public"."IDX_fdf7b11ea2766325d94894f770"`);
         await queryRunner.query(`DROP TABLE "eventinstances"`);

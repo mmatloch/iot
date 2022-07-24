@@ -27,3 +27,9 @@ export const PATH = {
 
 const rootPackageJson = readJsonSync(PATH.RootPackageJson);
 export const PROJECT_NAME: string = rootPackageJson.name;
+
+export const TYPEORM = {
+    DataSourcePath: './src/dataSources/timescaleDataSource.ts',
+    MigrationsPath: './src/migrations',
+    CliCommand: 'yarn typeorm-ts-node-commonjs',
+};

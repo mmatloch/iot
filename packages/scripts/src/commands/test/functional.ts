@@ -9,7 +9,7 @@ interface Flags {
     group?: string;
 }
 
-export class FunctionalTestCommand extends Command {
+export class TestFunctionalCommand extends Command {
     static description = 'Run functional tests';
 
     static flags = {
@@ -23,7 +23,7 @@ export class FunctionalTestCommand extends Command {
     };
 
     async run() {
-        const { flags } = await this.parse<Flags, Record<string, unknown>>(FunctionalTestCommand);
+        const { flags } = await this.parse<Flags, Record<string, unknown>>(TestFunctionalCommand);
 
         const cmd = `docker compose -p ${PROJECT_NAME} -f ${PATH.DeployLocal.DockerCompose} run -it tests`;
         const args = [`--watchAll=${flags.watchAll}`, '--selectProjects=functional'];
