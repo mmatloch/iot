@@ -13,8 +13,8 @@ ports:
     visibility: public
 
 tasks:
-  - before: yarn script build
-  - init: yarn script start
+  - before: yarn script build --no-production --nodeEnv development
+  - init: yarn script dev
 
 github:
   prebuilds:

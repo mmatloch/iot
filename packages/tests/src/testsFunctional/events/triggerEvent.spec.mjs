@@ -48,19 +48,22 @@ describe('Events triggerEvent', () => {
             const { body: triggerResult } = await H.post(payload).expectSuccess();
 
             // then
-            expect(triggerResult.processedEvents).toBeArrayOfSize(1);
+            expect(triggerResult).toBeArrayOfSize(1);
+            const [{ summary, runId }] = triggerResult;
 
-            const [processedEvent] = triggerResult.processedEvents;
+            expect(summary.children).toBeArrayOfSize(1);
+            const [processedEvent] = summary.children;
 
-            expect(processedEvent).not.toHaveProperty('triggeredBy');
+            expect(processedEvent).not.toHaveProperty('parentEvent');
             expect(processedEvent.event).toStrictEqual(event);
             expect(processedEvent.eventInstance).toMatchObject({
                 eventId: event._id,
+                eventRunId: runId,
                 triggerContext: payload.context,
                 state: 'SUCCESS',
+                parentEventId: null,
             });
-            expect(processedEvent.eventInstance).not.toHaveProperty('triggeredBy');
-            expect(processedEvent.processedEvents).toBeArrayOfSize(0);
+            expect(processedEvent.children).toBeArrayOfSize(0);
         });
 
         it('should trigger a chain of events', async () => {
@@ -72,8 +75,8 @@ describe('Events triggerEvent', () => {
 
             const secondEventPayload = generateEventPostPayload();
             secondEventPayload.actionDefinition = `
-                const filters = {_id: ${firstEvent._id}};
-                await sdk.eventRunner.trigger({filters, context});
+                const event = await sdk.events.findByIdOrFail(${firstEvent._id})
+                await event.trigger(context);
             `;
 
             const { body: secondEvent } = await eventHelpers.post(secondEventPayload).expectSuccess();
@@ -86,28 +89,35 @@ describe('Events triggerEvent', () => {
             const { body: triggerResult } = await H.post(payload).expectSuccess();
 
             // then
-            expect(triggerResult.processedEvents).toBeArrayOfSize(1);
+            expect(triggerResult).toBeArrayOfSize(1);
+            const [{ summary, runId }] = triggerResult;
 
-            const [firstProcessedEvent] = triggerResult.processedEvents;
+            expect(summary.children).toBeArrayOfSize(1);
+            const [firstProcessedEvent] = summary.children;
 
+            expect(firstProcessedEvent).not.toHaveProperty('parentEvent');
             expect(firstProcessedEvent.event).toStrictEqual(secondEvent);
             expect(firstProcessedEvent.eventInstance).toMatchObject({
                 eventId: secondEvent._id,
+                eventRunId: runId,
                 triggerContext: payload.context,
                 state: 'SUCCESS',
+                parentEventId: null,
             });
-            expect(firstProcessedEvent.eventInstance).not.toHaveProperty('triggeredBy');
-            expect(firstProcessedEvent.processedEvents).toBeArrayOfSize(1);
 
-            const [secondProcessedEvent] = firstProcessedEvent.processedEvents;
+            expect(firstProcessedEvent.children).toBeArrayOfSize(1);
+            const [secondProcessedEvent] = firstProcessedEvent.children;
+
             expect(secondProcessedEvent.event).toStrictEqual(firstEvent);
+            expect(secondProcessedEvent.parentEvent).toStrictEqual(secondEvent);
             expect(secondProcessedEvent.eventInstance).toMatchObject({
                 eventId: firstEvent._id,
+                eventRunId: runId,
                 triggerContext: payload.context,
                 state: 'SUCCESS',
-                triggeredByEventId: secondEvent._id,
+                parentEventId: secondEvent._id,
             });
-            expect(secondProcessedEvent.processedEvents).toBeArrayOfSize(0);
+            expect(secondProcessedEvent.children).toBeArrayOfSize(0);
         });
 
         it('should return performance measurements for each event instance', async () => {
@@ -119,16 +129,16 @@ describe('Events triggerEvent', () => {
 
             const secondEventPayload = generateEventPostPayload();
             secondEventPayload.actionDefinition = `
-                const filters = {_id: ${firstEvent._id}};
-                await sdk.eventRunner.trigger({filters, context});
+                const event = await sdk.events.findByIdOrFail(${firstEvent._id})
+                await event.trigger(context);
             `;
 
             const { body: secondEvent } = await eventHelpers.post(secondEventPayload).expectSuccess();
 
             const thirdEventPayload = generateEventPostPayload();
             thirdEventPayload.actionDefinition = `
-                const filters = {_id: ${secondEvent._id}};
-                await sdk.eventRunner.trigger({filters, context});
+                const event = await sdk.events.findByIdOrFail(${secondEvent._id})
+                await event.trigger(context);
             `;
 
             const { body: thirdEvent } = await eventHelpers.post(thirdEventPayload).expectSuccess();
@@ -141,7 +151,10 @@ describe('Events triggerEvent', () => {
             const { body: triggerResult } = await H.post(payload).expectSuccess();
 
             // then
-            expect(triggerResult.processedEvents).toBeArrayOfSize(1);
+            expect(triggerResult).toBeArrayOfSize(1);
+            const [{ summary }] = triggerResult;
+
+            expect(summary.children).toBeArrayOfSize(1);
 
             const expectPerformanceMetrics = (processedEvent) => {
                 expect(processedEvent.eventInstance).toHaveProperty('performanceMetrics');
@@ -162,13 +175,13 @@ describe('Events triggerEvent', () => {
                 expect(secondStep).toContainKeys(['executionStartDate', 'executionEndDate', 'executionDuration']);
             };
 
-            const [firstProcessedEvent] = triggerResult.processedEvents;
+            const [firstProcessedEvent] = summary.children;
             expectPerformanceMetrics(firstProcessedEvent);
 
-            const [secondProcessedEvent] = firstProcessedEvent.processedEvents;
+            const [secondProcessedEvent] = firstProcessedEvent.children;
             expectPerformanceMetrics(secondProcessedEvent);
 
-            const [thirdProcessedEvent] = secondProcessedEvent.processedEvents;
+            const [thirdProcessedEvent] = secondProcessedEvent.children;
             expectPerformanceMetrics(thirdProcessedEvent);
         });
 
@@ -187,27 +200,30 @@ describe('Events triggerEvent', () => {
             const { body: triggerResult } = await H.post(payload).expectSuccess();
 
             // then
-            expect(triggerResult.processedEvents).toBeArrayOfSize(1);
+            expect(triggerResult).toBeArrayOfSize(1);
+            const [{ summary }] = triggerResult;
+
+            expect(summary.children).toBeArrayOfSize(1);
         });
 
         describe('circular reference', () => {
-            it('should detect a circular reference in the same event chain', async () => {
+            it('should detect a circular reference in the current event run', async () => {
                 // given
                 const firstEventPayload = generateEventPostPayload();
                 const { body: firstEvent } = await eventHelpers.post(firstEventPayload).expectSuccess();
 
                 const secondEventPayload = generateEventPostPayload();
                 secondEventPayload.actionDefinition = `
-                    const filters = {_id: ${firstEvent._id}};
-                    await sdk.eventRunner.trigger({filters, context});
+                    const event = await sdk.events.findByIdOrFail(${firstEvent._id})
+                    await event.trigger(context);
                 `;
 
                 const { body: secondEvent } = await eventHelpers.post(secondEventPayload).expectSuccess();
 
                 const eventUpdatePayload = {
                     actionDefinition: `
-                        const filters = {_id: ${secondEvent._id}};
-                        await sdk.eventRunner.trigger({filters, context});
+                        const event = await sdk.events.findByIdOrFail(${secondEvent._id})
+                        await event.trigger(context);
                     `,
                 };
 
@@ -221,20 +237,23 @@ describe('Events triggerEvent', () => {
                 const { body: triggerResult } = await H.post(payload).expectSuccess();
 
                 // then
-                expect(triggerResult.processedEvents).toBeArrayOfSize(1);
+                expect(triggerResult).toBeArrayOfSize(1);
+                const [{ summary }] = triggerResult;
 
-                const [firstProcessedEvent] = triggerResult.processedEvents;
+                expect(summary.children).toBeArrayOfSize(1);
+                const [firstProcessedEvent] = summary.children;
+
                 expect(firstProcessedEvent.eventInstance).toMatchObject({
                     eventId: secondEvent._id,
                     state: 'SUCCESS',
                 });
-                expect(firstProcessedEvent.processedEvents).toBeArrayOfSize(1);
+                expect(firstProcessedEvent.children).toBeArrayOfSize(1);
 
-                const [secondProcessedEvent] = firstProcessedEvent.processedEvents;
+                const [secondProcessedEvent] = firstProcessedEvent.children;
                 expect(secondProcessedEvent.eventInstance).toHaveProperty('state', 'FAILED_ON_ACTION');
                 expect(secondProcessedEvent.eventInstance).toHaveProperty('error');
                 expect(secondProcessedEvent.eventInstance.error).toMatchObject({
-                    message: 'Error occurred during the event action',
+                    message: `Error occurred during the '${firstEvent.displayName}' event action`,
                     errorCode: 'SRV-9',
                 });
                 expect(secondProcessedEvent.eventInstance.error.cause).toMatchObject({
@@ -251,8 +270,8 @@ describe('Events triggerEvent', () => {
 
                 const eventUpdatePayload = {
                     actionDefinition: `
-                        const filters = {_id: ${event._id}};
-                        await sdk.eventRunner.trigger({filters, context});
+                        const event = await sdk.events.findByIdOrFail(${event._id})
+                        await event.trigger(context);
                     `,
                 };
 
@@ -266,14 +285,16 @@ describe('Events triggerEvent', () => {
                 const { body: triggerResult } = await H.post(payload).expectSuccess();
 
                 // then
-                expect(triggerResult.processedEvents).toBeArrayOfSize(1);
+                expect(triggerResult).toBeArrayOfSize(1);
+                const [{ summary }] = triggerResult;
 
-                const [processedEvent] = triggerResult.processedEvents;
+                expect(summary.children).toBeArrayOfSize(1);
+                const [processedEvent] = summary.children;
 
                 expect(processedEvent.eventInstance).toHaveProperty('state', 'FAILED_ON_ACTION');
                 expect(processedEvent.eventInstance).toHaveProperty('error');
                 expect(processedEvent.eventInstance.error).toMatchObject({
-                    message: 'Error occurred during the event action',
+                    message: `Error occurred during the '${event.displayName}' event action`,
                     errorCode: 'SRV-9',
                 });
                 expect(processedEvent.eventInstance.error.cause).toMatchObject({
@@ -292,7 +313,33 @@ describe('Events triggerEvent', () => {
             const { body: triggerResult } = await H.post(payload).expectSuccess();
 
             // then
-            expect(triggerResult.processedEvents).toBeArrayOfSize(0);
+            expect(triggerResult).toBeArrayOfSize(0);
+        });
+
+        it('should return a summary for all event runs', async () => {
+            // given
+            const firstEventPayload = generateEventPostPayload();
+            await eventHelpers.post(firstEventPayload).expectSuccess();
+
+            const secondEventPayload = generateEventPostPayload();
+            secondEventPayload.triggerType = firstEventPayload.triggerType;
+            secondEventPayload.triggerFilters = firstEventPayload.triggerFilters;
+            await eventHelpers.post(secondEventPayload).expectSuccess();
+
+            const payload = generateEventTriggerPayload();
+            payload.filters.triggerType = firstEventPayload.triggerType;
+            payload.filters.triggerFilters = firstEventPayload.triggerFilters;
+
+            // when
+            const { body: triggerResult } = await H.post(payload).expectSuccess();
+
+            // then
+            expect(triggerResult).toBeArrayOfSize(2);
+            const [firstEventResult, secondEventResult] = triggerResult;
+
+            expect(firstEventResult).toHaveProperty('runId');
+            expect(secondEventResult).toHaveProperty('runId');
+            expect(firstEventResult.runId).not.toBe(secondEventResult.runId);
         });
     });
 });

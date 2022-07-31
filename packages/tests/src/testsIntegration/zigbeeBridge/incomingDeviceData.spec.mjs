@@ -76,7 +76,7 @@ describe('Zigbee bridge incomingDeviceData', () => {
         };
 
         const eventQuery = {
-            name: `INCOMING_DEVICE_DATA_${zigbeeDevice.ieee_address}`,
+            displayName: `Incoming device data - ${zigbeeDevice.ieee_address}`,
         };
 
         const device = await findDevice(deviceQuery);
@@ -124,7 +124,7 @@ describe('Zigbee bridge incomingDeviceData', () => {
         };
 
         const eventQuery = {
-            name: `INCOMING_DEVICE_DATA_${zigbeeDevice.ieee_address}`,
+            displayName: `Incoming device data - ${zigbeeDevice.ieee_address}`,
         };
 
         const device = await findDevice(deviceQuery);

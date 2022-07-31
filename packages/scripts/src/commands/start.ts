@@ -10,12 +10,18 @@ import { PATH, PROJECT_NAME } from '../utils/constants';
 interface Flags {
     env: string;
     ci: string;
+    imageTag: string;
 }
 
 export class StartCommand extends Command {
     static description = 'Start selected environment';
 
     static flags = {
+        imageTag: Flags.string({
+            required: true,
+            default: 'latest',
+            options: ['local', 'latest'],
+        }),
         env: Flags.string({
             required: true,
             default: 'production',
@@ -28,9 +34,9 @@ export class StartCommand extends Command {
         }),
     };
 
-    private generateLocalEnv = () => {
+    private generateLocalEnv = (imageTag: string) => {
         this.log(cyan(`Generating environment files`));
-        const envVariables = [`PROJECT_NAME=${PROJECT_NAME}`];
+        const envVariables = [`PROJECT_NAME=${PROJECT_NAME}`, `IMAGE_TAG=${imageTag}`];
         writeFileSync(PATH.DeployLocal.DotEnv, envVariables.join(EOL));
     };
 
@@ -41,7 +47,7 @@ export class StartCommand extends Command {
 
         if (flags.ci || flags.env === 'local') {
             filePath = PATH.DeployLocal.DockerCompose;
-            this.generateLocalEnv();
+            this.generateLocalEnv(flags.imageTag);
         } else {
             filePath = PATH.DeployProd.DockerCompose;
         }

@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { VM } from 'vm2';
 
 export const createSandbox = () => {
-    const vm = new VM({
+    return new VM({
         timeout: 1000,
         allowAsync: true,
         sandbox: {
@@ -11,6 +11,4 @@ export const createSandbox = () => {
         eval: false,
         wasm: false,
     });
-
-    return vm;
 };

@@ -4,19 +4,20 @@ import { createValidator } from '@common/validator';
 import formBody from '@fastify/formbody';
 
 import { createApplicationFromFastify } from './fastifyAbstract';
-import loggerPlugin from './plugins/loggerPlugin';
+import loggerPlugin, { LoggerPluginOptions } from './plugins/loggerPlugin';
 import statusPlugin from './plugins/statusPlugin';
 import { Application } from './types';
 
 interface CreateApplicationOptions {
     logger: Logger;
+    loggerOptions: LoggerPluginOptions;
     hooks?: {
         beforeReady?: (app: Application) => Promise<void>;
         beforeBootstrap?: (app: Application) => Promise<void>;
     };
 }
 
-const bootstrapApplication = (app: Application) => {
+const bootstrapApplication = (app: Application, opts: CreateApplicationOptions) => {
     app.setErrorHandler(async (error, _request, reply) => {
         const { statusCode, body, headers } = transformError(error);
 
@@ -34,7 +35,7 @@ const bootstrapApplication = (app: Application) => {
     });
 
     app.register(formBody);
-    app.register(loggerPlugin);
+    app.register(loggerPlugin, opts.loggerOptions);
     app.register(statusPlugin);
 };
 
@@ -48,7 +49,7 @@ export const createApplication = async (opts: CreateApplicationOptions): Promise
         await app.after();
     }
 
-    bootstrapApplication(app);
+    bootstrapApplication(app, opts);
     await app.after();
 
     if (opts.hooks?.beforeReady) {

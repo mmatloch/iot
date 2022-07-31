@@ -1,11 +1,7 @@
 import { faker } from '@faker-js/faker';
 
 import { generateDeviceIeeeAddress } from '../../dataGenerators/devicesDataGenerators.mjs';
-import {
-    generateEventDisplayName,
-    generateEventName,
-    generateEventPostPayload,
-} from '../../dataGenerators/eventsDataGenerators.mjs';
+import { generateEventDisplayName, generateEventPostPayload } from '../../dataGenerators/eventsDataGenerators.mjs';
 import { createEventHelpers } from '../../helpers/helpers.mjs';
 
 const updatableFields = [
@@ -31,13 +27,6 @@ const updatableFields = [
     {
         field: 'actionDefinition',
         generateValue: () => `return ${faker.random.alphaNumeric(15)}`,
-    },
-];
-
-const notUpdatableFields = [
-    {
-        field: 'name',
-        generateValue: generateEventName,
     },
 ];
 
@@ -90,28 +79,6 @@ describe('Events updateEvent', () => {
             expect(updatedEvent._version).toBe(createdEvent._version + 1);
             expect(new Date(updatedEvent._updatedAt)).toBeAfter(new Date(createdEvent._updatedAt));
             expect(updatedEvent._createdAt).toBe(createdEvent._createdAt);
-        });
-
-        it.each(notUpdatableFields)(`should not update '$field'`, async ({ field, generateValue }) => {
-            // given
-            const { body: createdEvent } = await H.post(generateEventPostPayload()).expectSuccess();
-
-            const newValue = generateValue();
-
-            const payload = {
-                [field]: newValue,
-            };
-
-            // when
-            await H.patchById(createdEvent._id, payload).expectForbidden({
-                message: `You don't have permission to update this field`,
-                errorCode: 'SRV-7',
-            });
-
-            // then
-            const { body: event } = await H.getById(createdEvent._id).expectSuccess();
-
-            expect(event).toStrictEqual(createdEvent);
         });
 
         it('should return an error if the event does not exist', async () => {

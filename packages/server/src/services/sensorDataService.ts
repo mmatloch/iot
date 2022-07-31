@@ -1,4 +1,4 @@
-import { SearchResponse, createSearchResponse } from '../apis/searchApi';
+import { createSearchResponse } from '../apis/searchApi';
 import { SensorData, SensorDataDto } from '../entities/sensorDataEntity';
 import { createSensorDataRepository } from '../repositories/sensorDataRepository';
 import { GenericService } from './genericService';

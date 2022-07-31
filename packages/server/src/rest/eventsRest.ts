@@ -1,16 +1,15 @@
-import { access } from 'node:fs';
-
 import { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
 import { createSearchResponseSchema } from '../apis/searchApi';
-import { EventDto, EventTriggerType, eventDtoSchema, eventSchema } from '../entities/eventEntity';
-import { eventInstanceDtoSchema, eventInstanceSchema } from '../entities/eventInstanceEntity';
+import { EventTriggerType } from '../constants';
+import { EventDto, eventDtoSchema, eventSchema } from '../entities/eventEntity';
+import { eventInstanceSchema, eventInstanceSearchQuerySchema } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
-import { createEventRunner } from '../events/eventRunner';
+import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createEventInstancesService } from '../services/eventInstancesService';
 import { createEventsService } from '../services/eventsService';
@@ -32,7 +31,6 @@ const getEventSchema = {
 };
 
 const partialEventDtoSchema = Type.Partial(eventDtoSchema);
-const partialEventInstanceDtoSchema = Type.Partial(eventInstanceDtoSchema);
 
 const searchEventsSchema = {
     querystring: partialEventDtoSchema,
@@ -72,7 +70,7 @@ const triggerEventSchema = {
 };
 
 const searchEventInstancesSchema = {
-    querystring: partialEventInstanceDtoSchema,
+    querystring: eventInstanceSearchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(eventInstanceSchema),
     },
@@ -150,11 +148,13 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
         }
 
         const eventsService = createEventsService();
-        const eventInstancesService = createEventInstancesService();
 
-        const eventRunner = createEventRunner(eventsService, eventInstancesService);
+        const { _hits: events } = await eventsService.search({
+            triggerType: request.body.filters.triggerType,
+            triggerFilters: request.body.filters.triggerFilters,
+        });
 
-        const result = await eventRunner.trigger(request.body);
+        const result = await Promise.all(events.map((event) => eventTriggerInNewContext(event, request.body.context)));
 
         return reply.status(StatusCodes.CREATED).send(result);
     });

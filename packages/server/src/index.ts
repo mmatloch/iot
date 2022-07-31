@@ -12,8 +12,14 @@ import { createEventsRest } from './rest/eventsRest';
 import { createSensorDataRest } from './rest/sensorDataRest';
 import { createUsersRest } from './rest/usersRest';
 
+const config = getConfig();
+
 createApplication({
     logger: getLogger(),
+    loggerOptions: {
+        logRequests: config.logger.logRequests,
+        logResponses: config.logger.logResponses,
+    },
     hooks: {
         beforeBootstrap: async (app) => {
             app.register(requestUserPlugin);
@@ -24,9 +30,10 @@ createApplication({
             const mqttClient = createMqttClient();
             await mqttClient.initialize();
 
+            await timescaleDataSource.runMigrations();
+
             if (getConfig().app.env === ApplicationEnv.Development) {
                 await timescaleDataSource.synchronize();
-                await timescaleDataSource.runMigrations();
             }
 
             app.register(createUsersRest);

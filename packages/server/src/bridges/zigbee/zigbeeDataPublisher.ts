@@ -1,9 +1,8 @@
 import { MqttClient } from '../../clients/mqttClient';
+import { EventTriggerType } from '../../constants';
 import { DeviceState } from '../../entities/deviceEntity';
-import { EventTriggerType } from '../../entities/eventEntity';
-import { createEventRunner } from '../../events/eventRunner';
+import { eventTriggerInNewContext } from '../../events/eventTriggerInNewContext';
 import { getLogger } from '../../logger';
-import { createEventInstancesService } from '../../services/eventInstancesService';
 import { createEventsService } from '../../services/eventsService';
 import { GenericDataPublisher } from '../generic/genericDataPublisher';
 import { ZIGBEE_TOPIC_PREFIX } from './zigbeeDefinitions';
@@ -45,16 +44,31 @@ export const createZigbeeDataPublisher = (mqttClient: MqttClient) => {
             });
         }
 
-        const eventRunner = createEventRunner(createEventsService(), createEventInstancesService());
-        await eventRunner.trigger({
-            filters: {
-                triggerType: EventTriggerType.OutgoingDeviceData,
-                triggerFilters: {
-                    deviceId: device._id,
-                },
+        const eventsService = createEventsService();
+        const { _hits: events } = await eventsService.search({
+            triggerType: EventTriggerType.OutgoingDeviceData,
+            triggerFilters: {
+                deviceId: device._id,
             },
-            context: data,
         });
+
+        /**
+         * When the server triggers an event as a side effect of running another event,
+         * e.g. when sending data to a Zigbee device,
+         * we want to use the same "runId" and "summary" initiated at the start of the event run.
+         *
+         * Using the same summary makes it possible to detect circular references in indirectly related events
+         * and better visualize which events were triggered.
+         */
+        const reuseStore = true;
+
+        await Promise.all(
+            events.map((event) =>
+                eventTriggerInNewContext(event, data, {
+                    reuseStore,
+                }),
+            ),
+        );
     };
 
     dataPublisher = {

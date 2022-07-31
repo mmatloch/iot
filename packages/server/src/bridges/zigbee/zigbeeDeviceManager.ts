@@ -1,5 +1,6 @@
 import { EOL } from 'node:os';
 
+import { EventTriggerType } from '../../constants';
 import {
     Device,
     DeviceDeactivatedByType,
@@ -9,7 +10,6 @@ import {
     DeviceState,
     DeviceType,
 } from '../../entities/deviceEntity';
-import { EventTriggerType } from '../../entities/eventEntity';
 import { createDevicesService } from '../../services/devicesService';
 import { createEventsService } from '../../services/eventsService';
 import { ZigbeeDevice, ZigbeeDeviceType, ZigbeePowerSource } from './zigbeeDefinitions';
@@ -99,7 +99,6 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
         const device = await devicesService.create(buildToCreate(zigbeeDevice));
         await eventsService.create({
             displayName: `Incoming device data - ${device.ieeeAddress}`,
-            name: `${EventTriggerType.IncomingDeviceData}_${device.ieeeAddress}`,
             triggerType: EventTriggerType.IncomingDeviceData,
             triggerFilters: {
                 deviceId: device._id,

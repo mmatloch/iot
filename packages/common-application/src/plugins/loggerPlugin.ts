@@ -1,15 +1,22 @@
 import { createApplicationPlugin } from '../applicationPlugin';
 import { ApplicationPlugin } from '../types';
 
-const loggerPlugin: ApplicationPlugin = async (app) => {
-    app.addHook('onRequest', (request, _reply, done) => {
-        request.log.debug({
-            msg: 'Incoming request',
-            req: request,
-        });
+export interface LoggerPluginOptions extends Record<string, unknown> {
+    logRequests?: boolean;
+    logResponses?: boolean;
+}
 
-        done();
-    });
+const loggerPlugin: ApplicationPlugin<LoggerPluginOptions> = async (app, opts) => {
+    if (opts.logRequests) {
+        app.addHook('onRequest', (request, _reply, done) => {
+            request.log.debug({
+                msg: 'Incoming request',
+                req: request,
+            });
+
+            done();
+        });
+    }
 
     app.addHook('onError', (request, _reply, error, done) => {
         request.log.error({
@@ -20,14 +27,16 @@ const loggerPlugin: ApplicationPlugin = async (app) => {
         done();
     });
 
-    app.addHook('onResponse', (request, reply, done) => {
-        request.log.debug({
-            msg: 'Request completed',
-            res: reply,
-        });
+    if (opts.logResponses) {
+        app.addHook('onResponse', (request, reply, done) => {
+            request.log.debug({
+                msg: 'Request completed',
+                res: reply,
+            });
 
-        done();
-    });
+            done();
+        });
+    }
 };
 
 export default createApplicationPlugin(loggerPlugin, {

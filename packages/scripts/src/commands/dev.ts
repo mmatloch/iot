@@ -32,10 +32,10 @@ export default class DevCommand extends Command {
         await x('yarn install');
 
         if (flags.build) {
-            await BuildCommand.run(['--no-production']);
+            await BuildCommand.run(['--no-production', '--nodeEnv', 'development']);
         }
 
-        await StartCommand.run(['--env', 'local']);
+        await StartCommand.run(['--env', 'local', '--imageTag', 'local']);
 
         if (flags.logs) {
             await x(`docker logs iot-server-1 -f`);

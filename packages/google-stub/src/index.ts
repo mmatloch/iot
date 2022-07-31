@@ -8,6 +8,10 @@ const logger = getLogger();
 
 createApplication({
     logger,
+    loggerOptions: {
+        logRequests: true,
+        logResponses: true,
+    },
     hooks: {
         beforeReady: async (app) => {
             createOAuth2Rest(app);

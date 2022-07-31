@@ -1,23 +1,11 @@
 import { Static, Type } from '@sinclair/typebox';
 import { Column, Entity, Index } from 'typeorm';
 
+import { EventTriggerType } from '../constants';
+import { EventTriggerContext } from '../events/eventRunDefinitions';
+import { eventTrigger } from '../events/eventTrigger';
 import { mergeSchemas } from '../utils/schemaUtils';
 import { GenericEntity, genericEntitySchema } from './genericEntity';
-
-export enum EventTriggerType {
-    /**
-     * Events triggered by the HTTP API
-     */
-    Api = 'API',
-    /**
-     * Events triggered when the bridge received data from the device
-     */
-    IncomingDeviceData = 'INCOMING_DEVICE_DATA',
-    /**
-     * Events triggered when the bridge sent data to the device
-     */
-    OutgoingDeviceData = 'OUTGOING_DEVICE_DATA',
-}
 
 @Entity({ name: 'events' })
 export class Event extends GenericEntity {
@@ -28,10 +16,6 @@ export class Event extends GenericEntity {
     @Column('text')
     @Index({ unique: true })
     displayName!: string;
-
-    @Column('text')
-    @Index({ unique: true })
-    name!: string;
 
     @Column('text')
     triggerType!: EventTriggerType;
@@ -47,11 +31,14 @@ export class Event extends GenericEntity {
 
     @Column('text')
     actionDefinition!: string;
+
+    trigger = async (context: EventTriggerContext = {}): Promise<void> => {
+        await eventTrigger(this, context);
+    };
 }
 
 export const eventDtoSchema = Type.Object({
     displayName: Type.String(),
-    name: Type.String(),
     triggerType: Type.Enum(EventTriggerType),
     triggerFilters: Type.Record(Type.String(), Type.Unknown()),
     conditionDefinition: Type.String(),

@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   server:
-    image: ${PROJECT_NAME}/server
+    image: ${PROJECT_NAME}/server:${IMAGE_TAG}
     volumes:
       - ../../server/src:/usr/app/packages/server/src
       - ../../server/config:/usr/app/packages/server/config
@@ -23,7 +23,7 @@ services:
       - timescale
 
   frontend:
-    image: ${PROJECT_NAME}/frontend
+    image: ${PROJECT_NAME}/frontend:${IMAGE_TAG}
     volumes:
       - ../../frontend/public:/usr/app/packages/frontend/public
       - ../../frontend/src:/usr/app/packages/frontend/src

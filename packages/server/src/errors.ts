@@ -64,18 +64,18 @@ export const Errors = {
             message: `You don't have permission to update this field`,
         }),
 
-    failedToRunCondition: (opts: Partial<BaseErrorOptions>): BaseError =>
+    failedToRunCondition: (displayName: string, opts: Partial<BaseErrorOptions>): BaseError =>
         new BaseError({
             ...opts,
             errorCode: getErrorCode(ErrorCode.FailedToRunCondition),
-            message: `Error occurred during the event condition`,
+            message: `Error occurred during the '${displayName}' event condition`,
         }),
 
-    failedToRunAction: (opts: Partial<BaseErrorOptions>): BaseError =>
+    failedToRunAction: (displayName: string, opts: Partial<BaseErrorOptions>): BaseError =>
         new BaseError({
             ...opts,
             errorCode: getErrorCode(ErrorCode.FailedToRunAction),
-            message: `Error occurred during the event action`,
+            message: `Error occurred during the '${displayName}' event action`,
         }),
 
     conditionNotMet: (opts?: Partial<BaseErrorOptions>): BaseError =>
