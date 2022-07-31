@@ -35,7 +35,7 @@ export default class DevCommand extends Command {
             await BuildCommand.run(['--no-production', '--nodeEnv', 'development']);
         }
 
-        await StartCommand.run(['--env', 'local']);
+        await StartCommand.run(['--env', 'local', '--imageTag', 'local']);
 
         if (flags.logs) {
             await x(`docker logs iot-server-1 -f`);

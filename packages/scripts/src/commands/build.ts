@@ -19,7 +19,7 @@ const createDockerImages = (flags: Flags) => [
         name: 'Server',
         dockerfilePath: join(PATH.Packages, 'server', 'Dockerfile'),
         imageName: `${PROJECT_NAME}/server`,
-        imageTag: isDevelopment(flags.nodeEnv) ? 'dev' : 'latest',
+        imageTag: isDevelopment(flags.nodeEnv) ? 'local' : 'latest',
         buildArgs: [
             {
                 key: 'NODE_ENV',
@@ -34,7 +34,7 @@ const createDockerImages = (flags: Flags) => [
             ? join(PATH.Packages, 'frontend', 'Dockerfile')
             : join(PATH.Packages, 'frontend', 'Dockerfile.dev'),
         imageName: `${PROJECT_NAME}/frontend`,
-        imageTag: isDevelopment(flags.nodeEnv) ? 'dev' : 'latest',
+        imageTag: isDevelopment(flags.nodeEnv) ? 'local' : 'latest',
         buildCondition: () => true,
     },
     {
