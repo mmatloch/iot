@@ -313,7 +313,7 @@ describe('Events triggerEvent', () => {
             const { body: triggerResult } = await H.post(payload).expectSuccess();
 
             // then
-            expect(triggerResult.children).toBeArrayOfSize(0);
+            expect(triggerResult).toBeArrayOfSize(0);
         });
     });
 });
