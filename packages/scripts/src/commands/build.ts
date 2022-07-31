@@ -12,12 +12,14 @@ interface Flags {
     ci: string;
 }
 
+const isDevelopment = (nodeEnv: string) => nodeEnv === 'development';
+
 const createDockerImages = (flags: Flags) => [
     {
         name: 'Server',
         dockerfilePath: join(PATH.Packages, 'server', 'Dockerfile'),
         imageName: `${PROJECT_NAME}/server`,
-        imageTag: 'latest',
+        imageTag: isDevelopment(flags.nodeEnv) ? 'dev' : 'latest',
         buildArgs: [
             {
                 key: 'NODE_ENV',
@@ -32,7 +34,7 @@ const createDockerImages = (flags: Flags) => [
             ? join(PATH.Packages, 'frontend', 'Dockerfile')
             : join(PATH.Packages, 'frontend', 'Dockerfile.dev'),
         imageName: `${PROJECT_NAME}/frontend`,
-        imageTag: 'latest',
+        imageTag: isDevelopment(flags.nodeEnv) ? 'dev' : 'latest',
         buildCondition: () => true,
     },
     {
@@ -89,12 +91,12 @@ export class BuildCommand extends Command {
                 continue;
             }
 
-            this.log(cyan(`Building '${name}' Docker image`));
+            this.log(cyan(`Building '${name}' (${imageName}:${imageTag}) Docker image`));
 
             const buildArg = buildArgs?.flatMap(({ key, value }) => ['--build-arg', `${key}=${value}`]).join(' ') || '';
 
             await x(`docker build -f ${dockerfilePath} -t ${imageName}:${imageTag} ${buildArg} ${PATH.Root}`);
-            this.log(green(`Successfully built '${name}' Docker image`));
+            this.log(green(`Successfully built '${name}' (${imageName}:${imageTag}) Docker image`));
         }
     }
 }

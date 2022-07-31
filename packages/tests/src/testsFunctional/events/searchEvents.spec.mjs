@@ -1,10 +1,8 @@
-import { faker } from '@faker-js/faker';
 import _ from 'lodash';
 
 import { generateDeviceIeeeAddress } from '../../dataGenerators/devicesDataGenerators.mjs';
 import {
     generateEventDisplayName,
-    generateEventName,
     generateEventPostPayload,
     generateEventTriggerType,
 } from '../../dataGenerators/eventsDataGenerators.mjs';
@@ -16,10 +14,6 @@ const searchableFields = [
     {
         field: 'displayName',
         generateValue: generateEventDisplayName,
-    },
-    {
-        field: 'name',
-        generateValue: generateEventName,
     },
     {
         field: 'triggerType',

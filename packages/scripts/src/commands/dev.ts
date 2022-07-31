@@ -32,7 +32,7 @@ export default class DevCommand extends Command {
         await x('yarn install');
 
         if (flags.build) {
-            await BuildCommand.run(['--no-production']);
+            await BuildCommand.run(['--no-production', '--nodeEnv', 'development']);
         }
 
         await StartCommand.run(['--env', 'local']);

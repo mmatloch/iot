@@ -1,8 +1,9 @@
 import { TransformedErrorBody } from '@common/errors';
 import { Static, Type } from '@sinclair/typebox';
 import _ from 'lodash';
-import { AfterInsert, AfterLoad, Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 
+import { PerformanceMetrics } from '../definitions';
 import { mergeSchemas } from '../utils/schemaUtils';
 import { GenericTimeseriesEntity, genericEntitySchema } from './genericEntity';
 
@@ -12,20 +13,6 @@ export enum EventInstanceState {
     FailedOnAction = 'FAILED_ON_ACTION',
     Success = 'SUCCESS',
     ConditionNotMet = 'CONDITION_NOT_MET',
-}
-
-interface EventInstancePerformanceMetricsStep {
-    name: string;
-    executionStartDate: string;
-    executionEndDate: string;
-    executionDuration: number;
-}
-
-interface EventInstancePerformanceMetrics {
-    executionStartDate: string;
-    executionEndDate: string;
-    executionDuration: number;
-    steps: EventInstancePerformanceMetricsStep[];
 }
 
 @Entity({ name: 'eventinstances' })
@@ -55,30 +42,22 @@ export class EventInstance extends GenericTimeseriesEntity {
     error?: TransformedErrorBody;
 
     @Column('jsonb')
-    performanceMetrics!: EventInstancePerformanceMetrics;
+    performanceMetrics!: PerformanceMetrics;
 
     @Column({
         type: 'integer',
         default: null,
         nullable: true,
     })
-    triggeredByEventId?: number;
+    parentEventId!: number | null;
 
-    @AfterLoad()
-    @AfterInsert()
-    protected removeNulls() {
-        if (_.isNull(this.triggeredByEventId)) {
-            this.triggeredByEventId = undefined;
-        }
-
-        if (_.isNull(this.error)) {
-            this.error = undefined;
-        }
-    }
+    @Column('text')
+    eventRunId!: string;
 }
 
 export const eventInstanceDtoSchema = Type.Object({
     eventId: Type.Integer(),
+    parentEventId: Type.Union([Type.Null(), Type.Integer()]), // Integer must be second because Ajv will convert Null to 0
     triggerContext: Type.Record(Type.String(), Type.Unknown()),
     state: Type.Enum(EventInstanceState),
     error: Type.Optional(Type.Any()),
@@ -95,9 +74,18 @@ export const eventInstanceDtoSchema = Type.Object({
             }),
         ),
     }),
-    triggeredByEventId: Type.Optional(Type.Integer()),
+    eventRunId: Type.String(),
 });
 
 export const eventInstanceSchema = mergeSchemas(eventInstanceDtoSchema, genericEntitySchema);
-
 export type EventInstanceDto = Static<typeof eventInstanceDtoSchema>;
+
+export const eventInstanceSearchQuerySchema = Type.Partial(
+    mergeSchemas(
+        eventInstanceDtoSchema,
+        Type.Object({
+            parentEventId: Type.Integer(),
+        }),
+    ),
+);
+export type EventInstanceSearchQuery = Static<typeof eventInstanceSearchQuerySchema>;

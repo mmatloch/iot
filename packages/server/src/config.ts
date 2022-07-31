@@ -21,6 +21,12 @@ const schema = Type.Object({
             environment: 'LOG_ROTATION_FREQUENCY',
             default: 'daily',
         }),
+        logRequests: Type.Boolean({
+            default: false,
+        }),
+        logResponses: Type.Boolean({
+            default: false,
+        }),
     }),
     databases: Type.Object({
         timescale: Type.Object({

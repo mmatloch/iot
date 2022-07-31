@@ -24,7 +24,6 @@ export const createDevicesSdk = () => {
 
     const createSensorData = async (device: Device, data: SensorData['data']) => {
         const sensorDataService = createSensorDataService();
-
         await sensorDataService.create({
             deviceId: device._id,
             data,
@@ -33,7 +32,6 @@ export const createDevicesSdk = () => {
 
     const publishData = async (device: Device, data: Record<string, unknown>) => {
         const dataPublisher = getDataPublisher(device);
-
         await dataPublisher.publish(device, data);
     };
 

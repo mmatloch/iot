@@ -1,39 +1,42 @@
 import { performance } from 'node:perf_hooks';
 
-import { Event } from '../entities/eventEntity';
-import { EventInstance } from '../entities/eventInstanceEntity';
+import { PerformanceMetrics } from '../definitions';
+import type { Event } from '../entities/eventEntity';
 import { Errors } from '../errors';
 import { createSandbox } from '../sandbox';
-import { EventContext, EventRunnerCodeSdk } from './eventRunnerDefinitions';
+import { EventTriggerContext } from './eventRunDefinitions';
+import { EventRunSdk } from './sdks/sdk';
 
 const sandbox = createSandbox();
 
 interface ProcessOptions {
     event: Event;
-    context: EventContext;
-    performanceMetrics: EventInstance['performanceMetrics'];
+    context: EventTriggerContext;
+    performanceMetrics: PerformanceMetrics;
 }
 
-export const createEventProcessor = (sdk: EventRunnerCodeSdk) => {
-    const runCode = (code: string, context: EventContext): Promise<unknown> => {
-        return sandbox.run(`(async function(sdk, context) {${code}})`).call(undefined, sdk, context);
+export const createEventProcessor = (sdk: EventRunSdk) => {
+    const runCode = (code: string, context: EventTriggerContext): Promise<unknown> => {
+        const sandboxedFn = sandbox.run(`(async function(sdk, context) {${code}})`);
+
+        return sandboxedFn(sdk, context);
     };
 
-    const runCondition = async (event: Event, context: EventContext) => {
+    const runCondition = async (event: Event, context: EventTriggerContext) => {
         try {
             return await runCode(event.conditionDefinition, context);
         } catch (e) {
-            throw Errors.failedToRunCondition({
+            throw Errors.failedToRunCondition(event.displayName, {
                 cause: e,
             });
         }
     };
 
-    const runAction = async (event: Event, context: EventContext) => {
+    const runAction = async (event: Event, context: EventTriggerContext) => {
         try {
             await runCode(event.actionDefinition, context);
         } catch (e) {
-            throw Errors.failedToRunAction({
+            throw Errors.failedToRunAction(event.displayName, {
                 cause: e,
             });
         }

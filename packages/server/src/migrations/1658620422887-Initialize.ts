@@ -18,10 +18,10 @@ export class Initialize1658620422887 implements MigrationInterface {
          * Events
          */
         await queryRunner.query(
-            `CREATE TABLE "events" ("_id" SERIAL NOT NULL, "_version" integer NOT NULL, "_createdAt" TIMESTAMP NOT NULL DEFAULT now(), "_updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "displayName" text NOT NULL, "name" text NOT NULL, "triggerType" text NOT NULL, "triggerFilters" jsonb NOT NULL DEFAULT '{}', "conditionDefinition" text NOT NULL, "actionDefinition" text NOT NULL, CONSTRAINT "PK_1e1bcbbe73c497e1c9a8c11b5a1" PRIMARY KEY ("_id"))`,
+            `CREATE TABLE "events" ("_id" SERIAL NOT NULL, "_version" integer NOT NULL, "_createdAt" TIMESTAMP NOT NULL DEFAULT now(), "_updatedAt" TIMESTAMP NOT NULL DEFAULT now(), "displayName" text NOT NULL, "triggerType" text NOT NULL, "triggerFilters" jsonb NOT NULL DEFAULT '{}', "conditionDefinition" text NOT NULL, "actionDefinition" text NOT NULL, CONSTRAINT "PK_1e1bcbbe73c497e1c9a8c11b5a1" PRIMARY KEY ("_id"))`,
         );
+
         await queryRunner.query(`CREATE UNIQUE INDEX "IDX_b93a84ee48d5a41720b10fa099" ON "events" ("displayName") `);
-        await queryRunner.query(`CREATE UNIQUE INDEX "IDX_dfa3d03bef3f90f650fd138fb3" ON "events" ("name") `);
 
         /**
          * Event instances

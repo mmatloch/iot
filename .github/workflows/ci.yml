@@ -18,8 +18,6 @@ jobs:
         run: yarn script build
       - name: Start containers
         run: yarn script start
-      - name: Run migrations
-        run: yarn script migration:run
       - name: Run tests
         run: yarn script test
       - name: Stop containers
