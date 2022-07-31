@@ -315,5 +315,31 @@ describe('Events triggerEvent', () => {
             // then
             expect(triggerResult).toBeArrayOfSize(0);
         });
+
+        it('should return a summary for all event runs', async () => {
+            // given
+            const firstEventPayload = generateEventPostPayload();
+            await eventHelpers.post(firstEventPayload).expectSuccess();
+
+            const secondEventPayload = generateEventPostPayload();
+            secondEventPayload.triggerType = firstEventPayload.triggerType;
+            secondEventPayload.triggerFilters = firstEventPayload.triggerFilters;
+            await eventHelpers.post(secondEventPayload).expectSuccess();
+
+            const payload = generateEventTriggerPayload();
+            payload.filters.triggerType = firstEventPayload.triggerType;
+            payload.filters.triggerFilters = firstEventPayload.triggerFilters;
+
+            // when
+            const { body: triggerResult } = await H.post(payload).expectSuccess();
+
+            // then
+            expect(triggerResult).toBeArrayOfSize(2);
+            const [firstEventResult, secondEventResult] = triggerResult;
+
+            expect(firstEventResult).toHaveProperty('runId');
+            expect(secondEventResult).toHaveProperty('runId');
+            expect(firstEventResult.runId).not.toBe(secondEventResult.runId);
+        });
     });
 });
