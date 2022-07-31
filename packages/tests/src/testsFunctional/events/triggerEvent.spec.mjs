@@ -35,7 +35,7 @@ describe('Events triggerEvent', () => {
             eventHelpers.authorizeHttpClient();
         });
 
-        it.only('should trigger an event', async () => {
+        it('should trigger an event', async () => {
             // given
             const postPayload = generateEventPostPayload();
             const { body: event } = await eventHelpers.post(postPayload).expectSuccess();

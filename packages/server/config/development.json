@@ -1,7 +1,7 @@
 {
   "logger": {
     "level": "trace",
-    "logRequests": false,
-    "logResponses": false
+    "logRequests": true,
+    "logResponses": true
   }
 }
