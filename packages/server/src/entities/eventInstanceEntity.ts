@@ -51,7 +51,10 @@ export class EventInstance extends GenericTimeseriesEntity {
     })
     parentEventId!: number | null;
 
-    @Column('text')
+    @Column({
+        type: 'text',
+        default: 'gen_random_uuid()',
+    })
     eventRunId!: string;
 }
 
