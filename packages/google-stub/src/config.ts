@@ -5,6 +5,7 @@ import { Type } from '@sinclair/typebox';
 const schema = Type.Object({
     app: Type.Object({
         name: Type.String(),
+        urlPrefix: Type.String(),
     }),
     logger: Type.Object({
         level: Type.String({

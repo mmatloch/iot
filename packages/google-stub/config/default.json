@@ -1,6 +1,7 @@
 {
   "app": {
-    "name": "google-stub"
+    "name": "google-stub",
+    "urlPrefix": "/google"
   },
   "logger": {},
   "oAuth2": {

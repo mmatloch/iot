@@ -7,6 +7,7 @@ import { ApplicationEnv } from './constants';
 const schema = Type.Object({
     app: Type.Object({
         name: Type.String(),
+        urlPrefix: Type.String(),
         env: Type.Enum(ApplicationEnv, {
             environment: 'NODE_ENV',
             transform: ['toUpperCase'],

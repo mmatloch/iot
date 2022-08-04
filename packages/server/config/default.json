@@ -1,6 +1,7 @@
 {
   "app": {
-    "name": "server"
+    "name": "server",
+    "urlPrefix": "/api"
   },
   "logger": {},
   "externalServices": {

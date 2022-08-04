@@ -20,6 +20,7 @@ createApplication({
         logRequests: config.logger.logRequests,
         logResponses: config.logger.logResponses,
     },
+    urlPrefix: config.app.urlPrefix,
     hooks: {
         beforeBootstrap: async (app) => {
             app.register(requestUserPlugin);

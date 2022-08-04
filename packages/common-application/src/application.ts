@@ -1,3 +1,5 @@
+import { IncomingMessage } from 'http';
+
 import { ValidationError, transformError } from '@common/errors';
 import type { Logger } from '@common/logger';
 import { createValidator } from '@common/validator';
@@ -11,6 +13,7 @@ import { Application } from './types';
 interface CreateApplicationOptions {
     logger: Logger;
     loggerOptions: LoggerPluginOptions;
+    urlPrefix: string;
     hooks?: {
         beforeReady?: (app: Application) => Promise<void>;
         beforeBootstrap?: (app: Application) => Promise<void>;
@@ -40,8 +43,25 @@ const bootstrapApplication = (app: Application, opts: CreateApplicationOptions) 
 };
 
 export const createApplication = async (opts: CreateApplicationOptions): Promise<Application> => {
+    const rewriteUrl = (req: IncomingMessage) => {
+        const { url } = req;
+
+        if (!url) {
+            return '/';
+        }
+
+        if (url.startsWith(opts.urlPrefix)) {
+            const newUrl = url.substring(opts.urlPrefix.length);
+
+            return newUrl || '/';
+        }
+
+        return url;
+    };
+
     const app = createApplicationFromFastify({
         logger: opts.logger,
+        rewriteUrl,
     });
 
     if (opts.hooks?.beforeBootstrap) {
