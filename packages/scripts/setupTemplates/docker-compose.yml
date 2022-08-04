@@ -11,7 +11,6 @@ services:
       ROOT_USER_EMAIL: ${ROOT_USER_EMAIL}
       MQTT: ${MOSQUITTO}
     depends_on:
-      - nginx
       - mosquitto
       - postgres
       - zigbee2mqtt
