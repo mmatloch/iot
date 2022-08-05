@@ -145,7 +145,7 @@ export class SetupCommand extends Command {
 
                 const isRequired = !generateValue;
                 let answer = await askQuestion(question, isRequired, fromCache || defaultValue);
-                if (answer?.length === 0 && generateValue) {
+                if (!answer && generateValue) {
                     answer = generateValue();
                 }
 
