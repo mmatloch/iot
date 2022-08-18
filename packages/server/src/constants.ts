@@ -16,4 +16,8 @@ export enum EventTriggerType {
      * Events triggered when the bridge sent data to the device
      */
     OutgoingDeviceData = 'OUTGOING_DEVICE_DATA',
+    /**
+     * Events triggered by the scheduler at a specific time or interval
+     */
+    Scheduler = 'SCHEDULER',
 }

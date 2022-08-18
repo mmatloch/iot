@@ -12,6 +12,7 @@ export enum ErrorCode {
     FailedToRunAction,
     ConditionNotMet,
     EventTriggerCircularReference,
+    InvalidEventMetadata,
 }
 
 const prefix = 'SRV';
@@ -106,4 +107,12 @@ export const Errors = {
             detail: `Detected that ${eventMsg} is trying to run again in the same event chain. This is regarded as undesirable because it can lead to an infinite loop`,
         });
     },
+
+    invalidEventMetadata: (detail: string, opts?: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.unprocessableEntity({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.InvalidEventMetadata),
+            message: `Invalid event metadata`,
+            detail,
+        }),
 };

@@ -1,7 +1,11 @@
 import { faker } from '@faker-js/faker';
 
 import { generateDeviceIeeeAddress } from '../../dataGenerators/devicesDataGenerators.mjs';
-import { generateEventDisplayName, generateEventPostPayload } from '../../dataGenerators/eventsDataGenerators.mjs';
+import {
+    generateEventDisplayName,
+    generateEventPostPayload,
+    generateEventSchedulerMetadata,
+} from '../../dataGenerators/eventsDataGenerators.mjs';
 import { createEventHelpers } from '../../helpers/helpers.mjs';
 
 const updatableFields = [
@@ -27,6 +31,10 @@ const updatableFields = [
     {
         field: 'actionDefinition',
         generateValue: () => `return ${faker.random.alphaNumeric(15)}`,
+    },
+    {
+        field: 'metadata',
+        generateValue: generateEventSchedulerMetadata,
     },
 ];
 
@@ -120,6 +128,45 @@ describe('Events updateEvent', () => {
                 });
             },
         );
+
+        it('should return an error if the event does not contain metadata and has triggerType `SCHEDULER`', async () => {
+            // given
+            const payload = generateEventPostPayload();
+            const { body: event } = await H.post(payload).expectSuccess();
+
+            const patchPayload = {
+                triggerType: 'SCHEDULER',
+                metadata: null,
+            };
+
+            // when & then
+            await H.patchById(event._id, patchPayload).expectUnprocessableEntity({
+                errorCode: 'SRV-12',
+                message: 'Invalid event metadata',
+                detail: `Event with triggerType 'SCHEDULER' requires metadata with type 'SCHEDULER'`,
+            });
+        });
+
+        it('should return an error if cronExpression is invalid', async () => {
+            // given
+            const metadata = generateEventSchedulerMetadata();
+            metadata.cronExpression = '0 0 123 * *';
+
+            const payload = generateEventPostPayload();
+            const { body: event } = await H.post(payload).expectSuccess();
+
+            const patchPayload = {
+                triggerType: 'SCHEDULER',
+                metadata: metadata,
+            };
+
+            // when & then
+            await H.patchById(event._id, patchPayload).expectUnprocessableEntity({
+                errorCode: 'SRV-12',
+                message: 'Invalid event metadata',
+                detail: 'Invalid cron expression',
+            });
+        });
     });
 
     describe('as USER', () => {

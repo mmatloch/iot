@@ -2993,6 +2993,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cron-parser@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "cron-parser@npm:4.6.0"
+  dependencies:
+    luxon: ^3.0.1
+  checksum: cef63dee396732a8247c2c55d99512db7ad39797459f4bfd534ce5c18efdbf88b16ae8265c3b2abc40cdfadf8930bb1be6778e6ae664ae70e4ed7f206487d0cd
+  languageName: node
+  linkType: hard
+
 "cross-spawn@npm:^6.0.0, cross-spawn@npm:^6.0.5":
   version: 6.0.5
   resolution: "cross-spawn@npm:6.0.5"
@@ -6087,6 +6096,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luxon@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "luxon@npm:3.0.1"
+  checksum: aa966eb919bf95b1bd819cda784d1f6f66e3fb65bd9ec7bf68b6a978eeb4e3e14f7e2275021b473f93b15b6b7ba2e5a30471e53add3929a7e695fcfd6dd40ec8
+  languageName: node
+  linkType: hard
+
 "magic-string@npm:^0.26.2":
   version: 0.26.2
   resolution: "magic-string@npm:0.26.2"
@@ -7715,6 +7731,7 @@ __metadata:
     "@types/lodash": ^4.14.182
     "@types/node": ^18.0.6
     camelcase-keys: ^7.0.2
+    cron-parser: ^4.6.0
     fastq: ^1.13.0
     http-status-codes: ^2.2.0
     jsonwebtoken: ^8.5.1
