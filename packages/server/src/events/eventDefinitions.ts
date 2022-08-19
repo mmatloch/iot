@@ -1,3 +1,5 @@
+import { Type } from '@sinclair/typebox';
+
 export enum EventTriggerType {
     /**
      * Events triggered by the HTTP API
@@ -38,6 +40,13 @@ export enum EventMetadataTaskType {
 }
 
 export interface EventSchedulerTask {
+    _id: number;
     eventId: number;
     runAt: Date;
 }
+
+export const eventSchedulerTaskSchema = Type.Object({
+    _id: Type.Integer(),
+    eventId: Type.Integer(),
+    runAt: Type.String(),
+});

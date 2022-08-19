@@ -1,11 +1,14 @@
 import { EventMetadataOnMultipleInstances, EventSchedulerTask } from '../eventDefinitions';
 
-export const createEventSchedulerTaskManager = () => {
+const createEventSchedulerTaskManager = () => {
     let taskList: EventSchedulerTask[] = [];
 
-    const add = (task: EventSchedulerTask, onConflict: EventMetadataOnMultipleInstances) => {
+    const add = (
+        taskDto: Pick<EventSchedulerTask, 'eventId' | 'runAt'>,
+        onConflict: EventMetadataOnMultipleInstances,
+    ) => {
         if (onConflict) {
-            const tasks = searchByEventId(task.eventId);
+            const tasks = searchByEventId(taskDto.eventId);
 
             if (tasks.length) {
                 switch (onConflict) {
@@ -13,7 +16,7 @@ export const createEventSchedulerTaskManager = () => {
                         return;
 
                     case EventMetadataOnMultipleInstances.Replace:
-                        removeByEventId(task.eventId);
+                        removeByEventId(taskDto.eventId);
                         break;
 
                     case EventMetadataOnMultipleInstances.Create:
@@ -22,6 +25,11 @@ export const createEventSchedulerTaskManager = () => {
                 }
             }
         }
+
+        const task = {
+            ...taskDto,
+            _id: taskList.length + 1,
+        };
 
         taskList.push(task);
     };
@@ -39,7 +47,7 @@ export const createEventSchedulerTaskManager = () => {
     };
 
     const searchByEventId = (eventId: number) => {
-        return search((task) => task.eventId <= eventId);
+        return search((task) => task.eventId === eventId);
     };
 
     const searchBeforeDate = (runAt: Date) => {
@@ -56,5 +64,10 @@ export const createEventSchedulerTaskManager = () => {
         removeByEventId,
         searchBeforeDate,
         getTaskCount,
+        search,
     };
 };
+
+const taskManager = createEventSchedulerTaskManager();
+
+export const getEventSchedulerTaskManager = () => taskManager;

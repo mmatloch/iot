@@ -3,7 +3,7 @@ import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
-import { createSearchResponseSchema } from '../apis/searchApi';
+import { createSearchResponse, createSearchResponseSchema } from '../apis/searchApi';
 import {
     EventDto,
     eventDtoSchema,
@@ -14,8 +14,9 @@ import {
 import { eventInstanceSchema, eventInstanceSearchQuerySchema } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
-import { EventTriggerType } from '../events/eventDefinitions';
+import { EventSchedulerTask, EventTriggerType, eventSchedulerTaskSchema } from '../events/eventDefinitions';
 import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
+import { getEventSchedulerTaskManager } from '../events/scheduler/eventSchedulerTaskManager';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createEventInstancesService } from '../services/eventInstancesService';
 import { createEventsService } from '../services/eventsService';
@@ -77,6 +78,19 @@ const searchEventInstancesSchema = {
     querystring: eventInstanceSearchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(eventInstanceSchema),
+    },
+};
+
+const searchEventSchedulerTasksSchema = {
+    querystring: Type.Partial(
+        Type.Object({
+            startDatetime: Type.String({ format: 'date-time' }),
+            endDatetime: Type.String({ format: 'date-time' }),
+            eventId: Type.Integer(),
+        }),
+    ),
+    response: {
+        [StatusCodes.OK]: createSearchResponseSchema(eventSchedulerTaskSchema),
     },
 };
 
@@ -182,4 +196,45 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
         return reply.status(StatusCodes.OK).send(searchResult);
     });
+
+    app.withTypeProvider().get(
+        '/events/scheduler/tasks',
+        { schema: searchEventSchedulerTasksSchema },
+        async (request, reply) => {
+            const accessControl = createAccessControl(request.user);
+            accessControl.authorize();
+
+            const { startDatetime, endDatetime, eventId } = request.query;
+
+            const taskManager = getEventSchedulerTaskManager();
+
+            const predicate = (task: EventSchedulerTask) => {
+                if (eventId && task.eventId !== eventId) {
+                    return false;
+                }
+
+                if (startDatetime && task.runAt < new Date(startDatetime)) {
+                    return false;
+                }
+
+                if (endDatetime && task.runAt > new Date(endDatetime)) {
+                    return false;
+                }
+
+                return true;
+            };
+
+            const result = taskManager.search(predicate);
+
+            const searchResponse = createSearchResponse({
+                links: {},
+                meta: {
+                    totalHits: result.length,
+                },
+                hits: result,
+            });
+
+            return reply.status(StatusCodes.OK).send(searchResponse);
+        },
+    );
 };

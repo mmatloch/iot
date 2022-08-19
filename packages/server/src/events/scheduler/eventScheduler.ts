@@ -9,7 +9,7 @@ import { getLogger } from '../../logger';
 import { createEventsService } from '../../services/eventsService';
 import { EventState, EventTriggerType } from '../eventDefinitions';
 import { eventTriggerInNewContext } from '../eventTriggerInNewContext';
-import { createEventSchedulerTaskManager } from './eventSchedulerTaskManager';
+import { getEventSchedulerTaskManager } from './eventSchedulerTaskManager';
 
 const logger = getLogger();
 const timeZone = 'Europe/Warsaw';
@@ -25,7 +25,7 @@ const getTimeoutToNextFullMinute = () => {
 };
 
 export const createEventScheduler = () => {
-    const taskManager = createEventSchedulerTaskManager();
+    const taskManager = getEventSchedulerTaskManager();
     const eventsService = createEventsService();
 
     const cancelEvent = (event: Event) => {
@@ -128,7 +128,7 @@ export const createEventScheduler = () => {
     const retryImmediatelyAfterBoot = () => {};
 
     const processTasks = async () => {
-        logger.debug(`Processing tasks, number of scheduled tasks: ${taskManager.getTaskCount()}`);
+        logger.debug(`Processing tasks, total number of scheduled tasks: ${taskManager.getTaskCount()}`);
 
         const now = new Date();
 
