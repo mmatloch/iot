@@ -5,6 +5,7 @@ import { createMqttClient } from './clients/mqttClient';
 import { getConfig } from './config';
 import { ApplicationEnv } from './constants';
 import { timescaleDataSource } from './dataSources/timescaleDataSource';
+import { createEventScheduler } from './events/scheduler/eventScheduler';
 import { getLogger } from './logger';
 import requestUserPlugin from './plugins/requestUserPlugin';
 import { createDevicesRest } from './rest/devicesRest';
@@ -43,6 +44,7 @@ createApplication({
             app.register(createSensorDataRest);
 
             await createZigbeeBridge(mqttClient).initialize();
+            await createEventScheduler().initialize();
         },
     },
 });

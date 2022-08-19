@@ -38,7 +38,10 @@ export class Event extends GenericEntity {
     @Column('text')
     actionDefinition!: string;
 
-    @Column('text')
+    @Column({
+        type: 'text',
+        default: EventState.Active,
+    })
     state!: EventState;
 
     @Column({
@@ -83,6 +86,8 @@ export const eventSchema = mergeSchemas(eventDtoSchema, genericEntitySchema);
 export type EventDto = Static<typeof eventDtoSchema>;
 
 export const eventSearchQuerySchema = Type.Partial(Type.Omit(eventDtoSchema, ['metadata']));
+delete eventSearchQuerySchema.properties.state.default;
+
 export type EventSearchQuery = Static<typeof eventSearchQuerySchema>;
 
 export const eventUpdateSchema = Type.Partial(eventDtoSchema);

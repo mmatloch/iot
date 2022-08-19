@@ -36,3 +36,8 @@ export enum EventMetadataTaskType {
     StaticCron = 'STATIC_CRON',
     RelativeCron = 'RELATIVE_CRON',
 }
+
+export interface EventSchedulerTask {
+    eventId: number;
+    runAt: Date;
+}

@@ -87,6 +87,7 @@ const updatableFields = [
     'conditionDefinition',
     'actionDefinition',
     'metadata',
+    'state',
 ];
 
 const checkUpdatableFields = (event: Partial<EventDto>) => {
