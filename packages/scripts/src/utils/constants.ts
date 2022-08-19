@@ -4,6 +4,7 @@ import { readJsonSync } from 'fs-extra';
 
 const ROOT_PATH = '../../';
 const PACKAGES_PATH = join(ROOT_PATH, 'packages');
+const SERVER_PATH = join(PACKAGES_PATH, 'server');
 const SCRIPTS_PATH = '.';
 const DEPLOY_LOCAL_PATH = join(PACKAGES_PATH, 'deploy', 'local');
 const DEPLOY_PROD_PATH = join(PACKAGES_PATH, 'deploy', 'prod');
@@ -13,6 +14,10 @@ export const PATH = {
     RootPackageJson: join(ROOT_PATH, 'package.json'),
     Packages: PACKAGES_PATH,
     Scripts: SCRIPTS_PATH,
+    Server: {
+        Root: SERVER_PATH,
+        Migrations: join(SERVER_PATH, 'src', 'migrations'),
+    },
     DeployLocal: {
         Root: DEPLOY_LOCAL_PATH,
         DotEnv: join(DEPLOY_LOCAL_PATH, '.env'),

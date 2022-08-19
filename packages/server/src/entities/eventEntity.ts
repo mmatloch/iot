@@ -38,10 +38,7 @@ export class Event extends GenericEntity {
     @Column('text')
     actionDefinition!: string;
 
-    @Column({
-        type: 'text',
-        default: EventState.Active,
-    })
+    @Column('text')
     state!: EventState;
 
     @Column({
