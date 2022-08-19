@@ -1,6 +1,6 @@
 import { MqttClient } from '../../clients/mqttClient';
-import { EventTriggerType } from '../../constants';
 import { DeviceState } from '../../entities/deviceEntity';
+import { EventTriggerType } from '../../events/eventDefinitions';
 import { eventTriggerInNewContext } from '../../events/eventTriggerInNewContext';
 import { getLogger } from '../../logger';
 import { createEventsService } from '../../services/eventsService';

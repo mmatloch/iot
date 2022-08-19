@@ -4,11 +4,17 @@ import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
 import { createSearchResponseSchema } from '../apis/searchApi';
-import { EventTriggerType } from '../constants';
-import { EventDto, eventDtoSchema, eventSchema } from '../entities/eventEntity';
+import {
+    EventDto,
+    eventDtoSchema,
+    eventSchema,
+    eventSearchQuerySchema,
+    eventUpdateSchema,
+} from '../entities/eventEntity';
 import { eventInstanceSchema, eventInstanceSearchQuerySchema } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
+import { EventTriggerType } from '../events/eventDefinitions';
 import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createEventInstancesService } from '../services/eventInstancesService';
@@ -30,10 +36,8 @@ const getEventSchema = {
     },
 };
 
-const partialEventDtoSchema = Type.Partial(eventDtoSchema);
-
 const searchEventsSchema = {
-    querystring: partialEventDtoSchema,
+    querystring: eventSearchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(eventSchema),
     },
@@ -43,7 +47,7 @@ const updateEventSchema = {
     params: Type.Object({
         id: Type.Integer(),
     }),
-    body: partialEventDtoSchema,
+    body: eventUpdateSchema,
     response: {
         [StatusCodes.OK]: eventSchema,
     },
@@ -76,7 +80,14 @@ const searchEventInstancesSchema = {
     },
 };
 
-const updatableFields = ['displayName', 'triggerType', 'triggerFilters', 'conditionDefinition', 'actionDefinition'];
+const updatableFields = [
+    'displayName',
+    'triggerType',
+    'triggerFilters',
+    'conditionDefinition',
+    'actionDefinition',
+    'metadata',
+];
 
 const checkUpdatableFields = (event: Partial<EventDto>) => {
     Object.keys(event).forEach((key) => {

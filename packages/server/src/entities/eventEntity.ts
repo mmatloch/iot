@@ -1,31 +1,17 @@
 import { Static, Type } from '@sinclair/typebox';
 import { Column, Entity, Index } from 'typeorm';
 
-import { EventTriggerType } from '../constants';
+import {
+    EventMetadataOnMultipleInstances,
+    EventMetadataTaskType,
+    EventMetadataType,
+    EventState,
+    EventTriggerType,
+} from '../events/eventDefinitions';
 import { EventTriggerContext } from '../events/eventRunDefinitions';
 import { eventTrigger } from '../events/eventTrigger';
 import { mergeSchemas } from '../utils/schemaUtils';
 import { GenericEntity, genericEntitySchema } from './genericEntity';
-
-export enum EventState {
-    Active = 'ACTIVE',
-    Completed = 'COMPLETED',
-}
-
-export enum EventMetadataType {
-    Scheduler = 'SCHEDULER',
-}
-
-enum EventMetadataOnMultipleInstances {
-    Replace = 'REPLACE',
-    Create = 'CREATE',
-    Skip = 'SKIP',
-}
-
-enum EventMetadataTaskType {
-    StaticCron = 'STATIC_CRON',
-    RelativeCron = 'RELATIVE_CRON',
-}
 
 @Entity({ name: 'events' })
 export class Event extends GenericEntity {
@@ -101,3 +87,7 @@ export type EventDto = Static<typeof eventDtoSchema>;
 
 export const eventSearchQuerySchema = Type.Partial(Type.Omit(eventDtoSchema, ['metadata']));
 export type EventSearchQuery = Static<typeof eventSearchQuerySchema>;
+
+export const eventUpdateSchema = Type.Partial(eventDtoSchema);
+delete eventUpdateSchema.properties.state.default;
+delete eventUpdateSchema.properties.metadata.default;

@@ -1,5 +1,5 @@
-import { EventTriggerType } from '../../../constants';
 import { Device } from '../../../entities/deviceEntity';
+import { EventTriggerType } from '../../../events/eventDefinitions';
 import { eventTriggerInNewContext } from '../../../events/eventTriggerInNewContext';
 import { getLogger } from '../../../logger';
 import { createEventsService } from '../../../services/eventsService';

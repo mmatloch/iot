@@ -1,9 +1,9 @@
 import CronParser from 'cron-parser';
 
 import { createSearchResponse } from '../apis/searchApi';
-import { EventTriggerType } from '../constants';
-import { Event, EventDto, EventMetadataType, EventSearchQuery } from '../entities/eventEntity';
+import { Event, EventDto, EventSearchQuery } from '../entities/eventEntity';
 import { Errors } from '../errors';
+import { EventMetadataType, EventTriggerType } from '../events/eventDefinitions';
 import { createEventsRepository } from '../repositories/eventsRepository';
 import { GenericService } from './genericService';
 

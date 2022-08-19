@@ -1,6 +1,5 @@
 import { EOL } from 'node:os';
 
-import { EventTriggerType } from '../../constants';
 import {
     Device,
     DeviceDeactivatedByType,
@@ -10,6 +9,7 @@ import {
     DeviceState,
     DeviceType,
 } from '../../entities/deviceEntity';
+import { EventState, EventTriggerType } from '../../events/eventDefinitions';
 import { createDevicesService } from '../../services/devicesService';
 import { createEventsService } from '../../services/eventsService';
 import { ZigbeeDevice, ZigbeeDeviceType, ZigbeePowerSource } from './zigbeeDefinitions';
@@ -105,6 +105,8 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
             },
             actionDefinition: buildActionDefinition(device),
             conditionDefinition: buildConditionDefinition(),
+            state: EventState.Active,
+            metadata: null,
         });
 
         triggerWatch(device);
