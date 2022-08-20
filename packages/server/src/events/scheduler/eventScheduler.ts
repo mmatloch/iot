@@ -2,12 +2,14 @@ import CronParser from 'cron-parser';
 import _ from 'lodash';
 import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
-import type { Event } from '../../entities/eventEntity';
+import type { Event, EventSchedulerMetadata } from '../../entities/eventEntity';
 import { createEventSubscriber } from '../../entities/eventEntitySubscriber';
+import type { EventInstance } from '../../entities/eventInstanceEntity';
+import { createEventInstanceSubscriber } from '../../entities/eventInstanceEntitySubscriber';
 import { EntitySubscriberEvent } from '../../entities/subscriberDefinitions';
 import { getLogger } from '../../logger';
 import { createEventsService } from '../../services/eventsService';
-import { EventState, EventTriggerType } from '../eventDefinitions';
+import { EventMetadataTaskType, EventState, EventTriggerType } from '../eventDefinitions';
 import { eventTriggerInNewContext } from '../eventTriggerInNewContext';
 import { getEventSchedulerTaskManager } from './eventSchedulerTaskManager';
 
@@ -24,40 +26,65 @@ const getTimeoutToNextFullMinute = () => {
     return timeout;
 };
 
+type EventLike = {
+    _id: number;
+    displayName: string;
+    metadata: EventSchedulerMetadata;
+};
+
+type RelativeEventMetadataMap = Map<number, EventLike>;
+
 export const createEventScheduler = () => {
     const taskManager = getEventSchedulerTaskManager();
     const eventsService = createEventsService();
+
+    const relativeEventMetadataMap: RelativeEventMetadataMap = new Map();
 
     const cancelEvent = (event: Event) => {
         logger.debug(`Cancelling the '${event.displayName}' event`);
 
         taskManager.removeByEventId(event._id);
+
+        if (event.metadata?.runAfterEvent) {
+            relativeEventMetadataMap.delete(event.metadata.runAfterEvent);
+        }
     };
 
-    const scheduleEvent = (event: Event) => {
+    const scheduleEvent = (event: Event | EventLike) => {
         const cronParserOptions = {
             tz: timeZone,
             iterator: false as const,
         };
 
-        if (event.metadata?.taskType === 'STATIC_CRON') {
-            const parsedCron = CronParser.parseExpression(event.metadata.cronExpression, cronParserOptions);
-
-            const runAt = parsedCron.next().toDate();
-
-            logger.debug({
-                msg: `Scheduled the '${event.displayName}' event (static CRON), next run at ${runAt.toISOString()}`,
+        if (
+            event.metadata?.taskType !== EventMetadataTaskType.StaticCron &&
+            event.metadata?.taskType !== EventMetadataTaskType.RelativeCron
+        ) {
+            logger.error({
+                msg: `Unable to schedule an event with task type '${event.metadata?.taskType}'`,
                 event,
             });
-
-            taskManager.add(
-                {
-                    eventId: event._id,
-                    runAt,
-                },
-                event.metadata.onMultipleInstances,
-            );
+            return;
         }
+
+        const parsedCron = CronParser.parseExpression(event.metadata.cronExpression, cronParserOptions);
+
+        const runAt = parsedCron.next().toDate();
+
+        logger.debug({
+            msg: `Scheduled the '${event.displayName}' event (${
+                event.metadata?.taskType
+            }), next run at ${runAt.toISOString()}`,
+            event,
+        });
+
+        taskManager.add(
+            {
+                eventId: event._id,
+                runAt,
+            },
+            event.metadata.onMultipleInstances,
+        );
     };
 
     const initialize = async () => {
@@ -66,10 +93,44 @@ export const createEventScheduler = () => {
             state: EventState.Active,
         });
 
-        events.forEach(scheduleEvent);
+        events.forEach(planEvent);
 
         setupEntitySubscribers();
         startScheduler();
+    };
+
+    const planEvent = (event: Event) => {
+        switch (event.metadata?.taskType) {
+            case EventMetadataTaskType.StaticCron:
+                scheduleEvent(event);
+                break;
+
+            case EventMetadataTaskType.RelativeCron:
+                {
+                    if (!event.metadata.runAfterEvent) {
+                        logger.error({
+                            msg: `The scheduler encountered an invalid event, missing 'runAfterEvent'`,
+                            event,
+                        });
+
+                        return;
+                    }
+
+                    relativeEventMetadataMap.set(event.metadata.runAfterEvent, {
+                        _id: event._id,
+                        displayName: event.displayName,
+                        metadata: event.metadata,
+                    });
+                }
+
+                break;
+
+            default:
+                logger.error({
+                    msg: `The scheduler encountered an invalid event`,
+                    event,
+                });
+        }
     };
 
     const setupEntitySubscribers = () => {
@@ -81,7 +142,7 @@ export const createEventScheduler = () => {
                 return;
             }
 
-            scheduleEvent(event);
+            planEvent(event);
         };
 
         const onUpdatedEvent = (event: Event, updatedColumns: ColumnMetadata[]) => {
@@ -102,7 +163,7 @@ export const createEventScheduler = () => {
                     updatedFields.includes('state') ||
                     updatedFields.includes('triggerType')
                 ) {
-                    scheduleEvent(event);
+                    planEvent(event);
                 }
 
                 return;
@@ -113,6 +174,18 @@ export const createEventScheduler = () => {
 
         createEventSubscriber(EntitySubscriberEvent.AfterInsert, onCreatedEvent);
         createEventSubscriber(EntitySubscriberEvent.AfterUpdate, onUpdatedEvent);
+
+        const onCreatedEventInstance = (eventInstance: EventInstance) => {
+            const event = relativeEventMetadataMap.get(eventInstance.eventId);
+
+            if (!event) {
+                return;
+            }
+
+            scheduleEvent(event);
+        };
+
+        createEventInstanceSubscriber(EntitySubscriberEvent.AfterInsert, onCreatedEventInstance);
     };
 
     const startScheduler = () => {

@@ -3,7 +3,7 @@ import CronParser from 'cron-parser';
 import { createSearchResponse } from '../apis/searchApi';
 import { Event, EventDto, EventSearchQuery } from '../entities/eventEntity';
 import { Errors } from '../errors';
-import { EventMetadataType, EventTriggerType } from '../events/eventDefinitions';
+import { EventMetadataTaskType, EventMetadataType, EventTriggerType } from '../events/eventDefinitions';
 import { createEventsRepository } from '../repositories/eventsRepository';
 import { GenericService } from './genericService';
 
@@ -17,6 +17,12 @@ export const createEventsService = (): EventsService => {
             if (event.metadata?.type !== EventMetadataType.Scheduler) {
                 throw Errors.invalidEventMetadata(
                     `Event with triggerType '${EventTriggerType.Scheduler}' requires metadata with type '${EventMetadataType.Scheduler}'`,
+                );
+            }
+
+            if (event.metadata.taskType === EventMetadataTaskType.RelativeCron && !event.metadata.runAfterEvent) {
+                throw Errors.invalidEventMetadata(
+                    `An event with the task type '${EventMetadataTaskType.RelativeCron}' must have 'runAfterEvent' defined`,
                 );
             }
 

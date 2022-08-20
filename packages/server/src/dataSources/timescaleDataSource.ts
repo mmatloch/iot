@@ -5,6 +5,7 @@ import { Device } from '../entities/deviceEntity';
 import { Event } from '../entities/eventEntity';
 import { EventSubscriber } from '../entities/eventEntitySubscriber';
 import { EventInstance } from '../entities/eventInstanceEntity';
+import { EventInstanceSubscriber } from '../entities/eventInstanceEntitySubscriber';
 import { SensorData } from '../entities/sensorDataEntity';
 import { User } from '../entities/userEntity';
 
@@ -17,6 +18,6 @@ export const timescaleDataSource = new DataSource({
     migrationsRun: false,
     logging: false,
     entities: [User, Device, Event, EventInstance, SensorData],
-    subscribers: [EventSubscriber],
+    subscribers: [EventSubscriber, EventInstanceSubscriber],
     migrations: ['./src/migrations/*.ts'],
 });

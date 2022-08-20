@@ -1,14 +1,16 @@
 import {
     generateEventPostPayload,
     generateEventSchedulerMetadata,
+    generateEventTriggerPayload,
 } from '../../dataGenerators/eventsDataGenerators.mjs';
-import { createEventHelpers } from '../../helpers/helpers.mjs';
+import { createEventHelpers, createEventTriggerHelpers } from '../../helpers/helpers.mjs';
 
 const H = createEventHelpers({
     path: 'events/scheduler/tasks',
 });
 
 const eventHelpers = createEventHelpers();
+const eventTriggerHelpers = createEventTriggerHelpers();
 
 /**
  * @group events/eventScheduler
@@ -18,6 +20,7 @@ describe('Event scheduler', () => {
     beforeAll(() => {
         H.authorizeHttpClient();
         eventHelpers.authorizeHttpClient();
+        eventTriggerHelpers.authorizeHttpClient();
     });
 
     describe('taskType STATIC_CRON', () => {
@@ -142,6 +145,54 @@ describe('Event scheduler', () => {
 
             // then
             await H.search(query).expectHits(1);
+        });
+    });
+
+    describe('taskType RELATIVE_CRON', () => {
+        it('should schedule an event after another event is triggered', async () => {
+            // given
+            // create an event to trigger
+            const { body: event } = await eventHelpers.post(generateEventPostPayload()).expectSuccess();
+
+            // create an event to schedule
+            const payload = generateEventPostPayload();
+            payload.triggerType = 'SCHEDULER';
+
+            const metadata = generateEventSchedulerMetadata();
+            metadata.taskType = 'RELATIVE_CRON';
+            metadata.runAfterEvent = event._id;
+            payload.metadata = metadata;
+
+            const { body: scheduledEvent } = await eventHelpers.post(payload).expectSuccess();
+
+            const query = {
+                eventId: scheduledEvent._id,
+            };
+
+            // the event was not scheduled immediately
+            await H.search(query).expectHits(0);
+
+            // trigger
+            const triggerPayload = generateEventTriggerPayload();
+            triggerPayload.filters.triggerType = event.triggerType;
+            triggerPayload.filters.triggerFilters = event.triggerFilters;
+
+            await eventTriggerHelpers.post(triggerPayload).expectSuccess();
+
+            // when
+            const {
+                body: { _hits: tasks },
+            } = await H.search(query).expectHits(1);
+
+            // then
+            const [task] = tasks;
+            const date = new Date();
+            date.setHours(22, 0, 0, 0); // Europe/Warsaw time zone
+
+            expect(task).toMatchObject({
+                eventId: scheduledEvent._id,
+                runAt: date.toISOString(),
+            });
         });
     });
 });

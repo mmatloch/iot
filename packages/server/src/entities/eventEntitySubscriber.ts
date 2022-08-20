@@ -26,11 +26,11 @@ export class EventSubscriber implements EntitySubscriberInterface<Event> {
     }
 }
 
-const listenerMap: EntityListenerMap = {
+const listenerMap: EntityListenerMap<Event> = {
     [EntitySubscriberEvent.AfterInsert]: [],
     [EntitySubscriberEvent.AfterUpdate]: [],
 };
 
-export const createEventSubscriber: CreateEntitySubscriber = (event, listenerCb) => {
-    listenerMap[event].push(listenerCb as EntityListenerAfterInsertCallback);
+export const createEventSubscriber: CreateEntitySubscriber<Event> = (event, listenerCb) => {
+    listenerMap[event].push(listenerCb as EntityListenerAfterInsertCallback<Event>);
 };

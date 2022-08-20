@@ -65,6 +65,7 @@ describe('Events createEvent', () => {
         it('should return an error if cronExpression is invalid', async () => {
             // given
             const metadata = generateEventSchedulerMetadata();
+            metadata.taskType = 'STATIC_CRON';
             metadata.cronExpression = '0 0 123 * *';
 
             const payload = generateEventPostPayload();
@@ -76,6 +77,24 @@ describe('Events createEvent', () => {
                 errorCode: 'SRV-12',
                 message: 'Invalid event metadata',
                 detail: 'Invalid cron expression',
+            });
+        });
+
+        it('should return an error if taskType=RELATIVE_CRON and `runAfterEvent` is missing', async () => {
+            // given
+            const metadata = generateEventSchedulerMetadata();
+            metadata.taskType = 'RELATIVE_CRON';
+            delete metadata.runAfterEvent;
+
+            const payload = generateEventPostPayload();
+            payload.triggerType = 'SCHEDULER';
+            payload.metadata = metadata;
+
+            // when & then
+            await H.post(payload).expectUnprocessableEntity({
+                errorCode: 'SRV-12',
+                message: 'Invalid event metadata',
+                detail: `An event with the task type 'RELATIVE_CRON' must have 'runAfterEvent' defined`,
             });
         });
     });

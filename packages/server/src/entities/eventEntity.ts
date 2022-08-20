@@ -59,13 +59,14 @@ export class Event extends GenericEntity {
 const eventSchedulerMetadataSchema = Type.Object({
     type: Type.Literal(EventMetadataType.Scheduler),
     retryImmediatelyAfterBoot: Type.Boolean(),
+    runAfterEvent: Type.Optional(Type.Integer()),
     recurring: Type.Boolean(),
     cronExpression: Type.String(),
     taskType: Type.Enum(EventMetadataTaskType),
     onMultipleInstances: Type.Enum(EventMetadataOnMultipleInstances),
 });
 
-type EventSchedulerMetadata = Static<typeof eventSchedulerMetadataSchema>;
+export type EventSchedulerMetadata = Static<typeof eventSchedulerMetadataSchema>;
 
 export const eventDtoSchema = Type.Object({
     displayName: Type.String(),
