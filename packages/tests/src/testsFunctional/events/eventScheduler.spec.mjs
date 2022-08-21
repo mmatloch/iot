@@ -47,12 +47,9 @@ describe('Event scheduler', () => {
 
             // then
             const [task] = tasks;
-            const date = new Date();
-            date.setHours(22, 0, 0, 0); // Europe/Warsaw time zone
 
             expect(task).toMatchObject({
                 event,
-                nextRunAt: date.toISOString(),
             });
         });
 
@@ -187,12 +184,9 @@ describe('Event scheduler', () => {
 
             // then
             const [task] = tasks;
-            const date = new Date();
-            date.setHours(22, 0, 0, 0); // Europe/Warsaw time zone
 
             expect(task).toMatchObject({
                 event: scheduledEvent,
-                nextRunAt: date.toISOString(),
             });
         });
     });

@@ -19,6 +19,7 @@ services:
       JWT_SECRET: secret
       ROOT_USER_EMAIL: test@example.com
       MQTT: mqtt://mqtt:1883
+      TIME_ZONE: ${TZ}
     depends_on:
       - timescale
 
