@@ -3,6 +3,7 @@ import { addSeconds } from 'date-fns';
 import _ from 'lodash';
 import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
+import { getConfig } from '../../config';
 import type { Event } from '../../entities/eventEntity';
 import { createEventSubscriber } from '../../entities/eventEntitySubscriber';
 import type { EventInstance } from '../../entities/eventInstanceEntity';
@@ -20,7 +21,9 @@ import {
 } from '../eventDefinitions';
 
 const logger = getLogger();
-const timeZone = 'Europe/Warsaw';
+const config = getConfig();
+
+const timeZone = config.app.timeZone;
 
 type RelativeEventMetadataMap = Map<number, Event>;
 
