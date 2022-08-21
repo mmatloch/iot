@@ -11,6 +11,8 @@ export const createSensorDataHelpers = (...opts) => createHttpHelpers(config.res
 export const createEventHelpers = (...opts) => createHttpHelpers(config.resources.events, ...opts);
 export const createEventInstanceHelpers = (...opts) => createHttpHelpers(config.resources.eventInstances, ...opts);
 export const createEventTriggerHelpers = (...opts) => createHttpHelpers(config.resources.eventTrigger, ...opts);
+export const createEventSchedulerTasksHelpers = (...opts) =>
+    createHttpHelpers(config.resources.eventSchedulerTasks, ...opts);
 export const createGoogleOAuth2AuthorizationCodeHelpers = (...opts) =>
     createHttpHelpers(config.resources.googleOAuth2AuthorizationCode, ...opts);
 

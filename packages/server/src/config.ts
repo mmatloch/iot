@@ -12,6 +12,9 @@ const schema = Type.Object({
             environment: 'NODE_ENV',
             transform: ['toUpperCase'],
         }),
+        timeZone: Type.String({
+            environment: 'TIME_ZONE',
+        }),
     }),
     logger: Type.Object({
         level: Type.String({

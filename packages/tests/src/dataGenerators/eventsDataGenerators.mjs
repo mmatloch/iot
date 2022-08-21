@@ -31,3 +31,16 @@ export const generateEventTriggerPayload = () => {
         },
     };
 };
+
+export const generateEventSchedulerMetadata = () => {
+    return {
+        type: 'SCHEDULER',
+        retryImmediatelyAfterBoot: faker.datatype.boolean(),
+        taskType: faker.helpers.arrayElement(['STATIC_CRON', 'RELATIVE_CRON']),
+        onMultipleInstances: faker.helpers.arrayElement(['CREATE', 'REPLACE', 'SKIP']),
+        recurring: faker.datatype.boolean(),
+        cronExpression: '0 0 * * *',
+        interval: 3600,
+        runAfterEvent: 99999999,
+    };
+};

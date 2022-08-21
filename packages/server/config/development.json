@@ -1,6 +1,6 @@
 {
   "logger": {
-    "level": "trace",
+    "level": "debug",
     "logRequests": true,
     "logResponses": true
   }

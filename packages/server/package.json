@@ -19,6 +19,8 @@
     "@types/lodash": "^4.14.182",
     "@types/node": "^18.0.6",
     "camelcase-keys": "^7.0.2",
+    "cron-parser": "^4.6.0",
+    "date-fns": "^2.29.2",
     "fastq": "^1.13.0",
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^8.5.1",

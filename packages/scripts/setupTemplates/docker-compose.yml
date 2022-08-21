@@ -10,6 +10,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       ROOT_USER_EMAIL: ${ROOT_USER_EMAIL}
       MQTT: ${MOSQUITTO}
+      TIME_ZONE: ${TZ}
     depends_on:
       - mosquitto
       - postgres

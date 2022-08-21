@@ -1,3 +1,4 @@
+import { userInfo } from 'os';
 import { join } from 'path';
 
 import { Command } from '@oclif/core';
@@ -32,5 +33,9 @@ export class MigrationGenerateCommand extends Command {
         )}`;
 
         await x(`docker compose -p ${PROJECT_NAME} -f ${PATH.DeployLocal.DockerCompose} exec server ${cmd}`);
+
+        // Change ownership
+        const { uid, gid } = userInfo();
+        await x(`sudo chown -R ${uid}:${gid} ${PATH.Server.Migrations}`);
     }
 }

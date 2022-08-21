@@ -1,4 +1,5 @@
 import { TObject, TProperties } from '@sinclair/typebox';
+import _ from 'lodash';
 
 export const mergeSchemas = <TargetProp extends TProperties, SrcProp extends TProperties>(
     target: TObject<TargetProp>,
@@ -17,4 +18,10 @@ export const mergeSchemas = <TargetProp extends TProperties, SrcProp extends TPr
         properties,
         required,
     };
+};
+
+export const removeSchemaDefaults = <T extends TObject<TProperties>>(schema: T): T => {
+    Object.values(schema.properties).forEach((prop) => _.unset(prop, 'default'));
+
+    return schema;
 };
