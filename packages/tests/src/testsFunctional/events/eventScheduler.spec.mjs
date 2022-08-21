@@ -3,12 +3,13 @@ import {
     generateEventSchedulerMetadata,
     generateEventTriggerPayload,
 } from '../../dataGenerators/eventsDataGenerators.mjs';
-import { createEventHelpers, createEventTriggerHelpers } from '../../helpers/helpers.mjs';
+import {
+    createEventHelpers,
+    createEventSchedulerTasksHelpers,
+    createEventTriggerHelpers,
+} from '../../helpers/helpers.mjs';
 
-const H = createEventHelpers({
-    path: 'events/scheduler/tasks',
-});
-
+const H = createEventSchedulerTasksHelpers();
 const eventHelpers = createEventHelpers();
 const eventTriggerHelpers = createEventTriggerHelpers();
 
@@ -42,7 +43,7 @@ describe('Event scheduler', () => {
             // when
             const {
                 body: { _hits: tasks },
-            } = await H.search(query).expectHits(1);
+            } = await H.repeatSearch(query).expectHits(1);
 
             // then
             const [task] = tasks;
@@ -50,8 +51,8 @@ describe('Event scheduler', () => {
             date.setHours(22, 0, 0, 0); // Europe/Warsaw time zone
 
             expect(task).toMatchObject({
-                eventId: event._id,
-                runAt: date.toISOString(),
+                event,
+                nextRunAt: date.toISOString(),
             });
         });
 
@@ -70,7 +71,7 @@ describe('Event scheduler', () => {
                 eventId: event._id,
             };
 
-            await H.search(query).expectHits(1);
+            await H.repeatSearch(query).expectHits(1);
 
             const patchPayload = {
                 triggerType: 'API',
@@ -80,7 +81,7 @@ describe('Event scheduler', () => {
             await eventHelpers.patchById(event._id, patchPayload).expectSuccess();
 
             // then
-            await H.search(query).expectHits(0);
+            await H.repeatSearch(query).expectHits(0);
         });
 
         it('should cancel the scheduled event when the `state` has changed', async () => {
@@ -98,7 +99,7 @@ describe('Event scheduler', () => {
                 eventId: event._id,
             };
 
-            await H.search(query).expectHits(1);
+            await H.repeatSearch(query).expectHits(1);
 
             const patchPayload = {
                 state: 'COMPLETED',
@@ -108,7 +109,7 @@ describe('Event scheduler', () => {
             await eventHelpers.patchById(event._id, patchPayload).expectSuccess();
 
             // then
-            await H.search(query).expectHits(0);
+            await H.repeatSearch(query).expectHits(0);
         });
 
         it('should reschedule the event when the `state` changed to `ACTIVE` again', async () => {
@@ -127,7 +128,7 @@ describe('Event scheduler', () => {
                 eventId: event._id,
             };
 
-            await H.search(query).expectHits(1);
+            await H.repeatSearch(query).expectHits(1);
 
             // CANCEL
             const patchPayload = {
@@ -135,7 +136,7 @@ describe('Event scheduler', () => {
             };
 
             await eventHelpers.patchById(event._id, patchPayload).expectSuccess();
-            await H.search(query).expectHits(0);
+            await H.repeatSearch(query).expectHits(0);
 
             // RESCHEDULE
             patchPayload.state = 'ACTIVE';
@@ -144,7 +145,7 @@ describe('Event scheduler', () => {
             await eventHelpers.patchById(event._id, patchPayload).expectSuccess();
 
             // then
-            await H.search(query).expectHits(1);
+            await H.repeatSearch(query).expectHits(1);
         });
     });
 
@@ -170,7 +171,7 @@ describe('Event scheduler', () => {
             };
 
             // the event was not scheduled immediately
-            await H.search(query).expectHits(0);
+            await H.repeatSearch(query).expectHits(0);
 
             // trigger
             const triggerPayload = generateEventTriggerPayload();
@@ -182,7 +183,7 @@ describe('Event scheduler', () => {
             // when
             const {
                 body: { _hits: tasks },
-            } = await H.search(query).expectHits(1);
+            } = await H.repeatSearch(query).expectHits(1);
 
             // then
             const [task] = tasks;
@@ -190,8 +191,8 @@ describe('Event scheduler', () => {
             date.setHours(22, 0, 0, 0); // Europe/Warsaw time zone
 
             expect(task).toMatchObject({
-                eventId: scheduledEvent._id,
-                runAt: date.toISOString(),
+                event: scheduledEvent,
+                nextRunAt: date.toISOString(),
             });
         });
     });

@@ -3860,6 +3860,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["date-fns", "npm:2.28.0"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:2.29.2", {\
+          "packageLocation": "./.yarn/cache/date-fns-npm-2.29.2-da48c27e93-08bebcceb0.zip/node_modules/date-fns/",\
+          "packageDependencies": [\
+            ["date-fns", "npm:2.29.2"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["dateformat", [\
@@ -9245,6 +9252,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/node", "npm:18.0.6"],\
             ["camelcase-keys", "npm:7.0.2"],\
             ["cron-parser", "npm:4.6.0"],\
+            ["date-fns", "npm:2.29.2"],\
             ["fastq", "npm:1.13.0"],\
             ["http-status-codes", "npm:2.2.0"],\
             ["jsonwebtoken", "npm:8.5.1"],\

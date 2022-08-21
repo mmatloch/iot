@@ -2,12 +2,7 @@ import _ from 'lodash';
 import { EntitySubscriberInterface, InsertEvent, EventSubscriber as OrmEventSubscriber, UpdateEvent } from 'typeorm';
 
 import { Event } from './eventEntity';
-import {
-    CreateEntitySubscriber,
-    EntityListenerAfterInsertCallback,
-    EntityListenerMap,
-    EntitySubscriberEvent,
-} from './subscriberDefinitions';
+import { CreateEntitySubscriber, EntityListenerMap, EntitySubscriberEvent } from './subscriberDefinitions';
 
 @OrmEventSubscriber()
 export class EventSubscriber implements EntitySubscriberInterface<Event> {
@@ -29,8 +24,9 @@ export class EventSubscriber implements EntitySubscriberInterface<Event> {
 const listenerMap: EntityListenerMap<Event> = {
     [EntitySubscriberEvent.AfterInsert]: [],
     [EntitySubscriberEvent.AfterUpdate]: [],
+    [EntitySubscriberEvent.AfterRemove]: [],
 };
 
 export const createEventSubscriber: CreateEntitySubscriber<Event> = (event, listenerCb) => {
-    listenerMap[event].push(listenerCb as EntityListenerAfterInsertCallback<Event>);
+    listenerMap[event].push(listenerCb as any);
 };
