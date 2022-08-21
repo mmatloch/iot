@@ -1,4 +1,5 @@
 import CronParser from 'cron-parser';
+import { addSeconds } from 'date-fns';
 import _ from 'lodash';
 import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
@@ -40,7 +41,8 @@ export const createEventScheduler = () => {
             event,
         });
 
-        await eventSchedulerTasksService.removeByEvent(event);
+        const listeners = false; // cancel recurring events as well
+        await eventSchedulerTasksService.removeByEvent(event, { listeners });
 
         if (event.metadata?.runAfterEvent) {
             relativeEventMetadataMap.delete(event.metadata.runAfterEvent);
@@ -58,14 +60,12 @@ export const createEventScheduler = () => {
             event,
         });
 
-        if (
-            event.metadata?.taskType !== EventMetadataTaskType.StaticCron &&
-            event.metadata?.taskType !== EventMetadataTaskType.RelativeCron
-        ) {
+        if (!event.metadata) {
             logger.error({
-                msg: `Unable to schedule an event with task type '${event.metadata?.taskType}'`,
+                msg: `The scheduler encountered an invalid event, missing 'metadata'`,
                 event,
             });
+
             return;
         }
 
@@ -90,14 +90,28 @@ export const createEventScheduler = () => {
             }
         }
 
-        const cronParserOptions = {
-            tz: timeZone,
-            iterator: false as const,
-        };
+        const { cronExpression, interval } = event.metadata;
 
-        const parsedCron = CronParser.parseExpression(event.metadata.cronExpression, cronParserOptions);
+        let nextRunAt: string;
+        if (cronExpression) {
+            const cronParserOptions = {
+                tz: timeZone,
+                iterator: false as const,
+            };
 
-        const nextRunAt = parsedCron.next().toISOString();
+            const parsedCron = CronParser.parseExpression(cronExpression, cronParserOptions);
+
+            nextRunAt = parsedCron.next().toISOString();
+        } else if (interval) {
+            nextRunAt = addSeconds(new Date(), interval).toISOString();
+        } else {
+            logger.error({
+                msg: `The scheduler encountered an invalid event, missing 'cronExpression' and 'interval'`,
+                event,
+            });
+
+            return;
+        }
 
         await eventSchedulerTasksService.create({
             event,
@@ -113,6 +127,7 @@ export const createEventScheduler = () => {
 
     const planEvent = async (event: Event) => {
         switch (event.metadata?.taskType) {
+            case EventMetadataTaskType.StaticInterval:
             case EventMetadataTaskType.StaticCron:
                 {
                     try {
@@ -126,6 +141,7 @@ export const createEventScheduler = () => {
                 }
                 break;
 
+            case EventMetadataTaskType.RelativeInterval:
             case EventMetadataTaskType.RelativeCron:
                 {
                     if (!event.metadata.runAfterEvent) {
@@ -177,6 +193,7 @@ export const createEventScheduler = () => {
                     } catch (e) {
                         logger.error({
                             msg: `Failed to cancel the '${event.displayName}' event`,
+                            event,
                             err: e,
                         });
 
@@ -200,6 +217,7 @@ export const createEventScheduler = () => {
             } catch (e) {
                 logger.error({
                     msg: `Failed to cancel the '${event.displayName}' event`,
+                    event,
                     err: e,
                 });
             }
@@ -220,6 +238,7 @@ export const createEventScheduler = () => {
             } catch (e) {
                 logger.error({
                     msg: `Failed to schedule the '${event.displayName}' event`,
+                    event,
                     err: e,
                 });
             }
@@ -240,6 +259,7 @@ export const createEventScheduler = () => {
                 } catch (e) {
                     logger.error({
                         msg: `Failed to schedule the '${event.displayName}' event`,
+                        event,
                         err: e,
                     });
                 }

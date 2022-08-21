@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import { RemoveOptions } from 'typeorm';
 
 import { createSearchResponse } from '../apis/searchApi';
 import { Event } from '../entities/eventEntity';
@@ -12,7 +13,7 @@ import { GenericService } from './genericService';
 
 export interface EventSchedulerTasksService
     extends GenericService<EventSchedulerTask, EventSchedulerTaskDto, EventSchedulerTaskSearchQuery> {
-    removeByEvent: (event: Event) => Promise<EventSchedulerTask[]>;
+    removeByEvent: (event: Event, opts?: RemoveOptions) => Promise<EventSchedulerTask[]>;
     remove: (task: EventSchedulerTask) => Promise<EventSchedulerTask>;
 }
 
@@ -50,12 +51,12 @@ export const createEventSchedulerTasksService = (): EventSchedulerTasksService =
         return repository.remove(schedulerTask);
     };
 
-    const removeByEvent: EventSchedulerTasksService['removeByEvent'] = async (event) => {
+    const removeByEvent: EventSchedulerTasksService['removeByEvent'] = async (event, opts) => {
         const { _hits: schedulerTasks } = await search({
             eventId: event._id,
         });
 
-        return repository.remove(schedulerTasks);
+        return repository.remove(schedulerTasks, opts);
     };
 
     return {

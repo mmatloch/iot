@@ -12,6 +12,14 @@ export interface EventsService extends GenericService<Event, EventDto, EventSear
 export const createEventsService = (): EventsService => {
     const repository = createEventsRepository();
 
+    const validateCronExpression = (cronExpression: string) => {
+        try {
+            CronParser.parseExpression(cronExpression);
+        } catch (e) {
+            throw Errors.invalidEventMetadata('Invalid cron expression', { cause: e });
+        }
+    };
+
     const validateMetadata = (event: Event) => {
         if (event.triggerType === EventTriggerType.Scheduler) {
             if (event.metadata?.type !== EventMetadataType.Scheduler) {
@@ -20,16 +28,64 @@ export const createEventsService = (): EventsService => {
                 );
             }
 
-            if (event.metadata.taskType === EventMetadataTaskType.RelativeCron && !event.metadata.runAfterEvent) {
-                throw Errors.invalidEventMetadata(
-                    `An event with the task type '${EventMetadataTaskType.RelativeCron}' must have 'runAfterEvent' defined`,
-                );
-            }
+            const { taskType } = event.metadata;
 
-            try {
-                CronParser.parseExpression(event.metadata.cronExpression);
-            } catch (e) {
-                throw Errors.invalidEventMetadata('Invalid cron expression', { cause: e });
+            switch (taskType) {
+                case EventMetadataTaskType.RelativeCron:
+                    {
+                        if (!event.metadata.runAfterEvent) {
+                            throw Errors.invalidEventMetadata(
+                                `An event with the task type '${taskType}' must have 'runAfterEvent' defined`,
+                            );
+                        }
+
+                        if (!event.metadata.cronExpression) {
+                            throw Errors.invalidEventMetadata(
+                                `An event with the task type '${taskType}' must have 'cronExpression' defined`,
+                            );
+                        }
+
+                        validateCronExpression(event.metadata.cronExpression);
+                    }
+                    break;
+
+                case EventMetadataTaskType.StaticCron:
+                    {
+                        if (!event.metadata.cronExpression) {
+                            throw Errors.invalidEventMetadata(
+                                `An event with the task type '${taskType}' must have 'cronExpression' defined`,
+                            );
+                        }
+
+                        validateCronExpression(event.metadata.cronExpression);
+                    }
+                    break;
+
+                case EventMetadataTaskType.RelativeInterval:
+                    {
+                        if (!event.metadata.runAfterEvent) {
+                            throw Errors.invalidEventMetadata(
+                                `An event with the task type '${taskType}' must have 'runAfterEvent' defined`,
+                            );
+                        }
+
+                        if (!event.metadata.interval) {
+                            throw Errors.invalidEventMetadata(
+                                `An event with the task type '${taskType}' must have 'interval' defined`,
+                            );
+                        }
+                    }
+                    break;
+
+                case EventMetadataTaskType.StaticInterval:
+                    {
+                        if (!event.metadata.interval) {
+                            throw Errors.invalidEventMetadata(
+                                `An event with the task type '${taskType}' must have 'interval' defined`,
+                            );
+                        }
+                    }
+                    break;
             }
         }
     };

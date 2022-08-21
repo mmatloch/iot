@@ -10,7 +10,7 @@ import {
 } from '../events/eventDefinitions';
 import { EventTriggerContext } from '../events/eventRunDefinitions';
 import { eventTrigger } from '../events/eventTrigger';
-import { mergeSchemas } from '../utils/schemaUtils';
+import { mergeSchemas, removeSchemaDefaults } from '../utils/schemaUtils';
 import { GenericEntity, genericEntitySchema } from './genericEntity';
 
 @Entity({ name: 'events' })
@@ -58,10 +58,11 @@ export class Event extends GenericEntity {
 
 const eventSchedulerMetadataSchema = Type.Object({
     type: Type.Literal(EventMetadataType.Scheduler),
-    retryImmediatelyAfterBoot: Type.Boolean(),
-    runAfterEvent: Type.Optional(Type.Integer()),
+    retryImmediatelyAfterBoot: Type.Boolean(), // not implemented yet
     recurring: Type.Boolean(),
-    cronExpression: Type.String(),
+    runAfterEvent: Type.Optional(Type.Integer()), // relative tasks
+    interval: Type.Optional(Type.Integer({ minimum: 5, maximum: 2147483647 })), // interval tasks
+    cronExpression: Type.Optional(Type.String()), // cron tasks
     taskType: Type.Enum(EventMetadataTaskType),
     onMultipleInstances: Type.Enum(EventMetadataOnMultipleInstances),
 });
@@ -86,11 +87,8 @@ export const eventSchema = mergeSchemas(eventDtoSchema, genericEntitySchema);
 
 export type EventDto = Static<typeof eventDtoSchema>;
 
-export const eventSearchQuerySchema = Type.Partial(Type.Omit(eventDtoSchema, ['metadata']));
-delete eventSearchQuerySchema.properties.state.default;
+export const eventSearchQuerySchema = removeSchemaDefaults(Type.Partial(Type.Omit(eventDtoSchema, ['metadata'])));
 
 export type EventSearchQuery = Static<typeof eventSearchQuerySchema>;
 
-export const eventUpdateSchema = Type.Partial(eventDtoSchema);
-delete eventUpdateSchema.properties.state.default;
-delete eventUpdateSchema.properties.metadata.default;
+export const eventUpdateSchema = removeSchemaDefaults(Type.Partial(eventDtoSchema));

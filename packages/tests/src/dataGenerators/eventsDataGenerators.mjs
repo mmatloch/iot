@@ -40,5 +40,7 @@ export const generateEventSchedulerMetadata = () => {
         onMultipleInstances: faker.helpers.arrayElement(['CREATE', 'REPLACE', 'SKIP']),
         recurring: faker.datatype.boolean(),
         cronExpression: '0 0 * * *',
+        interval: 3600,
+        runAfterEvent: 99999999,
     };
 };

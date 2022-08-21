@@ -1,5 +1,3 @@
-import { Type } from '@sinclair/typebox';
-
 export enum EventTriggerType {
     /**
      * Events triggered by the HTTP API
@@ -37,16 +35,6 @@ export enum EventMetadataOnMultipleInstances {
 export enum EventMetadataTaskType {
     StaticCron = 'STATIC_CRON',
     RelativeCron = 'RELATIVE_CRON',
+    StaticInterval = 'STATIC_INTERVAL',
+    RelativeInterval = 'RELATIVE_INTERVAL',
 }
-
-export interface EventSchedulerTask {
-    _id: number;
-    eventId: number;
-    runAt: Date;
-}
-
-export const eventSchedulerTaskSchema = Type.Object({
-    _id: Type.Integer(),
-    eventId: Type.Integer(),
-    runAt: Type.String(),
-});
