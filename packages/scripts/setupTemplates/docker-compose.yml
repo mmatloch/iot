@@ -2,6 +2,7 @@ version: '3.8'
 services:
   server:
     image: ${PROJECT_NAME}/server
+    restart: unless-stopped
     environment:
       POSTGRES: ${POSTGRES}
       GOOGLE_OAUTH2_CLIENT_ID: ${GOOGLE_OAUTH2_CLIENT_ID}
@@ -18,9 +19,11 @@ services:
 
   frontend:
     image: ${PROJECT_NAME}/frontend
+    restart: unless-stopped
 
   zigbee2mqtt:
     image: koenkk/zigbee2mqtt:1.26.0
+    restart: unless-stopped
     volumes:
       - zigbee2mqtt_data:/app/data
       - ./zigbee2mqtt-configuration.yaml:/app/data/configuration.yaml
@@ -42,6 +45,7 @@ services:
 
   mosquitto:
     image: eclipse-mosquitto:2.0
+    restart: unless-stopped
     ports:
       - 1883:1883
     environment:
@@ -54,6 +58,7 @@ services:
 
   postgres:
     image: timescale/timescaledb:2.7.0-pg14
+    restart: unless-stopped
     ports:
       - 5432:5432
     environment:
