@@ -54,12 +54,7 @@ export const eventTrigger = async (event: Event, context: EventTriggerContext) =
     } catch (e) {
         endPerformanceMetrics();
 
-        logger.warn({
-            msg: `An error occurred while processing the '${
-                event.displayName
-            }' event. It took ${performanceMetrics.executionDuration.toFixed(2)} ms`,
-            err: e,
-        });
+    
 
         const errorBody = transformErrorBody(e as Error);
         let eventInstanceState = EventInstanceState.UnknownError;
@@ -74,6 +69,15 @@ export const eventTrigger = async (event: Event, context: EventTriggerContext) =
                 eventInstanceState = EventInstanceState.ConditionNotMet;
                 addError = false;
             }
+        }
+
+        if (addError) {
+            logger.warn({
+                msg: `An error occurred while processing the '${
+                    event.displayName
+                }' event. It took ${performanceMetrics.executionDuration.toFixed(2)} ms`,
+                err: e,
+            });
         }
 
         const eventInstance = await createEventInstancesService().create({
