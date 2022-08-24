@@ -1,10 +1,9 @@
-import { createSearchResponse } from '../apis/searchApi';
-import { EventInstance, EventInstanceDto, EventInstanceSearchQuery } from '../entities/eventInstanceEntity';
+import { EventInstance, EventInstanceDto } from '../entities/eventInstanceEntity';
 import { createEventInstancesRepository } from '../repositories/eventInstancesRepository';
 import { GenericService } from './genericService';
 
 export interface EventInstancesService
-    extends Pick<GenericService<EventInstance, EventInstanceDto, EventInstanceSearchQuery>, 'create' | 'search'> {}
+    extends Pick<GenericService<EventInstance, EventInstanceDto>, 'create' | 'search' | 'searchAndCount'> {}
 
 export const createEventInstancesService = (): EventInstancesService => {
     const repository = createEventInstancesRepository();
@@ -15,20 +14,17 @@ export const createEventInstancesService = (): EventInstancesService => {
         return repository.save(eventInstance);
     };
 
-    const search: EventInstancesService['search'] = async (query) => {
-        const [hits, totalHits] = await repository.findAndCountBy(query);
+    const search: EventInstancesService['search'] = (query) => {
+        return repository.find(query);
+    };
 
-        return createSearchResponse({
-            links: {},
-            hits,
-            meta: {
-                totalHits,
-            },
-        });
+    const searchAndCount: EventInstancesService['searchAndCount'] = (query) => {
+        return repository.findAndCount(query);
     };
 
     return {
         create,
         search,
+        searchAndCount,
     };
 };

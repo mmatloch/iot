@@ -1,8 +1,9 @@
-import { SearchResponse } from '../apis/searchApi';
+import { FindManyOptions } from 'typeorm';
 
-export interface GenericService<TEntity, TEntityDto, TEntitySearchQuery = Partial<TEntityDto>> {
+export interface GenericService<TEntity, TEntityDto> {
     create: (dto: TEntityDto) => Promise<TEntity>;
-    search: (query: TEntitySearchQuery) => Promise<SearchResponse<TEntity>>;
+    search: (query: FindManyOptions<TEntity>) => Promise<TEntity[]>;
+    searchAndCount: (query: FindManyOptions<TEntity>) => Promise<[TEntity[], number]>;
     findByIdOrFail: (_id: number) => Promise<TEntity>;
     update: (entity: TEntity, updatedEntity: Partial<TEntity>) => Promise<TEntity>;
 }

@@ -1,9 +1,9 @@
-import { createSearchResponse } from '../apis/searchApi';
 import { SensorData, SensorDataDto } from '../entities/sensorDataEntity';
 import { createSensorDataRepository } from '../repositories/sensorDataRepository';
 import { GenericService } from './genericService';
 
-export interface SensorDataService extends Pick<GenericService<SensorData, SensorDataDto>, 'create' | 'search'> {}
+export interface SensorDataService
+    extends Pick<GenericService<SensorData, SensorDataDto>, 'create' | 'search' | 'searchAndCount'> {}
 
 export const createSensorDataService = (): SensorDataService => {
     const repository = createSensorDataRepository();
@@ -14,20 +14,17 @@ export const createSensorDataService = (): SensorDataService => {
         return repository.save(sensorData);
     };
 
-    const search: SensorDataService['search'] = async (query) => {
-        const [hits, totalHits] = await repository.findAndCountBy(query);
+    const search: SensorDataService['search'] = (query) => {
+        return repository.find(query);
+    };
 
-        return createSearchResponse({
-            links: {},
-            hits,
-            meta: {
-                totalHits,
-            },
-        });
+    const searchAndCount: SensorDataService['searchAndCount'] = (query) => {
+        return repository.findAndCount(query);
     };
 
     return {
         create,
         search,
+        searchAndCount,
     };
 };

@@ -4,12 +4,14 @@ import _ from 'lodash';
 import {
     BeforeInsert,
     BeforeUpdate,
+    Column,
     CreateDateColumn,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
     VersionColumn,
 } from 'typeorm';
 
+import { getRequestStore } from '../requestLocalStorage';
 import { mergeSchemas } from '../utils/schemaUtils';
 
 const validator: Validator = createValidator();
@@ -36,19 +38,28 @@ abstract class AbstractGenericEntity {
     }
 
     @BeforeInsert()
-    protected validateDto() {
+    protected beforeInsert() {
+        const store = getRequestStore();
+        this._createdBy = store?.user?._id || null;
+        this._updatedBy = null;
+
         validator.validateOrThrow(this.#dtoSchema, this);
     }
 
     @BeforeUpdate()
-    protected validateEntity() {
+    protected beforeUpdate() {
+        const store = getRequestStore();
+        this._updatedBy = store?.user?._id || null;
+
         validator.validateOrThrow(this.#entitySchema, this);
     }
 
     abstract _id: number;
     abstract _version: number;
     abstract _createdAt: string;
+    abstract _createdBy: number | null;
     abstract _updatedAt: string;
+    abstract _updatedBy: number | null;
 }
 
 export class GenericEntity extends AbstractGenericEntity {
@@ -61,8 +72,22 @@ export class GenericEntity extends AbstractGenericEntity {
     @CreateDateColumn()
     _createdAt!: string;
 
+    @Column({
+        type: 'integer',
+        nullable: true,
+        default: null,
+    })
+    _createdBy!: number | null;
+
     @UpdateDateColumn()
     _updatedAt!: string;
+
+    @Column({
+        type: 'integer',
+        nullable: true,
+        default: null,
+    })
+    _updatedBy!: number | null;
 }
 
 export class GenericTimeseriesEntity extends AbstractGenericEntity {
@@ -74,16 +99,32 @@ export class GenericTimeseriesEntity extends AbstractGenericEntity {
     })
     _createdAt!: string;
 
+    @Column({
+        type: 'integer',
+        nullable: true,
+        default: null,
+    })
+    _createdBy!: number | null;
+
     @VersionColumn()
     _version!: number;
 
     @UpdateDateColumn()
     _updatedAt!: string;
+
+    @Column({
+        type: 'integer',
+        nullable: true,
+        default: null,
+    })
+    _updatedBy!: number | null;
 }
 
 export const genericEntitySchema = Type.Object({
-    _id: Type.Number(),
-    _version: Type.Number(),
+    _id: Type.Integer(),
+    _version: Type.Integer(),
     _createdAt: Type.String(),
+    _createdBy: Type.Union([Type.Null(), Type.Integer()]),
     _updatedAt: Type.String(),
+    _updatedBy: Type.Union([Type.Null(), Type.Integer()]),
 });

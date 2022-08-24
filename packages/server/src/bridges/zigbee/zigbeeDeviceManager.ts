@@ -130,11 +130,11 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
     };
 
     const findAll: ZigbeeDeviceManager['findAll'] = async () => {
-        const { _hits } = await devicesService.search({
-            protocol: DeviceProtocol.Zigbee,
+        return devicesService.search({
+            where: {
+                protocol: DeviceProtocol.Zigbee,
+            },
         });
-
-        return _hits;
     };
 
     const triggerWatch = (device: Device) => {

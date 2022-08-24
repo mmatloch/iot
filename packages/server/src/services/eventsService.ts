@@ -1,13 +1,12 @@
 import CronParser from 'cron-parser';
 
-import { createSearchResponse } from '../apis/searchApi';
-import { Event, EventDto, EventSearchQuery } from '../entities/eventEntity';
+import { Event, EventDto } from '../entities/eventEntity';
 import { Errors } from '../errors';
 import { EventMetadataTaskType, EventMetadataType, EventTriggerType } from '../events/eventDefinitions';
 import { createEventsRepository } from '../repositories/eventsRepository';
 import { GenericService } from './genericService';
 
-export interface EventsService extends GenericService<Event, EventDto, EventSearchQuery> {}
+export interface EventsService extends GenericService<Event, EventDto> {}
 
 export const createEventsService = (): EventsService => {
     const repository = createEventsRepository();
@@ -110,16 +109,12 @@ export const createEventsService = (): EventsService => {
         return repository.save(newEvent);
     };
 
-    const search: EventsService['search'] = async (query) => {
-        const [hits, totalHits] = await repository.findAndCountBy(query);
+    const search: EventsService['search'] = (query) => {
+        return repository.find(query);
+    };
 
-        return createSearchResponse({
-            links: {},
-            meta: {
-                totalHits,
-            },
-            hits,
-        });
+    const searchAndCount: EventsService['searchAndCount'] = (query) => {
+        return repository.findAndCount(query);
     };
 
     return {
@@ -127,5 +122,6 @@ export const createEventsService = (): EventsService => {
         update,
         findByIdOrFail,
         search,
+        searchAndCount,
     };
 };

@@ -25,6 +25,7 @@ const searchableFields = [
         generateValue: () => ({
             ieeeAddress: generateDeviceIeeeAddress(),
         }),
+        mapValue: JSON.stringify,
     },
 ];
 
@@ -39,7 +40,7 @@ describe('Events searchEvents', () => {
         await Promise.all(_.times(5, () => H.post(generateEventPostPayload()).expectSuccess()));
     });
 
-    it('should return all events when no filter is specified', async () => {
+    it('should return 10 events when no filter is specified', async () => {
         // given
         const searchQuery = {};
 
@@ -47,12 +48,12 @@ describe('Events searchEvents', () => {
         const { body } = await H.search(searchQuery).expectSuccess();
 
         // then
-        expect(body._hits.length).toBeGreaterThanOrEqual(1);
+        expect(body._hits.length).toBe(10);
     });
 
     it.each(searchableFields)(
         `should find the event by '$field'`,
-        async ({ field, generateValue, isUnique = true }) => {
+        async ({ field, generateValue, mapValue, isUnique = true }) => {
             // given
             const newValue = generateValue();
 
@@ -63,7 +64,9 @@ describe('Events searchEvents', () => {
 
             // when
             const searchFn = H.search({
-                [field]: newValue,
+                filters: {
+                    [field]: mapValue ? mapValue(newValue) : newValue,
+                },
             });
 
             let _hits;

@@ -4,6 +4,7 @@ import _ from 'lodash';
 
 import { getConfig } from '../config';
 import { Errors } from '../errors';
+import { RequestUser } from '../requestLocalStorage';
 
 const config = getConfig();
 
@@ -52,8 +53,8 @@ const requestUserPlugin: ApplicationPlugin = async (app) => {
                 }
             });
 
-            const user = {
-                _id: decodedToken.sub,
+            const user: RequestUser = {
+                _id: Number(decodedToken.sub),
                 email: decodedToken.email,
                 role: decodedToken.role,
             };

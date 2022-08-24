@@ -36,7 +36,9 @@ describe('Zigbee bridge updateDevice', () => {
         await H.publish([zigbeeDevice]);
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         const deviceBeforeUpdate = await findDevice(query);
@@ -56,8 +58,10 @@ describe('Zigbee bridge updateDevice', () => {
 
         // then
         const deviceAfterUpdate = await findDevice({
-            ...query,
-            manufacturer: updatedZigbeeDevice.manufacturer, // unique
+            filters: {
+                ...query.filters,
+                manufacturer: updatedZigbeeDevice.manufacturer, // unique
+            },
         });
 
         expect(deviceBeforeUpdate._id).toBe(deviceAfterUpdate._id);
@@ -78,21 +82,27 @@ describe('Zigbee bridge updateDevice', () => {
         zigbeeDevice.interviewing = false;
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // create
         await H.publish([zigbeeDevice]);
         await findDevice({
-            ...query,
-            state: 'UNCONFIGURED',
+            filters: {
+                ...query.filters,
+                state: 'UNCONFIGURED',
+            },
         });
 
         // deactivate
         await H.publish([]);
         const inactiveDevice = await findDevice({
-            ...query,
-            state: 'INACTIVE',
+            filters: {
+                ...query.filters,
+                state: 'INACTIVE',
+            },
         });
 
         expect(inactiveDevice).toHaveProperty('deactivatedBy', {
@@ -105,8 +115,10 @@ describe('Zigbee bridge updateDevice', () => {
 
         // then
         const activeDevice = await findDevice({
-            ...query,
-            state: 'UNCONFIGURED',
+            filters: {
+                ...query.filters,
+                state: 'UNCONFIGURED',
+            },
         });
 
         expect(activeDevice).toHaveProperty('deactivatedBy', null);
@@ -119,14 +131,18 @@ describe('Zigbee bridge updateDevice', () => {
         zigbeeDevice.interviewing = false;
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // create
         await H.publish([zigbeeDevice]);
         await findDevice({
-            ...query,
-            state: 'NEW',
+            filters: {
+                ...query.filters,
+                state: 'NEW',
+            },
         });
 
         // start interview
@@ -138,8 +154,10 @@ describe('Zigbee bridge updateDevice', () => {
 
         // then
         await findDevice({
-            ...query,
-            state: 'INTERVIEWING',
+            filters: {
+                ...query.filters,
+                state: 'INTERVIEWING',
+            },
         });
     });
 
@@ -150,14 +168,18 @@ describe('Zigbee bridge updateDevice', () => {
         zigbeeDevice.interviewing = false;
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // create
         await H.publish([zigbeeDevice]);
         await findDevice({
-            ...query,
-            state: 'NEW',
+            filters: {
+                ...query.filters,
+                state: 'NEW',
+            },
         });
 
         // finish interview
@@ -169,8 +191,10 @@ describe('Zigbee bridge updateDevice', () => {
 
         // then
         await findDevice({
-            ...query,
-            state: 'UNCONFIGURED',
+            filters: {
+                ...query.filters,
+                state: 'UNCONFIGURED',
+            },
         });
     });
 
@@ -179,13 +203,17 @@ describe('Zigbee bridge updateDevice', () => {
         const unknownZigbeeDevice = generateZigbeeDevice.unknown();
 
         const query = {
-            ieeeAddress: unknownZigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: unknownZigbeeDevice.ieee_address,
+            },
         };
 
         await H.publish([unknownZigbeeDevice]);
         const createdDevice = await findDevice({
-            ...query,
-            type: 'UNKNOWN',
+            filters: {
+                ...query.filters,
+                type: 'UNKNOWN',
+            },
         });
 
         const knownZigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
@@ -196,8 +224,10 @@ describe('Zigbee bridge updateDevice', () => {
 
         // then
         const updatedDevice = await findDevice({
-            ...query,
-            type: 'END_DEVICE',
+            filters: {
+                ...query.filters,
+                type: 'END_DEVICE',
+            },
         });
 
         expect(createdDevice).toHaveProperty('description', 'Unknown device');

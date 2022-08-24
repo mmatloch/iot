@@ -1,35 +1,46 @@
 import JWT from 'jsonwebtoken';
 
-import { SearchResponse, createSearchResponse } from '../apis/searchApi';
 import { getConfig } from '../config';
 import { User, UserDto, UserRole, UserState } from '../entities/userEntity';
 import { Errors } from '../errors';
 import { createUsersRepository } from '../repositories/usersRepository';
+import { GenericService } from './genericService';
 import { createGoogleOAuth2Service } from './googleOAuth2Service';
 
 interface TokenDto {
     authorizationCode: string;
 }
 
+interface Token {
+    token: string;
+    expiresIn: number;
+    tokenType: string;
+}
+
+export interface UsersService extends GenericService<User, UserDto> {
+    findByEmail: (email: string) => Promise<User | null>;
+    createToken: (tokenDto: TokenDto) => Promise<Token>;
+}
+
 export const createUsersService = () => {
     const config = getConfig();
     const repository = createUsersRepository();
 
-    const create = async (userDto: UserDto): Promise<User> => {
+    const create: UsersService['create'] = (userDto) => {
         const user = repository.create(userDto);
 
         return repository.save(user);
     };
 
-    const findByEmail = async (email: string): Promise<User | null> => {
+    const findByEmail: UsersService['findByEmail'] = (email) => {
         return repository.findOneBy({ email });
     };
 
-    const findByIdOrFail = async (_id: number): Promise<User> => {
+    const findByIdOrFail: UsersService['findByIdOrFail'] = (_id) => {
         return repository.findOneByOrFail({ _id });
     };
 
-    const createToken = async (tokenDto: TokenDto) => {
+    const createToken: UsersService['createToken'] = async (tokenDto) => {
         const googleOAuth2Service = createGoogleOAuth2Service();
         const userInfo = await googleOAuth2Service.getUserInfo(tokenDto.authorizationCode);
 
@@ -77,25 +88,22 @@ export const createUsersService = () => {
         };
     };
 
-    const search = async (query: Partial<User>): Promise<SearchResponse<User>> => {
-        const [users, totalHits] = await repository.findAndCountBy(query);
-
-        return createSearchResponse({
-            links: {},
-            meta: {
-                totalHits,
-            },
-            hits: users,
-        });
+    const search: UsersService['search'] = (query) => {
+        return repository.find(query);
     };
 
-    const update = (user: User, updatedUser: Partial<User>) => {
+    const searchAndCount: UsersService['searchAndCount'] = (query) => {
+        return repository.findAndCount(query);
+    };
+
+    const update: UsersService['update'] = (user, updatedUser) => {
         return repository.save(repository.merge(user, updatedUser));
     };
 
     return {
         createToken,
         search,
+        searchAndCount,
         update,
         findByIdOrFail,
     };

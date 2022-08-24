@@ -37,7 +37,9 @@ describe('Event scheduler', () => {
             const { body: event } = await eventHelpers.post(payload).expectSuccess();
 
             const query = {
-                eventId: event._id,
+                filters: {
+                    eventId: event._id,
+                },
             };
 
             // when
@@ -65,7 +67,9 @@ describe('Event scheduler', () => {
             const { body: event } = await eventHelpers.post(payload).expectSuccess();
 
             const query = {
-                eventId: event._id,
+                filters: {
+                    eventId: event._id,
+                },
             };
 
             await H.repeatSearch(query).expectHits(1);
@@ -93,7 +97,9 @@ describe('Event scheduler', () => {
             const { body: event } = await eventHelpers.post(payload).expectSuccess();
 
             const query = {
-                eventId: event._id,
+                filters: {
+                    eventId: event._id,
+                },
             };
 
             await H.repeatSearch(query).expectHits(1);
@@ -122,7 +128,9 @@ describe('Event scheduler', () => {
             const { body: event } = await eventHelpers.post(payload).expectSuccess();
 
             const query = {
-                eventId: event._id,
+                filters: {
+                    eventId: event._id,
+                },
             };
 
             await H.repeatSearch(query).expectHits(1);
@@ -164,7 +172,9 @@ describe('Event scheduler', () => {
             const { body: scheduledEvent } = await eventHelpers.post(payload).expectSuccess();
 
             const query = {
-                eventId: scheduledEvent._id,
+                filters: {
+                    eventId: scheduledEvent._id,
+                },
             };
 
             // the event was not scheduled immediately
@@ -205,7 +215,9 @@ describe('Event scheduler', () => {
             const { body: event } = await eventHelpers.post(payload).expectSuccess();
 
             const query = {
-                eventId: event._id,
+                filters: {
+                    eventId: event._id,
+                },
             };
 
             // when
@@ -241,7 +253,9 @@ describe('Event scheduler', () => {
             const { body: scheduledEvent } = await eventHelpers.post(payload).expectSuccess();
 
             const query = {
-                eventId: scheduledEvent._id,
+                filters: {
+                    eventId: scheduledEvent._id,
+                },
             };
 
             // the event was not scheduled immediately

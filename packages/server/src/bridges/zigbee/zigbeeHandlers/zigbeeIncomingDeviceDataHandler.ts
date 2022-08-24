@@ -11,10 +11,12 @@ export const createIncomingDeviceDataHandler = (device: Device) => {
     return async (deviceData: ZigbeeDeviceData) => {
         const eventsService = createEventsService();
 
-        const { _hits: events } = await eventsService.search({
-            triggerType: EventTriggerType.IncomingDeviceData,
-            triggerFilters: {
-                deviceId: device._id,
+        const events = await eventsService.search({
+            where: {
+                triggerType: EventTriggerType.IncomingDeviceData,
+                triggerFilters: {
+                    deviceId: device._id,
+                },
             },
         });
 

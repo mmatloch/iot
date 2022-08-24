@@ -45,10 +45,12 @@ export const createZigbeeDataPublisher = (mqttClient: MqttClient) => {
         }
 
         const eventsService = createEventsService();
-        const { _hits: events } = await eventsService.search({
-            triggerType: EventTriggerType.OutgoingDeviceData,
-            triggerFilters: {
-                deviceId: device._id,
+        const events = await eventsService.search({
+            where: {
+                triggerType: EventTriggerType.OutgoingDeviceData,
+                triggerFilters: {
+                    deviceId: device._id,
+                },
             },
         });
 

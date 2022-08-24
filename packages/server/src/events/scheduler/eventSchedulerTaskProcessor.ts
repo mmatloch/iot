@@ -59,13 +59,15 @@ export const createEventSchedulerTaskProcessor = () => {
         let tasks: EventSchedulerTask[];
 
         try {
-            ({ _hits: tasks } = await eventSchedulerTasksService.search({
-                nextRunAt: Between(
-                    subMilliseconds(now, FETCH_TASKS_INTERVAL),
-                    addMilliseconds(now, FETCH_TASKS_INTERVAL),
-                ) as unknown as string,
-                state: EventSchedulerTaskState.Queued,
-            }));
+            tasks = await eventSchedulerTasksService.search({
+                where: {
+                    nextRunAt: Between(
+                        subMilliseconds(now, FETCH_TASKS_INTERVAL),
+                        addMilliseconds(now, FETCH_TASKS_INTERVAL),
+                    ) as unknown as string,
+                    state: EventSchedulerTaskState.Queued,
+                },
+            });
         } catch (e) {
             logger.error({
                 msg: `Failed to fetch tasks`,

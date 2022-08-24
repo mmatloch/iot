@@ -60,7 +60,7 @@ describe('Devices searchDevices', () => {
         await Promise.all(_.times(5, () => H.post(generateDevicePostPayload()).expectSuccess()));
     });
 
-    it('should return all devices when no filter is specified', async () => {
+    it('should return 10 devices when no filter is specified', async () => {
         // given
         const searchQuery = {};
 
@@ -68,7 +68,7 @@ describe('Devices searchDevices', () => {
         const { body } = await H.search(searchQuery).expectSuccess();
 
         // then
-        expect(body._hits.length).toBeGreaterThanOrEqual(1);
+        expect(body._hits.length).toBe(10);
     });
 
     it.each(searchableFields)(
@@ -84,7 +84,9 @@ describe('Devices searchDevices', () => {
 
             // when
             const searchFn = H.search({
-                [field]: newValue,
+                filters: {
+                    [field]: newValue,
+                },
             });
 
             let _hits;

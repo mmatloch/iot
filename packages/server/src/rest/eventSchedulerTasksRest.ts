@@ -2,15 +2,36 @@ import { ApplicationPlugin } from '@common/application';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
-import { createSearchResponseSchema } from '../apis/searchApi';
-import { eventSchedulerTaskSchema, eventSchedulerTaskSearchQuerySchema } from '../entities/eventSchedulerTaskEntity';
+import {
+    RestSearchOptions,
+    SortValue,
+    createRestSearch,
+    createSearchResponseSchema,
+    searchQuerySchema,
+} from '../apis/searchApi';
+import { EventSchedulerTask, eventSchedulerTaskSchema } from '../entities/eventSchedulerTaskEntity';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createEventSchedulerTasksService } from '../services/eventSchedulerTasksService';
 
 const searchEventSchedulerTasksSchema = {
-    querystring: eventSchedulerTaskSearchQuerySchema,
+    querystring: searchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(eventSchedulerTaskSchema),
+    },
+};
+
+const searchOptions: RestSearchOptions<EventSchedulerTask> = {
+    size: {
+        default: 10,
+    },
+    sort: {
+        allowedFields: ['_createdAt', '_updatedAt', 'nextRunAt'],
+        default: {
+            _updatedAt: SortValue.Desc,
+        },
+    },
+    filters: {
+        allowedFields: ['eventId', 'nextRunAt', 'state'],
     },
 };
 
@@ -21,13 +42,15 @@ export const createEventSchedulerTasksRest: ApplicationPlugin = async (app) => {
         '/events/scheduler/tasks',
         { schema: searchEventSchedulerTasksSchema },
         async (request, reply) => {
-            const accessControl = createAccessControl(request.user);
+            const accessControl = createAccessControl();
             accessControl.authorize();
 
-            const service = createEventSchedulerTasksService();
-            const event = await service.search(request.query);
+            const searchResponse = await createRestSearch(createEventSchedulerTasksService()).query(
+                request.query,
+                searchOptions,
+            );
 
-            return reply.status(StatusCodes.OK).send(event);
+            return reply.status(StatusCodes.OK).send(searchResponse);
         },
     );
 };

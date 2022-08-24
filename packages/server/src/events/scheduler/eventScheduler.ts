@@ -73,8 +73,10 @@ export const createEventScheduler = () => {
         }
 
         if (event.metadata.onMultipleInstances) {
-            const { _hits: tasks } = await eventSchedulerTasksService.search({
-                eventId: event._id,
+            const tasks = await eventSchedulerTasksService.search({
+                where: {
+                    eventId: event._id,
+                },
             });
 
             if (tasks.length) {

@@ -1,18 +1,12 @@
 import _ from 'lodash';
 import { RemoveOptions } from 'typeorm';
 
-import { createSearchResponse } from '../apis/searchApi';
 import { Event } from '../entities/eventEntity';
-import {
-    EventSchedulerTask,
-    EventSchedulerTaskDto,
-    EventSchedulerTaskSearchQuery,
-} from '../entities/eventSchedulerTaskEntity';
+import { EventSchedulerTask, EventSchedulerTaskDto } from '../entities/eventSchedulerTaskEntity';
 import { createEventSchedulerTasksRepository } from '../repositories/eventSchedulerTasksRepository';
 import { GenericService } from './genericService';
 
-export interface EventSchedulerTasksService
-    extends GenericService<EventSchedulerTask, EventSchedulerTaskDto, EventSchedulerTaskSearchQuery> {
+export interface EventSchedulerTasksService extends GenericService<EventSchedulerTask, EventSchedulerTaskDto> {
     removeByEvent: (event: Event, opts?: RemoveOptions) => Promise<EventSchedulerTask[]>;
     remove: (task: EventSchedulerTask) => Promise<EventSchedulerTask>;
 }
@@ -26,16 +20,12 @@ export const createEventSchedulerTasksService = (): EventSchedulerTasksService =
         return repository.save(schedulerTask);
     };
 
-    const search: EventSchedulerTasksService['search'] = async (query) => {
-        const [schedulerTasks, totalHits] = await repository.findAndCountBy(query);
+    const search: EventSchedulerTasksService['search'] = (query) => {
+        return repository.find(query);
+    };
 
-        return createSearchResponse({
-            links: {},
-            meta: {
-                totalHits,
-            },
-            hits: schedulerTasks,
-        });
+    const searchAndCount: EventSchedulerTasksService['searchAndCount'] = (query) => {
+        return repository.findAndCount(query);
     };
 
     const findByIdOrFail: EventSchedulerTasksService['findByIdOrFail'] = (_id) => {
@@ -52,8 +42,10 @@ export const createEventSchedulerTasksService = (): EventSchedulerTasksService =
     };
 
     const removeByEvent: EventSchedulerTasksService['removeByEvent'] = async (event, opts) => {
-        const { _hits: schedulerTasks } = await search({
-            eventId: event._id,
+        const schedulerTasks = await search({
+            where: {
+                eventId: event._id,
+            },
         });
 
         return repository.remove(schedulerTasks, opts);
@@ -62,6 +54,7 @@ export const createEventSchedulerTasksService = (): EventSchedulerTasksService =
     return {
         create,
         search,
+        searchAndCount,
         findByIdOrFail,
         update,
         remove,

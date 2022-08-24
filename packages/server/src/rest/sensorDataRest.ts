@@ -1,19 +1,37 @@
 import { ApplicationPlugin } from '@common/application';
-import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
-import { createSearchResponseSchema } from '../apis/searchApi';
-import { sensorDataDtoSchema, sensorDataSchema } from '../entities/sensorDataEntity';
+import {
+    RestSearchOptions,
+    SortValue,
+    createRestSearch,
+    createSearchResponseSchema,
+    searchQuerySchema,
+} from '../apis/searchApi';
+import { SensorData, sensorDataSchema } from '../entities/sensorDataEntity';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createSensorDataService } from '../services/sensorDataService';
 
-const partialSensorDataDtoSchema = Type.Partial(sensorDataDtoSchema);
-
 const getSensorDataSchema = {
-    querystring: partialSensorDataDtoSchema,
+    querystring: searchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(sensorDataSchema),
+    },
+};
+
+const searchOptions: RestSearchOptions<SensorData> = {
+    size: {
+        default: 10,
+    },
+    sort: {
+        allowedFields: ['_createdAt', '_updatedAt'],
+        default: {
+            _updatedAt: SortValue.Desc,
+        },
+    },
+    filters: {
+        allowedFields: ['deviceId'],
     },
 };
 
@@ -21,12 +39,11 @@ export const createSensorDataRest: ApplicationPlugin = async (app) => {
     app.register(errorHandlerPlugin, { entityName: 'SensorData' });
 
     app.withTypeProvider().get('/devices/sensorData', { schema: getSensorDataSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize();
 
-        const service = createSensorDataService();
-        const searchResult = await service.search(request.query);
+        const searchResponse = await createRestSearch(createSensorDataService()).query(request.query, searchOptions);
 
-        return reply.status(StatusCodes.OK).send(searchResult);
+        return reply.status(StatusCodes.OK).send(searchResponse);
     });
 };

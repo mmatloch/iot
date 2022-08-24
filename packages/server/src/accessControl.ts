@@ -2,12 +2,7 @@ import _ from 'lodash';
 
 import { UserRole } from './entities/userEntity';
 import { Errors } from './errors';
-
-interface RequestUser {
-    _id: string;
-    email: string;
-    role: UserRole;
-}
+import { getRequestStore } from './requestLocalStorage';
 
 export interface AccessControlSubject {
     userId: number;
@@ -17,29 +12,24 @@ export interface AccessControlSubject {
 
 type AuthorizeReturnType<T> = AccessControlSubject & T;
 
-const isRequestUser = (potentialSubject?: unknown): potentialSubject is RequestUser => {
-    // we should also check types
-    if (_.has(potentialSubject, '_id') && _.has(potentialSubject, 'email') && _.has(potentialSubject, 'role')) {
-        return true;
-    }
+const createSubject = (): AccessControlSubject | undefined => {
+    const store = getRequestStore();
 
-    return false;
-};
+    const user = store?.user;
 
-const createSubject = (potentialSubject?: unknown): AccessControlSubject | undefined => {
-    if (isRequestUser(potentialSubject)) {
+    if (user) {
         return {
-            userId: Number(potentialSubject._id),
-            email: potentialSubject.email,
-            role: potentialSubject.role,
+            userId: user._id,
+            email: user.email,
+            role: user.role,
         };
     }
 
     return undefined;
 };
 
-export const createAccessControl = (potentialSubject?: unknown) => {
-    const subject = createSubject(potentialSubject);
+export const createAccessControl = () => {
+    const subject = createSubject();
 
     const isAuthenticated = (): boolean => {
         return !!subject;

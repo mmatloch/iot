@@ -72,11 +72,15 @@ describe('Zigbee bridge incomingDeviceData', () => {
         await zigbeeDeviceHelpers.publish([zigbeeDevice]);
 
         const deviceQuery = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         const eventQuery = {
-            displayName: `Incoming device data - ${zigbeeDevice.ieee_address}`,
+            filters: {
+                displayName: `Incoming device data - ${zigbeeDevice.ieee_address}`,
+            },
         };
 
         const device = await findDevice(deviceQuery);
@@ -91,7 +95,9 @@ describe('Zigbee bridge incomingDeviceData', () => {
 
         // then
         const eventInstanceQuery = {
-            eventId: event._id,
+            filters: {
+                eventId: event._id,
+            },
         };
 
         const eventInstance = await findEventInstance(eventInstanceQuery);
@@ -101,7 +107,9 @@ describe('Zigbee bridge incomingDeviceData', () => {
         });
 
         const sensorDataQuery = {
-            deviceId: device._id,
+            filters: {
+                deviceId: device._id,
+            },
         };
 
         const createdSensorData = await findSensorData(sensorDataQuery);
@@ -120,11 +128,15 @@ describe('Zigbee bridge incomingDeviceData', () => {
 
         // prepare data
         const deviceQuery = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         const eventQuery = {
-            displayName: `Incoming device data - ${zigbeeDevice.ieee_address}`,
+            filters: {
+                displayName: `Incoming device data - ${zigbeeDevice.ieee_address}`,
+            },
         };
 
         const device = await findDevice(deviceQuery);
@@ -139,11 +151,15 @@ describe('Zigbee bridge incomingDeviceData', () => {
 
         // then
         const sensorDataQuery = {
-            deviceId: device._id,
+            filters: {
+                deviceId: device._id,
+            },
         };
 
         const eventInstanceQuery = {
-            eventId: event._id,
+            filters: {
+                eventId: event._id,
+            },
         };
 
         // wait for processing

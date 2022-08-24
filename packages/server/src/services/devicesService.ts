@@ -1,11 +1,10 @@
 import _ from 'lodash';
 
-import { createSearchResponse } from '../apis/searchApi';
-import { Device, DeviceDto, DeviceSearchQuery } from '../entities/deviceEntity';
+import { Device, DeviceDto } from '../entities/deviceEntity';
 import { createDevicesRepository } from '../repositories/devicesRepository';
 import { GenericService } from './genericService';
 
-export interface DevicesService extends GenericService<Device, DeviceDto, DeviceSearchQuery> {}
+export interface DevicesService extends GenericService<Device, DeviceDto> {}
 
 export const createDevicesService = (): DevicesService => {
     const repository = createDevicesRepository();
@@ -16,16 +15,12 @@ export const createDevicesService = (): DevicesService => {
         return repository.save(device);
     };
 
-    const search: DevicesService['search'] = async (query) => {
-        const [devices, totalHits] = await repository.findAndCountBy(query);
+    const search: DevicesService['search'] = (query) => {
+        return repository.find(query);
+    };
 
-        return createSearchResponse({
-            links: {},
-            meta: {
-                totalHits,
-            },
-            hits: devices,
-        });
+    const searchAndCount: DevicesService['searchAndCount'] = (query) => {
+        return repository.findAndCount(query);
     };
 
     const findByIdOrFail: DevicesService['findByIdOrFail'] = async (_id) => {
@@ -42,6 +37,7 @@ export const createDevicesService = (): DevicesService => {
     return {
         create,
         search,
+        searchAndCount,
         findByIdOrFail,
         update,
     };

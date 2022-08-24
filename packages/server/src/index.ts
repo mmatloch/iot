@@ -7,6 +7,7 @@ import { timescaleDataSource } from './dataSources/timescaleDataSource';
 import { createEventScheduler } from './events/scheduler/eventScheduler';
 import { createEventSchedulerTaskProcessor } from './events/scheduler/eventSchedulerTaskProcessor';
 import { getLogger } from './logger';
+import requestLocalStoragePlugin from './plugins/requestLocalStoragePlugin';
 import requestUserPlugin from './plugins/requestUserPlugin';
 import { createDevicesRest } from './rest/devicesRest';
 import { createEventSchedulerTasksRest } from './rest/eventSchedulerTasksRest';
@@ -26,6 +27,7 @@ createApplication({
     hooks: {
         beforeBootstrap: async (app) => {
             app.register(requestUserPlugin);
+            app.register(requestLocalStoragePlugin);
         },
         beforeReady: async (app) => {
             await timescaleDataSource.initialize();

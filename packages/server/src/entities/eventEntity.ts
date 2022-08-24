@@ -87,8 +87,4 @@ export const eventSchema = mergeSchemas(eventDtoSchema, genericEntitySchema);
 
 export type EventDto = Static<typeof eventDtoSchema>;
 
-export const eventSearchQuerySchema = removeSchemaDefaults(Type.Partial(Type.Omit(eventDtoSchema, ['metadata'])));
-
-export type EventSearchQuery = Static<typeof eventSearchQuerySchema>;
-
 export const eventUpdateSchema = removeSchemaDefaults(Type.Partial(eventDtoSchema));

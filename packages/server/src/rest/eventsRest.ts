@@ -3,15 +3,15 @@ import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
-import { createSearchResponseSchema } from '../apis/searchApi';
 import {
-    EventDto,
-    eventDtoSchema,
-    eventSchema,
-    eventSearchQuerySchema,
-    eventUpdateSchema,
-} from '../entities/eventEntity';
-import { eventInstanceSchema, eventInstanceSearchQuerySchema } from '../entities/eventInstanceEntity';
+    RestSearchOptions,
+    SortValue,
+    createRestSearch,
+    createSearchResponseSchema,
+    searchQuerySchema,
+} from '../apis/searchApi';
+import { Event, EventDto, eventDtoSchema, eventSchema, eventUpdateSchema } from '../entities/eventEntity';
+import { EventInstance, eventInstanceSchema } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
 import { EventTriggerType } from '../events/eventDefinitions';
@@ -37,9 +37,24 @@ const getEventSchema = {
 };
 
 const searchEventsSchema = {
-    querystring: eventSearchQuerySchema,
+    querystring: searchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(eventSchema),
+    },
+};
+
+const searchOptions: RestSearchOptions<Event> = {
+    size: {
+        default: 10,
+    },
+    sort: {
+        allowedFields: ['_createdAt', '_updatedAt'],
+        default: {
+            _updatedAt: SortValue.Desc,
+        },
+    },
+    filters: {
+        allowedFields: ['displayName', 'state', 'triggerFilters', 'triggerType'],
     },
 };
 
@@ -74,9 +89,24 @@ const triggerEventSchema = {
 };
 
 const searchEventInstancesSchema = {
-    querystring: eventInstanceSearchQuerySchema,
+    querystring: searchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(eventInstanceSchema),
+    },
+};
+
+const eventInstanceSearchOptions: RestSearchOptions<EventInstance> = {
+    size: {
+        default: 10,
+    },
+    sort: {
+        allowedFields: ['_createdAt', '_updatedAt'],
+        default: {
+            _updatedAt: SortValue.Desc,
+        },
+    },
+    filters: {
+        allowedFields: ['eventId', 'eventRunId', 'state'],
     },
 };
 
@@ -104,7 +134,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
     app.register(errorHandlerPlugin, { entityName: 'Event' });
 
     app.withTypeProvider().post('/events', { schema: createEventSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize({
             role: UserRole.Admin,
         });
@@ -116,17 +146,16 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
     });
 
     app.withTypeProvider().get('/events', { schema: searchEventsSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize();
 
-        const service = createEventsService();
-        const searchResponse = await service.search(request.query);
+        const searchResponse = await createRestSearch(createEventsService()).query(request.query, searchOptions);
 
         return reply.status(StatusCodes.OK).send(searchResponse);
     });
 
     app.withTypeProvider().get('/events/:id', { schema: getEventSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize();
 
         const service = createEventsService();
@@ -136,7 +165,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
     });
 
     app.withTypeProvider().patch('/events/:id', { schema: updateEventSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize({
             role: UserRole.Admin,
         });
@@ -152,7 +181,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
     });
 
     app.withTypeProvider().post('/events/trigger', { schema: triggerEventSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize();
 
         if (request.body.filters.triggerType !== EventTriggerType.Api && !accessControl.hasRole(UserRole.Admin)) {
@@ -161,9 +190,11 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
         const eventsService = createEventsService();
 
-        const { _hits: events } = await eventsService.search({
-            triggerType: request.body.filters.triggerType,
-            triggerFilters: request.body.filters.triggerFilters,
+        const events = await eventsService.search({
+            where: {
+                triggerType: request.body.filters.triggerType,
+                triggerFilters: request.body.filters.triggerFilters,
+            },
         });
 
         const result = await Promise.all(events.map((event) => eventTriggerInNewContext(event, request.body.context)));
@@ -172,14 +203,16 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
     });
 
     app.withTypeProvider().get('/events/instances', { schema: searchEventInstancesSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize({
             role: UserRole.Admin,
         });
 
-        const service = createEventInstancesService();
-        const searchResult = await service.search(request.query);
+        const searchResponse = await createRestSearch(createEventInstancesService()).query(
+            request.query,
+            eventInstanceSearchOptions,
+        );
 
-        return reply.status(StatusCodes.OK).send(searchResult);
+        return reply.status(StatusCodes.OK).send(searchResponse);
     });
 };

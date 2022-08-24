@@ -59,7 +59,9 @@ describe('Users createToken', () => {
         payload.authorizationCode = code;
 
         const searchQuery = {
-            email: userInfo.email,
+            filters: {
+                email: userInfo.email,
+            },
         };
 
         await H.post(payload).expectSuccess();
@@ -84,7 +86,9 @@ describe('Users createToken', () => {
         payload.authorizationCode = code;
 
         const searchQuery = {
-            email: userInfo.email,
+            filters: {
+                email: userInfo.email,
+            },
         };
 
         await authorizedUserHelpers.search(searchQuery).expectHits(0);

@@ -3,8 +3,14 @@ import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
-import { createSearchResponseSchema } from '../apis/searchApi';
-import { deviceDtoSchema, deviceSchema, deviceSearchQuerySchema } from '../entities/deviceEntity';
+import {
+    RestSearchOptions,
+    SortValue,
+    createRestSearch,
+    createSearchResponseSchema,
+    searchQuerySchema,
+} from '../apis/searchApi';
+import { Device, deviceDtoSchema, deviceSchema } from '../entities/deviceEntity';
 import { UserRole } from '../entities/userEntity';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createDevicesService } from '../services/devicesService';
@@ -17,9 +23,36 @@ const createDeviceSchema = {
 };
 
 const searchDevicesSchema = {
-    querystring: deviceSearchQuerySchema,
+    querystring: searchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(deviceSchema),
+    },
+};
+
+const searchOptions: RestSearchOptions<Device> = {
+    size: {
+        default: 10,
+    },
+    sort: {
+        allowedFields: ['_createdAt', '_updatedAt'],
+        default: {
+            _updatedAt: SortValue.Desc,
+        },
+    },
+    filters: {
+        allowedFields: [
+            'deactivatedBy',
+            'description',
+            'displayName',
+            'ieeeAddress',
+            'manufacturer',
+            'model',
+            'powerSource',
+            'protocol',
+            'type',
+            'vendor',
+            'state',
+        ],
     },
 };
 
@@ -36,7 +69,7 @@ export const createDevicesRest: ApplicationPlugin = async (app) => {
     app.register(errorHandlerPlugin, { entityName: 'Device' });
 
     app.withTypeProvider().post('/devices', { schema: createDeviceSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize({
             role: UserRole.Admin,
         });
@@ -48,17 +81,16 @@ export const createDevicesRest: ApplicationPlugin = async (app) => {
     });
 
     app.withTypeProvider().get('/devices', { schema: searchDevicesSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize();
 
-        const service = createDevicesService();
-        const searchResult = await service.search(request.query);
+        const searchResponse = await createRestSearch(createDevicesService()).query(request.query, searchOptions);
 
-        return reply.status(StatusCodes.OK).send(searchResult);
+        return reply.status(StatusCodes.OK).send(searchResponse);
     });
 
     app.withTypeProvider().get('/devices/:id', { schema: getDeviceSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize();
 
         const service = createDevicesService();

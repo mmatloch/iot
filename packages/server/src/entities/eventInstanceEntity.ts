@@ -82,13 +82,3 @@ export const eventInstanceDtoSchema = Type.Object({
 
 export const eventInstanceSchema = mergeSchemas(eventInstanceDtoSchema, genericEntitySchema);
 export type EventInstanceDto = Static<typeof eventInstanceDtoSchema>;
-
-export const eventInstanceSearchQuerySchema = Type.Partial(
-    mergeSchemas(
-        eventInstanceDtoSchema,
-        Type.Object({
-            parentEventId: Type.Integer(),
-        }),
-    ),
-);
-export type EventInstanceSearchQuery = Static<typeof eventInstanceSearchQuerySchema>;

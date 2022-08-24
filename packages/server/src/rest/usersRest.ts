@@ -3,8 +3,14 @@ import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { AccessControlSubject, createAccessControl } from '../accessControl';
-import { createSearchResponseSchema } from '../apis/searchApi';
-import { UserDto, UserRole, userDtoSchema, userSchema } from '../entities/userEntity';
+import {
+    RestSearchOptions,
+    SortValue,
+    createRestSearch,
+    createSearchResponseSchema,
+    searchQuerySchema,
+} from '../apis/searchApi';
+import { User, UserDto, UserRole, userDtoSchema, userSchema } from '../entities/userEntity';
 import { Errors } from '../errors';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createUsersService } from '../services/usersService';
@@ -41,9 +47,24 @@ const partialUserDtoSchema = Type.Partial(userDtoSchema, {
 });
 
 const searchUsersSchema = {
-    querystring: partialUserDtoSchema,
+    querystring: searchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(userSchema),
+    },
+};
+
+const searchOptions: RestSearchOptions<User> = {
+    size: {
+        default: 10,
+    },
+    sort: {
+        allowedFields: ['_createdAt', '_updatedAt'],
+        default: {
+            _updatedAt: SortValue.Desc,
+        },
+    },
+    filters: {
+        allowedFields: ['email', 'firstName', 'lastName', 'name', 'role', 'state'],
     },
 };
 
@@ -100,17 +121,16 @@ export const createUsersRest: ApplicationPlugin = async (app) => {
     });
 
     app.withTypeProvider().get('/users', { schema: searchUsersSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         accessControl.authorize();
 
-        const service = createUsersService();
+        const searchResponse = await createRestSearch(createUsersService()).query(request.query, searchOptions);
 
-        const searchResult = await service.search(request.query);
-        return reply.status(StatusCodes.OK).send(searchResult);
+        return reply.status(StatusCodes.OK).send(searchResponse);
     });
 
     app.withTypeProvider().get('/users/:id', { schema: getUserSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         const subject = accessControl.authorize();
         const isAdmin = accessControl.hasRole(UserRole.Admin);
 
@@ -129,7 +149,7 @@ export const createUsersRest: ApplicationPlugin = async (app) => {
     });
 
     app.withTypeProvider().patch('/users/:id', { schema: updateUserSchema }, async (request, reply) => {
-        const accessControl = createAccessControl(request.user);
+        const accessControl = createAccessControl();
         const subject = accessControl.authorize();
         const isAdmin = accessControl.hasRole(UserRole.Admin);
 

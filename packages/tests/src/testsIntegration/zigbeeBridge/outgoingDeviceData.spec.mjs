@@ -48,7 +48,9 @@ describe('Zigbee bridge outgoingDeviceData', () => {
         await zigbeeDeviceHelpers.publish([zigbeeDevice]);
 
         const deviceQuery = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         device = await findDevice(deviceQuery);
@@ -136,7 +138,9 @@ describe('Zigbee bridge outgoingDeviceData', () => {
 
         // then
         const query = {
-            eventId: event._id,
+            filters: {
+                eventId: event._id,
+            },
         };
 
         const {

@@ -33,7 +33,9 @@ describe('Zigbee bridge createDevice', () => {
         const bridgeInfo = generateZigbeeBridgeInfo();
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // when
@@ -69,7 +71,9 @@ describe('Zigbee bridge createDevice', () => {
         zigbeeDevice.interview_completed = true;
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // when
@@ -104,7 +108,9 @@ describe('Zigbee bridge createDevice', () => {
         zigbeeDevice.interview_completed = false;
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // when
@@ -139,7 +145,9 @@ describe('Zigbee bridge createDevice', () => {
         zigbeeDevice.interview_completed = false;
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // when
@@ -171,7 +179,9 @@ describe('Zigbee bridge createDevice', () => {
         // given
         const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         const deviceQuery = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // when
@@ -184,8 +194,11 @@ describe('Zigbee bridge createDevice', () => {
         const [device] = devices;
 
         const incomingDeviceDataEventQuery = {
-            triggerType: 'INCOMING_DEVICE_DATA',
+            filters: {
+                triggerType: 'INCOMING_DEVICE_DATA',
+            },
         };
+
         const {
             body: { _hits: incomingDeviceDataEvents },
         } = await eventHelpers.search(incomingDeviceDataEventQuery).expectSuccess();
@@ -202,7 +215,9 @@ describe('Zigbee bridge createDevice', () => {
         zigbeeDevice.interview_completed = false;
 
         const query = {
-            ieeeAddress: zigbeeDevice.ieee_address,
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
         };
 
         // when

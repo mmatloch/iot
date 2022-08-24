@@ -32,7 +32,9 @@ export const createUserUtils = () => {
             body: { _hits },
         } = await userHelpers
             .search({
-                email: userInfo.email,
+                filters: {
+                    email: userInfo.email,
+                },
             })
             .expectHits(1);
 

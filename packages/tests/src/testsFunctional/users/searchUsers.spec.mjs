@@ -22,11 +22,15 @@ describe('Users searchUsers', () => {
 
         // when
         const { body: firstUserResult } = await H.search({
-            email: firstUser.email,
+            filters: {
+                email: firstUser.email,
+            },
         }).expectHits(1);
 
         const { body: secondUserResult } = await H.search({
-            email: secondUser.email,
+            filters: {
+                email: secondUser.email,
+            },
         }).expectHits(1);
 
         // then
@@ -34,9 +38,9 @@ describe('Users searchUsers', () => {
         expect(secondUserResult._hits[0]).toHaveProperty('email', secondUser.email);
     });
 
-    it('should return all users when no filter is specified', async () => {
+    it('should return 10 users when no filter is specified', async () => {
         // given
-        const numberOfUsers = 3;
+        const numberOfUsers = 15;
         await Promise.all(_.times(numberOfUsers, createUser));
 
         const searchQuery = {};
@@ -45,6 +49,6 @@ describe('Users searchUsers', () => {
         const { body } = await H.search(searchQuery).expectSuccess();
 
         // then
-        expect(body._hits.length).toBeGreaterThanOrEqual(numberOfUsers);
+        expect(body._hits.length).toBe(10);
     });
 });
