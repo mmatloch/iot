@@ -2,7 +2,7 @@
   "name": "iot",
   "private": true,
   "version": "1.0.0",
-  "packageManager": "yarn@3.2.1",
+  "packageManager": "yarn@3.2.3",
   "repository": "git@github.com:mmatloch/iot.git",
   "author": "Mateusz Matloch",
   "license": "MIT",
