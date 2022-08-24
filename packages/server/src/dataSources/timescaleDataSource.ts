@@ -1,6 +1,8 @@
 import { DataSource } from 'typeorm';
 
 import { getConfig } from '../config';
+import { Configuration } from '../entities/configurationEntity';
+import { ConfigurationSubscriber } from '../entities/configurationEntitySubscriber';
 import { Device } from '../entities/deviceEntity';
 import { Event } from '../entities/eventEntity';
 import { EventSubscriber } from '../entities/eventEntitySubscriber';
@@ -19,7 +21,7 @@ export const timescaleDataSource = new DataSource({
     synchronize: false,
     migrationsRun: false,
     logging: false,
-    entities: [User, Device, Event, EventInstance, SensorData, EventSchedulerTask],
-    subscribers: [EventSubscriber, EventInstanceSubscriber, EventSchedulerTaskSubscriber],
+    entities: [User, Device, Event, EventInstance, SensorData, EventSchedulerTask, Configuration],
+    subscribers: [EventSubscriber, EventInstanceSubscriber, EventSchedulerTaskSubscriber, ConfigurationSubscriber],
     migrations: ['./src/migrations/*.ts'],
 });
