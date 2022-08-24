@@ -57,7 +57,7 @@ describe('Devices searchDevices', () => {
     beforeAll(async () => {
         H.authorizeHttpClient();
 
-        await Promise.all(_.times(5, () => H.post(generateDevicePostPayload()).expectSuccess()));
+        await Promise.all(_.times(10, () => H.post(generateDevicePostPayload()).expectSuccess()));
     });
 
     it('should return 10 devices when no filter is specified', async () => {
