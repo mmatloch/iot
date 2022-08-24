@@ -5497,7 +5497,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["lodash", "npm:4.17.21"],\
             ["lru-cache", "npm:7.10.1"],\
             ["nodemon", "npm:2.0.19"],\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.8.1"],\
+            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
             ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"]\
           ],\
           "linkType": "SOFT"\
@@ -9189,7 +9189,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fs-extra", "npm:10.1.0"],\
             ["lodash", "npm:4.17.21"],\
             ["qqjs", "npm:0.3.11"],\
-            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.8.1"],\
+            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1"],\
             ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"]\
           ],\
           "linkType": "SOFT"\
@@ -9262,7 +9262,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["pg", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:8.7.3"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["snakecase-keys", "npm:5.4.2"],\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.8.1"],\
+            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
             ["typeorm", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.6"],\
             ["typescript", "patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"],\
             ["vm2", "npm:3.9.9"]\
@@ -9988,17 +9988,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["ts-node", [\
-        ["npm:10.8.1", {\
-          "packageLocation": "./.yarn/cache/ts-node-npm-10.8.1-24280b0982-7d1aa7aa3a.zip/node_modules/ts-node/",\
+        ["npm:10.9.1", {\
+          "packageLocation": "./.yarn/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
           "packageDependencies": [\
-            ["ts-node", "npm:10.8.1"]\
+            ["ts-node", "npm:10.9.1"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.8.1", {\
-          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-501beb7bb4/0/cache/ts-node-npm-10.8.1-24280b0982-7d1aa7aa3a.zip/node_modules/ts-node/",\
+        ["virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1", {\
+          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-076ad1cd64/0/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
           "packageDependencies": [\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.8.1"],\
+            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
             ["@cspotcode/source-map-support", "npm:0.8.1"],\
             ["@swc/core", "npm:1.2.203"],\
             ["@swc/wasm", null],\
@@ -10031,10 +10031,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.8.1", {\
-          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-3b086c0417/0/cache/ts-node-npm-10.8.1-24280b0982-7d1aa7aa3a.zip/node_modules/ts-node/",\
+        ["virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1", {\
+          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-b445628474/0/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
           "packageDependencies": [\
-            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.8.1"],\
+            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1"],\
             ["@cspotcode/source-map-support", "npm:0.8.1"],\
             ["@swc/core", "npm:1.2.218"],\
             ["@swc/wasm", null],\
@@ -10254,7 +10254,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sha.js", "npm:2.4.11"],\
             ["sql.js", null],\
             ["sqlite3", null],\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.8.1"],\
+            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
             ["tslib", "npm:2.4.0"],\
             ["typeorm-aurora-data-api-driver", null],\
             ["uuid", "npm:8.3.2"],\
