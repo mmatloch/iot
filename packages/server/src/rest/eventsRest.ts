@@ -110,7 +110,7 @@ const eventInstanceSearchOptions: RestSearchOptions<EventInstance> = {
     },
 };
 
-const updatableFields = [
+const userEventUpdatableFields = [
     'displayName',
     'triggerType',
     'triggerFilters',
@@ -120,7 +120,9 @@ const updatableFields = [
     'state',
 ];
 
-const checkUpdatableFields = (event: Partial<EventDto>) => {
+const systemEventUpdatableFields = ['displayName'];
+
+const checkUpdatableFields = (event: Partial<EventDto>, updatableFields: string[]) => {
     Object.keys(event).forEach((key) => {
         if (!updatableFields.includes(key)) {
             throw Errors.noPermissionToUpdateField({
@@ -173,7 +175,9 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
         const service = createEventsService();
         const event = await service.findByIdOrFail(request.params.id);
 
-        checkUpdatableFields(request.body);
+        const isSystemCreated = event._createdBy === null;
+
+        checkUpdatableFields(request.body, isSystemCreated ? systemEventUpdatableFields : userEventUpdatableFields);
 
         const updatedEvent = await service.update(event, request.body);
 

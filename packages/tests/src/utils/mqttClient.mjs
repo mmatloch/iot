@@ -62,12 +62,20 @@ export const createMqttClient = () => {
     };
 
     const publish = async (topic, message) => {
+        if (!client) {
+            throw new Error(`MQTT client is not initialized`);
+        }
+
         const publishAsPromised = promisify(client.publish).bind(client);
 
         return publishAsPromised(topic, JSON.stringify(message));
     };
 
     const subscribe = async (topic, onMessage) => {
+        if (!client) {
+            throw new Error(`MQTT client is not initialized`);
+        }
+
         initialize();
 
         handlerMap.set(topic, onMessage);

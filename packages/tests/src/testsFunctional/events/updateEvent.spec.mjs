@@ -6,7 +6,12 @@ import {
     generateEventPostPayload,
     generateEventSchedulerMetadata,
 } from '../../dataGenerators/eventsDataGenerators.mjs';
-import { createEventHelpers } from '../../helpers/helpers.mjs';
+import { generateZigbeeDevice } from '../../dataGenerators/zigbeeDataGenerators.mjs';
+import { createDeviceHelpers, createEventHelpers, createZigbeeBridgeDevicesHelpers } from '../../helpers/helpers.mjs';
+import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mjs';
+
+const zigbeeBridgeDevicesHelpers = createZigbeeBridgeDevicesHelpers();
+const deviceHelpers = createDeviceHelpers();
 
 const updatableFields = [
     {
@@ -53,8 +58,15 @@ describe('Events updateEvent', () => {
     describe('as ADMIN', () => {
         const H = createEventHelpers();
 
-        beforeAll(() => {
+        beforeAll(async () => {
             H.authorizeHttpClient();
+            deviceHelpers.authorizeHttpClient();
+
+            await connectToBroker();
+        });
+
+        afterAll(async () => {
+            await disconnectFromBroker();
         });
 
         it.each(updatableFields)(`should update '$field'`, async ({ field, generateValue, initialValue }) => {
@@ -167,6 +179,58 @@ describe('Events updateEvent', () => {
                 message: 'Invalid event metadata',
                 detail: 'Invalid cron expression',
             });
+        });
+
+        it('should only be able to update the `displayName` of the event created by the server', async () => {
+            // given
+            const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
+            await zigbeeBridgeDevicesHelpers.publish([zigbeeDevice]);
+
+            // find device
+            const deviceQuery = {
+                filters: {
+                    ieeeAddress: zigbeeDevice.ieee_address,
+                },
+            };
+
+            const {
+                body: {
+                    _hits: [device],
+                },
+            } = await deviceHelpers.repeatSearch(deviceQuery).expectHits(1);
+
+            // find event
+            const eventQuery = {
+                filters: {
+                    triggerType: 'INCOMING_DEVICE_DATA',
+                    triggerFilters: JSON.stringify({
+                        deviceId: device._id,
+                    }),
+                },
+            };
+
+            const {
+                body: {
+                    _hits: [event],
+                },
+            } = await H.search(eventQuery).expectHits(1);
+            expect(event).toHaveProperty('_createdBy', null);
+
+            const patchPayload = {
+                displayName: generateEventDisplayName(),
+                triggerType: 'API',
+            };
+
+            // when & then
+            await H.patchById(event._id, patchPayload).expectForbidden({
+                errorCode: 'SRV-7',
+                message: `You don't have permission to update this field`,
+                detail: 'triggerType',
+            });
+
+            delete patchPayload.triggerType;
+
+            await H.patchById(event._id, patchPayload).expectSuccess();
         });
     });
 
