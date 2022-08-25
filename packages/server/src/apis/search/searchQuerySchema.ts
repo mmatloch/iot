@@ -14,6 +14,7 @@ const filterValueSchema = Type.Union([
     filterOperatorSchema.in,
     filterOperatorSchema.between,
     filterOperatorSchema.exists,
+    filterOperatorSchema.json,
 
     logicalOperatorSchema.not,
 

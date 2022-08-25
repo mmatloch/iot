@@ -16,6 +16,7 @@ export enum FilterOperator {
     ILike = '$iLike',
     Exists = '$exists',
     In = '$in',
+    Json = '$json',
 }
 
 export enum FilterLogicalOperator {
@@ -35,11 +36,14 @@ export interface SearchFilterWithFilterOperatorValue {
     [FilterOperator.Exists]?: boolean;
     [FilterOperator.Between]?: [SimpleFilterValue, SimpleFilterValue];
     [FilterOperator.In]?: SimpleFilterValue[];
+    [FilterOperator.Json]?: string;
 }
 
 export interface SearchFilterWithLogicalOperatorValue {
     [FilterLogicalOperator.Not]?: Omit<SearchFilterWithFilterOperatorValue, FilterOperator.Exists>;
 }
+
+export type SearchFilterOperatorValue = SearchFilterWithFilterOperatorValue & SearchFilterWithLogicalOperatorValue;
 
 export type SortQuery = Record<string, SortValue>;
 

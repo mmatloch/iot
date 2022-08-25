@@ -11,13 +11,14 @@ import {
     MoreThan,
     MoreThanOrEqual,
     Not,
+    Raw,
 } from 'typeorm';
 
 import {
     FilterLogicalOperator,
     FilterOperator,
+    SearchFilterOperatorValue,
     SearchFilterWithFilterOperatorValue,
-    SearchFilterWithLogicalOperatorValue,
     SearchQuery,
     SimpleFilterValue,
     SortQuery,
@@ -36,16 +37,17 @@ type BuildMap = {
 };
 
 const buildMap: BuildMap = {
-    [FilterOperator.Equal]: Equal,
-    [FilterOperator.LowerThan]: LessThan,
-    [FilterOperator.LowerThanOrEqual]: LessThanOrEqual,
-    [FilterOperator.GreaterThan]: MoreThan,
-    [FilterOperator.GreaterThanOrEqual]: MoreThanOrEqual,
-    [FilterOperator.Like]: Like,
-    [FilterOperator.ILike]: ILike,
-    [FilterOperator.In]: In,
+    [FilterOperator.Equal]: (v) => Equal(v),
+    [FilterOperator.LowerThan]: (v) => LessThan(v),
+    [FilterOperator.LowerThanOrEqual]: (v) => LessThanOrEqual(v),
+    [FilterOperator.GreaterThan]: (v) => MoreThan(v),
+    [FilterOperator.GreaterThanOrEqual]: (v) => MoreThanOrEqual(v),
+    [FilterOperator.Like]: (v) => Like(v),
+    [FilterOperator.ILike]: (v) => ILike(v),
+    [FilterOperator.In]: (v) => In(v),
     [FilterOperator.Between]: ([from, to]) => Between(from, to),
     [FilterOperator.Exists]: (exists) => (exists ? Not(IsNull()) : IsNull()),
+    [FilterOperator.Json]: (value) => Raw((alias) => `${alias} @> :value`, { value }),
 };
 
 const ALLOWED_FIELDS = Object.keys(searchQuerySchema.properties);
@@ -98,34 +100,34 @@ export const buildQueryFromRaw = <TEntity>(
 
         const where: SearchQuery['where'] = {};
 
-        const buildByOperator = (
-            key: string,
-            value: SearchFilterWithFilterOperatorValue | SearchFilterWithLogicalOperatorValue,
-        ) => {
-            Object.entries(buildMap).forEach(([operator, buildWhereOperator]) => {
-                const v = _.get(value, operator);
+        const buildByOperator = (field: string, filterValue: SearchFilterOperatorValue) => {
+            (Object.keys(filterValue) as (keyof SearchFilterOperatorValue)[]).forEach((operator) => {
+                if (operator === FilterLogicalOperator.Not) {
+                    return;
+                }
 
-                if (v) {
-                    if (operator === FilterLogicalOperator.Not) {
-                        where[key] = Not(buildWhereOperator(v));
-                    } else {
-                        where[key] = buildWhereOperator(v);
-                    }
+                const operatorValue = filterValue[operator];
+
+                if (operatorValue) {
+                    const buildWhereOperator = buildMap[operator];
+
+                    // @ts-expect-error
+                    where[field] = buildWhereOperator(operatorValue);
                 }
             });
         };
 
-        Object.entries(rawSearchQuery.filters).forEach(([key, value]) => {
-            if (!opts.filters.allowedFields.includes(key as keyof TEntity)) {
-                throw SearchError.disallowedFiltersField(key);
+        Object.entries(rawSearchQuery.filters).forEach(([field, filterValue]) => {
+            if (!opts.filters.allowedFields.includes(field as keyof TEntity)) {
+                throw SearchError.disallowedFiltersField(field);
             }
 
-            if (isSimpleValue(value)) {
-                where[key] = Equal(value);
+            if (isSimpleValue(filterValue)) {
+                where[field] = Equal(filterValue);
                 return;
             }
 
-            buildByOperator(key, value);
+            buildByOperator(field, filterValue);
         });
 
         return where;
