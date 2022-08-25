@@ -28,11 +28,7 @@ export const createZigbeeBridge = (mqttClient: MqttClient) => {
     const fetchConfiguration = async () => {
         const service = createConfigurationsService();
 
-        const [configuration] = await service.search({
-            where: {
-                data: Raw(() => `data->>'type' = '${ConfigurationType.ZigbeeBridge}'`),
-            },
-        });
+        const [configuration] = await service.searchByDataType(ConfigurationType.ZigbeeBridge);
 
         if (configuration) {
             onCreatedConfiguration(configuration);

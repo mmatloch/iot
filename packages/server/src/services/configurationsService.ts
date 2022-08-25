@@ -1,8 +1,12 @@
-import { Configuration, ConfigurationDto } from '../entities/configurationEntity';
+import { Raw } from 'typeorm';
+
+import { Configuration, ConfigurationDto, ConfigurationType } from '../entities/configurationEntity';
 import { createConfigurationsRepository } from '../repositories/configurationsRepository';
 import { GenericService } from './genericService';
 
-export interface ConfigurationsService extends GenericService<Configuration, ConfigurationDto> {}
+export interface ConfigurationsService extends GenericService<Configuration, ConfigurationDto> {
+    searchByDataType: (type: ConfigurationType) => Promise<Configuration[]>;
+}
 
 export const createConfigurationsService = (): ConfigurationsService => {
     const repository = createConfigurationsRepository();
@@ -17,11 +21,19 @@ export const createConfigurationsService = (): ConfigurationsService => {
         return repository.find(query);
     };
 
+    const searchByDataType: ConfigurationsService['searchByDataType'] = (type) => {
+        return search({
+            where: {
+                data: Raw(() => `data->>'type' = '${type}'`),
+            },
+        });
+    };
+
     const searchAndCount: ConfigurationsService['searchAndCount'] = (query) => {
         return repository.findAndCount(query);
     };
 
-    const findByIdOrFail: ConfigurationsService['findByIdOrFail'] = async (_id) => {
+    const findByIdOrFail: ConfigurationsService['findByIdOrFail'] = (_id) => {
         return repository.findOneByOrFail({
             _id,
         });
@@ -37,6 +49,7 @@ export const createConfigurationsService = (): ConfigurationsService => {
         create,
         search,
         searchAndCount,
+        searchByDataType,
         findByIdOrFail,
         update,
     };

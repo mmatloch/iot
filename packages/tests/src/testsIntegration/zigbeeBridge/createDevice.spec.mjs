@@ -5,12 +5,14 @@ import {
     createZigbeeBridgeDevicesHelpers,
     createZigbeeBridgeInfoHelpers,
 } from '../../helpers/helpers.mjs';
+import { createConfigurationUtils } from '../../utils/configurationUtils.mjs';
 import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mjs';
 
 const H = createZigbeeBridgeDevicesHelpers();
 const deviceHelpers = createDeviceHelpers();
 const zigbeeInfoHelpers = createZigbeeBridgeInfoHelpers();
 const eventHelpers = createEventHelpers();
+const configurationUtils = createConfigurationUtils();
 
 /**
  * @group zigbeeBridge/createDevice
@@ -20,6 +22,7 @@ describe('Zigbee bridge createDevice', () => {
     beforeAll(async () => {
         deviceHelpers.authorizeHttpClient();
         eventHelpers.authorizeHttpClient();
+        await configurationUtils.ensureZigbeeBridge();
         await connectToBroker();
     });
 

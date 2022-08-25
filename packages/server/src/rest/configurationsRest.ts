@@ -48,7 +48,7 @@ const searchOptions: RestSearchOptions<Configuration> = {
         },
     },
     filters: {
-        allowedFields: ['state'],
+        allowedFields: ['state', 'data'],
     },
 };
 
