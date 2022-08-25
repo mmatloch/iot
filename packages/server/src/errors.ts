@@ -13,6 +13,7 @@ export enum ErrorCode {
     ConditionNotMet,
     EventTriggerCircularReference,
     InvalidEventMetadata,
+    FailedToTriggerEvent,
 }
 
 const prefix = 'SRV';
@@ -114,5 +115,12 @@ export const Errors = {
             errorCode: getErrorCode(ErrorCode.InvalidEventMetadata),
             message: `Invalid event metadata`,
             detail,
+        }),
+
+    failedToTriggerEvent: (displayName: string, opts?: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.unprocessableEntity({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.FailedToTriggerEvent),
+            message: `Failed to trigger the '${displayName}' event`,
         }),
 };

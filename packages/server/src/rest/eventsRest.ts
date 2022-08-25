@@ -14,7 +14,7 @@ import { Event, EventDto, eventDtoSchema, eventSchema, eventUpdateSchema } from 
 import { EventInstance, eventInstanceSchema } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
-import { EventTriggerType } from '../events/eventDefinitions';
+import { EventActionOnInactive, EventTriggerType } from '../events/eventDefinitions';
 import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createEventInstancesService } from '../services/eventInstancesService';
@@ -81,6 +81,11 @@ const triggerEventSchema = {
                 },
             ),
             context: Type.Record(Type.String(), Type.Unknown()),
+            options: Type.Optional(
+                Type.Object({
+                    onInactive: Type.Optional(Type.Enum(EventActionOnInactive)),
+                }),
+            ),
         },
         {
             additionalProperties: false,
@@ -201,7 +206,9 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
             },
         });
 
-        const result = await Promise.all(events.map((event) => eventTriggerInNewContext(event, request.body.context)));
+        const result = await Promise.all(
+            events.map((event) => eventTriggerInNewContext(event, request.body.context, request.body.options)),
+        );
 
         return reply.status(StatusCodes.CREATED).send(result);
     });

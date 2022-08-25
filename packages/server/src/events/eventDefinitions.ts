@@ -19,6 +19,7 @@ export enum EventTriggerType {
 
 export enum EventState {
     Active = 'ACTIVE',
+    Inactive = 'INACTIVE',
     Completed = 'COMPLETED',
 }
 
@@ -37,4 +38,14 @@ export enum EventMetadataTaskType {
     RelativeCron = 'RELATIVE_CRON',
     StaticInterval = 'STATIC_INTERVAL',
     RelativeInterval = 'RELATIVE_INTERVAL',
+}
+
+export enum EventActionOnInactive {
+    Skip = 'SKIP',
+    Error = 'ERROR',
+    Continue = 'CONTINUE',
+}
+
+export interface EventTriggerOptions {
+    onInactive?: EventActionOnInactive;
 }

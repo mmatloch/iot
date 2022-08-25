@@ -3,17 +3,39 @@ import { BaseError, transformErrorBody } from '@common/errors';
 import type { PerformanceMetrics } from '../definitions';
 import { EventInstanceState } from '../entities//eventInstanceEntity';
 import type { Event } from '../entities/eventEntity';
-import { ErrorCode, getErrorCode } from '../errors';
+import { ErrorCode, Errors, getErrorCode } from '../errors';
 import { createEventProcessor } from '../events/eventProcessor';
 import { getEventRunSummary } from '../events/eventRunSummary';
 import { getLogger } from '../logger';
 import { createEventInstancesService } from '../services/eventInstancesService';
+import { EventActionOnInactive, EventState, EventTriggerOptions } from './eventDefinitions';
 import type { EventTriggerContext } from './eventRunDefinitions';
 import { getChildLocalStorage } from './eventRunLocalStorage';
 import { createEventRunSdk } from './sdks/sdk';
 
-export const eventTrigger = async (event: Event, context: EventTriggerContext) => {
+export const eventTrigger = async (event: Event, context: EventTriggerContext, opts: EventTriggerOptions = {}) => {
     const logger = getLogger().child({ event });
+
+    const optsWithDefaults = {
+        onInactive: EventActionOnInactive.Error,
+        ...opts,
+    };
+
+    if (event.state === EventState.Inactive) {
+        switch (optsWithDefaults.onInactive) {
+            case EventActionOnInactive.Error: {
+                throw Errors.failedToTriggerEvent(event.displayName, {
+                    detail: 'The event is inactive',
+                });
+            }
+            case EventActionOnInactive.Skip: {
+                logger.debug(`Skipping the event trigger because the event is inactive`);
+                return;
+            }
+            default:
+                break;
+        }
+    }
 
     logger.debug(`Triggering the '${event.displayName}' event`);
 
@@ -53,8 +75,6 @@ export const eventTrigger = async (event: Event, context: EventTriggerContext) =
         });
     } catch (e) {
         endPerformanceMetrics();
-
-    
 
         const errorBody = transformErrorBody(e as Error);
         let eventInstanceState = EventInstanceState.UnknownError;

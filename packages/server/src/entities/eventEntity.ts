@@ -6,6 +6,7 @@ import {
     EventMetadataTaskType,
     EventMetadataType,
     EventState,
+    EventTriggerOptions,
     EventTriggerType,
 } from '../events/eventDefinitions';
 import { EventTriggerContext } from '../events/eventRunDefinitions';
@@ -51,8 +52,8 @@ export class Event extends GenericEntity {
     })
     metadata!: EventSchedulerMetadata | null;
 
-    trigger = async (context: EventTriggerContext = {}): Promise<void> => {
-        await eventTrigger(this, context);
+    trigger = async (context: EventTriggerContext = {}, opts?: EventTriggerOptions): Promise<void> => {
+        await eventTrigger(this, context, opts);
     };
 }
 

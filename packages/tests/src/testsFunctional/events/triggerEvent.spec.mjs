@@ -341,5 +341,70 @@ describe('Events triggerEvent', () => {
             expect(secondEventResult).toHaveProperty('runId');
             expect(firstEventResult.runId).not.toBe(secondEventResult.runId);
         });
+
+        it('should return an error when the event is inactive', async () => {
+            // given
+            const postPayload = generateEventPostPayload();
+            postPayload.state = 'INACTIVE';
+            const { body: event } = await eventHelpers.post(postPayload).expectSuccess();
+
+            const payload = generateEventTriggerPayload();
+            payload.filters.triggerType = event.triggerType;
+            payload.filters.triggerFilters = event.triggerFilters;
+
+            // when & then
+            await H.post(payload).expectUnprocessableEntity({
+                errorCode: 'SRV-13',
+                message: `Failed to trigger the '${event.displayName}' event`,
+                detail: 'The event is inactive',
+            });
+        });
+
+        it('should skip triggering the inactive event when `onInactive`=SKIP', async () => {
+            // given
+            const postPayload = generateEventPostPayload();
+            postPayload.state = 'INACTIVE';
+            const { body: event } = await eventHelpers.post(postPayload).expectSuccess();
+
+            const payload = generateEventTriggerPayload();
+            payload.filters.triggerType = event.triggerType;
+            payload.filters.triggerFilters = event.triggerFilters;
+            payload.options = {
+                onInactive: 'SKIP',
+            };
+
+            // when
+            const {
+                body: [triggerResult],
+            } = await H.post(payload).expectSuccess();
+
+            // then
+            expect(triggerResult).toHaveProperty('runId');
+            expect(triggerResult).toHaveProperty(['summary', 'children'], []);
+        });
+
+        it('should trigger the inactive event when `onInactive`=CONTINUE', async () => {
+            // given
+            const postPayload = generateEventPostPayload();
+            postPayload.state = 'INACTIVE';
+            const { body: event } = await eventHelpers.post(postPayload).expectSuccess();
+
+            const payload = generateEventTriggerPayload();
+            payload.filters.triggerType = event.triggerType;
+            payload.filters.triggerFilters = event.triggerFilters;
+            payload.options = {
+                onInactive: 'CONTINUE',
+            };
+
+            // when
+            const {
+                body: [triggerResult],
+            } = await H.post(payload).expectSuccess();
+
+            // then
+            expect(triggerResult).toHaveProperty('runId');
+            expect(triggerResult).toHaveProperty(['summary', 'children']);
+            expect(triggerResult.summary.children).toBeArrayOfSize(1);
+        });
     });
 });

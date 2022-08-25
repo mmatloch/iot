@@ -16,6 +16,7 @@ export const generateEventPostPayload = () => {
         },
         conditionDefinition: 'return true',
         actionDefinition: 'return true',
+        state: 'ACTIVE',
     };
 };
 

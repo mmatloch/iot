@@ -13,6 +13,7 @@ import { createEventSchedulerTaskSubscriber } from '../../entities/eventSchedule
 import { EntitySubscriberEvent } from '../../entities/subscriberDefinitions';
 import { getLogger } from '../../logger';
 import { createEventSchedulerTasksService } from '../../services/eventSchedulerTasksService';
+import { createEventsService } from '../../services/eventsService';
 import {
     EventMetadataOnMultipleInstances,
     EventMetadataTaskType,
@@ -29,6 +30,7 @@ type RelativeEventMetadataMap = Map<number, Event>;
 
 export const createEventScheduler = () => {
     const eventSchedulerTasksService = createEventSchedulerTasksService();
+    const eventsService = createEventsService();
 
     const relativeEventMetadataMap: RelativeEventMetadataMap = new Map();
 
@@ -264,6 +266,18 @@ export const createEventScheduler = () => {
                 } catch (e) {
                     logger.error({
                         msg: `Failed to schedule the '${event.displayName}' event`,
+                        event,
+                        err: e,
+                    });
+                }
+            } else {
+                try {
+                    await eventsService.update(event, {
+                        state: EventState.Completed,
+                    });
+                } catch (e) {
+                    logger.error({
+                        msg: `Failed to complete the '${event.displayName}' event`,
                         event,
                         err: e,
                     });

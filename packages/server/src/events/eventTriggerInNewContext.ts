@@ -1,10 +1,11 @@
 import crypto from 'node:crypto';
 
 import type { Event } from '../entities/eventEntity';
+import { EventTriggerOptions } from './eventDefinitions';
 import { EventRunStore, EventTriggerContext } from './eventRunDefinitions';
 import { getEventRunLocalStorage } from './eventRunLocalStorage';
 
-interface Options {
+interface Options extends EventTriggerOptions {
     reuseStore?: boolean;
 }
 
@@ -25,7 +26,7 @@ export const eventTriggerInNewContext = async (event: Event, context: EventTrigg
         };
     }
 
-    await localStorage.run(store, event.trigger, context);
+    await localStorage.run(store, event.trigger, context, opts);
 
     return store;
 };
