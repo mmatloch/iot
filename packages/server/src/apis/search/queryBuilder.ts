@@ -103,6 +103,12 @@ export const buildQueryFromRaw = <TEntity>(
         const buildByOperator = (field: string, filterValue: SearchFilterOperatorValue) => {
             (Object.keys(filterValue) as (keyof SearchFilterOperatorValue)[]).forEach((operator) => {
                 if (operator === FilterLogicalOperator.Not) {
+                    const notFilterValue = filterValue[operator];
+                    if (notFilterValue) {
+                        buildByOperator(field, notFilterValue);
+                        where[field] = Not(where[field]);
+                    }
+
                     return;
                 }
 

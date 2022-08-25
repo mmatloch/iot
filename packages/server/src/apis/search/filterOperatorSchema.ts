@@ -52,9 +52,8 @@ export const logicalOperatorSchema = {
             filterOperatorSchema.like,
             filterOperatorSchema.iLike,
             filterOperatorSchema.in,
-            filterOperatorSchema.json,
 
-            // no $exists
+            // no $exists and $json
         ]),
     }),
 };
