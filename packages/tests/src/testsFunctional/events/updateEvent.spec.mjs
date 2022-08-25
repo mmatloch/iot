@@ -8,10 +8,12 @@ import {
 } from '../../dataGenerators/eventsDataGenerators.mjs';
 import { generateZigbeeDevice } from '../../dataGenerators/zigbeeDataGenerators.mjs';
 import { createDeviceHelpers, createEventHelpers, createZigbeeBridgeDevicesHelpers } from '../../helpers/helpers.mjs';
+import { createConfigurationUtils } from '../../utils/configurationUtils.mjs';
 import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mjs';
 
 const zigbeeBridgeDevicesHelpers = createZigbeeBridgeDevicesHelpers();
 const deviceHelpers = createDeviceHelpers();
+const configurationUtils = createConfigurationUtils();
 
 const updatableFields = [
     {
@@ -61,6 +63,8 @@ describe('Events updateEvent', () => {
         beforeAll(async () => {
             H.authorizeHttpClient();
             deviceHelpers.authorizeHttpClient();
+
+            await configurationUtils.ensureZigbeeBridge();
 
             await connectToBroker();
         });

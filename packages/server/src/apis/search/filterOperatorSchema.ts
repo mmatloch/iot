@@ -35,6 +35,9 @@ export const filterOperatorSchema = {
     in: Type.Object({
         [FilterOperator.In]: Type.Array(simpleFilterValueSchema),
     }),
+    json: Type.Object({
+        [FilterOperator.Json]: Type.String(),
+    }),
 };
 
 export const logicalOperatorSchema = {
@@ -50,7 +53,7 @@ export const logicalOperatorSchema = {
             filterOperatorSchema.iLike,
             filterOperatorSchema.in,
 
-            // no $exists
+            // no $exists and $json
         ]),
     }),
 };

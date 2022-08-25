@@ -28,6 +28,10 @@
       "baseUrl": "http://nginx:8080/api/",
       "path": "events/scheduler/tasks"
     },
+    "configurations": {
+      "baseUrl": "http://nginx:8080/api/",
+      "path": "configurations"
+    },
     "googleOAuth2AuthorizationCode": {
       "baseUrl": "http://nginx:8080/google/oauth2/",
       "path": "authorizationCode"

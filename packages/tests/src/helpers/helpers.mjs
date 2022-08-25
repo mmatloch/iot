@@ -7,6 +7,7 @@ const config = getConfig();
 // HTTP API
 export const createUserHelpers = (...opts) => createHttpHelpers(config.resources.users, ...opts);
 export const createDeviceHelpers = (...opts) => createHttpHelpers(config.resources.devices, ...opts);
+export const createConfigurationHelpers = (...opts) => createHttpHelpers(config.resources.configurations, ...opts);
 export const createSensorDataHelpers = (...opts) => createHttpHelpers(config.resources.sensorData, ...opts);
 export const createEventHelpers = (...opts) => createHttpHelpers(config.resources.events, ...opts);
 export const createEventInstanceHelpers = (...opts) => createHttpHelpers(config.resources.eventInstances, ...opts);

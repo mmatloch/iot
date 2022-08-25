@@ -3,10 +3,12 @@ import _ from 'lodash';
 
 import { generateZigbeeDevice } from '../../dataGenerators/zigbeeDataGenerators.mjs';
 import { createDeviceHelpers, createZigbeeBridgeDevicesHelpers } from '../../helpers/helpers.mjs';
+import { createConfigurationUtils } from '../../utils/configurationUtils.mjs';
 import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mjs';
 
 const H = createZigbeeBridgeDevicesHelpers();
 const deviceHelpers = createDeviceHelpers();
+const configurationUtils = createConfigurationUtils();
 
 const findDevice = async (query) => {
     const {
@@ -23,6 +25,7 @@ const findDevice = async (query) => {
 describe('Zigbee bridge updateDevice', () => {
     beforeAll(async () => {
         deviceHelpers.authorizeHttpClient();
+        await configurationUtils.ensureZigbeeBridge();
         await connectToBroker();
     });
 

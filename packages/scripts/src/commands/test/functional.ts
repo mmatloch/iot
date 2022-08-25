@@ -6,6 +6,7 @@ import { StatusApiUrl, waitForServer } from '../../utils/httpUtils';
 
 interface Flags {
     watchAll: boolean;
+    detectOpenHandles: boolean;
     group?: string;
 }
 
@@ -20,6 +21,10 @@ export class TestFunctionalCommand extends Command {
         group: Flags.string({
             required: false,
         }),
+        detectOpenHandles: Flags.boolean({
+            required: true,
+            default: false,
+        }),
     };
 
     async run() {
@@ -30,6 +35,10 @@ export class TestFunctionalCommand extends Command {
 
         if (flags.group) {
             args.push(`--group=${flags.group}`);
+        }
+
+        if (flags.detectOpenHandles) {
+            args.push(`--detectOpenHandles`);
         }
 
         await waitForServer(new URL(StatusApiUrl.Server));

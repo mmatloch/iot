@@ -3,13 +3,6 @@ import _ from 'lodash';
 
 import { mergeSchemas } from '../../utils/schemaUtils';
 
-export const ZIGBEE_TOPIC_PREFIX = 'zigbee2mqtt';
-
-export const ZigbeeTopic = {
-    BridgeDevices: `${ZIGBEE_TOPIC_PREFIX}/bridge/devices`,
-    BridgeInfo: `${ZIGBEE_TOPIC_PREFIX}/bridge/info`,
-};
-
 const genericDeviceSchema = Type.Object({
     ieeeAddress: Type.String(),
     supported: Type.Boolean(),

@@ -9,6 +9,7 @@ import {
     createZigbeeBridgeDevicesHelpers,
 } from '../../helpers/helpers.mjs';
 import { sleep } from '../../utils/commonUtils.mjs';
+import { createConfigurationUtils } from '../../utils/configurationUtils.mjs';
 import { connectToBroker, disconnectFromBroker } from '../../utils/mqttClient.mjs';
 import { getZigbeeTopic } from '../../utils/zigbeeUtils.mjs';
 
@@ -18,6 +19,7 @@ const deviceHelpers = createDeviceHelpers();
 const eventHelpers = createEventHelpers();
 const eventTriggerHelpers = createEventTriggerHelpers();
 const eventInstanceHelpers = createEventInstanceHelpers();
+const configurationUtils = createConfigurationUtils();
 
 const findDevice = async (query) => {
     const {
@@ -37,6 +39,7 @@ describe('Zigbee bridge outgoingDeviceData', () => {
         eventHelpers.authorizeHttpClient();
         eventTriggerHelpers.authorizeHttpClient();
         eventInstanceHelpers.authorizeHttpClient();
+        await configurationUtils.ensureZigbeeBridge();
         await connectToBroker();
     });
 
