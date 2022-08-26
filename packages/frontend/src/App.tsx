@@ -1,31 +1,48 @@
-import './App.css';
+import { AuthProvider } from '@contexts/AuthProvider';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { SnackbarProvider } from 'notistack';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { useState } from 'react';
+import { AppRoute } from './constants';
+import ProtectedRoute from './features/auth/components/ProtectedRoute';
+import AuthRedirectGoogle from './pages/AuthRedirectGoogle';
+import AuthSignIn from './pages/AuthSignIn';
+import Home from './pages/Home';
 
-import reactLogo from './assets/react.svg';
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
+
+const queryClient = new QueryClient({
+    defaultOptions: {
+        queries: {
+            retry: false,
+        },
+    },
+});
 
 function App() {
-    const [count, setCount] = useState(0);
-
     return (
-        <div className="App">
-            <div>
-                <a href="https://vitejs.dev" target="_blank">
-                    <img src="/vite.svg" className="logo" alt="Vite logo" />
-                </a>
-                <a href="https://reactjs.org" target="_blank">
-                    <img src={reactLogo} className="logo react" alt="React logo" />
-                </a>
-            </div>
-            <h1>Vite + React</h1>
-            <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
-            </div>
-            <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-        </div>
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <QueryClientProvider client={queryClient}>
+                <SnackbarProvider maxSnack={5}>
+                    <BrowserRouter>
+                        <AuthProvider>
+                            <Routes>
+                                <Route index element={<ProtectedRoute element={<Home />} />} />
+                                <Route path={AppRoute.Auth.SignIn} element={<AuthSignIn />} />
+                                <Route path={AppRoute.Auth.Redirect.Google} element={<AuthRedirectGoogle />} />
+                            </Routes>
+                        </AuthProvider>
+                    </BrowserRouter>
+                </SnackbarProvider>
+            </QueryClientProvider>
+        </ThemeProvider>
     );
 }
 

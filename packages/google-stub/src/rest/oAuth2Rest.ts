@@ -32,6 +32,15 @@ const createAuthorizationCodeSchema = {
     ),
 };
 
+const authSchema = {
+    querystring: Type.Object({
+        redirect_uri: Type.String(),
+        response_type: Type.String(),
+        client_id: Type.String(),
+        scope: Type.String(),
+    }),
+};
+
 export const createOAuth2Rest = (app: Application) => {
     app.withTypeProvider().post('/oauth2/token', { schema: createTokenSchema }, async (request, reply) => {
         const service = createOAuth2Service();
@@ -66,4 +75,20 @@ export const createOAuth2Rest = (app: Application) => {
             return reply.status(StatusCodes.CREATED).send(authorizationCode);
         },
     );
+
+    app.withTypeProvider().get('/oauth2/auth', { schema: authSchema }, async (request, reply) => {
+        const service = createOAuth2Service();
+
+        const { redirect_uri: redirectUri, response_type: responseType, client_id: clientId, scope } = request.query;
+
+        const redirectUrl = service.authorize({
+            redirectUri,
+            responseType,
+            clientId,
+            scope,
+        });
+
+        return reply.redirect(StatusCodes.MOVED_TEMPORARILY, redirectUrl).send();
+    });
 };
+// https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&prompt=consent&response_type=code&client_id=407408718192.apps.googleusercontent.com&scope=openid+profile+email&access_type=offline
