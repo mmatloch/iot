@@ -42,6 +42,16 @@ const createTokenSchema = {
     },
 };
 
+const getSocialLoginSchema = {
+    response: {
+        [StatusCodes.OK]: Type.Object({
+            google: Type.Object({
+                authenticationUrl: Type.String(),
+            }),
+        }),
+    },
+};
+
 const partialUserDtoSchema = Type.Partial(userDtoSchema, {
     additionalProperties: false,
 });
@@ -118,6 +128,13 @@ export const createUsersRest: ApplicationPlugin = async (app) => {
 
         const token = await service.createToken(request.body);
         return reply.status(StatusCodes.CREATED).send(token);
+    });
+
+    app.withTypeProvider().get('/users/socialLogin', { schema: getSocialLoginSchema }, async (request, reply) => {
+        const service = createUsersService();
+
+        const socialLogin = service.getSocialLogin();
+        return reply.status(StatusCodes.OK).send(socialLogin);
     });
 
     app.withTypeProvider().get('/users', { schema: searchUsersSchema }, async (request, reply) => {

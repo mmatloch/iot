@@ -33,6 +33,13 @@ interface TokenDto {
     code?: string;
 }
 
+interface AuthorizeDto {
+    redirectUri: string;
+    responseType: string;
+    clientId: string;
+    scope: string;
+}
+
 enum OAuth2Error {
     UNSUPPORTED_GRANT_TYPE = 'unsupported_grant_type',
     INVALID_REQUEST = 'invalid_request',
@@ -40,14 +47,14 @@ enum OAuth2Error {
     INVALID_GRANT = 'invalid_grant',
 }
 
+const config = getConfig();
+
 export const createOAuth2Service = () => {
     const createError = (error: OAuth2Error, description: string) => {
         throw new BaseError({ message: description, errorCode: error });
     };
 
     const validateTokenPayload = (dto: TokenDto): asserts dto is Required<TokenDto> => {
-        const config = getConfig();
-
         const expectedClientId = config.oAuth2.clientId;
         const expectedClientSecret = config.oAuth2.clientSecret;
 
@@ -122,8 +129,28 @@ export const createOAuth2Service = () => {
         };
     };
 
+    const authorize = (dto: AuthorizeDto): string => {
+        const { code } = createAuthorizationCode({
+            email: config.oAuth2.rootUserEmail,
+            email_verified: true,
+            name: 'Test user',
+            picture: 'https://lh3.googleusercontent.com/a/AItbvmlQQhLv32G6qqJQ6AwdXR1DR4hbMVSvp7QUBwAI=s96-c',
+            given_name: 'Test',
+            family_name: 'User',
+            locale: 'pl',
+            sub: '123456789',
+        });
+
+        const redirectUrl = new URL(dto.redirectUri);
+        redirectUrl.searchParams.set('code', code);
+        redirectUrl.searchParams.set('scope', dto.scope);
+
+        return redirectUrl.toString();
+    };
+
     return {
         createToken,
         createAuthorizationCode,
+        authorize,
     };
 };

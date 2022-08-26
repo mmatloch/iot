@@ -12,6 +12,12 @@ const tokenSchema = Type.Object({
     id_token: Type.String(),
 });
 
+const authenticationUrl = new URL(config.externalServices.google.oAuth2.authBaseUrl);
+authenticationUrl.searchParams.append('client_id', config.externalServices.google.oAuth2.clientId);
+authenticationUrl.searchParams.append('redirect_uri', config.externalServices.google.oAuth2.redirectUri);
+authenticationUrl.searchParams.append('scope', config.externalServices.google.oAuth2.scope);
+authenticationUrl.searchParams.append('response_type', 'code');
+
 export const createGoogleOAuth2Service = () => {
     const exchangeAuthorizationCodeForJWT = async (code: string): Promise<string> => {
         const url = new URL(oAuth2Config.tokenUrl);
@@ -56,5 +62,6 @@ export const createGoogleOAuth2Service = () => {
 
     return {
         getUserInfo,
+        getAuthenticationUrl: () => authenticationUrl.toString(),
     };
 };

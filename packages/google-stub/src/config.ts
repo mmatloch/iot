@@ -22,6 +22,9 @@ const schema = Type.Object({
         clientSecret: Type.String({
             environment: 'OAUTH2_CLIENT_SECRET',
         }),
+        rootUserEmail: Type.String({
+            environment: 'ROOT_USER_EMAIL',
+        }),
     }),
 });
 

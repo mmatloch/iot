@@ -17,9 +17,16 @@ interface Token {
     tokenType: string;
 }
 
+interface SocialLogin {
+    google: {
+        authenticationUrl: string;
+    };
+}
+
 export interface UsersService extends GenericService<User, UserDto> {
     findByEmail: (email: string) => Promise<User | null>;
     createToken: (tokenDto: TokenDto) => Promise<Token>;
+    getSocialLogin: () => SocialLogin;
 }
 
 export const createUsersService = () => {
@@ -100,11 +107,22 @@ export const createUsersService = () => {
         return repository.save(repository.merge(user, updatedUser));
     };
 
+    const getSocialLogin: UsersService['getSocialLogin'] = () => {
+        const googleOAuth2Service = createGoogleOAuth2Service();
+
+        return {
+            google: {
+                authenticationUrl: googleOAuth2Service.getAuthenticationUrl(),
+            },
+        };
+    };
+
     return {
         createToken,
         search,
         searchAndCount,
         update,
         findByIdOrFail,
+        getSocialLogin,
     };
 };
