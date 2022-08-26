@@ -60,6 +60,9 @@ export class SetupCommand extends Command {
                         question: `Your time zone`,
                         defaultValue: TIME_ZONE,
                     },
+                    publicUrl: {
+                        question: `The public application URL (For example: "https://google.com")`,
+                    },
                 },
             },
             [Step.SetupGoogleOAuth]: {

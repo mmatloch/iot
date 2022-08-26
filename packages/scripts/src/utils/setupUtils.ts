@@ -27,7 +27,7 @@ export enum Step {
 }
 
 export const createEnvVariables = (state: SetupState) => {
-    const { timeZone } = state.getStepData(Step.General);
+    const { timeZone, publicUrl } = state.getStepData(Step.General);
     const { postgresUsername, postgresPassword } = state.getStepData(Step.SetupPostgresAuth);
     const { mosquittoUsername, mosquittoPassword } = state.getStepData(Step.SetupMosquittoAuth);
     const { googleClientId, googleClientSecret } = state.getStepData(Step.SetupGoogleOAuth);
@@ -44,10 +44,12 @@ export const createEnvVariables = (state: SetupState) => {
 
     return {
         PROJECT_NAME: PROJECT_NAME,
+        PUBLIC_URL: publicUrl,
         TZ: timeZone,
 
         GOOGLE_OAUTH2_CLIENT_ID: googleClientId,
         GOOGLE_OAUTH2_CLIENT_SECRET: googleClientSecret,
+        GOOGLE_OAUTH2_REDIRECT_URI: new URL(`/auth/redirect/google`, publicUrl as string).toString(),
 
         JWT_SECRET: jwtSecret,
         ROOT_USER_EMAIL: rootUserEmail,
