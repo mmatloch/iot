@@ -91,4 +91,3 @@ export const createOAuth2Rest = (app: Application) => {
         return reply.redirect(StatusCodes.MOVED_TEMPORARILY, redirectUrl).send();
     });
 };
-// https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=https%3A%2F%2Fdevelopers.google.com%2Foauthplayground&prompt=consent&response_type=code&client_id=407408718192.apps.googleusercontent.com&scope=openid+profile+email&access_type=offline

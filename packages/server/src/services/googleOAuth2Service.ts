@@ -39,8 +39,6 @@ export const createGoogleOAuth2Service = () => {
 
         const body = await response.json();
 
-        console.log(body);
-
         const validator: Validator = createValidator();
         validator.validateOrThrow(tokenSchema, body);
 
