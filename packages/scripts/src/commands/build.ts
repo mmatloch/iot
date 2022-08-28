@@ -40,7 +40,7 @@ const createDockerImages = (flags: Flags) => [
         buildCondition: () => true,
     },
     {
-        name: 'google-stub',
+        name: 'google_stub',
         dockerfilePath: join(PATH.Packages, 'google-stub', 'Dockerfile'),
         imageName: `${PROJECT_NAME}-google-stub`,
         imageTag: 'latest',

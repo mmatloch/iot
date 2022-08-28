@@ -39,5 +39,5 @@ export const TYPEORM = {
     CliCommand: 'yarn typeorm-ts-node-commonjs',
 };
 
-export const APPS = ['frontend', 'server', 'google-stub', 'tests'];
+export const APPS = ['frontend', 'server', 'google_stub', 'tests'];
 export const APP_SEPARATOR = ',';
