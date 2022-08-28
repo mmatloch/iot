@@ -39,5 +39,6 @@ export const TYPEORM = {
     CliCommand: 'yarn typeorm-ts-node-commonjs',
 };
 
+export const DEFAULT_APPS = ['nginx', 'mqtt', 'timescale'];
 export const APPS = ['frontend', 'server', 'google_stub', 'tests'];
 export const APP_SEPARATOR = ',';

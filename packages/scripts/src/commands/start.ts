@@ -5,7 +5,7 @@ import { cyan } from 'chalk';
 import { readFileSync, writeFileSync } from 'fs-extra';
 import { x } from 'qqjs';
 
-import { APPS, APP_SEPARATOR, PATH, PROJECT_NAME } from '../utils/constants';
+import { APPS, APP_SEPARATOR, DEFAULT_APPS, PATH, PROJECT_NAME } from '../utils/constants';
 
 interface Flags {
     env: string;
@@ -72,6 +72,7 @@ export class StartCommand extends Command {
             filePath = PATH.DeployProd.DockerCompose;
         }
 
-        await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d ${flags.apps.replaceAll(APP_SEPARATOR, ' ')}`);
+        const appsToStart = flags.apps.split(APP_SEPARATOR).concat(DEFAULT_APPS);
+        await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d ${appsToStart.join(' ')}`);
     }
 }
