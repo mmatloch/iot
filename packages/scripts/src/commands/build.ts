@@ -9,7 +9,6 @@ import { PATH, PROJECT_NAME } from '../utils/constants';
 interface Flags {
     nodeEnv: string;
     production: boolean;
-    save: boolean;
     imageTag: string;
     imageRepo: string;
     ci: string;
@@ -27,7 +26,6 @@ const createDockerImages = (flags: Flags) => [
                 value: flags.nodeEnv,
             },
         ],
-        tarFile: '/tmp/serverImage.tar',
         buildCondition: () => true,
     },
     {
@@ -37,7 +35,6 @@ const createDockerImages = (flags: Flags) => [
             : join(PATH.Packages, 'frontend', 'Dockerfile.dev'),
         imageName: `${flags.imageRepo}/${PROJECT_NAME}-frontend`,
         imageTag: flags.imageTag,
-        tarFile: '/tmp/frontendImage.tar',
         buildCondition: () => true,
     },
     {
@@ -86,10 +83,6 @@ export class BuildCommand extends Command {
             default: 'iot',
             env: 'IMAGE_REPO',
         }),
-        save: Flags.boolean({
-            required: true,
-            default: false,
-        }),
         ci: Flags.string({
             required: true,
             default: '',
@@ -100,15 +93,9 @@ export class BuildCommand extends Command {
     async run() {
         const { flags } = await this.parse<Flags, Record<string, unknown>>(BuildCommand);
 
-        for (const {
-            name,
-            buildCondition,
-            buildArgs,
-            dockerfilePath,
-            imageName,
-            imageTag,
-            tarFile,
-        } of createDockerImages(flags)) {
+        for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of createDockerImages(
+            flags,
+        )) {
             if (!buildCondition?.()) {
                 this.log(yellow(`Skipping '${name}'`));
                 continue;
@@ -120,12 +107,6 @@ export class BuildCommand extends Command {
 
             await x(`docker build -f ${dockerfilePath} -t ${imageName}:${imageTag} ${buildArg} ${PATH.Root}`);
             this.log(green(`Successfully built '${name}' (${imageName}:${imageTag}) Docker image`));
-
-            const shouldSave = flags.ci || flags.save;
-
-            if (shouldSave && tarFile) {
-                await x(`docker save -o ${tarFile} ${imageName}:${imageTag}`);
-            }
         }
     }
 }
