@@ -1,10 +1,7 @@
-name: Publish frontend image
+name: Frontend CI
 
 on:
   push:
-    branches:
-      - main
-      - docker-hub-releases
     paths:
       - 'packages/frontend/**'
 
@@ -19,6 +16,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
+      - name: Install dependencies
+        run: yarn install
+
       - name: Log in to Docker Hub
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
@@ -30,5 +30,5 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          push: true
           tags: ${{ env.TEST_TAG }}
+          push: true
