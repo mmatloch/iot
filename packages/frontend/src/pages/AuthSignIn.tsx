@@ -1,6 +1,5 @@
+import SignInCard from '@features/auth/components/SignInCard';
 import { Grid } from '@mui/material';
-
-import SignInCard from '../features/auth/components/SignInCard';
 
 export default function AuthSignIn() {
     return (

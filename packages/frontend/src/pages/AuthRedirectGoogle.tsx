@@ -1,7 +1,6 @@
+import RedirectGoogle from '@features/auth/components/Redirect';
+import RedirectCard from '@features/auth/components/RedirectCard';
 import { Grid } from '@mui/material';
-
-import RedirectGoogle from '../features/auth/components/Redirect';
-import RedirectCard from '../features/auth/components/RedirectCard';
 
 export default function AuthRedirectGoogle() {
     return (

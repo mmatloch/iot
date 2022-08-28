@@ -1,6 +1,6 @@
+import { createHttpClient } from '@clients/httpClient';
 import { useFetch } from '@hooks/useFetch';
 
-import { createHttpClient } from '../clients/httpClient';
 import { ApiRoute } from '../constants';
 
 export interface TokenResponse {

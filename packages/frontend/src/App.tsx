@@ -1,4 +1,5 @@
 import { AuthProvider } from '@contexts/AuthProvider';
+import ProtectedRoute from '@features/auth/components/ProtectedRoute';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { SnackbarProvider } from 'notistack';
@@ -6,7 +7,6 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AppRoute } from './constants';
-import ProtectedRoute from './features/auth/components/ProtectedRoute';
 import AuthRedirectGoogle from './pages/AuthRedirectGoogle';
 import AuthSignIn from './pages/AuthSignIn';
 import Home from './pages/Home';
