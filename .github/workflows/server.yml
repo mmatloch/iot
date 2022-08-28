@@ -1,11 +1,12 @@
 name: Server CI
 
-on:
-  push:
-    paths:
-      - '*'
-      # - 'packages/server/**'
-      # - 'packages/common-*/**'
+on: [push]
+
+# on:
+#   push:
+#     paths:
+#       - 'packages/server/**'
+#       - 'packages/common-*/**'
 
 env:
   TAG: ${{ secrets.DOCKER_USERNAME }}/iot-server:latest
