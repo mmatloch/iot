@@ -13,6 +13,7 @@ interface Flags {
     imageRepo: string;
     ci: string;
     apps: string;
+    platforms: string;
 }
 
 const createDockerImages = (flags: Flags) => [
@@ -84,6 +85,11 @@ export class BuildCommand extends Command {
             default: 'iot',
             env: 'IMAGE_REPO',
         }),
+        platforms: Flags.string({
+            required: true,
+            default: 'linux/amd64',
+            env: 'PLATFORMS',
+        }),
         ci: Flags.string({
             required: true,
             default: '',
@@ -122,7 +128,9 @@ export class BuildCommand extends Command {
 
             const buildArg = buildArgs?.flatMap(({ key, value }) => ['--build-arg', `${key}=${value}`]).join(' ') || '';
 
-            await x(`docker build -f ${dockerfilePath} -t ${imageName}:${imageTag} ${buildArg} ${PATH.Root}`);
+            await x(
+                `docker build -f ${dockerfilePath} -t ${imageName}:${imageTag} --platform=${flags.platforms} ${buildArg} ${PATH.Root}`,
+            );
             this.log(green(`Successfully built '${name}' (${imageName}:${imageTag}) Docker image`));
         }
     }
