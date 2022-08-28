@@ -14,6 +14,7 @@ interface Flags {
     ci: string;
     apps: string;
     platforms: string;
+    push: boolean;
 }
 
 const createDockerImages = (flags: Flags) => [
@@ -100,6 +101,10 @@ export class BuildCommand extends Command {
             default: APPS.join(APP_SEPARATOR),
             env: 'APPS',
         }),
+        push: Flags.boolean({
+            required: true,
+            default: false,
+        }),
     };
 
     async run() {
@@ -124,9 +129,13 @@ export class BuildCommand extends Command {
 
             const buildArg = buildArgs?.flatMap(({ key, value }) => ['--build-arg', `${key}=${value}`]).join(' ') || '';
 
-            await x(
-                `docker build -f ${dockerfilePath} -t ${imageName}:${imageTag} --platform=${flags.platforms} ${buildArg} ${PATH.Root}`,
-            );
+            const buildFlags = [`-f ${dockerfilePath}`, `-t ${imageName}:${imageTag}`, `--platform=${flags.platforms}`];
+
+            if (flags.push) {
+                buildFlags.push('--push');
+            }
+
+            await x(`docker build ${buildFlags.join(' ')} ${buildArg} ${PATH.Root}`);
             this.log(green(`Successfully built '${name}' (${imageName}:${imageTag}) Docker image`));
         }
     }
