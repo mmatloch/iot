@@ -4,7 +4,7 @@ import { Command, Flags } from '@oclif/core';
 import { cyan, green, yellow } from 'chalk';
 import { x } from 'qqjs';
 
-import { PATH, PROJECT_NAME } from '../utils/constants';
+import { APPS, APP_SEPARATOR, PATH, PROJECT_NAME } from '../utils/constants';
 
 interface Flags {
     nodeEnv: string;
@@ -18,7 +18,7 @@ interface Flags {
 
 const createDockerImages = (flags: Flags) => [
     {
-        name: 'Server',
+        name: 'server',
         dockerfilePath: join(PATH.Packages, 'server', 'Dockerfile'),
         imageName: `${flags.imageRepo}/${PROJECT_NAME}-server`,
         imageTag: flags.imageTag,
@@ -31,7 +31,7 @@ const createDockerImages = (flags: Flags) => [
         buildCondition: () => true,
     },
     {
-        name: 'Frontend',
+        name: 'frontend',
         dockerfilePath: flags.production
             ? join(PATH.Packages, 'frontend', 'Dockerfile')
             : join(PATH.Packages, 'frontend', 'Dockerfile.dev'),
@@ -40,7 +40,7 @@ const createDockerImages = (flags: Flags) => [
         buildCondition: () => true,
     },
     {
-        name: 'Google services stub',
+        name: 'google-stub',
         dockerfilePath: join(PATH.Packages, 'google-stub', 'Dockerfile'),
         imageName: `${PROJECT_NAME}-google-stub`,
         imageTag: 'latest',
@@ -53,7 +53,7 @@ const createDockerImages = (flags: Flags) => [
         buildCondition: () => flags.ci || !flags.production,
     },
     {
-        name: 'Tests',
+        name: 'tests',
         dockerfilePath: join(PATH.Packages, 'tests', 'Dockerfile'),
         imageName: `${PROJECT_NAME}-tests`,
         imageTag: 'latest',
@@ -97,8 +97,8 @@ export class BuildCommand extends Command {
         }),
         apps: Flags.string({
             required: true,
-            default: '',
-            char: 'a',
+            default: APPS.join(APP_SEPARATOR),
+            env: 'APPS',
         }),
     };
 
@@ -107,17 +107,10 @@ export class BuildCommand extends Command {
 
         const dockerImages = createDockerImages(flags);
 
-        let appsToBuild = flags.apps
-            .split(',')
-            .map((v) => v.toLowerCase())
-            .filter((v) => v);
-
-        if (!appsToBuild.length) {
-            appsToBuild = dockerImages.map((image) => image.name.toLowerCase());
-        }
+        const appsToBuild = flags.apps.split(APP_SEPARATOR);
 
         for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of dockerImages) {
-            if (!appsToBuild.includes(name.toLowerCase())) {
+            if (!appsToBuild.includes(name)) {
                 this.log(yellow(`Skipping '${name}'`));
                 continue;
             }

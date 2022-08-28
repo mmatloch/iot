@@ -38,3 +38,6 @@ export const TYPEORM = {
     MigrationsPath: './src/migrations',
     CliCommand: 'yarn typeorm-ts-node-commonjs',
 };
+
+export const APPS = ['frontend', 'server', 'google-stub', 'tests'];
+export const APP_SEPARATOR = ',';

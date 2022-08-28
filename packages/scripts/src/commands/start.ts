@@ -5,13 +5,14 @@ import { cyan } from 'chalk';
 import { readFileSync, writeFileSync } from 'fs-extra';
 import { x } from 'qqjs';
 
-import { PATH, PROJECT_NAME } from '../utils/constants';
+import { APPS, APP_SEPARATOR, PATH, PROJECT_NAME } from '../utils/constants';
 
 interface Flags {
     env: string;
     ci: string;
     imageTag: string;
     imageRepo: string;
+    apps: string;
 }
 
 export class StartCommand extends Command {
@@ -33,9 +34,14 @@ export class StartCommand extends Command {
             default: 'iot',
             env: 'IMAGE_REPO',
         }),
-        ci: Flags.string({
+        apps: Flags.string({
             required: true,
             default: '',
+            env: 'APPS',
+        }),
+        ci: Flags.string({
+            required: true,
+            default: APPS.join(APP_SEPARATOR),
             env: 'CI',
         }),
     };
@@ -66,6 +72,6 @@ export class StartCommand extends Command {
             filePath = PATH.DeployProd.DockerCompose;
         }
 
-        await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d`);
+        await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d ${flags.apps.replace(APP_SEPARATOR, ' ')}`);
     }
 }
