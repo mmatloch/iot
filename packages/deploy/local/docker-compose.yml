@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   server:
-    image: ${PROJECT_NAME}/server:${IMAGE_TAG}
+    image: ${IMAGE_REPO}/iot-server:${IMAGE_TAG}
     volumes:
       - ../../server/src:/usr/app/packages/server/src
       - ../../server/config:/usr/app/packages/server/config
@@ -24,7 +24,7 @@ services:
       - timescale
 
   frontend:
-    image: ${PROJECT_NAME}/frontend:${IMAGE_TAG}
+    image: ${IMAGE_REPO}/iot-frontend:${IMAGE_TAG}
     volumes:
       - ../../frontend/public:/usr/app/packages/frontend/public
       - ../../frontend/src:/usr/app/packages/frontend/src
@@ -60,7 +60,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   google_stub:
-    image: ${PROJECT_NAME}/google-stub
+    image: ${IMAGE_REPO}/google-stub
     volumes:
       - ../../google-stub/src:/usr/app/packages/google-stub/src
       - ../../google-stub/config:/usr/app/packages/google-stub/config
@@ -70,7 +70,7 @@ services:
       ROOT_USER_EMAIL: test@example.com
 
   tests:
-    image: ${PROJECT_NAME}/tests
+    image: ${IMAGE_REPO}/tests
     volumes:
       - ../../tests/config:/usr/app/packages/tests/config
       - ../../tests/src:/usr/app/packages/tests/src

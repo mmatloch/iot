@@ -11,6 +11,7 @@ interface Flags {
     env: string;
     ci: string;
     imageTag: string;
+    imageRepo: string;
 }
 
 export class StartCommand extends Command {
@@ -20,6 +21,10 @@ export class StartCommand extends Command {
         imageTag: Flags.string({
             required: true,
             default: 'latest',
+        }),
+        imageRepo: Flags.string({
+            required: true,
+            default: 'iot',
         }),
         env: Flags.string({
             required: true,
@@ -33,12 +38,17 @@ export class StartCommand extends Command {
         }),
     };
 
-    private generateLocalEnv = (imageTag: string) => {
+    private generateLocalEnv = (imageRepo: string, imageTag: string) => {
         this.log(cyan(`Generating environment files`));
 
         const timeZone = readFileSync('/etc/timezone', { encoding: 'utf-8' }).trim();
 
-        const envVariables = [`PROJECT_NAME=${PROJECT_NAME}`, `IMAGE_TAG=${imageTag}`, `TZ=${timeZone}`];
+        const envVariables = [
+            `PROJECT_NAME=${PROJECT_NAME}`,
+            `IMAGE_REPO=${imageRepo}`,
+            `IMAGE_TAG=${imageTag}`,
+            `TZ=${timeZone}`,
+        ];
         writeFileSync(PATH.DeployLocal.DotEnv, envVariables.join(EOL));
     };
 
@@ -49,7 +59,7 @@ export class StartCommand extends Command {
 
         if (flags.ci || flags.env === 'local') {
             filePath = PATH.DeployLocal.DockerCompose;
-            this.generateLocalEnv(flags.imageTag);
+            this.generateLocalEnv(flags.imageRepo, flags.imageTag);
         } else {
             filePath = PATH.DeployProd.DockerCompose;
         }
