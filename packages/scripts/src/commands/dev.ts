@@ -31,11 +31,13 @@ export default class DevCommand extends Command {
 
         await x('yarn install');
 
+        const imageTag = 'local';
+
         if (flags.build) {
-            await BuildCommand.run(['--no-production', '--nodeEnv', 'development']);
+            await BuildCommand.run(['--no-production', '--nodeEnv', 'development', '--imageTag', imageTag]);
         }
 
-        await StartCommand.run(['--env', 'local', '--imageTag', 'local']);
+        await StartCommand.run(['--env', 'local', '--imageTag', imageTag]);
 
         if (flags.logs) {
             await x(`docker logs iot-server-1 -f`);
