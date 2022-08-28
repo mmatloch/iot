@@ -2,9 +2,11 @@ import { SocialLoginResponse, useGetSocialLogin } from '@api/users';
 import CircularProgressLoader from '@components/CircularProgressLoader';
 import GoogleIcon from '@mui/icons-material/Google';
 import { Button, ButtonGroup } from '@mui/material';
+import { Trans, useTranslation } from 'react-i18next';
 
 export default function SignInForm() {
     const { data, isSuccess, isLoading } = useGetSocialLogin();
+    const { t } = useTranslation();
 
     if (isLoading) {
         return <CircularProgressLoader />;
@@ -22,7 +24,7 @@ export default function SignInForm() {
 
     return (
         <div>
-            <h1>Sign in with</h1>
+            <h1>{t('auth:signIn.title')}</h1>
 
             <ButtonGroup>
                 <Button

@@ -1,0 +1,8 @@
+{
+  "auth": {
+    "signIn": {
+      "title": "Sign in with"
+    },
+    "logout": "Logout"
+  }
+}
