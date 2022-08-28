@@ -3,8 +3,9 @@ name: Server CI
 on:
   push:
     paths:
-      - 'packages/server/**'
-      - 'packages/common-*/**'
+      - '*'
+      # - 'packages/server/**'
+      # - 'packages/common-*/**'
 
 env:
   TAG: ${{ secrets.DOCKER_USERNAME }}/iot-server:latest
@@ -30,6 +31,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           tags: ${{ env.TAG }}
+          file: ./packages/server/Dockerfile
           load: true
           outputs: type=docker,dest=/tmp/frontendImage.tar
 
