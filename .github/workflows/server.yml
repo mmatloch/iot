@@ -25,6 +25,9 @@ jobs:
         with:
           install: true
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
       - name: Install dependencies
         run: yarn install
 
