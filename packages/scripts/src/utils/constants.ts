@@ -39,6 +39,11 @@ export const TYPEORM = {
     CliCommand: 'yarn typeorm-ts-node-commonjs',
 };
 
-export const DEFAULT_APPS = ['nginx', 'mqtt', 'timescale'];
-export const APPS = ['frontend', 'server', 'google_stub', 'tests'];
+export const DEFAULT_APPS = ['nginx', 'mosquitto', 'timescale'];
+export const PRODUCTION_APPS = ['frontend', 'server'];
+export const DEVELOPMENT_APPS = ['google_stub', 'tests'];
+export const APPS = [...PRODUCTION_APPS, ...DEVELOPMENT_APPS];
+
 export const APP_SEPARATOR = ',';
+
+export const PRODUCTION_IMAGE_REPO = 'mmatloch';

@@ -2,7 +2,7 @@ import crypto from 'node:crypto';
 
 import { CliUx } from '@oclif/core';
 
-import { PROJECT_NAME } from './constants';
+import { PRODUCTION_IMAGE_REPO, PROJECT_NAME } from './constants';
 import { SetupState } from './setupCache';
 
 const { ux } = CliUx;
@@ -43,6 +43,7 @@ export const createEnvVariables = (state: SetupState) => {
     mosquittoUrl.password = String(mosquittoPassword);
 
     return {
+        IMAGE_REPO: PRODUCTION_IMAGE_REPO,
         PROJECT_NAME: PROJECT_NAME,
         PUBLIC_URL: publicUrl,
         TZ: timeZone,

@@ -18,10 +18,11 @@ services:
       GOOGLE_OAUTH2_TOKEN_URL: http://nginx:8080/google/oauth2/token
       JWT_SECRET: secret
       ROOT_USER_EMAIL: test@example.com
-      MQTT: mqtt://mqtt:1883
+      MQTT: mqtt://mosquitto:1883
       TIME_ZONE: ${TZ}
     depends_on:
       - timescale
+      - mosquitto
 
   frontend:
     image: ${IMAGE_REPO}/iot-frontend:${IMAGE_TAG}
@@ -38,7 +39,7 @@ services:
     ports:
       - 8080:8080
 
-  mqtt:
+  mosquitto:
     image: eclipse-mosquitto:2.0
     ports:
       - 1883:1883

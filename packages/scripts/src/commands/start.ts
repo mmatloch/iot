@@ -3,9 +3,10 @@ import { EOL } from 'node:os';
 import { Command, Flags } from '@oclif/core';
 import { cyan } from 'chalk';
 import { readFileSync, writeFileSync } from 'fs-extra';
+import _ from 'lodash';
 import { x } from 'qqjs';
 
-import { APPS, APP_SEPARATOR, DEFAULT_APPS, PATH, PROJECT_NAME } from '../utils/constants';
+import { APPS, APP_SEPARATOR, DEFAULT_APPS, PATH, PRODUCTION_APPS, PROJECT_NAME } from '../utils/constants';
 
 interface Flags {
     env: string;
@@ -13,6 +14,7 @@ interface Flags {
     imageTag: string;
     imageRepo: string;
     apps: string;
+    pull?: boolean;
 }
 
 export class StartCommand extends Command {
@@ -41,8 +43,11 @@ export class StartCommand extends Command {
         }),
         ci: Flags.string({
             required: true,
-            default: APPS.join(APP_SEPARATOR),
+            default: '',
             env: 'CI',
+        }),
+        pull: Flags.boolean({
+            required: false,
         }),
     };
 
@@ -63,16 +68,32 @@ export class StartCommand extends Command {
     async run() {
         const { flags } = await this.parse<Flags, Record<string, unknown>>(StartCommand);
 
+        const isCiOrLocal = flags.ci || flags.env === 'local';
+
         let filePath;
 
-        if (flags.ci || flags.env === 'local') {
+        if (isCiOrLocal) {
             filePath = PATH.DeployLocal.DockerCompose;
             this.generateLocalEnv(flags.imageRepo, flags.imageTag);
         } else {
             filePath = PATH.DeployProd.DockerCompose;
         }
 
-        const appsToStart = flags.apps.split(APP_SEPARATOR).concat(DEFAULT_APPS);
-        await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d ${appsToStart.join(' ')}`);
+        // pull only when a flag is used or the env is other than local/CI
+        const shouldPull = _.isUndefined(flags.pull) ? !isCiOrLocal : flags.pull;
+
+        if (shouldPull) {
+            await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} pull ${PRODUCTION_APPS.join(' ')}`);
+        }
+
+        let appsToStart: string[] = [];
+
+        if (!flags.apps.length) {
+            appsToStart = isCiOrLocal ? APPS : PRODUCTION_APPS;
+        } else {
+            appsToStart = flags.apps.split(APP_SEPARATOR);
+        }
+
+        await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d ${appsToStart.concat(DEFAULT_APPS).join(' ')}`);
     }
 }
