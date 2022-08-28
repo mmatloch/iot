@@ -72,6 +72,6 @@ export class StartCommand extends Command {
             filePath = PATH.DeployProd.DockerCompose;
         }
 
-        await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d ${flags.apps.replace(APP_SEPARATOR, ' ')}`);
+        await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d ${flags.apps.replaceAll(APP_SEPARATOR, ' ')}`);
     }
 }
