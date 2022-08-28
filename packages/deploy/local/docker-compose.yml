@@ -60,7 +60,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   google_stub:
-    image: ${IMAGE_REPO}/google-stub
+    image: iot-google-stub
     volumes:
       - ../../google-stub/src:/usr/app/packages/google-stub/src
       - ../../google-stub/config:/usr/app/packages/google-stub/config
@@ -70,7 +70,7 @@ services:
       ROOT_USER_EMAIL: test@example.com
 
   tests:
-    image: ${IMAGE_REPO}/tests
+    image: iot-tests
     volumes:
       - ../../tests/config:/usr/app/packages/tests/config
       - ../../tests/src:/usr/app/packages/tests/src
