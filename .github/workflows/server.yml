@@ -29,7 +29,6 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v3
         with:
-          context: .
           tags: ${{ env.TAG }}
           load: true
           outputs: type=docker,dest=/tmp/frontendImage.tar
