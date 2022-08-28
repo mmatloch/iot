@@ -18,18 +18,20 @@ export class StartCommand extends Command {
     static description = 'Start selected environment';
 
     static flags = {
-        imageTag: Flags.string({
-            required: true,
-            default: 'latest',
-        }),
-        imageRepo: Flags.string({
-            required: true,
-            default: 'iot',
-        }),
         env: Flags.string({
             required: true,
             default: 'production',
             options: ['local', 'production'],
+        }),
+        imageTag: Flags.string({
+            required: true,
+            default: 'latest',
+            env: 'IMAGE_TAG',
+        }),
+        imageRepo: Flags.string({
+            required: true,
+            default: 'iot',
+            env: 'IMAGE_REPO',
         }),
         ci: Flags.string({
             required: true,

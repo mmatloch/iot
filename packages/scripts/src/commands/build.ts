@@ -9,23 +9,25 @@ import { PATH, PROJECT_NAME } from '../utils/constants';
 interface Flags {
     nodeEnv: string;
     production: boolean;
+    save: boolean;
+    imageTag: string;
+    imageRepo: string;
     ci: string;
 }
-
-const isDevelopment = (nodeEnv: string) => nodeEnv === 'development';
 
 const createDockerImages = (flags: Flags) => [
     {
         name: 'Server',
         dockerfilePath: join(PATH.Packages, 'server', 'Dockerfile'),
-        imageName: `${PROJECT_NAME}/server`,
-        imageTag: isDevelopment(flags.nodeEnv) ? 'local' : 'latest',
+        imageName: `${flags.imageRepo}/${PROJECT_NAME}-server`,
+        imageTag: flags.imageTag,
         buildArgs: [
             {
                 key: 'NODE_ENV',
                 value: flags.nodeEnv,
             },
         ],
+        tarFile: '/tmp/serverImage.tar',
         buildCondition: () => true,
     },
     {
@@ -33,14 +35,15 @@ const createDockerImages = (flags: Flags) => [
         dockerfilePath: flags.production
             ? join(PATH.Packages, 'frontend', 'Dockerfile')
             : join(PATH.Packages, 'frontend', 'Dockerfile.dev'),
-        imageName: `${PROJECT_NAME}/frontend`,
-        imageTag: isDevelopment(flags.nodeEnv) ? 'local' : 'latest',
+        imageName: `${flags.imageRepo}/${PROJECT_NAME}-frontend`,
+        imageTag: flags.imageTag,
+        tarFile: '/tmp/frontendImage.tar',
         buildCondition: () => true,
     },
     {
         name: 'Google services stub',
         dockerfilePath: join(PATH.Packages, 'google-stub', 'Dockerfile'),
-        imageName: `${PROJECT_NAME}/google-stub`,
+        imageName: `${PROJECT_NAME}-google-stub`,
         imageTag: 'latest',
         buildArgs: [
             {
@@ -53,7 +56,7 @@ const createDockerImages = (flags: Flags) => [
     {
         name: 'Tests',
         dockerfilePath: join(PATH.Packages, 'tests', 'Dockerfile'),
-        imageName: `${PROJECT_NAME}/tests`,
+        imageName: `${PROJECT_NAME}-tests`,
         imageTag: 'latest',
         buildCondition: () => flags.ci || !flags.production,
     },
@@ -73,6 +76,20 @@ export class BuildCommand extends Command {
             default: true,
             allowNo: true,
         }),
+        imageTag: Flags.string({
+            required: true,
+            default: 'latest',
+            env: 'IMAGE_TAG',
+        }),
+        imageRepo: Flags.string({
+            required: true,
+            default: 'iot',
+            env: 'IMAGE_REPO',
+        }),
+        save: Flags.boolean({
+            required: true,
+            default: false,
+        }),
         ci: Flags.string({
             required: true,
             default: '',
@@ -83,9 +100,15 @@ export class BuildCommand extends Command {
     async run() {
         const { flags } = await this.parse<Flags, Record<string, unknown>>(BuildCommand);
 
-        for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of createDockerImages(
-            flags,
-        )) {
+        for (const {
+            name,
+            buildCondition,
+            buildArgs,
+            dockerfilePath,
+            imageName,
+            imageTag,
+            tarFile,
+        } of createDockerImages(flags)) {
             if (!buildCondition?.()) {
                 this.log(yellow(`Skipping '${name}'`));
                 continue;
@@ -97,6 +120,12 @@ export class BuildCommand extends Command {
 
             await x(`docker build -f ${dockerfilePath} -t ${imageName}:${imageTag} ${buildArg} ${PATH.Root}`);
             this.log(green(`Successfully built '${name}' (${imageName}:${imageTag}) Docker image`));
+
+            const shouldSave = flags.ci || flags.save;
+
+            if (shouldSave && tarFile) {
+                await x(`docker save -o ${tarFile} ${imageName}:${imageTag}`);
+            }
         }
     }
 }
