@@ -1,12 +1,10 @@
 name: Server CI
 
-on: [push]
-
-# on:
-#   push:
-#     paths:
-#       - 'packages/server/**'
-#       - 'packages/common-*/**'
+on:
+  push:
+    paths:
+      - 'packages/server/**'
+      - 'packages/common-*/**'
 
 env:
   IMAGE_TAG: latest

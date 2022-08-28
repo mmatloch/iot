@@ -12,6 +12,7 @@ interface Flags {
     imageTag: string;
     imageRepo: string;
     ci: string;
+    apps: string;
 }
 
 const createDockerImages = (flags: Flags) => [
@@ -88,14 +89,30 @@ export class BuildCommand extends Command {
             default: '',
             env: 'CI',
         }),
+        apps: Flags.string({
+            required: true,
+            default: '',
+            char: 'a',
+        }),
     };
 
     async run() {
         const { flags } = await this.parse<Flags, Record<string, unknown>>(BuildCommand);
 
-        for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of createDockerImages(
-            flags,
-        )) {
+        const dockerImages = createDockerImages(flags);
+
+        let appsToBuild = flags.apps.split(',').map((v) => v.toLowerCase());
+
+        if (!appsToBuild.length) {
+            appsToBuild = dockerImages.map((image) => image.name.toLowerCase());
+        }
+
+        for (const { name, buildCondition, buildArgs, dockerfilePath, imageName, imageTag } of dockerImages) {
+            if (!appsToBuild.includes(name.toLowerCase())) {
+                this.log(yellow(`Skipping '${name}'`));
+                continue;
+            }
+
             if (!buildCondition?.()) {
                 this.log(yellow(`Skipping '${name}'`));
                 continue;
