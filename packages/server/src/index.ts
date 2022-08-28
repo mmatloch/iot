@@ -46,7 +46,6 @@ createApplication({
             app.register(createConfigurationsRest);
 
             await createZigbeeBridge(mqttClient).initialize();
-
             createEventScheduler().initialize();
             createEventSchedulerTaskProcessor().initialize();
         },
