@@ -37,10 +37,6 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 8080:8080
-    depends_on:
-      - server
-      - google_stub
-      - frontend
 
   mqtt:
     image: eclipse-mosquitto:2.0
