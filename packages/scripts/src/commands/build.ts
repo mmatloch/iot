@@ -107,7 +107,10 @@ export class BuildCommand extends Command {
 
         const dockerImages = createDockerImages(flags);
 
-        let appsToBuild = flags.apps.split(',').map((v) => v.toLowerCase());
+        let appsToBuild = flags.apps
+            .split(',')
+            .map((v) => v.toLowerCase())
+            .filter((v) => v);
 
         if (!appsToBuild.length) {
             appsToBuild = dockerImages.map((image) => image.name.toLowerCase());
