@@ -20,7 +20,6 @@ export class StartCommand extends Command {
         imageTag: Flags.string({
             required: true,
             default: 'latest',
-            options: ['local', 'latest'],
         }),
         env: Flags.string({
             required: true,
