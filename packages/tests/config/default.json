@@ -38,7 +38,7 @@
     }
   },
   "mqttBroker": {
-    "url": "mqtt://mqtt:1883"
+    "url": "mqtt://mosquitto:1883"
   },
   "zigbee": {
     "topicPrefix": "zigbee2mqtt",

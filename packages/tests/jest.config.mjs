@@ -3,12 +3,6 @@ export default {
         {
             displayName: 'functional',
             testMatch: ['<rootDir>/src/testsFunctional/**/*.mjs'],
-            preset: 'ts-jest/presets/default-esm',
-            globals: {
-                'ts-jest': {
-                    useESM: true,
-                },
-            },
             moduleNameMapper: {
                 '^(\\.{1,2}/.*)\\.js$': '$1',
             },
@@ -19,16 +13,14 @@ export default {
                 '<rootDir>/src/jest/setup.mjs',
             ],
             runner: 'groups',
+            transform: {
+                '^.+\\.(t|j)sx?$': ['@swc/jest'],
+            },
+            extensionsToTreatAsEsm: ['.ts'],
         },
         {
             displayName: 'integration',
             testMatch: ['<rootDir>/src/testsIntegration/**/*.mjs'],
-            preset: 'ts-jest/presets/default-esm',
-            globals: {
-                'ts-jest': {
-                    useESM: true,
-                },
-            },
             moduleNameMapper: {
                 '^(\\.{1,2}/.*)\\.js$': '$1',
             },
@@ -39,6 +31,10 @@ export default {
                 '<rootDir>/src/jest/setup.mjs',
             ],
             runner: 'groups',
+            transform: {
+                '^.+\\.(t|j)sx?$': ['@swc/jest'],
+            },
+            extensionsToTreatAsEsm: ['.ts'],
         },
     ],
 };

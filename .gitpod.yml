@@ -13,10 +13,6 @@ ports:
     visibility: public
 
 tasks:
-  - before: |
-      sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-      yarn script build --no-production --nodeEnv development
-
   - init: yarn script dev
 
 github:

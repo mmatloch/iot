@@ -15,8 +15,8 @@ export const generateDevicePostPayload = () => {
     return {
         displayName: generateDeviceDisplayName(),
         model: faker.vehicle.model(),
-        vendor: faker.company.companyName(),
-        manufacturer: faker.company.companyName(),
+        vendor: faker.company.name(),
+        manufacturer: faker.company.name(),
         description: faker.commerce.productDescription(),
         ieeeAddress: generateDeviceIeeeAddress(),
         powerSource: generateDevicePowerSource(),
