@@ -34,7 +34,7 @@ export const createEnvVariables = (state: SetupState) => {
     const { jwtSecret, rootUserEmail } = state.getStepData(Step.SetupServerAuth);
     const { zigbeeAdapterLocation } = state.getStepData(Step.SetupZigbee);
 
-    const postgresUrl = new URL(`postgresql://postgres:5432/${PROJECT_NAME}`);
+    const postgresUrl = new URL(`postgresql://timescale:5432/${PROJECT_NAME}`);
     postgresUrl.username = String(postgresUsername);
     postgresUrl.password = String(postgresPassword);
 
