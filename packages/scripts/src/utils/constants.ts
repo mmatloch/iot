@@ -42,7 +42,8 @@ export const TYPEORM = {
 export const DEFAULT_APPS = ['nginx', 'mosquitto', 'timescale'];
 export const PRODUCTION_APPS = ['frontend', 'server'];
 export const DEVELOPMENT_APPS = ['google_stub', 'tests'];
-export const APPS = [...PRODUCTION_APPS, ...DEVELOPMENT_APPS];
+export const ALL_APPS_TO_BUILD = [...PRODUCTION_APPS, ...DEVELOPMENT_APPS];
+export const ALL_APPS_TO_START = [...PRODUCTION_APPS, 'google_stub'];
 
 export const APP_SEPARATOR = ',';
 

@@ -6,7 +6,14 @@ import { readFileSync, writeFileSync } from 'fs-extra';
 import _ from 'lodash';
 import { x } from 'qqjs';
 
-import { APPS, APP_SEPARATOR, DEFAULT_APPS, PATH, PRODUCTION_APPS, PROJECT_NAME } from '../utils/constants';
+import {
+    ALL_APPS_TO_START,
+    APP_SEPARATOR,
+    DEFAULT_APPS,
+    PATH,
+    PRODUCTION_APPS,
+    PROJECT_NAME,
+} from '../utils/constants';
 
 interface Flags {
     env: string;
@@ -89,7 +96,7 @@ export class StartCommand extends Command {
         let appsToStart: string[] = [];
 
         if (!flags.apps.length) {
-            appsToStart = isCiOrLocal ? APPS : PRODUCTION_APPS;
+            appsToStart = isCiOrLocal ? ALL_APPS_TO_START : PRODUCTION_APPS;
         } else {
             appsToStart = flags.apps.split(APP_SEPARATOR);
         }
