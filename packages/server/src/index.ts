@@ -1,4 +1,5 @@
 import { createApplication } from '@common/application';
+import { retry } from 'async';
 
 import { createZigbeeBridge } from './bridges/zigbee/zigbeeBridge';
 import { createMqttClient } from './clients/mqttClient';
@@ -18,6 +19,11 @@ import { createUsersRest } from './rest/usersRest';
 
 const config = getConfig();
 
+const RETRY_OPTIONS = {
+    times: 15,
+    interval: 1000,
+};
+
 createApplication({
     logger: getLogger(),
     loggerOptions: {
@@ -31,12 +37,14 @@ createApplication({
             app.register(requestLocalStoragePlugin);
         },
         beforeReady: async (app) => {
-            await timescaleDataSource.initialize();
-
-            const mqttClient = createMqttClient();
-            await mqttClient.initialize();
+            // DB may not be ready
+            await retry(RETRY_OPTIONS, timescaleDataSource.initialize.bind(timescaleDataSource));
 
             await timescaleDataSource.runMigrations();
+
+            // MQTT may not be ready
+            const mqttClient = createMqttClient();
+            await retry(RETRY_OPTIONS, mqttClient.initialize.bind(mqttClient));
 
             app.register(createUsersRest);
             app.register(createDevicesRest);
@@ -46,6 +54,7 @@ createApplication({
             app.register(createConfigurationsRest);
 
             await createZigbeeBridge(mqttClient).initialize();
+
             createEventScheduler().initialize();
             createEventSchedulerTaskProcessor().initialize();
         },

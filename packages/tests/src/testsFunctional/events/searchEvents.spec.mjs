@@ -37,7 +37,7 @@ describe('Events searchEvents', () => {
     beforeAll(async () => {
         H.authorizeHttpClient();
 
-        await Promise.all(_.times(5, () => H.post(generateEventPostPayload()).expectSuccess()));
+        await Promise.all(_.times(10, () => H.post(generateEventPostPayload()).expectSuccess()));
     });
 
     it('should return 10 events when no filter is specified', async () => {

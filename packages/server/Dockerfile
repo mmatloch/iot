@@ -31,4 +31,4 @@ EXPOSE 3000
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 
-CMD yarn start
+CMD node ./dist/index.js

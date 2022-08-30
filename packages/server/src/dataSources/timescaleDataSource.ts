@@ -12,6 +12,11 @@ import { EventSchedulerTask } from '../entities/eventSchedulerTaskEntity';
 import { EventSchedulerTaskSubscriber } from '../entities/eventSchedulerTaskEntitySubscriber';
 import { SensorData } from '../entities/sensorDataEntity';
 import { User } from '../entities/userEntity';
+import { Initialize1658620422887 } from '../migrations/1658620422887-Initialize';
+import { RemoveEventRunner1659274109943 } from '../migrations/1659274109943-RemoveEventRunner';
+import { EventScheduler1660911283007 } from '../migrations/1660911283007-EventScheduler';
+import { CreatedByUpdatedBy1661175358951 } from '../migrations/1661175358951-CreatedByUpdatedBy';
+import { Configurations1661374101903 } from '../migrations/1661374101903-Configurations';
 
 const config = getConfig();
 
@@ -23,5 +28,11 @@ export const timescaleDataSource = new DataSource({
     logging: false,
     entities: [User, Device, Event, EventInstance, SensorData, EventSchedulerTask, Configuration],
     subscribers: [EventSubscriber, EventInstanceSubscriber, EventSchedulerTaskSubscriber, ConfigurationSubscriber],
-    migrations: ['./src/migrations/*.ts'],
+    migrations: [
+        Initialize1658620422887,
+        RemoveEventRunner1659274109943,
+        EventScheduler1660911283007,
+        CreatedByUpdatedBy1661175358951,
+        Configurations1661374101903,
+    ],
 });

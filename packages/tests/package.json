@@ -7,7 +7,7 @@
     "@common/config": "workspace:packages/common-config",
     "@faker-js/faker": "^7.4.0",
     "@sinclair/typebox": "^0.23.5",
-    "@swc/core": "^1.2.244",
+    "@swc/core": "^1.2.245",
     "@swc/jest": "^0.2.22",
     "@types/jest": "^28.1.8",
     "@types/lodash": "^4.14.182",
