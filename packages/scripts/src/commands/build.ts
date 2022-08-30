@@ -20,7 +20,9 @@ interface Flags {
 const createDockerImages = (flags: Flags) => [
     {
         name: 'server',
-        dockerfilePath: join(PATH.Packages, 'server', 'Dockerfile'),
+        dockerfilePath: flags.production
+            ? join(PATH.Packages, 'server', 'Dockerfile')
+            : join(PATH.Packages, 'server', 'Dockerfile.dev'),
         imageName: `${flags.imageRepo}/${PROJECT_NAME}-server`,
         imageTag: flags.imageTag,
         buildArgs: [
