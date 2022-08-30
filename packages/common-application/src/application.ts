@@ -33,7 +33,6 @@ const bootstrapApplication = (app: Application, opts: CreateApplicationOptions) 
     });
 
     app.setSchemaErrorFormatter((errors, dataVar) => {
-        // @ts-expect-error fastify types mismatch
         return new ValidationError({ details: errors, message: `Validation error in '${dataVar}'` });
     });
 
