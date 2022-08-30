@@ -93,12 +93,13 @@ export class StartCommand extends Command {
             await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} pull ${PRODUCTION_APPS.join(' ')}`);
         }
 
+        const forbiddenApps = ['tests'];
         let appsToStart: string[] = [];
 
         if (!flags.apps.length) {
             appsToStart = isCiOrLocal ? ALL_APPS_TO_START : PRODUCTION_APPS;
         } else {
-            appsToStart = flags.apps.split(APP_SEPARATOR);
+            appsToStart = flags.apps.split(APP_SEPARATOR).filter((app) => !forbiddenApps.includes(app));
         }
 
         await x(`docker compose -p ${PROJECT_NAME} -f ${filePath} up -d ${appsToStart.concat(DEFAULT_APPS).join(' ')}`);
