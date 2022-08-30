@@ -15,7 +15,7 @@
     "@common/validator": "workspace:packages/common-validator",
     "@faker-js/faker": "^7.2.0",
     "@sinclair/typebox": "^0.23.5",
-    "@swc/core": "^1.2.203",
+    "@swc/core": "^1.2.245",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/lodash": "^4.14.182",
     "@types/node": "^18.0.6",
