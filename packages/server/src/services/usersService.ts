@@ -75,6 +75,13 @@ export const createUsersService = () => {
             });
         }
 
+        // update avatar
+        if (user.avatarUrl !== userInfo.avatarUrl) {
+            await update(user, {
+                avatarUrl: userInfo.avatarUrl,
+            });
+        }
+
         if (user.state !== UserState.Active) {
             throw Errors.cannotCreateTokenForUser({
                 detail: user.state,

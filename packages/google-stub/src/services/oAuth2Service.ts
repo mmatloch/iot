@@ -130,11 +130,16 @@ export const createOAuth2Service = () => {
     };
 
     const authorize = (dto: AuthorizeDto): string => {
+        const name = 'Test user';
+        const picture = new URL('https://ui-avatars.com/api');
+        picture.searchParams.set('name', name);
+        picture.searchParams.set('size', '96');
+
         const { code } = createAuthorizationCode({
             email: config.oAuth2.rootUserEmail,
             email_verified: true,
-            name: 'Test user',
-            picture: 'https://lh3.googleusercontent.com/a/AItbvmlQQhLv32G6qqJQ6AwdXR1DR4hbMVSvp7QUBwAI=s96-c',
+            name,
+            picture: picture.toString(),
             given_name: 'Test',
             family_name: 'User',
             locale: 'pl',

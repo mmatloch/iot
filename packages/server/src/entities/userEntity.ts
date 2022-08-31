@@ -31,6 +31,9 @@ export class User extends GenericEntity {
     name!: string;
 
     @Column('text')
+    avatarUrl!: string;
+
+    @Column('text')
     @Index({ unique: true })
     email!: string;
 
@@ -45,6 +48,7 @@ export const userDtoSchema = Type.Object({
     name: Type.String(),
     firstName: Type.String(),
     lastName: Type.String(),
+    avatarUrl: Type.String(),
     email: Type.String({ format: 'email' }),
     role: Type.Enum(UserRole),
     state: Type.Enum(UserState),
