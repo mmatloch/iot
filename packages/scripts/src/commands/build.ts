@@ -4,7 +4,7 @@ import { Command, Flags } from '@oclif/core';
 import { cyan, green, yellow } from 'chalk';
 import { x } from 'qqjs';
 
-import { APPS, APP_SEPARATOR, PATH, PROJECT_NAME } from '../utils/constants';
+import { ALL_APPS_TO_BUILD, APP_SEPARATOR, PATH, PROJECT_NAME } from '../utils/constants';
 
 interface Flags {
     nodeEnv: string;
@@ -20,7 +20,9 @@ interface Flags {
 const createDockerImages = (flags: Flags) => [
     {
         name: 'server',
-        dockerfilePath: join(PATH.Packages, 'server', 'Dockerfile'),
+        dockerfilePath: flags.production
+            ? join(PATH.Packages, 'server', 'Dockerfile')
+            : join(PATH.Packages, 'server', 'Dockerfile.dev'),
         imageName: `${flags.imageRepo}/${PROJECT_NAME}-server`,
         imageTag: flags.imageTag,
         buildArgs: [
@@ -98,7 +100,7 @@ export class BuildCommand extends Command {
         }),
         apps: Flags.string({
             required: true,
-            default: APPS.join(APP_SEPARATOR),
+            default: ALL_APPS_TO_BUILD.join(APP_SEPARATOR),
             env: 'APPS',
         }),
         push: Flags.boolean({

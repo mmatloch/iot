@@ -1,6 +1,6 @@
-FROM node:18.7-alpine
+# Stage 1
+FROM node:18.7-alpine as builder
 
-RUN mkdir -p /usr/app
 WORKDIR /usr/app
 
 COPY package.json .yarnrc.yml .pnp.* yarn.lock ./
@@ -14,12 +14,21 @@ COPY ./packages/common-logger ./packages/common-logger
 
 COPY ./packages/server ./packages/server
 
-RUN yarn workspaces focus server --production
+RUN yarn workspaces focus server
+RUN yarn workspace server run build
+
+# Stage 2
+FROM node:18.7-alpine
+
+WORKDIR /usr/app/packages/server
+
+COPY --from=builder /usr/app/packages/server/package.json ./
+COPY --from=builder /usr/app/packages/server/config ./config
+COPY --from=builder /usr/app/packages/server/dist ./dist
 
 EXPOSE 3000
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 
-WORKDIR /usr/app/packages/server
-CMD yarn start:${NODE_ENV}
+CMD node ./dist/index.js

@@ -14,7 +14,7 @@ COPY ./packages/common-logger ./packages/common-logger
 
 COPY ./packages/google-stub ./packages/google-stub
 
-RUN yarn workspaces focus google-stub --production
+RUN yarn workspaces focus google-stub
 
 EXPOSE 3000
 
@@ -22,4 +22,4 @@ ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 
 WORKDIR /usr/app/packages/google-stub
-CMD yarn start:${NODE_ENV}
+CMD yarn dev

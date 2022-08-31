@@ -1,7 +1,7 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import {
+    FastifyBaseLogger,
     FastifyInstance,
-    FastifyLoggerInstance,
     FastifyServerOptions,
     RawReplyDefaultExpression,
     RawRequestDefaultExpression,
@@ -13,7 +13,7 @@ import _ from 'lodash';
 import Qs from 'qs';
 
 export type RawServer = RawServerDefault;
-export type DefaultLogger = FastifyLoggerInstance;
+export type DefaultLogger = FastifyBaseLogger;
 
 export type DefaultFastifyInstance = FastifyInstance<
     RawServer,

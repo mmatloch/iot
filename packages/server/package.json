@@ -3,9 +3,9 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "start:development": "nodemon --swc ./src/index.ts",
-    "start:production": "ts-node ./src/index.ts",
-    "type-check": "tsc --noEmit"
+    "dev": "nodemon --swc ./src/index.ts",
+    "type-check": "tsc --noEmit",
+    "build": "./build.js"
   },
   "dependencies": {
     "@common/application": "workspace:packages/common-application",
@@ -13,11 +13,8 @@
     "@common/errors": "workspace:packages/common-errors",
     "@common/logger": "workspace:packages/common-logger",
     "@common/validator": "workspace:packages/common-validator",
-    "@sinclair/typebox": "^0.23.5",
-    "@swc/core": "^1.2.203",
-    "@types/jsonwebtoken": "^8.5.8",
-    "@types/lodash": "^4.14.182",
-    "@types/node": "^18.0.6",
+    "@sinclair/typebox": "^0.24.32",
+    "async": "^3.2.4",
     "camelcase-keys": "^7.0.2",
     "cron-parser": "^4.6.0",
     "date-fns": "^2.29.2",
@@ -26,13 +23,21 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mqtt": "^4.3.7",
-    "nodemon": "^2.0.19",
-    "pg": "^8.7.3",
+    "pg": "^8.8.0",
     "reflect-metadata": "^0.1.13",
-    "snakecase-keys": "^5.4.2",
+    "snakecase-keys": "^5.4.4",
+    "typeorm": "^0.3.9"
+  },
+  "devDependencies": {
+    "@swc/core": "^1.2.245",
+    "@types/async": "^3.2.15",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/lodash": "^4.14.184",
+    "@types/node": "^18.7.14",
+    "esbuild": "^0.15.6",
+    "esbuild-plugin-pino": "^1.2.3",
+    "nodemon": "^2.0.19",
     "ts-node": "^10.9.1",
-    "typeorm": "^0.3.6",
-    "typescript": "^4.7.4",
-    "vm2": "^3.9.9"
+    "typescript": "^4.8.2"
   }
 }

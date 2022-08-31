@@ -3,11 +3,8 @@ import { performance } from 'node:perf_hooks';
 import { PerformanceMetrics } from '../definitions';
 import type { Event } from '../entities/eventEntity';
 import { Errors } from '../errors';
-import { createSandbox } from '../sandbox';
 import { EventTriggerContext } from './eventRunDefinitions';
 import { EventRunSdk } from './sdks/sdk';
-
-const sandbox = createSandbox();
 
 interface ProcessOptions {
     event: Event;
@@ -15,11 +12,13 @@ interface ProcessOptions {
     performanceMetrics: PerformanceMetrics;
 }
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction
+const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+
 export const createEventProcessor = (sdk: EventRunSdk) => {
     const runCode = (code: string, context: EventTriggerContext): Promise<unknown> => {
-        const sandboxedFn = sandbox.run(`(async function(sdk, context) {${code}})`);
-
-        return sandboxedFn(sdk, context);
+        const fn = new AsyncFunction('sdk', 'context', code);
+        return fn.call(undefined, sdk, context);
     };
 
     const runCondition = async (event: Event, context: EventTriggerContext) => {
