@@ -22,7 +22,8 @@
       "@contexts/*": ["./src/contexts/*"],
       "@errors/*": ["./src/errors/*"],
       "@features/*": ["./src/features/*"],
-      "@hooks/*": ["./src/hooks/*"]
+      "@hooks/*": ["./src/hooks/*"],
+      "@definitions/*": ["./src/definitions/*"]
     }
   },
   "include": ["src"],
