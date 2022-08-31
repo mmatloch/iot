@@ -3,6 +3,7 @@ import JWT from 'jsonwebtoken';
 import { getConfig } from '../config';
 import { User, UserDto, UserRole, UserState } from '../entities/userEntity';
 import { Errors } from '../errors';
+import { getLogger } from '../logger';
 import { createUsersRepository } from '../repositories/usersRepository';
 import { GenericService } from './genericService';
 import { createGoogleOAuth2Service } from './googleOAuth2Service';
@@ -31,6 +32,7 @@ export interface UsersService extends GenericService<User, UserDto> {
 
 export const createUsersService = () => {
     const config = getConfig();
+    const logger = getLogger();
     const repository = createUsersRepository();
 
     const create: UsersService['create'] = (userDto) => {
@@ -60,6 +62,10 @@ export const createUsersService = () => {
             if (config.authorization.rootUserEmail === userInfo.email) {
                 role = UserRole.Admin;
                 state = UserState.Active;
+
+                logger.warn(`Creating the root user with the email address '${userInfo.email}'`);
+            } else {
+                logger.warn(`Creating a user with the email address '${userInfo.email}'`);
             }
 
             user = await create({
