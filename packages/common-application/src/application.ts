@@ -4,6 +4,7 @@ import { ValidationError, transformError } from '@common/errors';
 import type { Logger } from '@common/logger';
 import { createValidator } from '@common/validator';
 import formBody from '@fastify/formbody';
+import _ from 'lodash';
 
 import { createApplicationFromFastify } from './fastifyAbstract';
 import loggerPlugin, { LoggerPluginOptions } from './plugins/loggerPlugin';
@@ -41,6 +42,28 @@ const bootstrapApplication = (app: Application, opts: CreateApplicationOptions) 
     app.register(statusPlugin);
 };
 
+// https://github.com/yarnpkg/berry/blob/2cf0a8fe3e4d4bd7d4d344245d24a85a45d4c5c9/packages/yarnpkg-pnp/sources/loader/applyPatch.ts#L414-L435
+const suppressExperimentalWarning = () => {
+    const originalEmit = process.emit;
+
+    const messages = ['The Fetch API is an experimental feature'];
+
+    // @ts-expect-error - TS complains about the return type of originalEmit.apply
+    process.emit = function (name, data) {
+        if (name === `warning` && _.get(data, 'name') === 'ExperimentalWarning') {
+            const warningMessage = _.get(data, 'message');
+
+            const hasWarningMessage = messages.some((message) => warningMessage?.includes(message));
+
+            if (hasWarningMessage) {
+                return false;
+            }
+        }
+
+        return originalEmit.apply(process, arguments as unknown as Parameters<typeof process.emit>);
+    };
+};
+
 export const createApplication = async (opts: CreateApplicationOptions): Promise<Application> => {
     const rewriteUrl = (req: IncomingMessage) => {
         const { url } = req;
@@ -57,6 +80,8 @@ export const createApplication = async (opts: CreateApplicationOptions): Promise
 
         return url;
     };
+
+    suppressExperimentalWarning();
 
     const app = createApplicationFromFastify({
         logger: opts.logger,
