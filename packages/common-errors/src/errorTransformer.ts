@@ -53,7 +53,7 @@ export const transformErrorBody = (error: Error): TransformedErrorBody => {
         detail: getDetail(error),
         validationDetails: getValidationDetails(error),
         stack: error.stack,
-        cause: error.cause ? transformErrorBody(error.cause) : undefined,
+        cause: error.cause ? transformErrorBody(error.cause as Error) : undefined,
     };
 };
 

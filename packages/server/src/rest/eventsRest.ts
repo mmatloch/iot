@@ -1,6 +1,7 @@
 import { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
+import { Equal } from 'typeorm';
 
 import { createAccessControl } from '../accessControl';
 import {
@@ -202,7 +203,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
         const events = await eventsService.search({
             where: {
                 triggerType: request.body.filters.triggerType,
-                triggerFilters: request.body.filters.triggerFilters,
+                triggerFilters: Equal(request.body.filters.triggerFilters),
             },
         });
 

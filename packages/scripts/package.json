@@ -13,18 +13,18 @@
     "cli": "ts-node --swc ./src/index.ts"
   },
   "dependencies": {
-    "@oclif/core": "^1.12.1",
+    "@oclif/core": "^1.16.0",
     "@oclif/plugin-not-found": "^2.3.1",
     "@swc/core": "^1.2.245",
     "@types/fs-extra": "^9.0.13",
-    "@types/lodash": "^4.14.182",
-    "@types/node": "^18.0.6",
+    "@types/lodash": "^4.14.184",
+    "@types/node": "^18.7.14",
     "async": "^3.2.4",
     "chalk": "^4.1.2",
     "fs-extra": "^10.1.0",
     "lodash": "^4.17.21",
     "qqjs": "^0.3.11",
     "ts-node": "^10.9.1",
-    "typescript": "^4.7.4"
+    "typescript": "^4.8.2"
   }
 }
