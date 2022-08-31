@@ -1,10 +1,9 @@
+import { AvailableLanguage } from '@definitions/localeTypes';
 import { Translate } from '@mui/icons-material/';
 import { Button, ListItemIcon, ListItemText, Menu, MenuItem, SvgIcon } from '@mui/material';
 import { PL, US } from 'country-flag-icons/react/3x2';
-import { ReactNode, useState } from 'react';
+import { MouseEvent, ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { AvailableLanguage } from '../i18n';
 
 interface ListItemButtonProps {
     text: string;
@@ -34,7 +33,7 @@ export default function LanguageSelector() {
         closeMenu();
     };
 
-    const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
 

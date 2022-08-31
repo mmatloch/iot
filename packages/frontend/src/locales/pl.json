@@ -1,8 +1,0 @@
-{
-  "auth": {
-    "signIn": {
-      "title": "Zaloguj się"
-    },
-    "logout": "Wyloguj"
-  }
-}

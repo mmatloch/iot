@@ -1,19 +1,14 @@
-import i18n from 'i18next';
+import i18n, { Resource, ResourceLanguage } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 
-import en from './locales/en.json';
-import pl from './locales/pl.json';
+import { EnglishLocale } from './locales/en';
+import { PolishLocale } from './locales/pl';
 
-const resources = {
-    en,
-    pl,
+const resources: Resource = {
+    en: EnglishLocale as unknown as ResourceLanguage,
+    pl: PolishLocale as unknown as ResourceLanguage,
 };
-
-export enum AvailableLanguage {
-    English = 'en',
-    Polish = 'pl',
-}
 
 i18n.use(LanguageDetector)
     .use(initReactI18next)

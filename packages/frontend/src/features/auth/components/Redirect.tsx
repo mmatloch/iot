@@ -1,4 +1,4 @@
-import { createToken } from '@api/users';
+import { createToken } from '@api/usersApi';
 import CircularProgressLoader from '@components/CircularProgressLoader';
 import { HttpError } from '@errors/httpError';
 import { useAuth } from '@hooks/useAuth';
