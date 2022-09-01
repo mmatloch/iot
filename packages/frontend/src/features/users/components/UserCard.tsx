@@ -5,6 +5,7 @@ import { MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import UserAvatar from './UserAvatar';
+import UserEditDialog from './UserEditDialog';
 import UserMenu from './UserMenu';
 
 interface Props {
@@ -27,6 +28,7 @@ const getBadgeColor = (state: UserState) => {
 export default function UserCard({ user }: Props) {
     const { t } = useTranslation();
     const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
+    const [isEditDialogOpen, setEditDialogOpen] = useState(false);
 
     const roleTransKey = `users:role.${user.role}` as const;
     const stateTransKey = `users:state.${user.state}` as const;
@@ -39,9 +41,18 @@ export default function UserCard({ user }: Props) {
         setUserMenuAnchorEl(null);
     };
 
+    const openEditDialog = () => {
+        closeUserMenu();
+        setEditDialogOpen(true);
+    };
+
+    const closeEditDialog = () => {
+        setEditDialogOpen(false);
+    };
+
     return (
         <Badge color={getBadgeColor(user.state)} badgeContent={t(stateTransKey)}>
-            <Card sx={{ p: 2, width: 350 }}>
+            <Card sx={{ p: 2 }}>
                 <CardContent>
                     <Grid container spacing={2}>
                         <Grid item>
@@ -57,7 +68,13 @@ export default function UserCard({ user }: Props) {
                             <IconButton onClick={openUserMenu}>
                                 <MoreVert />
                             </IconButton>
-                            <UserMenu user={user} onClose={closeUserMenu} anchorEl={userMenuAnchorEl} />
+                            <UserMenu
+                                user={user}
+                                onClose={closeUserMenu}
+                                anchorEl={userMenuAnchorEl}
+                                onEdit={openEditDialog}
+                            />
+                            <UserEditDialog user={user} isOpen={isEditDialogOpen} onClose={closeEditDialog} />
                         </Grid>
                     </Grid>
                 </CardContent>

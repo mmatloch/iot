@@ -1,7 +1,9 @@
 import { createHttpClient } from '@clients/httpClient';
 import { SearchResponse } from '@definitions/commonTypes';
-import { User, UserState } from '@definitions/userTypes';
+import { User } from '@definitions/userTypes';
 import { useFetch } from '@hooks/useFetch';
+import { useGenericMutation } from '@hooks/useGenericMutation';
+import { useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
 
@@ -40,11 +42,18 @@ export const useUsers = () =>
         method: 'GET',
     });
 
-export const updateUserState = (user: User, newState: UserState) =>
-    createHttpClient().request<TokenResponse>({
-        url: `${ApiRoute.Users.Root}/${user._id}`,
-        method: 'PATCH',
-        body: {
-            state: newState,
+export const useUpdateUser = (user: User) => {
+    const queryClient = useQueryClient();
+
+    return useGenericMutation<User, Partial<User>>(
+        {
+            url: `${ApiRoute.Users.Root}/${user._id}`,
+            method: 'PATCH',
         },
-    });
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(ApiRoute.Users.Root);
+            },
+        },
+    );
+};

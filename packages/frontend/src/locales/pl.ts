@@ -6,6 +6,8 @@ export const PolishLocale: Locale = {
         activate: 'Aktywuj',
         deactivate: 'Dezaktywuj',
         edit: 'Edytuj',
+        save: 'Zapisz',
+        cancel: 'Anuluj',
     },
     auth: {
         signIn: {
@@ -23,9 +25,17 @@ export const PolishLocale: Locale = {
             [UserState.Inactive]: 'Nieaktywny',
             [UserState.PendingApproval]: 'Oczekuje na zatwierdzenie',
         },
+        entity: {
+            name: 'Nazwa',
+            firstName: 'Imię',
+            lastName: 'Nazwisko',
+        },
         management: {
             title: 'Zarządzanie użytkownikami',
+        },
+        errors: {
             failedToLoadUsers: 'Nie udało się załadować użytkowników',
+            failedToUpdateUser: 'Nie udało się zaktualizować użytkownika',
         },
     },
 };

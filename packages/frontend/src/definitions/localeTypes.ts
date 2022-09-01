@@ -10,6 +10,8 @@ export interface Locale {
         activate: string;
         deactivate: string;
         edit: string;
+        save: string;
+        cancel: string;
     };
     auth: {
         signIn: {
@@ -27,9 +29,17 @@ export interface Locale {
             [UserState.Inactive]: string;
             [UserState.PendingApproval]: string;
         };
+        entity: {
+            name: string;
+            firstName: string;
+            lastName: string;
+        };
         management: {
             title: string;
+        };
+        errors: {
             failedToLoadUsers: string;
+            failedToUpdateUser: string;
         };
     };
 }

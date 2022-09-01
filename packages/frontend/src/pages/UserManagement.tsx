@@ -14,7 +14,7 @@ export default function UserManagement() {
     }
 
     if (!isSuccess) {
-        enqueueSnackbar(t('users:management.failedToLoadUsers'), {
+        enqueueSnackbar(t('users:errors.failedToLoadUsers'), {
             variant: 'error',
         });
 
@@ -26,7 +26,7 @@ export default function UserManagement() {
             <h1>{t('users:management.title')}</h1>
 
             {data._hits.map((user) => (
-                <UserCard user={user} />
+                <UserCard user={user} key={user._id} />
             ))}
         </div>
     );

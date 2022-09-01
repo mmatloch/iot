@@ -6,6 +6,8 @@ export const EnglishLocale: Locale = {
         activate: 'Activate',
         deactivate: 'Deactivate',
         edit: 'Edit',
+        save: 'Save',
+        cancel: 'Cancel',
     },
     auth: {
         signIn: {
@@ -23,9 +25,17 @@ export const EnglishLocale: Locale = {
             [UserState.Inactive]: 'Inactive',
             [UserState.PendingApproval]: 'Pending approval',
         },
+        entity: {
+            name: 'Name',
+            firstName: 'First name',
+            lastName: 'Last name',
+        },
         management: {
             title: 'User management',
+        },
+        errors: {
             failedToLoadUsers: 'Failed to load users',
+            failedToUpdateUser: 'Failed to update user',
         },
     },
 };

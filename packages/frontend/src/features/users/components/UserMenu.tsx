@@ -1,4 +1,4 @@
-import { updateUserState } from '@api/usersApi';
+import { useUpdateUser } from '@api/usersApi';
 import { User, UserState } from '@definitions/userTypes';
 import { Edit, PublishedWithChanges } from '@mui/icons-material';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
@@ -6,13 +6,10 @@ import { useSnackbar } from 'notistack';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
-enum MenuOption {
-    Edit,
-}
-
 interface Props {
     user: User;
     onClose: () => void;
+    onEdit: () => void;
     anchorEl: HTMLElement | null;
 }
 
@@ -30,25 +27,24 @@ const ListItemButton = ({ text, icon }: ListItemButtonProps) => {
     );
 };
 
-export default function UserMenu({ user, onClose, anchorEl }: Props) {
+export default function UserMenu({ user, onClose, onEdit, anchorEl }: Props) {
     const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
+    const { mutateAsync } = useUpdateUser(user);
 
-    const isOpen = Boolean(anchorEl);
+    const isMenuOpen = Boolean(anchorEl);
 
     const isUserActive = user.state === UserState.Active;
 
-    const onEdit = () => {
-        onClose();
-    };
-
-    const onChangeState = async () => {
+    const changeState = async () => {
         const newState = isUserActive ? UserState.Inactive : UserState.Active;
 
         try {
-            await updateUserState(user, newState);
+            await mutateAsync({
+                state: newState,
+            });
         } catch {
-            enqueueSnackbar('Failed to change user state', {
+            enqueueSnackbar(t('users:errors.failedToUpdateUser'), {
                 variant: 'error',
             });
         }
@@ -57,12 +53,12 @@ export default function UserMenu({ user, onClose, anchorEl }: Props) {
     };
 
     return (
-        <Menu anchorEl={anchorEl} open={isOpen} onClose={onClose}>
-            <MenuItem onClick={() => onEdit()}>
+        <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
+            <MenuItem onClick={onEdit}>
                 <ListItemButton text={t('generic:edit')} icon={<Edit />} />
             </MenuItem>
 
-            <MenuItem onClick={() => onChangeState()}>
+            <MenuItem onClick={changeState}>
                 {isUserActive ? (
                     <ListItemButton text={t(`generic:deactivate`)} icon={<PublishedWithChanges />} />
                 ) : (
