@@ -23,6 +23,7 @@
       "@errors/*": ["./src/errors/*"],
       "@features/*": ["./src/features/*"],
       "@hooks/*": ["./src/hooks/*"],
+      "@utils/*": ["./src/utils/*"],
       "@definitions/*": ["./src/definitions/*"]
     }
   },

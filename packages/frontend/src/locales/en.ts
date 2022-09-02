@@ -26,9 +26,11 @@ export const EnglishLocale: Locale = {
             [UserState.PendingApproval]: 'Pending approval',
         },
         entity: {
+            email: 'Email',
             name: 'Name',
             firstName: 'First name',
             lastName: 'Last name',
+            role: 'Role',
         },
         management: {
             title: 'User management',

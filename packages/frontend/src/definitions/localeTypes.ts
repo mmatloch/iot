@@ -30,9 +30,11 @@ export interface Locale {
             [UserState.PendingApproval]: string;
         };
         entity: {
+            email: string;
             name: string;
             firstName: string;
             lastName: string;
+            role: string;
         };
         management: {
             title: string;

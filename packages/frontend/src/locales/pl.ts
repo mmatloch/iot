@@ -26,9 +26,11 @@ export const PolishLocale: Locale = {
             [UserState.PendingApproval]: 'Oczekuje na zatwierdzenie',
         },
         entity: {
+            email: 'Email',
             name: 'Nazwa',
             firstName: 'Imię',
             lastName: 'Nazwisko',
+            role: 'Rola',
         },
         management: {
             title: 'Zarządzanie użytkownikami',
