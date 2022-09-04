@@ -10,6 +10,6 @@ export interface GenericEntity {
 export interface SearchResponse<TEntity extends GenericEntity> {
     _hits: TEntity[];
     _meta: {
-        totalItems: number;
+        totalHits: number;
     };
 }

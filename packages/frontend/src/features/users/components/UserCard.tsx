@@ -52,16 +52,14 @@ export default function UserCard({ user }: Props) {
 
     return (
         <Badge color={getBadgeColor(user.state)} badgeContent={t(stateTransKey)}>
-            <Card sx={{ p: 2 }}>
+            <Card sx={{ p: 2, width: '450px' }}>
                 <CardContent>
-                    <Grid container spacing={2}>
+                    <Grid container spacing={3}>
                         <Grid item>
                             <UserAvatar user={user} />
                         </Grid>
-                        <Grid item>
-                            <Typography variant="h6">
-                                {user.firstName} {user.lastName}
-                            </Typography>
+                        <Grid item sx={{ width: '250px' }}>
+                            <Typography variant="h6">{user.name}</Typography>
                             <Typography>{t(roleTransKey)}</Typography>
                         </Grid>
                         <Grid item>
