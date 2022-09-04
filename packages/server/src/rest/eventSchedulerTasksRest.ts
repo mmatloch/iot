@@ -5,6 +5,7 @@ import { createAccessControl } from '../accessControl';
 import {
     RestSearchOptions,
     SortValue,
+    createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
@@ -32,6 +33,9 @@ const searchOptions: RestSearchOptions<EventSchedulerTask> = {
     },
     filters: {
         allowedFields: ['eventId', 'nextRunAt', 'state'],
+    },
+    pagination: {
+        defaultStrategy: createOffsetPaginationStrategy(),
     },
 };
 
