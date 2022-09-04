@@ -3,6 +3,7 @@ import FullScreenLoader from '@components/FullScreenLoader';
 import { SortValue } from '@definitions/searchTypes';
 import UserCard from '@features/users/components/UserCard';
 import useQueryPage from '@hooks/useQueryPage';
+import Layout from '@layout/Layout';
 import { Box, Container, Grid, Pagination } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { ChangeEvent } from 'react';
@@ -40,27 +41,29 @@ export default function UserManagement() {
     };
 
     return (
-        <Container>
-            <h1>{t('users:management.title')}</h1>
+        <Layout>
+            <Container>
+                <h1>{t('users:management.title')}</h1>
 
-            <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
-                {data._hits.map((user) => (
-                    <Grid item key={user._id} sx={{ display: 'flex' }}>
-                        <UserCard user={user} />
-                    </Grid>
-                ))}
-            </Grid>
+                <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
+                    {data._hits.map((user) => (
+                        <Grid item key={user._id} sx={{ display: 'flex' }}>
+                            <UserCard user={user} />
+                        </Grid>
+                    ))}
+                </Grid>
 
-            <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
-                <Pagination
-                    count={data._meta.totalPages}
-                    size="large"
-                    color="primary"
-                    onChange={onPageChange}
-                    page={page}
-                    disabled={isPreviousData}
-                />
-            </Box>
-        </Container>
+                <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
+                    <Pagination
+                        count={data._meta.totalPages}
+                        size="large"
+                        color="primary"
+                        onChange={onPageChange}
+                        page={page}
+                        disabled={isPreviousData}
+                    />
+                </Box>
+            </Container>
+        </Layout>
     );
 }

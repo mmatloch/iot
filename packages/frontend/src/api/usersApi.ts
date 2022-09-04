@@ -60,7 +60,19 @@ export const useUpdateUser = (user: User) => {
         {
             onSuccess: () => {
                 queryClient.invalidateQueries([ApiRoute.Users.Root]);
+                queryClient.invalidateQueries([ApiRoute.Users.Me]);
             },
         },
     );
 };
+
+export const useUser = () =>
+    useFetch<User>(
+        {
+            url: ApiRoute.Users.Me,
+            method: 'GET',
+        },
+        {
+            keepPreviousData: true,
+        },
+    );

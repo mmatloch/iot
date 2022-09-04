@@ -24,6 +24,7 @@
       "@features/*": ["./src/features/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/utils/*"],
+      "@layout/*": ["./src/layout/*"],
       "@definitions/*": ["./src/definitions/*"]
     }
   },

@@ -61,10 +61,8 @@ export default function UserEditDialog({ user, isOpen, onClose }: Props) {
     };
 
     const onSubmit = async (payload: FormInput) => {
-        let updatedUser: User;
-
         try {
-            updatedUser = await mutateAsync(payload);
+            await mutateAsync(payload);
         } catch {
             enqueueSnackbar(t('users:errors.failedToUpdateUser'), {
                 variant: 'error',

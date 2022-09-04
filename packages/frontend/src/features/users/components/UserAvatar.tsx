@@ -2,11 +2,13 @@ import { User } from '@definitions/userTypes';
 import { Avatar } from '@mui/material';
 
 interface Props {
-    user: User;
+    user?: User;
+    size?: number;
 }
 
-const AVATAR_SIZE = 64;
+const DEFAULT_AVATAR_SIZE = 64;
 
-export default function UserAvatar({ user }: Props) {
-    return <Avatar src={user.avatarUrl} sx={{ width: AVATAR_SIZE, height: AVATAR_SIZE }} />;
+export default function UserAvatar({ user, size }: Props) {
+    const avatarSize = size || DEFAULT_AVATAR_SIZE;
+    return <Avatar src={user?.avatarUrl} sx={{ width: avatarSize, height: avatarSize }} />;
 }

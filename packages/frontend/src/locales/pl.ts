@@ -9,6 +9,9 @@ export const PolishLocale: Locale = {
         save: 'Zapisz',
         cancel: 'Anuluj',
     },
+    i18n: {
+        changeLanguage: 'Zmień język',
+    },
     auth: {
         signIn: {
             title: 'Zaloguj się',
@@ -42,5 +45,8 @@ export const PolishLocale: Locale = {
             failedToLoadUsers: 'Nie udało się załadować użytkowników',
             failedToUpdateUser: 'Nie udało się zaktualizować użytkownika',
         },
+    },
+    profile: {
+        editProfile: 'Edytuj profil',
     },
 };

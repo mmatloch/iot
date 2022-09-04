@@ -9,6 +9,9 @@ export const EnglishLocale: Locale = {
         save: 'Save',
         cancel: 'Cancel',
     },
+    i18n: {
+        changeLanguage: 'Change language',
+    },
     auth: {
         signIn: {
             title: 'Sign in with',
@@ -42,5 +45,8 @@ export const EnglishLocale: Locale = {
             failedToLoadUsers: 'Failed to load users',
             failedToUpdateUser: 'Failed to update user',
         },
+    },
+    profile: {
+        editProfile: 'Edit profile',
     },
 };

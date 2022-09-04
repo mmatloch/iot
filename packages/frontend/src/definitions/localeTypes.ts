@@ -13,6 +13,9 @@ export interface Locale {
         save: string;
         cancel: string;
     };
+    i18n: {
+        changeLanguage: string;
+    };
     auth: {
         signIn: {
             title: string;
@@ -46,5 +49,8 @@ export interface Locale {
             failedToLoadUsers: string;
             failedToUpdateUser: string;
         };
+    };
+    profile: {
+        editProfile: string;
     };
 }

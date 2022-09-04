@@ -1,3 +1,4 @@
+import UserEditDialog from '@components/UserEditDialog';
 import { User, UserState } from '@definitions/userTypes';
 import { MoreVert } from '@mui/icons-material';
 import { Badge, Card, CardContent, Grid, IconButton, Typography } from '@mui/material';
@@ -5,7 +6,6 @@ import { MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import UserAvatar from './UserAvatar';
-import UserEditDialog from './UserEditDialog';
 import UserMenu from './UserMenu';
 
 interface Props {
