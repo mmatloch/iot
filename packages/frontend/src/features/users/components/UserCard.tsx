@@ -1,7 +1,8 @@
 import UserEditDialog from '@components/UserEditDialog';
 import { User, UserState } from '@definitions/userTypes';
 import { MoreVert } from '@mui/icons-material';
-import { Badge, Card, CardContent, Grid, IconButton, Typography } from '@mui/material';
+import { Badge, Card, CardContent, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -27,6 +28,9 @@ const getBadgeColor = (state: UserState) => {
 
 export default function UserCard({ user }: Props) {
     const { t } = useTranslation();
+    const theme = useTheme();
+    const isMediumMedia = useMediaQuery(theme.breakpoints.up('sm'));
+
     const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
 
@@ -52,13 +56,30 @@ export default function UserCard({ user }: Props) {
 
     return (
         <Badge color={getBadgeColor(user.state)} badgeContent={t(stateTransKey)}>
-            <Card sx={{ p: 2, width: '450px' }}>
+            <Card
+                sx={{
+                    p: 2,
+                    width: {
+                        sm: 420,
+                        md: 450,
+                    },
+                }}
+            >
                 <CardContent>
                     <Grid container spacing={3}>
                         <Grid item>
-                            <UserAvatar user={user} />
+                            <UserAvatar user={user} size={isMediumMedia ? 64 : 48} />
                         </Grid>
-                        <Grid item sx={{ width: '250px' }}>
+                        <Grid
+                            item
+                            sx={{
+                                width: {
+                                    xs: 90,
+                                    sm: 200,
+                                    md: 250,
+                                },
+                            }}
+                        >
                             <Typography variant="h6">{user.name}</Typography>
                             <Typography>{t(roleTransKey)}</Typography>
                         </Grid>

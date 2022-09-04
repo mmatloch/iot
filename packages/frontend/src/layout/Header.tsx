@@ -1,7 +1,7 @@
 import { useUser } from '@api/usersApi';
 import ChangeLanguageDialog from '@components/ChangeLanguageDialog';
 import UserEditDialog from '@components/UserEditDialog';
-import ProfileMenu from '@features/profile/ProfileMenu';
+import ProfileMenu from '@features/profile/components/ProfileMenu';
 import UserAvatar from '@features/users/components/UserAvatar';
 import { Menu } from '@mui/icons-material';
 import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
