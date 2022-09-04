@@ -53,6 +53,21 @@ export type WhereQuery = Record<string, WhereQueryValue>;
 
 export interface SearchQuery {
     take: number;
+    skip?: number;
     order?: SortQuery;
     where?: WhereQuery;
+}
+
+export interface SearchResponseMeta {
+    totalHits?: number;
+    totalPages?: number;
+}
+
+export interface SearchResponse<TEntity> {
+    _links: {
+        next?: string;
+        previous?: string;
+    };
+    _meta: SearchResponseMeta;
+    _hits: TEntity[];
 }

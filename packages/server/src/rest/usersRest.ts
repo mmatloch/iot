@@ -6,6 +6,7 @@ import { AccessControlSubject, createAccessControl } from '../accessControl';
 import {
     RestSearchOptions,
     SortValue,
+    createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
@@ -75,6 +76,9 @@ const searchOptions: RestSearchOptions<User> = {
     },
     filters: {
         allowedFields: ['email', 'firstName', 'lastName', 'name', 'role', 'state'],
+    },
+    pagination: {
+        defaultStrategy: createOffsetPaginationStrategy(),
     },
 };
 

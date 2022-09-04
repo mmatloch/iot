@@ -6,6 +6,7 @@ import { createAccessControl } from '../accessControl';
 import {
     RestSearchOptions,
     SortValue,
+    createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
@@ -49,6 +50,9 @@ const searchOptions: RestSearchOptions<Configuration> = {
     },
     filters: {
         allowedFields: ['state', 'data'],
+    },
+    pagination: {
+        defaultStrategy: createOffsetPaginationStrategy(),
     },
 };
 

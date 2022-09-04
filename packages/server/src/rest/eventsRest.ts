@@ -10,6 +10,7 @@ import {
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
+    createOffsetPaginationStrategy,
 } from '../apis/searchApi';
 import { Event, EventDto, eventDtoSchema, eventSchema, eventUpdateSchema } from '../entities/eventEntity';
 import { EventInstance, eventInstanceSchema } from '../entities/eventInstanceEntity';
@@ -56,6 +57,9 @@ const searchOptions: RestSearchOptions<Event> = {
     },
     filters: {
         allowedFields: ['displayName', 'state', 'triggerFilters', 'triggerType'],
+    },
+    pagination: {
+        defaultStrategy: createOffsetPaginationStrategy(),
     },
 };
 
@@ -113,6 +117,9 @@ const eventInstanceSearchOptions: RestSearchOptions<EventInstance> = {
     },
     filters: {
         allowedFields: ['eventId', 'eventRunId', 'state'],
+    },
+    pagination: {
+        defaultStrategy: createOffsetPaginationStrategy(),
     },
 };
 

@@ -6,6 +6,7 @@ import { createAccessControl } from '../accessControl';
 import {
     RestSearchOptions,
     SortValue,
+    createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
@@ -53,6 +54,9 @@ const searchOptions: RestSearchOptions<Device> = {
             'vendor',
             'state',
         ],
+    },
+    pagination: {
+        defaultStrategy: createOffsetPaginationStrategy(),
     },
 };
 
