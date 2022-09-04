@@ -4575,6 +4575,7 @@ __metadata:
     "@mui/icons-material": ^5.10.3
     "@mui/lab": ^5.0.0-alpha.97
     "@mui/material": ^5.10.3
+    "@types/qs": ^6.9.7
     "@types/react": ^18.0.18
     "@types/react-dom": ^18.0.6
     "@types/whatwg-mimetype": ^2.1.1
@@ -4583,6 +4584,7 @@ __metadata:
     i18next: ^21.9.1
     i18next-browser-languagedetector: ^6.1.5
     notistack: ^2.0.5
+    qs: 6.9.6
     react: ^18.2.0
     react-dom: ^18.2.0
     react-hook-form: ^7.34.2
@@ -7782,6 +7784,13 @@ __metadata:
     tmp: ^0.1.0
     write-json-file: ^4.1.1
   checksum: 7962df855b7a0405550ae39beb5c133574a11db475635d4fb6311c469d83cf9cae03efa4c8a0e02b82a4cae9d7bec072383354249f12ab136dc8590e57a40dbd
+  languageName: node
+  linkType: hard
+
+"qs@npm:6.9.6":
+  version: 6.9.6
+  resolution: "qs@npm:6.9.6"
+  checksum: cb6df402bb8a3dbefa4bd46eba0dfca427079baca923e6b8d28a03e6bfb16a5c1dcdb96e69388f9c5813ac8ff17bb8bbca22f2ecd31fe1e344a55cb531b5fabf
   languageName: node
   linkType: hard
 

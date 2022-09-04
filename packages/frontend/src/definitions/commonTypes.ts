@@ -6,10 +6,3 @@ export interface GenericEntity {
     _updatedAt: string;
     _updatedBy: number | null;
 }
-
-export interface SearchResponse<TEntity extends GenericEntity> {
-    _hits: TEntity[];
-    _meta: {
-        totalHits: number;
-    };
-}

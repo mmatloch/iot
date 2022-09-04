@@ -1,5 +1,5 @@
 import { createHttpClient } from '@clients/httpClient';
-import { SearchResponse } from '@definitions/commonTypes';
+import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 import { User } from '@definitions/userTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
@@ -19,6 +19,7 @@ export interface SocialLoginResponse {
     };
 }
 
+export type UsersSearchQuery = SearchQuery<User>;
 export type UsersSearchResponse = SearchResponse<User>;
 
 export const createToken = (authorizationCode: string) =>
@@ -36,11 +37,17 @@ export const useGetSocialLogin = () =>
         method: 'GET',
     });
 
-export const useUsers = () =>
-    useFetch<UsersSearchResponse>({
-        url: ApiRoute.Users.Root,
-        method: 'GET',
-    });
+export const useUsers = (query: UsersSearchQuery) =>
+    useFetch<UsersSearchResponse>(
+        {
+            url: ApiRoute.Users.Root,
+            method: 'GET',
+            query,
+        },
+        {
+            keepPreviousData: true,
+        },
+    );
 
 export const useUpdateUser = (user: User) => {
     const queryClient = useQueryClient();
@@ -52,7 +59,7 @@ export const useUpdateUser = (user: User) => {
         },
         {
             onSuccess: () => {
-                queryClient.invalidateQueries(ApiRoute.Users.Root);
+                queryClient.invalidateQueries([ApiRoute.Users.Root]);
             },
         },
     );

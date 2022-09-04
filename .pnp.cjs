@@ -5886,6 +5886,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@mui/icons-material", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:5.10.3"],\
             ["@mui/lab", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:5.0.0-alpha.97"],\
             ["@mui/material", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:5.10.3"],\
+            ["@types/qs", "npm:6.9.7"],\
             ["@types/react", "npm:18.0.18"],\
             ["@types/react-dom", "npm:18.0.6"],\
             ["@types/whatwg-mimetype", "npm:2.1.1"],\
@@ -5894,6 +5895,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["i18next", "npm:21.9.1"],\
             ["i18next-browser-languagedetector", "npm:6.1.5"],\
             ["notistack", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:2.0.5"],\
+            ["qs", "npm:6.9.6"],\
             ["react", "npm:18.2.0"],\
             ["react-dom", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:18.2.0"],\
             ["react-hook-form", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:7.34.2"],\
@@ -9568,6 +9570,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["qs", "npm:6.11.0"],\
             ["side-channel", "npm:1.0.4"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:6.9.6", {\
+          "packageLocation": "./.yarn/cache/qs-npm-6.9.6-fee5de1427-cb6df402bb.zip/node_modules/qs/",\
+          "packageDependencies": [\
+            ["qs", "npm:6.9.6"]\
           ],\
           "linkType": "HARD"\
         }]\

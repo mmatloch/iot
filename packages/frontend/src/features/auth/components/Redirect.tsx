@@ -1,6 +1,5 @@
 import { createToken } from '@api/usersApi';
 import CircularProgressLoader from '@components/CircularProgressLoader';
-import { HttpError } from '@errors/httpError';
 import { useAuth } from '@hooks/useAuth';
 import { useSnackbar } from 'notistack';
 import { useEffect } from 'react';
@@ -14,31 +13,43 @@ export default function RedirectGoogle() {
     const navigate = useNavigate();
 
     const [searchParams] = useSearchParams();
+    const code = searchParams.get('code');
 
     const sendAuthorizationCode = async (authorizationCode: string) => {
-        try {
-            const {
-                body: { token },
-            } = await createToken(authorizationCode);
+        const {
+            body: { token },
+        } = await createToken(authorizationCode);
 
-            auth?.login(token);
-        } catch (e) {
-            if (e instanceof HttpError) {
-                enqueueSnackbar(e.message, {
-                    variant: 'error',
-                });
-            }
-
-            navigate(AppRoute.Auth.SignIn);
-        }
+        return token;
     };
 
     useEffect(() => {
-        const authorizationCode = searchParams.get('code');
-        if (authorizationCode) {
-            sendAuthorizationCode(authorizationCode);
+        if (!code) {
+            return;
         }
-    }, []);
+
+        let ignore = false;
+
+        sendAuthorizationCode(code)
+            .then((token) => {
+                if (!ignore) {
+                    auth?.login(token);
+                }
+            })
+            .catch((e) => {
+                if (!ignore && e instanceof Error) {
+                    enqueueSnackbar(e.message, {
+                        variant: 'error',
+                    });
+
+                    navigate(AppRoute.Auth.SignIn);
+                }
+            });
+
+        return () => {
+            ignore = true;
+        };
+    }, [code]);
 
     return <CircularProgressLoader />;
 }

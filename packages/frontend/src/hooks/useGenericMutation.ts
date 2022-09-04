@@ -1,7 +1,9 @@
 import { RequestOptions, createHttpClient } from '@clients/httpClient';
 import { UseMutationOptions, useMutation } from 'react-query';
 
-export const useGenericMutation = <TResponseBody, TVariables extends Record<string, unknown>>(
+type DefaultVariables = Record<string, unknown>;
+
+export const useGenericMutation = <TResponseBody, TVariables extends Record<string, unknown> = DefaultVariables>(
     requestOptions: RequestOptions,
     useMutationOptions?: UseMutationOptions<TResponseBody, Error, TVariables>,
 ) => {

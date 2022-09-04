@@ -1,13 +1,26 @@
 import { useUsers } from '@api/usersApi';
 import FullScreenLoader from '@components/FullScreenLoader';
+import { SortValue } from '@definitions/searchTypes';
 import UserCard from '@features/users/components/UserCard';
+import useQueryPage from '@hooks/useQueryPage';
 import { Box, Container, Grid, Pagination } from '@mui/material';
 import { useSnackbar } from 'notistack';
+import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+
+const sortQuery = {
+    _createdAt: SortValue.Desc,
+};
 
 export default function UserManagement() {
     const { t } = useTranslation();
-    const { data, isSuccess, isLoading } = useUsers();
+    const { page, setPage } = useQueryPage();
+
+    const { data, isSuccess, isLoading, isPreviousData } = useUsers({
+        page,
+        sort: sortQuery,
+    });
+
     const { enqueueSnackbar } = useSnackbar();
 
     if (isLoading) {
@@ -22,7 +35,9 @@ export default function UserManagement() {
         return <FullScreenLoader />;
     }
 
-    const pageCount = data._meta.totalHits / 10;
+    const onPageChange = (_event: ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
 
     return (
         <Container>
@@ -37,7 +52,14 @@ export default function UserManagement() {
             </Grid>
 
             <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
-                <Pagination count={pageCount} size="large" color="primary" />
+                <Pagination
+                    count={data._meta.totalPages}
+                    size="large"
+                    color="primary"
+                    onChange={onPageChange}
+                    page={page}
+                    disabled={isPreviousData}
+                />
             </Box>
         </Container>
     );
