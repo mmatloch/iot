@@ -38,6 +38,10 @@ interface AuthorizeDto {
     responseType: string;
     clientId: string;
     scope: string;
+
+    email: string;
+    firstName?: string;
+    lastName?: string;
 }
 
 enum OAuth2Error {
@@ -130,18 +134,21 @@ export const createOAuth2Service = () => {
     };
 
     const authorize = (dto: AuthorizeDto): string => {
-        const name = 'Test user';
+        const givenName = dto.firstName || faker.name.firstName();
+        const familyName = dto.lastName || faker.name.lastName();
+        const name = `${givenName} ${familyName}`;
+
         const picture = new URL('https://ui-avatars.com/api');
         picture.searchParams.set('name', name);
         picture.searchParams.set('size', '96');
 
         const { code } = createAuthorizationCode({
-            email: config.oAuth2.rootUserEmail,
+            email: dto.email,
             email_verified: true,
             name,
             picture: picture.toString(),
-            given_name: 'Test',
-            family_name: 'User',
+            given_name: givenName,
+            family_name: familyName,
             locale: 'pl',
             sub: '123456789',
         });

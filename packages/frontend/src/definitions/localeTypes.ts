@@ -18,6 +18,9 @@ export interface Locale {
             title: string;
         };
         logout: string;
+        errors: {
+            userInactive: string;
+        };
     };
     users: {
         role: {

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+            integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+            crossorigin="anonymous"
+        />
+
+        <script
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+            crossorigin="anonymous"
+        ></script>
+
+        <style>
+            .container {
+                height: 100vh;
+            }
+
+            .clickable:hover {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container d-flex justify-content-center align-items-center">
+            <div class="card mx-3 clickable" style="width: 18rem" onclick="submitForm('test-admin-form')">
+                <div class="card-body">
+                    <form method="POST" id="test-admin-form">
+                        <input
+                            type="text"
+                            name="name"
+                            readonly
+                            class="form-control-plaintext fw-bold fs-5 clickable"
+                            value="Test admin"
+                        />
+
+                        <input
+                            type="text"
+                            name="email"
+                            readonly
+                            class="form-control-plaintext clickable"
+                            value="test-admin@example.com"
+                        />
+
+                        <input type="hidden" name="firstName" value="Test" />
+
+                        <input type="hidden" name="lastName" value="Admin" />
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mx-3 clickable" style="width: 18rem" onclick="submitForm('test-user-form')">
+                <div class="card-body">
+                    <form method="POST" id="test-user-form">
+                        <input
+                            type="text"
+                            name="name"
+                            readonly
+                            class="form-control-plaintext fw-bold fs-5 clickable"
+                            value="Test user"
+                        />
+
+                        <input
+                            type="text"
+                            name="email"
+                            readonly
+                            class="form-control-plaintext clickable"
+                            value="test-user@example.com"
+                        />
+
+                        <input type="hidden" name="firstName" value="Test" />
+
+                        <input type="hidden" name="lastName" value="User" />
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mx-3" style="width: 18rem">
+                <div class="card-body">
+                    <h5 class="card-title">Custom user</h5>
+                    <form id="custom-user-form" method="POST">
+                        <div class="form-group">
+                            <input
+                                type="email"
+                                name="email"
+                                class="form-control form-control-lg"
+                                placeholder="Enter email"
+                                required
+                                autocomplete="email"
+                            />
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <input
+                                type="text"
+                                name="firstName"
+                                class="form-control form-control-lg"
+                                placeholder="First name"
+                                autocomplete="given-name"
+                            />
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <input
+                                type="text"
+                                name="lastName"
+                                class="form-control form-control-lg"
+                                placeholder="Last name"
+                                autocomplete="family-name"
+                            />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const submitForm = (elementId) => {
+                const form = document.getElementById(elementId);
+                form.submit();
+            };
+        </script>
+    </body>
+</html>

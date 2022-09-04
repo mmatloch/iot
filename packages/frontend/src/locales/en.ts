@@ -14,6 +14,9 @@ export const EnglishLocale: Locale = {
             title: 'Sign in with',
         },
         logout: 'Logout',
+        errors: {
+            userInactive: 'Your account is currently inactive',
+        },
     },
     users: {
         role: {

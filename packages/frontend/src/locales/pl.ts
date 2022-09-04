@@ -14,6 +14,9 @@ export const PolishLocale: Locale = {
             title: 'Zaloguj się',
         },
         logout: 'Wyloguj',
+        errors: {
+            userInactive: 'Twoje konto jest obecnie nieaktywne',
+        },
     },
     users: {
         role: {
