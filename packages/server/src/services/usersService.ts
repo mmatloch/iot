@@ -27,7 +27,7 @@ interface SocialLogin {
 export interface UsersService extends GenericService<User, UserDto> {
     findByEmail: (email: string) => Promise<User | null>;
     createToken: (tokenDto: TokenDto) => Promise<Token>;
-    getSocialLogin: () => SocialLogin;
+    getSocialLogin: (referer?: string) => SocialLogin;
 }
 
 export const createUsersService = () => {
@@ -120,12 +120,12 @@ export const createUsersService = () => {
         return repository.save(repository.merge(user, updatedUser));
     };
 
-    const getSocialLogin: UsersService['getSocialLogin'] = () => {
+    const getSocialLogin: UsersService['getSocialLogin'] = (referer?: string) => {
         const googleOAuth2Service = createGoogleOAuth2Service();
 
         return {
             google: {
-                authenticationUrl: googleOAuth2Service.getAuthenticationUrl(),
+                authenticationUrl: googleOAuth2Service.getAuthenticationUrl(referer),
             },
         };
     };

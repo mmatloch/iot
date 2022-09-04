@@ -2,6 +2,7 @@ import { Validator, createValidator } from '@common/validator';
 import { Type } from '@sinclair/typebox';
 
 import { getConfig } from '../config';
+import { ApplicationEnv } from '../constants';
 import { Errors } from '../errors';
 import { UserInfo, getUserInfoFromGoogleJWT } from '../utils/authUtils';
 
@@ -11,12 +12,6 @@ const oAuth2Config = config.externalServices.google.oAuth2;
 const tokenSchema = Type.Object({
     id_token: Type.String(),
 });
-
-const authenticationUrl = new URL(config.externalServices.google.oAuth2.authBaseUrl);
-authenticationUrl.searchParams.append('client_id', config.externalServices.google.oAuth2.clientId);
-authenticationUrl.searchParams.append('redirect_uri', config.externalServices.google.oAuth2.redirectUri);
-authenticationUrl.searchParams.append('scope', config.externalServices.google.oAuth2.scope);
-authenticationUrl.searchParams.append('response_type', 'code');
 
 export const createGoogleOAuth2Service = () => {
     const exchangeAuthorizationCodeForJWT = async (code: string): Promise<string> => {
@@ -60,8 +55,32 @@ export const createGoogleOAuth2Service = () => {
         }
     };
 
+    const getAuthenticationUrl = (referer?: string) => {
+        const redirectUri = new URL(config.externalServices.google.oAuth2.redirectUri);
+        const authenticationUrl = new URL(config.externalServices.google.oAuth2.authBaseUrl);
+        authenticationUrl.searchParams.append('client_id', config.externalServices.google.oAuth2.clientId);
+        authenticationUrl.searchParams.append('redirect_uri', redirectUri.toString());
+        authenticationUrl.searchParams.append('scope', config.externalServices.google.oAuth2.scope);
+        authenticationUrl.searchParams.append('response_type', 'code');
+
+        if (referer && config.app.env === ApplicationEnv.Development) {
+            const refererUrl = new URL(referer);
+            authenticationUrl.protocol = refererUrl.protocol;
+            authenticationUrl.host = refererUrl.host;
+            authenticationUrl.port = refererUrl.port;
+
+            redirectUri.protocol = refererUrl.protocol;
+            redirectUri.host = refererUrl.host;
+            redirectUri.port = refererUrl.port;
+
+            authenticationUrl.searchParams.set('redirect_uri', redirectUri.toString());
+        }
+
+        return authenticationUrl.toString();
+    };
+
     return {
         getUserInfo,
-        getAuthenticationUrl: () => authenticationUrl.toString(),
+        getAuthenticationUrl,
     };
 };

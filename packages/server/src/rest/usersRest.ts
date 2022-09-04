@@ -153,7 +153,7 @@ export const createUsersRest: ApplicationPlugin = async (app) => {
     app.withTypeProvider().get('/users/socialLogin', { schema: getSocialLoginSchema }, async (request, reply) => {
         const service = createUsersService();
 
-        const socialLogin = service.getSocialLogin();
+        const socialLogin = service.getSocialLogin(request.headers.referer);
         return reply.status(StatusCodes.OK).send(socialLogin);
     });
 
