@@ -1,7 +1,7 @@
 import { useAuth } from '@hooks/useAuth';
 import { Home, ManageAccounts } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
-import { FC, ReactNode, useEffect, useState } from 'react';
+import { FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -39,31 +39,25 @@ export default function Sidebar({ isOpen, onClose }: Props) {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const [items, setItems] = useState<ItemProps[]>([]);
+    const items = [
+        {
+            icon: <Home />,
+            text: 'Home',
+            onClick: () => navigate(AppRoute.Home),
+        },
+        {
+            icon: <ManageAccounts />,
+            text: t('users:title'),
+            onClick: () => navigate(AppRoute.Users),
+            adminOnly: true,
+        },
+    ].filter((item) => {
+        if (isAdmin) {
+            return true;
+        }
 
-    useEffect(() => {
-        setItems(
-            [
-                {
-                    icon: <Home />,
-                    text: 'Home',
-                    onClick: () => navigate(AppRoute.Home),
-                },
-                {
-                    icon: <ManageAccounts />,
-                    text: t('users:title'),
-                    onClick: () => navigate(AppRoute.Users),
-                    adminOnly: true,
-                },
-            ].filter((item) => {
-                if (isAdmin) {
-                    return true;
-                }
-
-                return !item.adminOnly;
-            }),
-        );
-    }, [isAdmin]);
+        return !item.adminOnly;
+    });
 
     return (
         <Drawer
