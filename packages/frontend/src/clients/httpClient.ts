@@ -113,6 +113,7 @@ export const createHttpClient = () => {
                 statusCode: response.status,
                 message: responseBody?.message || 'Error',
                 errorCode: responseBody?.errorCode,
+                detail: responseBody?.detail,
             });
         }
 

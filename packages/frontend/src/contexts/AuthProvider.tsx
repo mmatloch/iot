@@ -1,9 +1,15 @@
+import { UserRole } from '@definitions/userTypes';
 import { useLocalStorage } from '@hooks/useLocalStorage';
+import { decodeJwt } from '@utils/decodeJwt';
 import { ReactNode, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { AppRoute } from '../constants';
 import { AuthContext } from './AuthContext';
+
+interface JwtPayload {
+    role: UserRole;
+}
 
 interface Props {
     children: ReactNode;
@@ -25,14 +31,25 @@ export const AuthProvider = ({ children }: Props) => {
         navigate(AppRoute.Home, { replace: true });
     };
 
-    const value = useMemo(
-        () => ({
+    const value = useMemo(() => {
+        if (!accessToken) {
+            return {
+                accessToken,
+                isAdmin: false,
+                login,
+                logout,
+            };
+        }
+
+        const decodedAccessToken = decodeJwt<JwtPayload>(accessToken);
+
+        return {
             accessToken,
+            isAdmin: decodedAccessToken.role === UserRole.Admin,
             login,
             logout,
-        }),
-        [accessToken],
-    );
+        };
+    }, [accessToken]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

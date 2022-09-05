@@ -1336,6 +1336,35 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mui/lab@npm:^5.0.0-alpha.97":
+  version: 5.0.0-alpha.97
+  resolution: "@mui/lab@npm:5.0.0-alpha.97"
+  dependencies:
+    "@babel/runtime": ^7.18.9
+    "@mui/base": 5.0.0-alpha.95
+    "@mui/system": ^5.10.3
+    "@mui/utils": ^5.10.3
+    clsx: ^1.2.1
+    prop-types: ^15.8.1
+    react-is: ^18.2.0
+  peerDependencies:
+    "@emotion/react": ^11.5.0
+    "@emotion/styled": ^11.3.0
+    "@mui/material": ^5.0.0
+    "@types/react": ^17.0.0 || ^18.0.0
+    react: ^17.0.0 || ^18.0.0
+    react-dom: ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@emotion/react":
+      optional: true
+    "@emotion/styled":
+      optional: true
+    "@types/react":
+      optional: true
+  checksum: 4d9f032961a3fe76ba802144e3ba3dd48bbfe0053a61caf8b58f2527b227754ac336b6fe1138fa8c8366d01562639e45f799fb20d86cb2c88144a0221d5fca61
+  languageName: node
+  linkType: hard
+
 "@mui/material@npm:^5.10.3":
   version: 5.10.3
   resolution: "@mui/material@npm:5.10.3"
@@ -4544,7 +4573,9 @@ __metadata:
     "@emotion/react": ^11.10.4
     "@emotion/styled": ^11.10.4
     "@mui/icons-material": ^5.10.3
+    "@mui/lab": ^5.0.0-alpha.97
     "@mui/material": ^5.10.3
+    "@types/qs": ^6.9.7
     "@types/react": ^18.0.18
     "@types/react-dom": ^18.0.6
     "@types/whatwg-mimetype": ^2.1.1
@@ -4553,8 +4584,10 @@ __metadata:
     i18next: ^21.9.1
     i18next-browser-languagedetector: ^6.1.5
     notistack: ^2.0.5
+    qs: 6.9.6
     react: ^18.2.0
     react-dom: ^18.2.0
+    react-hook-form: ^7.34.2
     react-i18next: ^11.18.5
     react-query: ^3.39.2
     react-router-dom: ^6.3.0
@@ -7754,6 +7787,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"qs@npm:6.9.6":
+  version: 6.9.6
+  resolution: "qs@npm:6.9.6"
+  checksum: cb6df402bb8a3dbefa4bd46eba0dfca427079baca923e6b8d28a03e6bfb16a5c1dcdb96e69388f9c5813ac8ff17bb8bbca22f2ecd31fe1e344a55cb531b5fabf
+  languageName: node
+  linkType: hard
+
 "qs@npm:^6.11.0":
   version: 6.11.0
   resolution: "qs@npm:6.11.0"
@@ -7793,6 +7833,15 @@ __metadata:
   peerDependencies:
     react: ^18.2.0
   checksum: 7d323310bea3a91be2965f9468d552f201b1c27891e45ddc2d6b8f717680c95a75ae0bc1e3f5cf41472446a2589a75aed4483aee8169287909fcd59ad149e8cc
+  languageName: node
+  linkType: hard
+
+"react-hook-form@npm:^7.34.2":
+  version: 7.34.2
+  resolution: "react-hook-form@npm:7.34.2"
+  peerDependencies:
+    react: ^16.8.0 || ^17 || ^18
+  checksum: 485cde0248e668ad1845b927f9cc05b434c384141bb03bc143a7d7cc937eebf119c935114ccbfa397b463808283dab5b2334022fe5dba975402b201e601d6876
   languageName: node
   linkType: hard
 

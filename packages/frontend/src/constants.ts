@@ -4,6 +4,8 @@ const addPrefix = (path: string) => `${API_PREFIX}/${path}`;
 
 export const ApiRoute = {
     Users: {
+        Root: addPrefix('users'),
+        Me: addPrefix('users/me'),
         Token: addPrefix('users/token'),
         SocialLogin: addPrefix('users/socialLogin'),
     },
@@ -16,5 +18,8 @@ export const AppRoute = {
         Redirect: {
             Google: '/auth/redirect/google',
         },
+    },
+    Users: {
+        Management: '/users/management',
     },
 };

@@ -1,8 +1,8 @@
-import { SocialLoginResponse, useGetSocialLogin } from '@api/users';
+import { SocialLoginResponse, useGetSocialLogin } from '@api/usersApi';
 import CircularProgressLoader from '@components/CircularProgressLoader';
 import GoogleIcon from '@mui/icons-material/Google';
 import { Button, ButtonGroup } from '@mui/material';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 export default function SignInForm() {
     const { data, isSuccess, isLoading } = useGetSocialLogin();

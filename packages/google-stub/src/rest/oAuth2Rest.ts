@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+
 import { Application } from '@common/application';
 import { BaseError } from '@common/errors';
 import { Type } from '@sinclair/typebox';
@@ -32,12 +34,21 @@ const createAuthorizationCodeSchema = {
     ),
 };
 
-const authSchema = {
+const selectUserSchema = {
     querystring: Type.Object({
         redirect_uri: Type.String(),
         response_type: Type.String(),
         client_id: Type.String(),
         scope: Type.String(),
+    }),
+};
+
+const authSchema = {
+    querystring: selectUserSchema.querystring,
+    body: Type.Object({
+        email: Type.String(),
+        firstName: Type.Optional(Type.String()),
+        lastName: Type.Optional(Type.String()),
     }),
 };
 
@@ -76,7 +87,13 @@ export const createOAuth2Rest = (app: Application) => {
         },
     );
 
-    app.withTypeProvider().get('/oauth2/auth', { schema: authSchema }, async (request, reply) => {
+    app.withTypeProvider().get('/oauth2/auth', { schema: selectUserSchema }, async (request, reply) => {
+        const selectUserContent = await readFile('./src/selectUser.html', { encoding: 'utf-8' });
+
+        return reply.type('text/html').send(selectUserContent);
+    });
+
+    app.withTypeProvider().post('/oauth2/auth', { schema: authSchema }, async (request, reply) => {
         const service = createOAuth2Service();
 
         const { redirect_uri: redirectUri, response_type: responseType, client_id: clientId, scope } = request.query;
@@ -86,6 +103,7 @@ export const createOAuth2Rest = (app: Application) => {
             responseType,
             clientId,
             scope,
+            ...request.body,
         });
 
         return reply.redirect(StatusCodes.MOVED_TEMPORARILY, redirectUrl).send();

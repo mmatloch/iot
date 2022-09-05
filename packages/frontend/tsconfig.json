@@ -22,7 +22,10 @@
       "@contexts/*": ["./src/contexts/*"],
       "@errors/*": ["./src/errors/*"],
       "@features/*": ["./src/features/*"],
-      "@hooks/*": ["./src/hooks/*"]
+      "@hooks/*": ["./src/hooks/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@layout/*": ["./src/layout/*"],
+      "@definitions/*": ["./src/definitions/*"]
     }
   },
   "include": ["src"],

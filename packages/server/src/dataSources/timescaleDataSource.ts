@@ -17,6 +17,7 @@ import { RemoveEventRunner1659274109943 } from '../migrations/1659274109943-Remo
 import { EventScheduler1660911283007 } from '../migrations/1660911283007-EventScheduler';
 import { CreatedByUpdatedBy1661175358951 } from '../migrations/1661175358951-CreatedByUpdatedBy';
 import { Configurations1661374101903 } from '../migrations/1661374101903-Configurations';
+import { UserAvatar1661962398904 } from '../migrations/1661962398904-UserAvatar';
 
 const config = getConfig();
 
@@ -34,5 +35,6 @@ export const timescaleDataSource = new DataSource({
         EventScheduler1660911283007,
         CreatedByUpdatedBy1661175358951,
         Configurations1661374101903,
+        UserAvatar1661962398904,
     ],
 });

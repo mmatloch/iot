@@ -1,6 +1,8 @@
 import { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
+import _ from 'lodash';
+import { QueryFailedError } from 'typeorm';
 
 import { AccessControlSubject, createAccessControl } from '../accessControl';
 import {
@@ -124,20 +126,34 @@ const getUserIdFromParams = (id: 'me' | number, subject: AccessControlSubject): 
     return id;
 };
 
+const isConflictError = (e: unknown) => _.get(e, 'code') === '23505';
+
 export const createUsersRest: ApplicationPlugin = async (app) => {
     app.register(errorHandlerPlugin, { entityName: 'User' });
 
     app.withTypeProvider().post('/users/token', { schema: createTokenSchema }, async (request, reply) => {
         const service = createUsersService();
 
-        const token = await service.createToken(request.body);
+        // prevent 409 when multiple requests are sent simultaneously
+        let token;
+
+        try {
+            token = await service.createToken(request.body);
+        } catch (e) {
+            if (isConflictError(e)) {
+                token = await service.createToken(request.body);
+            } else {
+                throw e;
+            }
+        }
+
         return reply.status(StatusCodes.CREATED).send(token);
     });
 
     app.withTypeProvider().get('/users/socialLogin', { schema: getSocialLoginSchema }, async (request, reply) => {
         const service = createUsersService();
 
-        const socialLogin = service.getSocialLogin();
+        const socialLogin = service.getSocialLogin(request.headers.referer);
         return reply.status(StatusCodes.OK).send(socialLogin);
     });
 
