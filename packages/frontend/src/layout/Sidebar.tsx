@@ -51,8 +51,8 @@ export default function Sidebar({ isOpen, onClose }: Props) {
                 },
                 {
                     icon: <ManageAccounts />,
-                    text: t('users:management.title'),
-                    onClick: () => navigate(AppRoute.Users.Management),
+                    text: t('users:title'),
+                    onClick: () => navigate(AppRoute.Users),
                     adminOnly: true,
                 },
             ].filter((item) => {

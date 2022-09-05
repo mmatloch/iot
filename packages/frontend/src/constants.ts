@@ -19,7 +19,5 @@ export const AppRoute = {
             Google: '/auth/redirect/google',
         },
     },
-    Users: {
-        Management: '/users/management',
-    },
+    Users: '/users',
 };

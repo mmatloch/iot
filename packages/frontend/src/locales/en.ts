@@ -22,6 +22,7 @@ export const EnglishLocale: Locale = {
         },
     },
     users: {
+        title: 'Users',
         role: {
             [UserRole.Admin]: 'Admin',
             [UserRole.User]: 'User',
@@ -37,9 +38,6 @@ export const EnglishLocale: Locale = {
             firstName: 'First name',
             lastName: 'Last name',
             role: 'Role',
-        },
-        management: {
-            title: 'User management',
         },
         errors: {
             failedToLoadUsers: 'Failed to load users',

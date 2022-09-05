@@ -26,6 +26,7 @@ export interface Locale {
         };
     };
     users: {
+        title: string;
         role: {
             [UserRole.Admin]: string;
             [UserRole.User]: string;
@@ -41,9 +42,6 @@ export interface Locale {
             firstName: string;
             lastName: string;
             role: string;
-        };
-        management: {
-            title: string;
         };
         errors: {
             failedToLoadUsers: string;

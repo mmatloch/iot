@@ -13,7 +13,7 @@ const sortQuery = {
     _createdAt: SortValue.Desc,
 };
 
-export default function UserManagement() {
+export default function Users() {
     const { t } = useTranslation();
     const { page, setPage } = useQueryPage();
 
@@ -43,7 +43,7 @@ export default function UserManagement() {
     return (
         <Layout>
             <Container>
-                <h1>{t('users:management.title')}</h1>
+                <h1>{t('users:title')}</h1>
 
                 <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
                     {data._hits.map((user) => (

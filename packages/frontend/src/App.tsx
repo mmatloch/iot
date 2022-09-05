@@ -10,7 +10,7 @@ import { AppRoute } from './constants';
 import AuthRedirectGoogle from './pages/AuthRedirectGoogle';
 import AuthSignIn from './pages/AuthSignIn';
 import Home from './pages/Home';
-import UserManagement from './pages/UserManagement';
+import Users from './pages/Users';
 
 const darkTheme = createTheme({
     palette: {
@@ -39,10 +39,7 @@ function App() {
                                 <Route path={AppRoute.Auth.SignIn} element={<AuthSignIn />} />
                                 <Route path={AppRoute.Auth.Redirect.Google} element={<AuthRedirectGoogle />} />
 
-                                <Route
-                                    path={AppRoute.Users.Management}
-                                    element={<ProtectedRoute element={<UserManagement />} />}
-                                />
+                                <Route path={AppRoute.Users} element={<ProtectedRoute element={<Users />} />} />
                             </Routes>
                         </AuthProvider>
                     </BrowserRouter>

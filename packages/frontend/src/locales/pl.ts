@@ -22,6 +22,7 @@ export const PolishLocale: Locale = {
         },
     },
     users: {
+        title: 'Użytkownicy',
         role: {
             [UserRole.Admin]: 'Admin',
             [UserRole.User]: 'Użytkownik',
@@ -37,9 +38,6 @@ export const PolishLocale: Locale = {
             firstName: 'Imię',
             lastName: 'Nazwisko',
             role: 'Rola',
-        },
-        management: {
-            title: 'Zarządzanie użytkownikami',
         },
         errors: {
             failedToLoadUsers: 'Nie udało się załadować użytkowników',
