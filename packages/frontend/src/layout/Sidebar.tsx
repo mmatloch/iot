@@ -1,5 +1,5 @@
 import { useAuth } from '@hooks/useAuth';
-import { Home, ManageAccounts } from '@mui/icons-material';
+import { Home, ManageAccounts, SpeakerPhone } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { FC, ReactNode, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -48,6 +48,11 @@ export default function Sidebar({ isOpen, onClose }: Props) {
                     icon: <Home />,
                     text: 'Home',
                     onClick: () => navigate(AppRoute.Home),
+                },
+                {
+                    icon: <SpeakerPhone />,
+                    text: t('devices:title'),
+                    onClick: () => navigate(AppRoute.Devices),
                 },
                 {
                     icon: <ManageAccounts />,

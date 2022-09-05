@@ -7,8 +7,10 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { AppRoute } from './constants';
+import { ErrorBoundary } from './ErrorBoundary';
 import AuthRedirectGoogle from './pages/AuthRedirectGoogle';
 import AuthSignIn from './pages/AuthSignIn';
+import Devices from './pages/Devices';
 import Home from './pages/Home';
 import Users from './pages/Users';
 
@@ -28,24 +30,27 @@ const queryClient = new QueryClient({
 
 function App() {
     return (
-        <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <QueryClientProvider client={queryClient}>
-                <SnackbarProvider maxSnack={5}>
-                    <BrowserRouter>
-                        <AuthProvider>
-                            <Routes>
-                                <Route index element={<ProtectedRoute element={<Home />} />} />
-                                <Route path={AppRoute.Auth.SignIn} element={<AuthSignIn />} />
-                                <Route path={AppRoute.Auth.Redirect.Google} element={<AuthRedirectGoogle />} />
+        <ErrorBoundary>
+            <ThemeProvider theme={darkTheme}>
+                <CssBaseline />
+                <QueryClientProvider client={queryClient}>
+                    <SnackbarProvider maxSnack={5}>
+                        <BrowserRouter>
+                            <AuthProvider>
+                                <Routes>
+                                    <Route index element={<ProtectedRoute element={<Home />} />} />
+                                    <Route path={AppRoute.Auth.SignIn} element={<AuthSignIn />} />
+                                    <Route path={AppRoute.Auth.Redirect.Google} element={<AuthRedirectGoogle />} />
 
-                                <Route path={AppRoute.Users} element={<ProtectedRoute element={<Users />} />} />
-                            </Routes>
-                        </AuthProvider>
-                    </BrowserRouter>
-                </SnackbarProvider>
-            </QueryClientProvider>
-        </ThemeProvider>
+                                    <Route path={AppRoute.Users} element={<ProtectedRoute element={<Users />} />} />
+                                    <Route path={AppRoute.Devices} element={<ProtectedRoute element={<Devices />} />} />
+                                </Routes>
+                            </AuthProvider>
+                        </BrowserRouter>
+                    </SnackbarProvider>
+                </QueryClientProvider>
+            </ThemeProvider>
+        </ErrorBoundary>
     );
 }
 

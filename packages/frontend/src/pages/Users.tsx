@@ -1,17 +1,12 @@
 import { useUsers } from '@api/usersApi';
+import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
-import { SortValue } from '@definitions/searchTypes';
 import UserCard from '@features/users/components/UserCard';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
 import { Box, Container, Grid, Pagination } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-
-const sortQuery = {
-    _createdAt: SortValue.Desc,
-};
 
 export default function Users() {
     const { t } = useTranslation();
@@ -19,21 +14,19 @@ export default function Users() {
 
     const { data, isSuccess, isLoading, isPreviousData } = useUsers({
         page,
-        sort: sortQuery,
     });
-
-    const { enqueueSnackbar } = useSnackbar();
 
     if (isLoading) {
         return <FullScreenLoader />;
     }
 
     if (!isSuccess) {
-        enqueueSnackbar(t('users:errors.failedToLoadUsers'), {
-            variant: 'error',
-        });
-
-        return <FullScreenLoader />;
+        return (
+            <ErrorDialog
+                title={t('generic:errors.failedToLoadData')}
+                message={t('generic:errors.noInternetConnection')}
+            />
+        );
     }
 
     const onPageChange = (_event: ChangeEvent<unknown>, value: number) => {

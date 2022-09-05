@@ -8,6 +8,11 @@ export const PolishLocale: Locale = {
         edit: 'Edytuj',
         save: 'Zapisz',
         cancel: 'Anuluj',
+        retry: 'Ponów próbę',
+        errors: {
+            failedToLoadData: 'Nie udało się załadować danych',
+            noInternetConnection: 'Sprawdź połączenie internetowe i spróbuj ponownie',
+        },
     },
     i18n: {
         changeLanguage: 'Zmień język',
@@ -40,11 +45,13 @@ export const PolishLocale: Locale = {
             role: 'Rola',
         },
         errors: {
-            failedToLoadUsers: 'Nie udało się załadować użytkowników',
             failedToUpdateUser: 'Nie udało się zaktualizować użytkownika',
         },
     },
     profile: {
         editProfile: 'Edytuj profil',
+    },
+    devices: {
+        title: 'Urządzenia',
     },
 };

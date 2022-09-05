@@ -12,6 +12,11 @@ export interface Locale {
         edit: string;
         save: string;
         cancel: string;
+        retry: string;
+        errors: {
+            failedToLoadData: string;
+            noInternetConnection: string;
+        };
     };
     i18n: {
         changeLanguage: string;
@@ -44,11 +49,13 @@ export interface Locale {
             role: string;
         };
         errors: {
-            failedToLoadUsers: string;
             failedToUpdateUser: string;
         };
     };
     profile: {
         editProfile: string;
+    };
+    devices: {
+        title: string;
     };
 }
