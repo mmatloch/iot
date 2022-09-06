@@ -1,3 +1,4 @@
+import { DeviceState } from '@definitions/deviceTypes';
 import { Locale } from '@definitions/localeTypes';
 import { UserRole, UserState } from '@definitions/userTypes';
 
@@ -53,5 +54,25 @@ export const PolishLocale: Locale = {
     },
     devices: {
         title: 'Urządzenia',
+        state: {
+            [DeviceState.Active]: 'Aktywne',
+            [DeviceState.Inactive]: 'Nieaktywne',
+            [DeviceState.Unconfigured]: 'Nieskonfigurowane',
+            [DeviceState.Interviewing]: 'Przesłuchiwane',
+            [DeviceState.New]: 'Nowe',
+            [DeviceState.Error]: 'Błąd',
+        },
+    },
+    configurations: {
+        title: 'Konfiguracje',
+        entity: {
+            data: {
+                topicPrefix: 'Prefiks tematu MQTT',
+            },
+        },
+        errors: {
+            failedToCreateConfiguration: 'Nie udało się stworzyć konfiguracji',
+            failedToUpdateConfiguration: 'Nie udało się zaktualizować konfiguracji',
+        },
     },
 };

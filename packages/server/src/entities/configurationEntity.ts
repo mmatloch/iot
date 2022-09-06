@@ -31,6 +31,7 @@ const zigbeeBridgeConfigurationSchema = Type.Object(
         type: Type.Literal(ConfigurationType.ZigbeeBridge),
 
         topicPrefix: Type.String(),
+        allowDevicesToJoin: Type.Boolean(),
     },
     {
         additionalProperties: false,

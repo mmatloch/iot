@@ -1,3 +1,4 @@
+import { DeviceState } from './deviceTypes';
 import { UserRole, UserState } from './userTypes';
 
 export enum AvailableLanguage {
@@ -32,15 +33,8 @@ export interface Locale {
     };
     users: {
         title: string;
-        role: {
-            [UserRole.Admin]: string;
-            [UserRole.User]: string;
-        };
-        state: {
-            [UserState.Active]: string;
-            [UserState.Inactive]: string;
-            [UserState.PendingApproval]: string;
-        };
+        role: Record<UserRole, string>;
+        state: Record<UserState, string>;
         entity: {
             email: string;
             name: string;
@@ -57,5 +51,18 @@ export interface Locale {
     };
     devices: {
         title: string;
+        state: Record<DeviceState, string>;
+    };
+    configurations: {
+        title: string;
+        entity: {
+            data: {
+                topicPrefix: string;
+            };
+        };
+        errors: {
+            failedToCreateConfiguration: string;
+            failedToUpdateConfiguration: string;
+        };
     };
 }

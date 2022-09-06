@@ -32,7 +32,7 @@ export const createZigbeeDataPublisher = (mqttClient: MqttClient) => {
         zigbeeBridgeConfiguration = undefined;
     };
 
-    const publish: ZigbeeDataPublisher['publish'] = async (device, data) => {
+    const publishToDevice: ZigbeeDataPublisher['publishToDevice'] = async (device, data) => {
         if (!zigbeeBridgeConfiguration) {
             logger.debug({
                 msg: `Ignoring to publish data to the '${device.displayName}' device the Zigbee bridge is disabled`,
@@ -100,7 +100,7 @@ export const createZigbeeDataPublisher = (mqttClient: MqttClient) => {
     };
 
     dataPublisher = {
-        publish,
+        publishToDevice,
         initialize,
         finalize,
     };

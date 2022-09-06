@@ -12,6 +12,9 @@ export const ApiRoute = {
     Devices: {
         Root: addPrefix('devices'),
     },
+    Configurations: {
+        Root: addPrefix('configurations'),
+    },
 };
 
 export const AppRoute = {
