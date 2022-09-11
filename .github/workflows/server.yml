@@ -16,7 +16,7 @@ jobs:
     name: Run tests
     runs-on: ubuntu-latest
     env:
-      APPS: server,google_stub,tests
+      APPS: server,stubs,tests
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3

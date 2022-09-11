@@ -14,8 +14,8 @@ services:
       GOOGLE_OAUTH2_CLIENT_ID: test.apps.googleusercontent.com
       GOOGLE_OAUTH2_CLIENT_SECRET: test
       GOOGLE_OAUTH2_REDIRECT_URI: http://localhost:8080/auth/redirect/google
-      GOOGLE_OAUTH2_AUTH_BASE_URL: http://localhost:8080/google/oauth2/auth
-      GOOGLE_OAUTH2_TOKEN_URL: http://nginx:8080/google/oauth2/token
+      GOOGLE_OAUTH2_AUTH_BASE_URL: http://localhost:8080/stubs/google/oauth2/auth
+      GOOGLE_OAUTH2_TOKEN_URL: http://nginx:8080/stubs/google/oauth2/token
       JWT_SECRET: secret
       ROOT_USER_EMAIL: test-admin@example.com
       MQTT: mqtt://mosquitto:1883
@@ -56,14 +56,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  google_stub:
-    image: iot-google-stub
+  stubs:
+    image: iot-stubs
     volumes:
-      - ../../google-stub/src:/usr/app/packages/google-stub/src
-      - ../../google-stub/config:/usr/app/packages/google-stub/config
+      - ../../stubs/src:/usr/app/packages/stubs/src
+      - ../../stubs/config:/usr/app/packages/stubs/config
     environment:
       OAUTH2_CLIENT_ID: test.apps.googleusercontent.com
       OAUTH2_CLIENT_SECRET: test
+      MQTT: mqtt://mosquitto:1883
 
   tests:
     image: iot-tests

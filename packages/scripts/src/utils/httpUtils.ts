@@ -2,7 +2,7 @@ import { request } from 'http';
 
 export enum StatusApiUrl {
     Server = 'http://localhost:8080/api/_status',
-    GoogleStub = 'http://localhost:8080/google/_status',
+    Stubs = 'http://localhost:8080/stubs/_status',
 }
 
 const sendRequest = (url: URL) => {

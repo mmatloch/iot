@@ -23,6 +23,11 @@ const schema = Type.Object({
             environment: 'OAUTH2_CLIENT_SECRET',
         }),
     }),
+    mqttBroker: Type.Object({
+        url: Type.String({
+            environment: 'MQTT',
+        }),
+    }),
 });
 
 const config = createConfig({
