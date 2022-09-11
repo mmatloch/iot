@@ -5,6 +5,7 @@ export const generateConfigurationData = {
         return {
             type: 'ZIGBEE_BRIDGE',
             topicPrefix: 'zigbee2mqtt',
+            permitDevicesJoin: false,
         };
     },
 };

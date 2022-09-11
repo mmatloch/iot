@@ -3,12 +3,13 @@ import { promisify } from 'util';
 import { Validator, createValidator } from '@common/validator';
 import { Static, TSchema } from '@sinclair/typebox';
 import toCamelCase from 'camelcase-keys';
-import fastq, { queueAsPromised } from 'fastq';
+import fastq from 'fastq';
 import _ from 'lodash';
 import { IClientSubscribeOptions, connect } from 'mqtt';
 
 import { getConfig } from '../config';
 import { getLogger } from '../logger';
+import { MqttMessageHandler, createMqttHandlerStore } from './mqttHandlerStore';
 
 const config = getConfig();
 const logger = getLogger();
@@ -25,15 +26,20 @@ interface AddHandlerOptions<Schema extends TSchema> {
     topic: string;
 }
 
-type AddHandlerFn = <Schema extends TSchema>(opts: AddHandlerOptions<Schema>) => Promise<void>;
-type RemoveHandlerFn = (topic: string) => Promise<void>;
+type AddHandlerFn = <Schema extends TSchema>(opts: AddHandlerOptions<Schema>) => Promise<MqttMessageHandler>;
 
-type HandlerMap = Map<string, queueAsPromised<unknown, void>>;
+interface RemoveHandlerOptions {
+    unsubscribe?: boolean;
+}
+
+type RemoveHandlerFn = (handler: MqttMessageHandler, opts?: RemoveHandlerOptions) => Promise<void>;
+type RemoveHandlersByTopicFn = (topic: string, opts?: RemoveHandlerOptions) => Promise<void>;
 
 export interface MqttClient {
     initialize: () => Promise<void>;
     addHandler: AddHandlerFn;
     removeHandler: RemoveHandlerFn;
+    removeHandlersByTopic: RemoveHandlersByTopicFn;
     subscribe: SubscribeFn;
     unsubscribe: UnsubscribeFn;
     publish: PublishFn;
@@ -46,22 +52,22 @@ export const createMqttClient = (): MqttClient => {
     const unsubscribeAsPromised = promisify(client.unsubscribe).bind(client);
     const publishAsPromised = promisify(client.publish).bind(client);
 
-    const handlerMap: HandlerMap = new Map();
+    const handlerStore = createMqttHandlerStore();
     const subscriptionSet: Set<string> = new Set();
 
     const initialize = async (): Promise<void> => {
         client.on('message', async (topic, payload) => {
             logger.trace(`Received a message from the topic '${topic}'`);
 
-            const handler = handlerMap.get(topic);
+            const handlers = handlerStore.get(topic);
 
-            if (!handler) {
+            if (!handlers) {
                 logger.warn(`No handler found for the topic '${topic}'`);
 
                 return;
             }
 
-            await handler.push(payload);
+            await Promise.all(handlers.map((handler) => handler.queue.push(payload)));
         });
 
         return new Promise((resolve, reject) => {
@@ -118,19 +124,37 @@ export const createMqttClient = (): MqttClient => {
         };
 
         const queue = fastq.promise(wrappedOnMessage, concurrency);
-
-        handlerMap.set(topic, queue);
+        const handler = handlerStore.add(topic, queue);
 
         if (!subscriptionSet.has(topic)) {
             await subscribe(topic);
             subscriptionSet.add(topic);
         }
+
+        return handler;
     };
 
-    const removeHandler: RemoveHandlerFn = async (topic) => {
-        handlerMap.delete(topic);
+    const removeHandler: RemoveHandlerFn = async (handler, opts) => {
+        handlerStore.deleteHandler(handler);
 
-        if (subscriptionSet.has(topic)) {
+        const optsWithDefaults = _.defaults(opts, {
+            unsubscribe: true,
+        });
+
+        if (optsWithDefaults.unsubscribe && subscriptionSet.has(handler.topic)) {
+            await unsubscribe(handler.topic);
+            subscriptionSet.delete(handler.topic);
+        }
+    };
+
+    const removeHandlersByTopic: RemoveHandlersByTopicFn = async (topic, opts) => {
+        handlerStore.deleteTopic(topic);
+
+        const optsWithDefaults = _.defaults(opts, {
+            unsubscribe: true,
+        });
+
+        if (optsWithDefaults.unsubscribe && subscriptionSet.has(topic)) {
             await unsubscribe(topic);
             subscriptionSet.delete(topic);
         }
@@ -146,6 +170,7 @@ export const createMqttClient = (): MqttClient => {
         initialize,
         addHandler,
         removeHandler,
+        removeHandlersByTopic,
         unsubscribe,
         subscribe,
         publish,

@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { ArrayContains, Raw } from 'typeorm';
 import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 import { MqttClient } from '../../clients/mqttClient';
@@ -45,7 +44,11 @@ export const createZigbeeBridge = (mqttClient: MqttClient) => {
         }
     };
 
-    const onUpdatedConfiguration = async (configuration: Configuration, updatedColumns: ColumnMetadata[]) => {
+    const onUpdatedConfiguration = async (
+        configuration: Configuration,
+        oldConfiguration: Configuration,
+        updatedColumns: ColumnMetadata[],
+    ) => {
         if (isZigbeeBridgeConfiguration(configuration)) {
             if (configuration.state === ConfigurationState.Inactive) {
                 dataPublisher.finalize();
@@ -55,13 +58,17 @@ export const createZigbeeBridge = (mqttClient: MqttClient) => {
 
             const updatedFields = _.uniq(updatedColumns.map((columnMetadata) => columnMetadata.propertyName));
 
-            if (updatedFields.includes('data')) {
+            const hasTopicPrefixChanged = configuration.data.topicPrefix !== oldConfiguration.data.topicPrefix;
+
+            if (hasTopicPrefixChanged) {
                 dataPublisher.finalize();
                 await dataReceiver.finalize();
             }
 
-            dataPublisher.initialize(configuration.data);
-            await dataReceiver.initialize(configuration.data);
+            if (updatedFields.includes('state') || hasTopicPrefixChanged) {
+                dataPublisher.initialize(configuration.data);
+                await dataReceiver.initialize(configuration.data);
+            }
         }
     };
 

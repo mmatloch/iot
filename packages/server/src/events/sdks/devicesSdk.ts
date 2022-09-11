@@ -32,7 +32,7 @@ export const createDevicesSdk = () => {
 
     const publishData = async (device: Device, data: Record<string, unknown>) => {
         const dataPublisher = getDataPublisher(device);
-        await dataPublisher.publish(device, data);
+        await dataPublisher.publishToDevice(device, data);
     };
 
     return {

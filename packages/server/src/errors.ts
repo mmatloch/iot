@@ -14,6 +14,8 @@ export enum ErrorCode {
     EventTriggerCircularReference,
     InvalidEventMetadata,
     FailedToTriggerEvent,
+    NoDataPublisherForConfiguration,
+    CannotRequestBridgeForConfiguration,
 }
 
 const prefix = 'SRV';
@@ -122,5 +124,19 @@ export const Errors = {
             ...opts,
             errorCode: getErrorCode(ErrorCode.FailedToTriggerEvent),
             message: `Failed to trigger the '${displayName}' event`,
+        }),
+
+    noDataPublisherForConfiguration: (configurationType: string, opts?: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.notFound({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.NoDataPublisherForConfiguration),
+            message: `No data publisher for configuration with type '${configurationType}'`,
+        }),
+
+    cannotRequestBridgeForConfiguration: (configurationType: string, opts?: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.conflict({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.CannotRequestBridgeForConfiguration),
+            message: `Cannot request bridge for configuration with type '${configurationType}'`,
         }),
 };

@@ -1,11 +1,15 @@
 import { Raw } from 'typeorm';
 
+import { GenericDataPublisher } from '../bridges/generic/genericDataPublisher';
+import { getZigbeeDataPublisher } from '../bridges/zigbee/zigbeeDataPublisher';
 import { Configuration, ConfigurationDto, ConfigurationType } from '../entities/configurationEntity';
+import { Errors } from '../errors';
 import { createConfigurationsRepository } from '../repositories/configurationsRepository';
 import { GenericService } from './genericService';
 
 export interface ConfigurationsService extends GenericService<Configuration, ConfigurationDto> {
     searchByDataType: (type: ConfigurationType) => Promise<Configuration[]>;
+    getBridgeDataPublisher: (configuration: Configuration) => GenericDataPublisher;
 }
 
 export const createConfigurationsService = (): ConfigurationsService => {
@@ -45,6 +49,16 @@ export const createConfigurationsService = (): ConfigurationsService => {
         return repository.save(repository.merge(configurationClone, updatedConfiguration));
     };
 
+    const getBridgeDataPublisher: ConfigurationsService['getBridgeDataPublisher'] = (configuration) => {
+        switch (configuration.data.type) {
+            case ConfigurationType.ZigbeeBridge:
+                return getZigbeeDataPublisher();
+
+            default:
+                throw Errors.noDataPublisherForConfiguration(configuration.data.type);
+        }
+    };
+
     return {
         create,
         search,
@@ -52,5 +66,6 @@ export const createConfigurationsService = (): ConfigurationsService => {
         searchByDataType,
         findByIdOrFail,
         update,
+        getBridgeDataPublisher,
     };
 };
