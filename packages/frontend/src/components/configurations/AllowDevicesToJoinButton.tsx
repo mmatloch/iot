@@ -1,8 +1,9 @@
-import { useUpdateConfiguration } from '@api/configurationsApi';
+import { requestBridge } from '@api/bridgeApi';
+import { BridgeRequestType } from '@definitions/bridgeTypes';
 import { Configuration } from '@definitions/configurationTypes';
-import { Button } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -14,29 +15,32 @@ interface Props {
 export default function AllowDevicesToJoinButton({ configuration, onSuccess, children }: Props) {
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslation();
-    const { mutateAsync } = useUpdateConfiguration(configuration);
+    const [isLoading, setLoading] = useState(false);
 
-    const updateConfiguration = async () => {
+    const onClickHandler = async () => {
         const payload = {
-            data: {
-                ...configuration.data,
-                allowDevicesToJoin: true,
-            },
+            requestType: BridgeRequestType.PermitJoin,
+            value: true,
+            time: 300,
         };
 
+        setLoading(true);
+
         try {
-            await mutateAsync(payload);
+            await requestBridge(configuration, payload);
             onSuccess();
         } catch (e) {
-            enqueueSnackbar(t('configurations:errors.failedToUpdateConfiguration'), {
+            enqueueSnackbar(t('bridge:errors.failedToRequestBridge'), {
                 variant: 'error',
             });
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <Button color="error" variant="contained" size="large" onClick={updateConfiguration}>
+        <LoadingButton color="error" variant="contained" size="large" onClick={onClickHandler} loading={isLoading}>
             {children}
-        </Button>
+        </LoadingButton>
     );
 }

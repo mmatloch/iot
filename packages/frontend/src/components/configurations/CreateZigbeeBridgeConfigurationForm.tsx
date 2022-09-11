@@ -31,7 +31,7 @@ export default function CreateZigbeeBridgeConfigurationForm({ onSubmitSuccess }:
         const dto: ConfigurationDto = {
             data: {
                 type: ConfigurationType.ZigbeeBridge,
-                allowDevicesToJoin: false,
+                permitDevicesJoin: false,
                 ...payload,
             },
             state: ConfigurationState.Active,

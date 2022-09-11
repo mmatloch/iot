@@ -75,4 +75,9 @@ export const EnglishLocale: Locale = {
             failedToUpdateConfiguration: 'Failed to update configuration',
         },
     },
+    bridge: {
+        errors: {
+            failedToRequestBridge: 'Failed to send a request to the bridge',
+        },
+    },
 };

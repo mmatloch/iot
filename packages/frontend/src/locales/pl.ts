@@ -75,4 +75,9 @@ export const PolishLocale: Locale = {
             failedToUpdateConfiguration: 'Nie udało się zaktualizować konfiguracji',
         },
     },
+    bridge: {
+        errors: {
+            failedToRequestBridge: 'Nie udało się wysłać żądania do mostu',
+        },
+    },
 };

@@ -12,7 +12,8 @@ export enum ConfigurationType {
 interface ZigbeeBridgeConfiguration {
     type: ConfigurationType.ZigbeeBridge;
     topicPrefix: string;
-    allowDevicesToJoin: boolean;
+    permitDevicesJoin: boolean;
+    permitDevicesJoinTimeout?: string;
 }
 
 export type ConfigurationDto = {

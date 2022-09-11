@@ -65,4 +65,9 @@ export interface Locale {
             failedToUpdateConfiguration: string;
         };
     };
+    bridge: {
+        errors: {
+            failedToRequestBridge: string;
+        };
+    };
 }
