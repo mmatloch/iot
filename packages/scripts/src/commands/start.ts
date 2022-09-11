@@ -15,15 +15,6 @@ import {
     PROJECT_NAME,
 } from '../utils/constants';
 
-interface Flags {
-    env: string;
-    ci: string;
-    imageTag: string;
-    imageRepo: string;
-    apps: string;
-    pull?: boolean;
-}
-
 export class StartCommand extends Command {
     static description = 'Start selected environment';
 
@@ -73,7 +64,7 @@ export class StartCommand extends Command {
     };
 
     async run() {
-        const { flags } = await this.parse<Flags, Record<string, unknown>>(StartCommand);
+        const { flags } = await this.parse(StartCommand);
 
         const isCiOrLocal = flags.ci || flags.env === 'local';
 

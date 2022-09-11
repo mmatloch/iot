@@ -3,11 +3,6 @@ import { x } from 'qqjs';
 
 import { PATH, PROJECT_NAME } from '../utils/constants';
 
-interface Flags {
-    env: string;
-    ci: string;
-}
-
 export class StopCommand extends Command {
     static description = 'Stop selected environment';
 
@@ -25,7 +20,7 @@ export class StopCommand extends Command {
     };
 
     async run() {
-        const { flags } = await this.parse<Flags, Record<string, unknown>>(StopCommand);
+        const { flags } = await this.parse(StopCommand);
 
         if (flags.ci || flags.env === 'local') {
             await x(

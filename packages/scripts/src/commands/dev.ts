@@ -6,10 +6,6 @@ import { x } from 'qqjs';
 import { BuildCommand } from './build';
 import { StartCommand } from './start';
 
-interface Flags {
-    build: boolean;
-}
-
 export default class DevCommand extends Command {
     static description = 'Build Docker images';
 

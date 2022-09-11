@@ -8,6 +8,7 @@ import { x } from 'qqjs';
 import { PATH, PROJECT_NAME, TYPEORM } from '../../utils/constants';
 
 interface Flags {}
+interface GlobalFlags {}
 
 interface Args {
     migrationName: string;
@@ -25,7 +26,7 @@ export class MigrationGenerateCommand extends Command {
     ];
 
     async run() {
-        const { args } = await this.parse<Flags, Args>(MigrationGenerateCommand);
+        const { args } = await this.parse<Flags, GlobalFlags, Args>(MigrationGenerateCommand);
 
         const cmd = `${TYPEORM.CliCommand} -d ${TYPEORM.DataSourcePath} migration:generate ${join(
             TYPEORM.MigrationsPath,

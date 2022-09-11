@@ -31,10 +31,6 @@ interface Question {
     data: Record<string, QuestionDataEntry>;
 }
 
-interface Flags {
-    fresh: boolean;
-}
-
 export class SetupCommand extends Command {
     private state!: SetupState;
 
@@ -48,7 +44,7 @@ export class SetupCommand extends Command {
     };
 
     async run() {
-        const { flags } = await this.parse<Flags, Record<string, unknown>>(SetupCommand);
+        const { flags } = await this.parse(SetupCommand);
 
         const TIME_ZONE = readFileSync('/etc/timezone', { encoding: 'utf-8' }).trim();
 
