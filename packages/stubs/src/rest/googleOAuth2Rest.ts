@@ -87,13 +87,13 @@ export const createGoogleOAuth2Rest = (app: Application) => {
         },
     );
 
-    app.withTypeProvider().get('/google//oauth2/auth', { schema: selectUserSchema }, async (request, reply) => {
+    app.withTypeProvider().get('/google/oauth2/auth', { schema: selectUserSchema }, async (request, reply) => {
         const selectUserContent = await readFile('./src/selectUser.html', { encoding: 'utf-8' });
 
         return reply.type('text/html').send(selectUserContent);
     });
 
-    app.withTypeProvider().post('/google//oauth2/auth', { schema: authSchema }, async (request, reply) => {
+    app.withTypeProvider().post('/google/oauth2/auth', { schema: authSchema }, async (request, reply) => {
         const service = createGoogleOAuth2Service();
 
         const { redirect_uri: redirectUri, response_type: responseType, client_id: clientId, scope } = request.query;
