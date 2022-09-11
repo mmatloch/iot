@@ -53,7 +53,7 @@ enum OAuth2Error {
 
 const config = getConfig();
 
-export const createOAuth2Service = () => {
+export const createGoogleOAuth2Service = () => {
     const createError = (error: OAuth2Error, description: string) => {
         throw new BaseError({ message: description, errorCode: error });
     };

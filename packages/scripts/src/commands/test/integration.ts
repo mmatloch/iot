@@ -4,12 +4,6 @@ import { x } from 'qqjs';
 import { PATH, PROJECT_NAME } from '../../utils/constants';
 import { StatusApiUrl, waitForServer } from '../../utils/httpUtils';
 
-interface Flags {
-    watchAll: boolean;
-    detectOpenHandles: boolean;
-    group?: string;
-}
-
 export class TestIntegrationCommand extends Command {
     static description = 'Run integration tests';
 
@@ -28,7 +22,7 @@ export class TestIntegrationCommand extends Command {
     };
 
     async run() {
-        const { flags } = await this.parse<Flags, Record<string, unknown>>(TestIntegrationCommand);
+        const { flags } = await this.parse(TestIntegrationCommand);
 
         const cmd = `docker compose -p ${PROJECT_NAME} -f ${PATH.DeployLocal.DockerCompose} run -it tests`;
         const args = [`--watchAll=${flags.watchAll}`, '--selectProjects=integration', '--runInBand'];
@@ -42,7 +36,7 @@ export class TestIntegrationCommand extends Command {
         }
 
         await waitForServer(new URL(StatusApiUrl.Server));
-        await waitForServer(new URL(StatusApiUrl.GoogleStub));
+        await waitForServer(new URL(StatusApiUrl.Stubs));
 
         await x(`${cmd} ${args.join(' ')}`);
     }

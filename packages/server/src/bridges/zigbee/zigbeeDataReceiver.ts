@@ -58,7 +58,7 @@ export const createZigbeeDataReceiver = (mqttClient: MqttClient) => {
 
             if (previousState && device.state === DeviceState.Inactive) {
                 try {
-                    await mqttClient.removeHandler(topic);
+                    await mqttClient.removeHandlersByTopic(topic);
                     deviceSubMap.set(device._id, device.state);
                     subscribedTopics.delete(topic);
                 } catch (e) {
@@ -98,7 +98,7 @@ export const createZigbeeDataReceiver = (mqttClient: MqttClient) => {
         await Promise.all(
             Array.from(subscribedTopics).map(async (topic) => {
                 try {
-                    await mqttClient.removeHandler(topic);
+                    await mqttClient.removeHandlersByTopic(topic);
                     subscribedTopics.delete(topic);
                 } catch (e) {
                     logger.error({

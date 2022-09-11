@@ -3,7 +3,8 @@ import _ from 'lodash';
 
 import { getConfig } from './config';
 import { getLogger } from './logger';
-import { createOAuth2Rest } from './rest/oAuth2Rest';
+import { createGoogleOAuth2Rest } from './rest/googleOAuth2Rest';
+import { createZigbee2mqttService } from './services/zigbee2mqttService';
 
 const logger = getLogger();
 const config = getConfig();
@@ -17,7 +18,9 @@ createApplication({
     urlPrefix: config.app.urlPrefix,
     hooks: {
         beforeReady: async (app) => {
-            createOAuth2Rest(app);
+            createGoogleOAuth2Rest(app);
+
+            await createZigbee2mqttService().initialize();
         },
     },
 });

@@ -1,14 +1,26 @@
+import { Validator, createValidator } from '@common/validator';
+import { Type } from '@sinclair/typebox';
+import _ from 'lodash';
+
 import { MqttClient } from '../../clients/mqttClient';
+import { MqttMessageHandler } from '../../clients/mqttHandlerStore';
 import { ZigbeeBridgeConfiguration } from '../../entities/configurationEntity';
 import { DeviceState } from '../../entities/deviceEntity';
 import { EventTriggerType } from '../../events/eventDefinitions';
 import { eventTriggerInNewContext } from '../../events/eventTriggerInNewContext';
 import { getLogger } from '../../logger';
 import { createEventsService } from '../../services/eventsService';
+import { DeferredPromise } from '../../utils/deferredPromise';
 import { GenericDataPublisher } from '../generic/genericDataPublisher';
+import { ZIGBEE_BRIDGE_REQUEST_TYPE_MAP, requestBridgeDataSchema } from './zigbeeDefinitions';
 import { ZigbeeErrors } from './zigbeeErrors';
 
 const logger = getLogger();
+const validator: Validator = createValidator();
+
+const requestBridgeResponseSchema = Type.Object({
+    transaction: Type.Integer(),
+});
 
 interface ZigbeeDataPublisher extends GenericDataPublisher {
     initialize: (configuration: ZigbeeBridgeConfiguration) => void;
@@ -99,10 +111,77 @@ export const createZigbeeDataPublisher = (mqttClient: MqttClient) => {
         );
     };
 
+    const requestBridge: ZigbeeDataPublisher['requestBridge'] = async (data) => {
+        validator.validateOrThrow(requestBridgeDataSchema, data);
+
+        const requestType = ZIGBEE_BRIDGE_REQUEST_TYPE_MAP[data.requestType];
+
+        if (!zigbeeBridgeConfiguration) {
+            throw ZigbeeErrors.failedToRequestBridge({
+                message: 'Zigbee bridge is disabled',
+            });
+        }
+
+        const transactionId = Number(_.uniqueId());
+
+        const requestTopic = `${zigbeeBridgeConfiguration?.topicPrefix}/bridge/request/${requestType}`;
+        const responseTopic = `${zigbeeBridgeConfiguration?.topicPrefix}/bridge/response/${requestType}`;
+
+        const promise = new DeferredPromise<void>();
+
+        let timeoutRef: undefined | NodeJS.Timeout;
+        let handler: undefined | MqttMessageHandler;
+
+        const cancelTimeout = () => clearTimeout(timeoutRef);
+        const removeHandler = () => {
+            if (handler) {
+                mqttClient.removeHandler(handler);
+            }
+        };
+
+        handler = await mqttClient.addHandler({
+            topic: responseTopic,
+            onMessage: async (message) => {
+                if (message.transaction === transactionId) {
+                    cancelTimeout();
+                    removeHandler();
+                    promise.resolve();
+                }
+            },
+            onError: (e) => {
+                cancelTimeout();
+                removeHandler();
+                throw e;
+            },
+            schema: requestBridgeResponseSchema,
+        });
+
+        try {
+            await mqttClient.publish(requestTopic, {
+                ...data,
+                transaction: transactionId,
+            });
+        } catch (e) {
+            const msg = `Failed to publish data to the '${requestTopic}' topic`;
+
+            throw ZigbeeErrors.failedToPublishData({
+                message: msg,
+                cause: e as Error,
+            });
+        }
+
+        timeoutRef = setTimeout(() => {
+            promise.reject(new Error('Timeout'));
+        }, 1000 * 10);
+
+        return promise;
+    };
+
     dataPublisher = {
         publishToDevice,
         initialize,
         finalize,
+        requestBridge,
     };
 
     return dataPublisher;

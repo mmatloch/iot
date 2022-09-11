@@ -7,7 +7,7 @@ export enum EntitySubscriberEvent {
 }
 
 export type EntityListenerAfterInsertCallback<T> = (entity: T) => void;
-export type EntityListenerAfterUpdateCallback<T> = (entity: T, updatedColumns: ColumnMetadata[]) => void;
+export type EntityListenerAfterUpdateCallback<T> = (entity: T, oldEntity: T, updatedColumns: ColumnMetadata[]) => void;
 export type EntityListenerAfterRemoveCallback<T> = (entity?: T) => void;
 
 export interface CreateEntitySubscriber<TEntity> {

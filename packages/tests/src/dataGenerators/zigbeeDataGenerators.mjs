@@ -216,7 +216,7 @@ export const generateZigbeeBridgeInfo = () => {
             },
             type: 'zStack3x0',
         },
-        permit_join: true,
+        permit_join: false,
         restart_required: false,
         version: '1.25.1',
     };

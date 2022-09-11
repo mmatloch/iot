@@ -45,16 +45,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         "reference": "workspace:packages/frontend"\
       },\
       {\
-        "name": "google-stub",\
-        "reference": "workspace:packages/google-stub"\
-      },\
-      {\
         "name": "scripts",\
         "reference": "workspace:packages/scripts"\
       },\
       {\
         "name": "server",\
         "reference": "workspace:packages/server"\
+      },\
+      {\
+        "name": "stubs",\
+        "reference": "workspace:packages/stubs"\
       },\
       {\
         "name": "tests",\
@@ -70,10 +70,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
       ["@common/logger", ["workspace:packages/common-logger"]],\
       ["@common/validator", ["workspace:packages/common-validator"]],\
       ["frontend", ["workspace:packages/frontend"]],\
-      ["google-stub", ["workspace:packages/google-stub"]],\
       ["iot", ["workspace:."]],\
       ["scripts", ["workspace:packages/scripts"]],\
       ["server", ["workspace:packages/server"]],\
+      ["stubs", ["workspace:packages/stubs"]],\
       ["tests", ["workspace:packages/tests"]]\
     ],\
     "fallbackPool": [\
@@ -6222,33 +6222,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["google-stub", [\
-        ["workspace:packages/google-stub", {\
-          "packageLocation": "./packages/google-stub/",\
-          "packageDependencies": [\
-            ["google-stub", "workspace:packages/google-stub"],\
-            ["@common/application", "workspace:packages/common-application"],\
-            ["@common/config", "workspace:packages/common-config"],\
-            ["@common/errors", "workspace:packages/common-errors"],\
-            ["@common/logger", "workspace:packages/common-logger"],\
-            ["@common/validator", "workspace:packages/common-validator"],\
-            ["@faker-js/faker", "npm:7.5.0"],\
-            ["@sinclair/typebox", "npm:0.24.32"],\
-            ["@swc/core", "npm:1.2.245"],\
-            ["@types/jsonwebtoken", "npm:8.5.9"],\
-            ["@types/lodash", "npm:4.14.184"],\
-            ["@types/node", "npm:18.7.14"],\
-            ["http-status-codes", "npm:2.2.0"],\
-            ["jsonwebtoken", "npm:8.5.1"],\
-            ["lodash", "npm:4.17.21"],\
-            ["lru-cache", "npm:7.14.0"],\
-            ["nodemon", "npm:2.0.19"],\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
-            ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"]\
-          ],\
-          "linkType": "SOFT"\
-        }]\
-      ]],\
       ["graceful-fs", [\
         ["npm:4.2.10", {\
           "packageLocation": "./.yarn/cache/graceful-fs-npm-4.2.10-79c70989ca-3f109d70ae.zip/node_modules/graceful-fs/",\
@@ -10190,7 +10163,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["fs-extra", "npm:10.1.0"],\
             ["lodash", "npm:4.17.21"],\
             ["qqjs", "npm:0.3.11"],\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
+            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1"],\
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"]\
           ],\
           "linkType": "SOFT"\
@@ -10267,7 +10240,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["pg", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:8.8.0"],\
             ["reflect-metadata", "npm:0.1.13"],\
             ["snakecase-keys", "npm:5.4.4"],\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
+            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1"],\
             ["typeorm", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.9"],\
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"]\
           ],\
@@ -10687,6 +10660,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["stubs", [\
+        ["workspace:packages/stubs", {\
+          "packageLocation": "./packages/stubs/",\
+          "packageDependencies": [\
+            ["stubs", "workspace:packages/stubs"],\
+            ["@common/application", "workspace:packages/common-application"],\
+            ["@common/config", "workspace:packages/common-config"],\
+            ["@common/errors", "workspace:packages/common-errors"],\
+            ["@common/logger", "workspace:packages/common-logger"],\
+            ["@common/validator", "workspace:packages/common-validator"],\
+            ["@faker-js/faker", "npm:7.5.0"],\
+            ["@sinclair/typebox", "npm:0.24.32"],\
+            ["@swc/core", "npm:1.2.245"],\
+            ["@types/jsonwebtoken", "npm:8.5.9"],\
+            ["@types/lodash", "npm:4.14.184"],\
+            ["@types/node", "npm:18.7.14"],\
+            ["http-status-codes", "npm:2.2.0"],\
+            ["jsonwebtoken", "npm:8.5.1"],\
+            ["lodash", "npm:4.17.21"],\
+            ["lru-cache", "npm:7.14.0"],\
+            ["mqtt", "npm:4.3.7"],\
+            ["nodemon", "npm:2.0.19"],\
+            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1"],\
+            ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
       ["stylis", [\
         ["npm:4.0.13", {\
           "packageLocation": "./.yarn/cache/stylis-npm-4.0.13-3f245d840f-8ea7a87028.zip/node_modules/stylis/",\
@@ -10969,10 +10970,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1", {\
-          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-076ad1cd64/0/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
+        ["virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1", {\
+          "packageLocation": "./.yarn/__virtual__/ts-node-virtual-b445628474/0/cache/ts-node-npm-10.9.1-6c268be7f4-090adff130.zip/node_modules/ts-node/",\
           "packageDependencies": [\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
+            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1"],\
             ["@cspotcode/source-map-support", "npm:0.8.1"],\
             ["@swc/core", "npm:1.2.245"],\
             ["@swc/wasm", null],\
@@ -11209,7 +11210,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["sha.js", "npm:2.4.11"],\
             ["sql.js", null],\
             ["sqlite3", null],\
-            ["ts-node", "virtual:44b9168fd25a6f1834f81a32f5023e6b6c36e2fa83d32e99de7e3cba9420efae0f4f790b8cd29a233fb7c3b4995de3d5c94b7457f051a546c8a06f65b6302092#npm:10.9.1"],\
+            ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1"],\
             ["tslib", "npm:2.4.0"],\
             ["typeorm-aurora-data-api-driver", null],\
             ["uuid", "npm:8.3.2"],\

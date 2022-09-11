@@ -22,7 +22,7 @@ export class ConfigurationSubscriber implements EntitySubscriberInterface<Config
 
     afterUpdate(event: UpdateEvent<Configuration>) {
         listenerMap[EntitySubscriberEvent.AfterUpdate].forEach((cb) =>
-            cb.call(undefined, event.entity as Configuration, event.updatedColumns),
+            cb.call(undefined, event.entity as Configuration, event.databaseEntity, event.updatedColumns),
         );
     }
 

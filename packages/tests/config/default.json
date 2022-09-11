@@ -33,7 +33,7 @@
       "path": "configurations"
     },
     "googleOAuth2AuthorizationCode": {
-      "baseUrl": "http://nginx:8080/google/oauth2/",
+      "baseUrl": "http://nginx:8080/stubs/google/oauth2/",
       "path": "authorizationCode"
     }
   },

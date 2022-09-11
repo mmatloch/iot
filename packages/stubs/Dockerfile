@@ -12,14 +12,14 @@ COPY ./packages/common-errors ./packages/common-errors
 COPY ./packages/common-validator ./packages/common-validator
 COPY ./packages/common-logger ./packages/common-logger
 
-COPY ./packages/google-stub ./packages/google-stub
+COPY ./packages/stubs ./packages/stubs
 
-RUN yarn workspaces focus google-stub
+RUN yarn workspaces focus stubs
 
 EXPOSE 3000
 
 ARG NODE_ENV
 ENV NODE_ENV $NODE_ENV
 
-WORKDIR /usr/app/packages/google-stub
+WORKDIR /usr/app/packages/stubs
 CMD yarn dev

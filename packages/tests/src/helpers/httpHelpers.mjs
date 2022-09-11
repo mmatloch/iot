@@ -160,6 +160,29 @@ export const createHttpHelpers = (defaultResourceConfig, resourceConfigOverrides
         return patchByLocation(url, payload, requestOptions);
     };
 
+    const putByLocation = (location, payload, requestOptions) => {
+        const url = new URL(location);
+
+        const extendedRequestOptions = {
+            ...requestOptions,
+            url,
+            body: payload,
+            method: 'PUT',
+        };
+
+        const sendRequest = () => httpClient.request(extendedRequestOptions);
+
+        return createHttpRequestAssertions(sendRequest, extendedRequestOptions, {
+            successStatusCode: StatusCodes.NO_CONTENT,
+        });
+    };
+
+    const put = (payload, requestOptions) => {
+        const url = new URL(resourceConfig.path, resourceConfig.baseUrl);
+
+        return putByLocation(url, payload, requestOptions);
+    };
+
     return {
         authorizeHttpClient,
 
@@ -173,5 +196,7 @@ export const createHttpHelpers = (defaultResourceConfig, resourceConfigOverrides
         repeatSearch,
         patchByLocation,
         patchById,
+        putByLocation,
+        put,
     };
 };

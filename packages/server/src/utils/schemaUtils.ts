@@ -16,7 +16,7 @@ export const mergeSchemas = <TargetProp extends TProperties, SrcProp extends TPr
         ...target,
         ...source,
         properties,
-        required,
+        required: _.uniq(required),
     };
 };
 

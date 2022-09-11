@@ -43,9 +43,9 @@ const createDockerImages = (flags: Flags) => [
         buildCondition: () => true,
     },
     {
-        name: 'google_stub',
-        dockerfilePath: join(PATH.Packages, 'google-stub', 'Dockerfile'),
-        imageName: `${PROJECT_NAME}-google-stub`,
+        name: 'stubs',
+        dockerfilePath: join(PATH.Packages, 'stubs', 'Dockerfile'),
+        imageName: `${PROJECT_NAME}-stubs`,
         imageTag: 'latest',
         buildArgs: [
             {
@@ -110,7 +110,7 @@ export class BuildCommand extends Command {
     };
 
     async run() {
-        const { flags } = await this.parse<Flags, Record<string, unknown>>(BuildCommand);
+        const { flags } = await this.parse(BuildCommand);
 
         const dockerImages = createDockerImages(flags);
 

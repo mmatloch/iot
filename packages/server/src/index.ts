@@ -10,6 +10,7 @@ import { createEventSchedulerTaskProcessor } from './events/scheduler/eventSched
 import { getLogger } from './logger';
 import requestLocalStoragePlugin from './plugins/requestLocalStoragePlugin';
 import requestUserPlugin from './plugins/requestUserPlugin';
+import { createBridgeRest } from './rest/bridgeRest';
 import { createConfigurationsRest } from './rest/configurationsRest';
 import { createDevicesRest } from './rest/devicesRest';
 import { createEventSchedulerTasksRest } from './rest/eventSchedulerTasksRest';
@@ -52,6 +53,7 @@ createApplication({
             app.register(createSensorDataRest);
             app.register(createEventSchedulerTasksRest);
             app.register(createConfigurationsRest);
+            app.register(createBridgeRest);
 
             await createZigbeeBridge(mqttClient).initialize();
 

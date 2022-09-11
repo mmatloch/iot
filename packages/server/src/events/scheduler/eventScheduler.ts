@@ -185,7 +185,7 @@ export const createEventScheduler = () => {
             await planEvent(event);
         };
 
-        const onUpdatedEvent = async (event: Event, updatedColumns: ColumnMetadata[]) => {
+        const onUpdatedEvent = async (event: Event, _oldEvent: Event, updatedColumns: ColumnMetadata[]) => {
             const updatedFields = _.uniq(updatedColumns.map((columnMetadata) => columnMetadata.propertyName));
 
             if (isScheduledEvent(event)) {

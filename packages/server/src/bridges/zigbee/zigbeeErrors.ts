@@ -2,6 +2,7 @@ import { BaseError } from '@common/errors';
 
 enum ZigbeeErrorCode {
     FailedToPublishData = 1,
+    FailedToRequestBridge,
 }
 
 const prefix = 'ZIGBEE';
@@ -13,5 +14,11 @@ export const ZigbeeErrors = {
         new BaseError({
             ...opts,
             errorCode: getZigbeeErrorCode(ZigbeeErrorCode.FailedToPublishData),
+        }),
+
+    failedToRequestBridge: (opts: Partial<BaseError>): BaseError =>
+        new BaseError({
+            ...opts,
+            errorCode: getZigbeeErrorCode(ZigbeeErrorCode.FailedToRequestBridge),
         }),
 };

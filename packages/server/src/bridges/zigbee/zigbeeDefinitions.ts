@@ -2,6 +2,7 @@ import { Static, Type } from '@sinclair/typebox';
 import _ from 'lodash';
 
 import { mergeSchemas } from '../../utils/schemaUtils';
+import { BridgeRequestType } from '../generic/genericBridgeDefinitions';
 
 const genericDeviceSchema = Type.Object({
     ieeeAddress: Type.String(),
@@ -101,9 +102,28 @@ export const zigbeeInfoSchema = Type.Object({
     coordinator: Type.Object({
         type: Type.String(),
     }),
+    permitJoin: Type.Boolean(),
+    permitJoinTimeout: Type.Optional(Type.Integer()),
 });
 
 export type ZigbeeInfo = Static<typeof zigbeeInfoSchema>;
 
 export const zigbeeDeviceDataSchema = Type.Record(Type.String(), Type.Unknown());
 export type ZigbeeDeviceData = Static<typeof zigbeeDeviceDataSchema>;
+
+export const ZIGBEE_BRIDGE_REQUEST_TYPE_MAP = {
+    [BridgeRequestType.PermitJoin]: 'permit_join',
+};
+
+const permitJoinDataSchema = Type.Object(
+    {
+        requestType: Type.Literal(BridgeRequestType.PermitJoin),
+        value: Type.Boolean(),
+        time: Type.Integer(),
+    },
+    {
+        additionalProperties: false,
+    },
+);
+
+export const requestBridgeDataSchema = Type.Union([permitJoinDataSchema]);

@@ -40,8 +40,6 @@ export const createEventSchedulerTaskProcessor = () => {
     };
 
     const processQueue = () => {
-        logger.trace(`Processing queue`);
-
         const now = new Date().toISOString();
 
         taskQueue.forEach((task) => {

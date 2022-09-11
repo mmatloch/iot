@@ -16,7 +16,7 @@ export class EventSubscriber implements EntitySubscriberInterface<Event> {
 
     afterUpdate(event: UpdateEvent<Event>) {
         listenerMap[EntitySubscriberEvent.AfterUpdate].forEach((cb) =>
-            cb.call(undefined, event.entity as Event, event.updatedColumns),
+            cb.call(undefined, event.entity as Event, event.databaseEntity, event.updatedColumns),
         );
     }
 }
