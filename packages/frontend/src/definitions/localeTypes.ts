@@ -12,6 +12,11 @@ export interface Locale {
         edit: string;
         save: string;
         cancel: string;
+        retry: string;
+        errors: {
+            failedToLoadData: string;
+            noInternetConnection: string;
+        };
     };
     i18n: {
         changeLanguage: string;

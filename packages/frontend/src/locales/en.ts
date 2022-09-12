@@ -8,6 +8,11 @@ export const EnglishLocale: Locale = {
         edit: 'Edit',
         save: 'Save',
         cancel: 'Cancel',
+        retry: 'Retry',
+        errors: {
+            failedToLoadData: 'Failed to load data',
+            noInternetConnection: 'Check your internet connection and try again',
+        },
     },
     i18n: {
         changeLanguage: 'Change language',

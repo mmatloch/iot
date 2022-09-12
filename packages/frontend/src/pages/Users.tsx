@@ -1,11 +1,11 @@
 import { useUsers } from '@api/usersApi';
+import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import { SortValue } from '@definitions/searchTypes';
 import UserCard from '@features/users/components/UserCard';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
 import { Box, Container, Grid, Pagination } from '@mui/material';
-import { useSnackbar } from 'notistack';
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -22,18 +22,12 @@ export default function Users() {
         sort: sortQuery,
     });
 
-    const { enqueueSnackbar } = useSnackbar();
-
     if (isLoading) {
         return <FullScreenLoader />;
     }
 
     if (!isSuccess) {
-        enqueueSnackbar(t('users:errors.failedToLoadUsers'), {
-            variant: 'error',
-        });
-
-        return <FullScreenLoader />;
+        return <FailedToLoadDataDialog />;
     }
 
     const onPageChange = (_event: ChangeEvent<unknown>, value: number) => {
