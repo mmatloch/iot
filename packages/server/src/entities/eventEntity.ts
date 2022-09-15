@@ -12,7 +12,7 @@ import {
 import { EventTriggerContext } from '../events/eventRunDefinitions';
 import { eventTrigger } from '../events/eventTrigger';
 import { mergeSchemas, removeSchemaDefaults } from '../utils/schemaUtils';
-import { GenericEntity, genericEntitySchema } from './genericEntity';
+import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
 
 @Entity({ name: 'events' })
 export class Event extends GenericEntity {

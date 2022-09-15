@@ -1,3 +1,4 @@
+import { EventState } from '@definitions/eventTypes';
 import { Locale } from '@definitions/localeTypes';
 import { UserRole, UserState } from '@definitions/userTypes';
 
@@ -51,5 +52,16 @@ export const PolishLocale: Locale = {
     },
     profile: {
         editProfile: 'Edytuj profil',
+    },
+    events: {
+        title: 'Zdarzenia',
+        state: {
+            [EventState.Active]: 'Aktywny',
+            [EventState.Inactive]: 'Nieaktywny',
+            [EventState.Completed]: 'Zakończony',
+        },
+        errors: {
+            failedToUpdateEvent: 'Nie udało się zaktualizować zdarzenia',
+        },
     },
 };

@@ -4378,6 +4378,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["date-fns", "npm:2.29.2"]\
           ],\
           "linkType": "HARD"\
+        }],\
+        ["npm:2.29.3", {\
+          "packageLocation": "./.yarn/cache/date-fns-npm-2.29.3-fef7e3c72c-e01cf5b62a.zip/node_modules/date-fns/",\
+          "packageDependencies": [\
+            ["date-fns", "npm:2.29.3"]\
+          ],\
+          "linkType": "HARD"\
         }]\
       ]],\
       ["dateformat", [\
@@ -5892,6 +5899,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/whatwg-mimetype", "npm:2.1.1"],\
             ["@vitejs/plugin-react", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:2.0.1"],\
             ["country-flag-icons", "npm:1.5.5"],\
+            ["date-fns", "npm:2.29.3"],\
             ["i18next", "npm:21.9.1"],\
             ["i18next-browser-languagedetector", "npm:6.1.5"],\
             ["notistack", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:2.0.5"],\
@@ -5903,6 +5911,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-query", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:3.39.2"],\
             ["react-router-dom", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:6.3.0"],\
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"],\
+            ["use-local-storage", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:2.3.6"],\
             ["vite", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:3.0.9"],\
             ["vite-tsconfig-paths", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:3.5.0"],\
             ["whatwg-mimetype", "npm:3.0.0"]\
@@ -10228,7 +10237,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["async", "npm:3.2.4"],\
             ["camelcase-keys", "npm:7.0.2"],\
             ["cron-parser", "npm:4.6.0"],\
-            ["date-fns", "npm:2.29.2"],\
+            ["date-fns", "npm:2.29.3"],\
             ["esbuild", "npm:0.15.6"],\
             ["esbuild-plugin-pino", "npm:1.2.3"],\
             ["fastq", "npm:1.13.0"],\
@@ -11347,6 +11356,28 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["uri-js", "npm:4.4.1"],\
             ["punycode", "npm:2.1.1"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["use-local-storage", [\
+        ["npm:2.3.6", {\
+          "packageLocation": "./.yarn/cache/use-local-storage-npm-2.3.6-37aaeda3a3-e040b2344a.zip/node_modules/use-local-storage/",\
+          "packageDependencies": [\
+            ["use-local-storage", "npm:2.3.6"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:2.3.6", {\
+          "packageLocation": "./.yarn/__virtual__/use-local-storage-virtual-d68a7f5ccb/0/cache/use-local-storage-npm-2.3.6-37aaeda3a3-e040b2344a.zip/node_modules/use-local-storage/",\
+          "packageDependencies": [\
+            ["use-local-storage", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:2.3.6"],\
+            ["@types/react", "npm:18.0.18"],\
+            ["react", "npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react",\
+            "react"\
           ],\
           "linkType": "HARD"\
         }]\

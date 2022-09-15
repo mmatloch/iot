@@ -9,6 +9,9 @@ export const ApiRoute = {
         Token: addPrefix('users/token'),
         SocialLogin: addPrefix('users/socialLogin'),
     },
+    Events: {
+        Root: addPrefix('events'),
+    },
 };
 
 export const AppRoute = {
@@ -20,4 +23,5 @@ export const AppRoute = {
         },
     },
     Users: '/users',
+    Events: '/events',
 };

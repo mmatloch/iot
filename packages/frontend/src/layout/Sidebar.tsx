@@ -1,5 +1,5 @@
 import { useAuth } from '@hooks/useAuth';
-import { Home, ManageAccounts } from '@mui/icons-material';
+import { Event, Home, ManageAccounts } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -49,6 +49,12 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             icon: <ManageAccounts />,
             text: t('users:title'),
             onClick: () => navigate(AppRoute.Users),
+            adminOnly: true,
+        },
+        {
+            icon: <Event />,
+            text: t('events:title'),
+            onClick: () => navigate(AppRoute.Events),
             adminOnly: true,
         },
     ].filter((item) => {

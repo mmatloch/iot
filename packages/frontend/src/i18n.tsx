@@ -21,6 +21,10 @@ i18n.use(LanguageDetector)
         interpolation: {
             escapeValue: false,
         },
+
+        detection: {
+            caches: [], // cached by LocaleContext
+        },
     });
 
 export default i18n;

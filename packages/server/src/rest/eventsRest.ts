@@ -7,10 +7,10 @@ import { createAccessControl } from '../accessControl';
 import {
     RestSearchOptions,
     SortValue,
+    createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
-    createOffsetPaginationStrategy,
 } from '../apis/searchApi';
 import { Event, EventDto, eventDtoSchema, eventSchema, eventUpdateSchema } from '../entities/eventEntity';
 import { EventInstance, eventInstanceSchema } from '../entities/eventInstanceEntity';
@@ -166,6 +166,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
         const searchResponse = await createRestSearch(createEventsService()).query(request.query, searchOptions);
 
+        console.log(searchResponse._hits[0]);
         return reply.status(StatusCodes.OK).send(searchResponse);
     });
 

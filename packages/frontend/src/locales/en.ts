@@ -1,3 +1,4 @@
+import { EventState } from '@definitions/eventTypes';
 import { Locale } from '@definitions/localeTypes';
 import { UserRole, UserState } from '@definitions/userTypes';
 
@@ -51,5 +52,16 @@ export const EnglishLocale: Locale = {
     },
     profile: {
         editProfile: 'Edit profile',
+    },
+    events: {
+        title: 'Events',
+        state: {
+            [EventState.Active]: 'Active',
+            [EventState.Inactive]: 'Inactive',
+            [EventState.Completed]: 'Completed',
+        },
+        errors: {
+            failedToUpdateEvent: 'Failed to update event',
+        },
     },
 };

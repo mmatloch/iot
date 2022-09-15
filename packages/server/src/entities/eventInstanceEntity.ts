@@ -5,7 +5,7 @@ import { Column, Entity, Index } from 'typeorm';
 
 import { PerformanceMetrics } from '../definitions';
 import { mergeSchemas } from '../utils/schemaUtils';
-import { GenericTimeseriesEntity, genericEntitySchema } from './genericEntity';
+import { GenericTimeseriesEntity, genericEntitySchema } from './generic/genericEntity';
 
 export enum EventInstanceState {
     UnknownError = 'UNKNOWN_ERROR',

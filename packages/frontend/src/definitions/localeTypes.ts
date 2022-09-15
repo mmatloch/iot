@@ -1,3 +1,4 @@
+import { EventState } from './eventTypes';
 import { UserRole, UserState } from './userTypes';
 
 export enum AvailableLanguage {
@@ -55,5 +56,12 @@ export interface Locale {
     };
     profile: {
         editProfile: string;
+    };
+    events: {
+        title: string;
+        state: Record<EventState, string>;
+        errors: {
+            failedToUpdateEvent: string;
+        };
     };
 }

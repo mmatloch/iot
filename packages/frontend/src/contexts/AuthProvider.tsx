@@ -1,8 +1,8 @@
 import { UserRole } from '@definitions/userTypes';
-import { useLocalStorage } from '@hooks/useLocalStorage';
 import { decodeJwt } from '@utils/decodeJwt';
 import { ReactNode, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useLocalStorage from 'use-local-storage';
 
 import { AppRoute } from '../constants';
 import { AuthContext } from './AuthContext';
@@ -15,19 +15,29 @@ interface Props {
     children: ReactNode;
 }
 
+const parser = (v: string) => v;
+const serializer = (v: string | undefined) => String(v);
+
 export const AuthProvider = ({ children }: Props) => {
-    const [accessToken, setAccessToken] = useLocalStorage('accessToken');
+    const [accessToken, setAccessToken] = useLocalStorage('accessToken', '', {
+        parser,
+        serializer,
+    });
     const navigate = useNavigate();
 
     // call this function when you want to authenticate the user
     const login = (accessToken: string) => {
         setAccessToken(accessToken);
-        navigate(AppRoute.Home);
+
+        // wait for localStorage update
+        setTimeout(() => {
+            navigate(AppRoute.Home);
+        }, 500);
     };
 
     // call this function to sign out logged in user
     const logout = () => {
-        setAccessToken(undefined);
+        setAccessToken('');
         navigate(AppRoute.Home, { replace: true });
     };
 
