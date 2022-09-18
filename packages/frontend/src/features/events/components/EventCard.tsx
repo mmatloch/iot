@@ -15,7 +15,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { formatDistance, formatISO9075, intlFormat } from 'date-fns';
 import { MouseEvent, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 import EventMenu from './EventMenu';
 
@@ -43,13 +43,16 @@ const formatFullDate = (date: string) =>
     });
 
 export default function EventCard({ event }: Props) {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [eventMenuAnchorEl, setEventMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
 
     const stateTransKey = `events:state.${event.state}` as const;
+    const triggerTypeTransKey = `events:triggerType.${event.triggerType}` as const;
 
-    const hideUpdatedAt = event._createdAt === event._updatedAt;
+    const showUpdatedAt = event._createdAt !== event._updatedAt;
+    const createdBy = event._createdByUser?.name || event._createdBy || 'SYSTEM';
+    const updatedBy = event._updatedByUser?.name || event._updatedBy || 'SYSTEM';
 
     const openEventMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setEventMenuAnchorEl(event.currentTarget);
@@ -92,26 +95,34 @@ export default function EventCard({ event }: Props) {
                 <CardContent>
                     <Grid container spacing={3} columnSpacing={10}>
                         <Grid item>
-                            <Typography>Trigger type: {event.triggerType}</Typography>
+                            <Typography>
+                                {t('events:entity.triggerType')}: {i18n.format(t(triggerTypeTransKey), 'lowerCase')}
+                            </Typography>
                         </Grid>
                         <Grid item>
-                            <Tooltip describeChild title={formatFullDate(event._createdAt)}>
-                                <Typography>
-                                    Created {formatRelativeDate(event._createdAt)} by{' '}
-                                    {event._createdByUser?.name || 'SYSTEM'}
-                                </Typography>
-                            </Tooltip>
-
-                            {hideUpdatedAt ? (
-                                <></>
-                            ) : (
+                            {showUpdatedAt && (
                                 <Tooltip describeChild title={formatFullDate(event._updatedAt)}>
-                                    <Typography>
-                                        Updated {formatRelativeDate(event._updatedAt)} by{' '}
-                                        {event._updatedByUser?.name || 'SYSTEM'}
+                                    <Typography variant="subtitle2">
+                                        <Trans
+                                            i18nKey="events:dates.updatedAt"
+                                            t={t}
+                                            values={{ when: formatRelativeDate(event._updatedAt), by: updatedBy }}
+                                            components={{ strong: <strong /> }}
+                                        />
                                     </Typography>
                                 </Tooltip>
                             )}
+
+                            <Tooltip describeChild title={formatFullDate(event._createdAt)}>
+                                <Typography variant="subtitle2">
+                                    <Trans
+                                        i18nKey="events:dates.createdAt"
+                                        t={t}
+                                        values={{ when: formatRelativeDate(event._createdAt), by: createdBy }}
+                                        components={{ strong: <strong /> }}
+                                    />
+                                </Typography>
+                            </Tooltip>
                         </Grid>
                     </Grid>
                 </CardContent>

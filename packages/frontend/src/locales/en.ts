@@ -1,4 +1,4 @@
-import { EventState } from '@definitions/eventTypes';
+import { EventState, EventTriggerType } from '@definitions/eventTypes';
 import { Locale } from '@definitions/localeTypes';
 import { UserRole, UserState } from '@definitions/userTypes';
 
@@ -10,6 +10,17 @@ export const EnglishLocale: Locale = {
         save: 'Save',
         cancel: 'Cancel',
         retry: 'Retry',
+        default: 'Default',
+        search: {
+            filters: 'Filters',
+            filtering: 'Filtering',
+            sorting: {
+                title: 'Sorting',
+                oldestFirst: 'Oldest first',
+                newestFirst: 'Newest first',
+                recentlyUpdated: 'Recently updated',
+            },
+        },
         errors: {
             failedToLoadData: 'Failed to load data',
             noInternetConnection: 'Check your internet connection and try again',
@@ -60,8 +71,25 @@ export const EnglishLocale: Locale = {
             [EventState.Inactive]: 'Inactive',
             [EventState.Completed]: 'Completed',
         },
+        triggerType: {
+            [EventTriggerType.Api]: 'By application',
+            [EventTriggerType.IncomingDeviceData]: 'Incoming device data',
+            [EventTriggerType.OutgoingDeviceData]: 'Outgoing device data',
+            [EventTriggerType.Scheduler]: 'Scheduler',
+        },
+        entity: {
+            triggerType: 'Trigger type',
+        },
         errors: {
             failedToUpdateEvent: 'Failed to update event',
+        },
+        dates: {
+            createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+        },
+        search: {
+            showOnlyActive: 'Show only active',
+            showOnlyUserCreated: 'Show only user-created',
         },
     },
 };

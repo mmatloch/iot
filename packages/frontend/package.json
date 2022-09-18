@@ -16,8 +16,10 @@
     "@mui/material": "^5.10.3",
     "country-flag-icons": "^1.5.5",
     "date-fns": "^2.29.3",
+    "flat": "^5.0.2",
     "i18next": "^21.9.1",
     "i18next-browser-languagedetector": "^6.1.5",
+    "lodash": "^4.17.21",
     "notistack": "^2.0.5",
     "qs": "6.9.6",
     "react": "^18.2.0",
@@ -30,6 +32,8 @@
     "whatwg-mimetype": "^3.0.0"
   },
   "devDependencies": {
+    "@types/flat": "^5.0.2",
+    "@types/lodash": "^4.14.185",
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",

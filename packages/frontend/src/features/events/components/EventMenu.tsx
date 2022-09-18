@@ -35,7 +35,7 @@ export default function EventMenu({ event, onClose, onEdit, anchorEl }: Props) {
     const isMenuOpen = Boolean(anchorEl);
 
     const isEventActive = event.state === EventState.Active;
-    const isSystemCreated = event._createdBy === null;
+    const isUserCreated = event._createdBy !== null;
 
     const changeState = async () => {
         const newState = isEventActive ? EventState.Inactive : EventState.Active;
@@ -58,14 +58,15 @@ export default function EventMenu({ event, onClose, onEdit, anchorEl }: Props) {
             <MenuItem onClick={onEdit}>
                 <ListItemButton text={t('generic:edit')} icon={<Edit />} />
             </MenuItem>
-
-            <MenuItem onClick={changeState}>
-                {isEventActive ? (
-                    <ListItemButton text={t(`generic:deactivate`)} icon={<PublishedWithChanges />} />
-                ) : (
-                    <ListItemButton text={t(`generic:activate`)} icon={<PublishedWithChanges />} />
-                )}
-            </MenuItem>
+            {isUserCreated && (
+                <MenuItem onClick={changeState}>
+                    {isEventActive ? (
+                        <ListItemButton text={t(`generic:deactivate`)} icon={<PublishedWithChanges />} />
+                    ) : (
+                        <ListItemButton text={t(`generic:activate`)} icon={<PublishedWithChanges />} />
+                    )}
+                </MenuItem>
+            )}
         </Menu>
     );
 }

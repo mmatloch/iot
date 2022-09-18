@@ -1,16 +1,9 @@
 import { GenericEntity } from '@definitions/commonTypes';
 import { SearchQuery } from '@definitions/searchTypes';
-import Qs from 'qs';
+import { serializeQuery } from '@utils/searchQuery';
 import { UseQueryOptions, useQuery } from 'react-query';
 
 import { RequestOptions, createHttpClient } from '../clients/httpClient';
-
-const serializeQuery = (query: unknown) => {
-    return Qs.stringify(query, {
-        indices: false,
-        arrayFormat: 'brackets',
-    });
-};
 
 interface UseFetchRequestOptions<TSearchQuery> extends RequestOptions {
     query?: TSearchQuery;

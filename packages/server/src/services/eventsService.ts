@@ -89,12 +89,14 @@ export const createEventsService = (): EventsService => {
         }
     };
 
-    const create: EventsService['create'] = (dto) => {
+    const create: EventsService['create'] = async (dto) => {
         const event = repository.create(dto);
 
         validateMetadata(event);
 
-        return repository.save(event);
+        const { _id } = await repository.save(event);
+
+        return findByIdOrFail(_id);
     };
 
     const findByIdOrFail: EventsService['findByIdOrFail'] = (_id) => {

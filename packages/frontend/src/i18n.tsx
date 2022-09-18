@@ -1,5 +1,7 @@
 import i18n, { Resource, ResourceLanguage } from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import lowerFirst from 'lodash/lowerFirst';
+import upperFirst from 'lodash/upperFirst';
 import { initReactI18next } from 'react-i18next';
 
 import { EnglishLocale } from './locales/en';
@@ -20,6 +22,20 @@ i18n.use(LanguageDetector)
 
         interpolation: {
             escapeValue: false,
+            format: (value, format) => {
+                switch (format) {
+                    case 'upperCase':
+                        return value.toUpperCase();
+                    case 'lowerCase':
+                        return value.toLowerCase();
+                    case 'upperFirst':
+                        return upperFirst(value);
+                    case 'lowerFirst':
+                        return lowerFirst(value);
+                }
+
+                return value;
+            },
         },
 
         detection: {

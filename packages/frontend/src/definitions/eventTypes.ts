@@ -1,4 +1,5 @@
 import { GenericEntity } from './commonTypes';
+import { SearchQuery, SearchResponse } from './searchTypes';
 import { User } from './userTypes';
 
 export enum EventTriggerType {
@@ -97,3 +98,6 @@ export interface Event extends GenericEntity {
     _createdByUser: User | null;
     _updatedByUser: User | null;
 }
+
+export type EventsSearchQuery = SearchQuery<Event>;
+export type EventsSearchResponse = SearchResponse<Event>;

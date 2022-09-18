@@ -1,4 +1,4 @@
-import { EventState } from '@definitions/eventTypes';
+import { EventState, EventTriggerType } from '@definitions/eventTypes';
 import { Locale } from '@definitions/localeTypes';
 import { UserRole, UserState } from '@definitions/userTypes';
 
@@ -10,6 +10,17 @@ export const PolishLocale: Locale = {
         save: 'Zapisz',
         cancel: 'Anuluj',
         retry: 'Ponów próbę',
+        default: 'Domyślne',
+        search: {
+            filters: 'Filtry',
+            filtering: 'Filtrowanie',
+            sorting: {
+                title: 'Sortowanie',
+                oldestFirst: 'Najpierw najstarsze',
+                newestFirst: 'Najpierw najnowsze',
+                recentlyUpdated: 'Ostatnio aktualizowane',
+            },
+        },
         errors: {
             failedToLoadData: 'Nie udało się załadować danych',
             noInternetConnection: 'Sprawdź połączenie internetowe i spróbuj ponownie',
@@ -60,8 +71,25 @@ export const PolishLocale: Locale = {
             [EventState.Inactive]: 'Nieaktywny',
             [EventState.Completed]: 'Zakończony',
         },
+        triggerType: {
+            [EventTriggerType.Api]: 'Przez aplikację',
+            [EventTriggerType.IncomingDeviceData]: 'Przychodzące dane z urządzenia',
+            [EventTriggerType.OutgoingDeviceData]: 'Wychodzące dane do urządzenia',
+            [EventTriggerType.Scheduler]: 'Harmonogram',
+        },
+        entity: {
+            triggerType: 'Typ wyzwalacza',
+        },
         errors: {
             failedToUpdateEvent: 'Nie udało się zaktualizować zdarzenia',
+        },
+        dates: {
+            createdAt: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+            updatedAt: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+        },
+        search: {
+            showOnlyActive: 'Pokaż tylko aktywne',
+            showOnlyUserCreated: 'Pokaż tylko stworzone przez użytkownika',
         },
     },
 };

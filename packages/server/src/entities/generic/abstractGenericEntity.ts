@@ -15,7 +15,7 @@ export abstract class AbstractGenericEntity {
     constructor(entitySchema: TObject<TProperties>) {
         // https://github.com/typeorm/typeorm/issues/7150
         this.#entitySchema = mergeSchemas(
-            Type.Omit(entitySchema, ['_createdAt', '_updatedAt']),
+            Type.Omit(entitySchema, ['_createdAt', '_updatedAt', '_createdByUser', '_updatedByUser']),
             Type.Object({
                 _createdAt: Type.Unknown(),
                 _updatedAt: Type.Unknown(),
@@ -24,7 +24,14 @@ export abstract class AbstractGenericEntity {
 
         // https://github.com/ajv-validator/ajv/issues/1240
         this.#dtoSchema = mergeSchemas(
-            Type.Omit(this.#entitySchema, ['_id', '_version', '_createdAt', '_updatedAt']),
+            Type.Omit(this.#entitySchema, [
+                '_id',
+                '_version',
+                '_createdAt',
+                '_updatedAt',
+                '_createdByUser',
+                '_updatedByUser',
+            ]),
             Type.Partial(Type.Pick(this.#entitySchema, ['_id', '_version', '_createdAt', '_updatedAt'])),
         );
     }

@@ -114,7 +114,7 @@ export const buildQueryFromRaw = <TEntity>(
 
                 const operatorValue = filterValue[operator];
 
-                if (operatorValue) {
+                if (!_.isUndefined(operatorValue)) {
                     const buildWhereOperator = buildMap[operator];
 
                     // @ts-expect-error

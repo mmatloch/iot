@@ -1956,6 +1956,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/flat@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "@types/flat@npm:5.0.2"
+  checksum: e21d51d872e788bdb381887c2880f717ba4377beb4055078136127134858efd15044655610f1fce4832d9a103ded468a25335203fc53f36db08edd5ab5a8b3db
+  languageName: node
+  linkType: hard
+
 "@types/fs-extra@npm:^9.0.13":
   version: 9.0.13
   resolution: "@types/fs-extra@npm:9.0.13"
@@ -2056,6 +2063,13 @@ __metadata:
   version: 4.14.184
   resolution: "@types/lodash@npm:4.14.184"
   checksum: 6d9a4d67f7f9d0ec3fd21174f3dd3d00629dc1227eb469450eace53adbc1f7e2330699c28d0fe093e5f0fef0f0e763098be1f779268857213224af082b62be21
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:^4.14.185":
+  version: 4.14.185
+  resolution: "@types/lodash@npm:4.14.185"
+  checksum: f81d13da5ecab110ca9c5c7cc2bedc3c9802a6acf668576aecd1b8f4b134ed81d06c15f1e600fb08f05975098280a0d97d30cddfc2cb39ec1c6b56e971ca53b3
   languageName: node
   linkType: hard
 
@@ -4559,6 +4573,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"flat@npm:^5.0.2":
+  version: 5.0.2
+  resolution: "flat@npm:5.0.2"
+  bin:
+    flat: cli.js
+  checksum: 12a1536ac746db74881316a181499a78ef953632ddd28050b7a3a43c62ef5462e3357c8c29d76072bb635f147f7a9a1f0c02efef6b4be28f8db62ceb3d5c7f5d
+  languageName: node
+  linkType: hard
+
 "flatted@npm:^3.1.0":
   version: 3.2.5
   resolution: "flatted@npm:3.2.5"
@@ -4582,6 +4605,8 @@ __metadata:
     "@mui/icons-material": ^5.10.3
     "@mui/lab": ^5.0.0-alpha.97
     "@mui/material": ^5.10.3
+    "@types/flat": ^5.0.2
+    "@types/lodash": ^4.14.185
     "@types/qs": ^6.9.7
     "@types/react": ^18.0.18
     "@types/react-dom": ^18.0.6
@@ -4589,8 +4614,10 @@ __metadata:
     "@vitejs/plugin-react": ^2.0.1
     country-flag-icons: ^1.5.5
     date-fns: ^2.29.3
+    flat: ^5.0.2
     i18next: ^21.9.1
     i18next-browser-languagedetector: ^6.1.5
+    lodash: ^4.17.21
     notistack: ^2.0.5
     qs: 6.9.6
     react: ^18.2.0

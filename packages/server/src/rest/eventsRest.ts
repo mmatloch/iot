@@ -56,7 +56,7 @@ const searchOptions: RestSearchOptions<Event> = {
         },
     },
     filters: {
-        allowedFields: ['displayName', 'state', 'triggerFilters', 'triggerType'],
+        allowedFields: ['displayName', 'state', 'triggerFilters', 'triggerType', '_createdBy'],
     },
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
@@ -156,6 +156,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
         const service = createEventsService();
         const event = await service.create(request.body);
+        console.log(event);
 
         return reply.status(StatusCodes.CREATED).send(event);
     });
@@ -166,7 +167,6 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
         const searchResponse = await createRestSearch(createEventsService()).query(request.query, searchOptions);
 
-        console.log(searchResponse._hits[0]);
         return reply.status(StatusCodes.OK).send(searchResponse);
     });
 

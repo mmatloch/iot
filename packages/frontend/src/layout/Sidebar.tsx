@@ -12,14 +12,19 @@ const DRAWER_WIDTH = 300;
 interface ItemProps {
     icon: ReactNode;
     text: string;
-    onClick: () => void;
+    navigateTo: string;
     adminOnly?: boolean;
 }
 
-const Item: FC<ItemProps> = ({ icon, text, onClick }) => {
+const Item: FC<ItemProps> = ({ icon, text, navigateTo }) => {
+    const navigate = useNavigate();
+
+    const onClick = () => navigate(navigateTo);
+    const onAuxClick = () => window.open(navigateTo);
+
     return (
         <ListItem disablePadding>
-            <ListItemButton onClick={onClick}>
+            <ListItemButton onClick={onClick} onAuxClick={onAuxClick}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={text} />
             </ListItemButton>
@@ -43,18 +48,18 @@ export default function Sidebar({ isOpen, onClose }: Props) {
         {
             icon: <Home />,
             text: 'Home',
-            onClick: () => navigate(AppRoute.Home),
+            navigateTo: AppRoute.Home,
         },
         {
             icon: <ManageAccounts />,
             text: t('users:title'),
-            onClick: () => navigate(AppRoute.Users),
+            navigateTo: AppRoute.Users,
             adminOnly: true,
         },
         {
             icon: <Event />,
             text: t('events:title'),
-            onClick: () => navigate(AppRoute.Events),
+            navigateTo: AppRoute.Events,
             adminOnly: true,
         },
     ].filter((item) => {

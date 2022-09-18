@@ -1,4 +1,4 @@
-import { EventState } from './eventTypes';
+import { EventState, EventTriggerType } from './eventTypes';
 import { UserRole, UserState } from './userTypes';
 
 export enum AvailableLanguage {
@@ -14,6 +14,17 @@ export interface Locale {
         save: string;
         cancel: string;
         retry: string;
+        default: string;
+        search: {
+            filters: string;
+            filtering: string;
+            sorting: {
+                title: string;
+                oldestFirst: string;
+                newestFirst: string;
+                recentlyUpdated: string;
+            };
+        };
         errors: {
             failedToLoadData: string;
             noInternetConnection: string;
@@ -60,8 +71,20 @@ export interface Locale {
     events: {
         title: string;
         state: Record<EventState, string>;
+        triggerType: Record<EventTriggerType, string>;
+        entity: {
+            triggerType: string;
+        };
         errors: {
             failedToUpdateEvent: string;
+        };
+        dates: {
+            createdAt: string;
+            updatedAt: string;
+        };
+        search: {
+            showOnlyActive: string;
+            showOnlyUserCreated: string;
         };
     };
 }

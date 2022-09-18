@@ -13,7 +13,7 @@ export enum SortValue {
     Desc = 'DESC',
 }
 
-export interface SearchQuery<TEntity extends GenericEntity> {
+export interface SearchQuery<TEntity extends GenericEntity> extends Record<string, unknown> {
     size?: number;
     page?: number;
     sort?: {
