@@ -1,8 +1,7 @@
 import { Type } from '@sinclair/typebox';
 import _ from 'lodash';
-import { Column, CreateDateColumn, JoinColumn, ManyToOne, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
-import { User } from '../userEntity';
 import { AbstractGenericEntity } from './abstractGenericEntity';
 
 export class GenericEntity extends AbstractGenericEntity {
@@ -16,10 +15,6 @@ export class GenericEntity extends AbstractGenericEntity {
     })
     _createdBy!: number | null;
 
-    @ManyToOne(() => User, { eager: true, createForeignKeyConstraints: false })
-    @JoinColumn({ name: '_createdBy' })
-    _createdByUser!: User | null;
-
     @UpdateDateColumn()
     _updatedAt!: string;
 
@@ -29,10 +24,6 @@ export class GenericEntity extends AbstractGenericEntity {
         default: null,
     })
     _updatedBy!: number | null;
-
-    @ManyToOne(() => User, { eager: true, createForeignKeyConstraints: false })
-    @JoinColumn({ name: '_updatedBy' })
-    _updatedByUser!: User | null;
 }
 
 export class GenericTimeseriesEntity extends AbstractGenericEntity {

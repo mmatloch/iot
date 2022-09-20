@@ -19,4 +19,7 @@ export interface SearchQuery<TEntity extends GenericEntity> extends Record<strin
     sort?: {
         [key in keyof TEntity]?: SortValue;
     };
+    relations?: {
+        [key in keyof TEntity]?: boolean;
+    };
 }

@@ -50,12 +50,14 @@ export type SortQuery = Record<string, SortValue>;
 export type WhereQueryValue = EqualOperator<SimpleFilterValue> | FindOperator<WhereQueryValue>;
 
 export type WhereQuery = Record<string, WhereQueryValue>;
+export type RelationsQuery = Record<string, boolean>;
 
 export interface SearchQuery {
     take: number;
     skip?: number;
     order?: SortQuery;
     where?: WhereQuery;
+    relations?: RelationsQuery;
 }
 
 export interface SearchResponseMeta {

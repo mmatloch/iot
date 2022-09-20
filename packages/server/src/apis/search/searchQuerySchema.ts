@@ -26,6 +26,7 @@ export const searchQuerySchema = Type.Object({
     sort: Type.Optional(Type.Record(Type.String(), Type.Enum(SortValue))),
     size: Type.Optional(Type.Integer()),
     page: Type.Optional(Type.Integer()),
+    relations: Type.Optional(Type.Record(Type.String(), Type.Boolean())),
 });
 
 export type RawSearchQuery = Static<typeof searchQuerySchema>;

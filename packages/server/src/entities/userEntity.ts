@@ -1,8 +1,8 @@
 import { Static, Type } from '@sinclair/typebox';
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, UpdateDateColumn } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
-import { AbstractGenericEntity } from './generic/abstractGenericEntity';
+import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
 
 export enum UserRole {
     Admin = 'ADMIN',
@@ -14,37 +14,6 @@ export enum UserState {
     Inactive = 'INACTIVE',
     PendingApproval = 'PENDING_APPROVAL',
 }
-
-class GenericEntity extends AbstractGenericEntity {
-    @CreateDateColumn()
-    _createdAt!: string;
-
-    @Column({
-        type: 'integer',
-        nullable: true,
-        default: null,
-    })
-    _createdBy!: number | null;
-
-    @UpdateDateColumn()
-    _updatedAt!: string;
-
-    @Column({
-        type: 'integer',
-        nullable: true,
-        default: null,
-    })
-    _updatedBy!: number | null;
-}
-
-const genericEntitySchema = Type.Object({
-    _id: Type.Integer(),
-    _version: Type.Integer(),
-    _createdAt: Type.String(),
-    _createdBy: Type.Union([Type.Null(), Type.Integer()]),
-    _updatedAt: Type.String(),
-    _updatedBy: Type.Union([Type.Null(), Type.Integer()]),
-});
 
 @Entity({ name: 'users' })
 export class User extends GenericEntity {

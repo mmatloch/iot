@@ -61,6 +61,9 @@ const searchOptions: RestSearchOptions<Event> = {
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
     },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
+    },
 };
 
 const updateEventSchema = {
@@ -120,6 +123,9 @@ const eventInstanceSearchOptions: RestSearchOptions<EventInstance> = {
     },
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
+    },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
     },
 };
 

@@ -54,6 +54,9 @@ const searchOptions: RestSearchOptions<Configuration> = {
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
     },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
+    },
 };
 
 const getConfigurationSchema = {

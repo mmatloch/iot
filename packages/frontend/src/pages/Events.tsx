@@ -22,6 +22,10 @@ const defaultQuery: EventsSearchQuery = {
             $exists: true,
         },
     },
+    relations: {
+        _createdByUser: true,
+        _updatedByUser: true,
+    },
 };
 
 export default function Events() {

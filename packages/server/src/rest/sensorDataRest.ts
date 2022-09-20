@@ -37,6 +37,9 @@ const searchOptions: RestSearchOptions<SensorData> = {
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
     },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
+    },
 };
 
 export const createSensorDataRest: ApplicationPlugin = async (app) => {

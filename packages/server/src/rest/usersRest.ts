@@ -82,6 +82,9 @@ const searchOptions: RestSearchOptions<User> = {
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
     },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
+    },
 };
 
 const idOrMeSchema = Type.Union([Type.Literal('me'), Type.Integer()]);

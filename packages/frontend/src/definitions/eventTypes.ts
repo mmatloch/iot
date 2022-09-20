@@ -95,8 +95,6 @@ export interface Event extends GenericEntity {
     actionDefinition: string;
     state: EventState;
     metadata: EventMetadata | null;
-    _createdByUser: User | null;
-    _updatedByUser: User | null;
 }
 
 export type EventsSearchQuery = SearchQuery<Event>;
