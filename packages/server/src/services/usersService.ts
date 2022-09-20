@@ -46,7 +46,13 @@ export const createUsersService = () => {
     };
 
     const findByIdOrFail: UsersService['findByIdOrFail'] = (_id) => {
-        return repository.findOneByOrFail({ _id });
+        return repository.findOneOrFail({
+            where: { _id },
+            relations: {
+                _createdByUser: true,
+                _updatedByUser: true,
+            },
+        });
     };
 
     const createToken: UsersService['createToken'] = async (tokenDto) => {

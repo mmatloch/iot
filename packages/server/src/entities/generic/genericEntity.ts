@@ -1,6 +1,6 @@
 import { Type } from '@sinclair/typebox';
 import _ from 'lodash';
-import { Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 import { AbstractGenericEntity } from './abstractGenericEntity';
 
@@ -8,22 +8,8 @@ export class GenericEntity extends AbstractGenericEntity {
     @CreateDateColumn()
     _createdAt!: string;
 
-    @Column({
-        type: 'integer',
-        nullable: true,
-        default: null,
-    })
-    _createdBy!: number | null;
-
     @UpdateDateColumn()
     _updatedAt!: string;
-
-    @Column({
-        type: 'integer',
-        nullable: true,
-        default: null,
-    })
-    _updatedBy!: number | null;
 }
 
 export class GenericTimeseriesEntity extends AbstractGenericEntity {
@@ -32,22 +18,8 @@ export class GenericTimeseriesEntity extends AbstractGenericEntity {
     })
     _createdAt!: string;
 
-    @Column({
-        type: 'integer',
-        nullable: true,
-        default: null,
-    })
-    _createdBy!: number | null;
-
     @UpdateDateColumn()
     _updatedAt!: string;
-
-    @Column({
-        type: 'integer',
-        nullable: true,
-        default: null,
-    })
-    _updatedBy!: number | null;
 }
 
 export const genericEntitySchema = Type.Object({

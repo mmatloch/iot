@@ -24,8 +24,12 @@ export const createDevicesService = (): DevicesService => {
     };
 
     const findByIdOrFail: DevicesService['findByIdOrFail'] = async (_id) => {
-        return repository.findOneByOrFail({
-            _id,
+        return repository.findOneOrFail({
+            where: { _id },
+            relations: {
+                _createdByUser: true,
+                _updatedByUser: true,
+            },
         });
     };
 

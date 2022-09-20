@@ -29,7 +29,13 @@ export const createEventSchedulerTasksService = (): EventSchedulerTasksService =
     };
 
     const findByIdOrFail: EventSchedulerTasksService['findByIdOrFail'] = (_id) => {
-        return repository.findOneByOrFail({ _id });
+        return repository.findOneOrFail({
+            where: { _id },
+            relations: {
+                _createdByUser: true,
+                _updatedByUser: true,
+            },
+        });
     };
 
     const update: EventSchedulerTasksService['update'] = (schedulerTask, updatedSchedulerTask) => {

@@ -38,8 +38,12 @@ export const createConfigurationsService = (): ConfigurationsService => {
     };
 
     const findByIdOrFail: ConfigurationsService['findByIdOrFail'] = (_id) => {
-        return repository.findOneByOrFail({
-            _id,
+        return repository.findOneOrFail({
+            where: { _id },
+            relations: {
+                _createdByUser: true,
+                _updatedByUser: true,
+            },
         });
     };
 

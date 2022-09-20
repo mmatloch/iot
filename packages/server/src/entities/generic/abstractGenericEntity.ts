@@ -5,6 +5,7 @@ import {
     AfterLoad,
     BeforeInsert,
     BeforeUpdate,
+    Column,
     JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
@@ -92,7 +93,6 @@ export abstract class AbstractGenericEntity {
         if (_.isUndefined(this._createdByUser)) {
             this._createdByUser = null;
         }
-
         if (_.isUndefined(this._updatedByUser)) {
             this._updatedByUser = null;
         }
@@ -104,16 +104,36 @@ export abstract class AbstractGenericEntity {
     @VersionColumn()
     _version!: number;
 
-    @ManyToOne('User', { createForeignKeyConstraints: false })
+    @ManyToOne('User', {
+        createForeignKeyConstraints: false,
+        nullable: true,
+        persistence: false,
+        cascade: false,
+    })
     @JoinColumn({ name: '_createdBy' })
     _createdByUser!: User | null;
 
-    @ManyToOne('User', { createForeignKeyConstraints: false })
+    @ManyToOne('User', {
+        createForeignKeyConstraints: false,
+        nullable: true,
+        persistence: false,
+        cascade: false,
+    })
     @JoinColumn({ name: '_updatedBy' })
     _updatedByUser!: User | null;
 
+    @Column({
+        type: 'integer',
+        nullable: true,
+    })
+    _createdBy!: number | null;
+
+    @Column({
+        type: 'integer',
+        nullable: true,
+    })
+    _updatedBy!: number | null;
+
     abstract _createdAt: string;
-    abstract _createdBy: number | null;
     abstract _updatedAt: string;
-    abstract _updatedBy: number | null;
 }
