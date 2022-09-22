@@ -1,4 +1,4 @@
-import { UserRole } from '@definitions/userTypes';
+import { UserRole } from '@definitions/entities/userTypes';
 import { decodeJwt } from '@utils/decodeJwt';
 import { ReactNode, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';

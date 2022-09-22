@@ -1,4 +1,4 @@
-import { EventState, EventsSearchQuery } from '@definitions/eventTypes';
+import { EventState, EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { SortValue } from '@definitions/searchTypes';
 import { Divider, ListSubheader, Menu, MenuList } from '@mui/material';
 import { useTranslation } from 'react-i18next';

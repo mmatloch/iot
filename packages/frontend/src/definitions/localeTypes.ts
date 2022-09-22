@@ -1,5 +1,5 @@
-import { EventState, EventTriggerType } from './eventTypes';
-import { UserRole, UserState } from './userTypes';
+import { EventState, EventTriggerType } from './entities/eventTypes';
+import { UserRole, UserState } from './entities/userTypes';
 
 export enum AvailableLanguage {
     English = 'en',
@@ -73,6 +73,7 @@ export interface Locale {
         state: Record<EventState, string>;
         triggerType: Record<EventTriggerType, string>;
         entity: {
+            displayName: string;
             triggerType: string;
         };
         errors: {

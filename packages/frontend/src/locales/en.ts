@@ -1,6 +1,6 @@
-import { EventState, EventTriggerType } from '@definitions/eventTypes';
+import { UserRole, UserState } from '@definitions/entities/userTypes';
+import { EventState, EventTriggerType } from '@definitions/entities/eventTypes';
 import { Locale } from '@definitions/localeTypes';
-import { UserRole, UserState } from '@definitions/userTypes';
 
 export const EnglishLocale: Locale = {
     generic: {
@@ -78,6 +78,7 @@ export const EnglishLocale: Locale = {
             [EventTriggerType.Scheduler]: 'Scheduler',
         },
         entity: {
+            displayName: 'Name',
             triggerType: 'Trigger type',
         },
         errors: {

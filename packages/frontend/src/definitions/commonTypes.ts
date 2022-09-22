@@ -1,4 +1,4 @@
-import type { User } from './userTypes';
+import type { User } from './entities/userTypes';
 
 export interface GenericEntity {
     _id: number;

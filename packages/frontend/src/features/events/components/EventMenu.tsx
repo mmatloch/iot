@@ -1,10 +1,13 @@
 import { useUpdateEvent } from '@api/eventsApi';
-import { Event, EventState } from '@definitions/eventTypes';
-import { Edit, PublishedWithChanges } from '@mui/icons-material';
+import { Event, EventState } from '@definitions/entities/eventTypes';
+import { Edit, Preview, PublishedWithChanges } from '@mui/icons-material';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { generatePath, useNavigate } from 'react-router-dom';
+
+import { AppRoute } from '../../../constants';
 
 interface Props {
     event: Event;
@@ -31,6 +34,7 @@ export default function EventMenu({ event, onClose, onEdit, anchorEl }: Props) {
     const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
     const { mutateAsync } = useUpdateEvent(event);
+    const navigate = useNavigate();
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -53,8 +57,15 @@ export default function EventMenu({ event, onClose, onEdit, anchorEl }: Props) {
         onClose();
     };
 
+    const openEventEditor = () => {
+        navigate(generatePath(AppRoute.Events.Editor, { eventId: String(event._id) }));
+    };
+
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
+            <MenuItem onClick={openEventEditor}>
+                <ListItemButton text={'Open in Event Editor'} icon={<Preview />} />
+            </MenuItem>
             <MenuItem onClick={onEdit}>
                 <ListItemButton text={t('generic:edit')} icon={<Edit />} />
             </MenuItem>

@@ -1,4 +1,4 @@
-import { EventsSearchQuery } from '@definitions/eventTypes';
+import { EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { Checkbox, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import get from 'lodash/get';
 import set from 'lodash/set';

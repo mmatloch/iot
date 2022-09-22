@@ -1,8 +1,6 @@
 import { useUpdateEvent } from '@api/eventsApi';
-import FormInputSelect from '@components/forms/FormInputSelect';
 import FormInputText from '@components/forms/FormInputText';
-import { Event, EventMetadata, EventTriggerType } from '@definitions/eventTypes';
-import { useAuth } from '@hooks/useAuth';
+import { Event } from '@definitions/entities/eventTypes';
 import { LoadingButton } from '@mui/lab';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup } from '@mui/material';
 import { useSnackbar } from 'notistack';
@@ -18,15 +16,9 @@ interface Props {
 
 interface FormInput {
     displayName: string;
-    triggerType: EventTriggerType;
-    triggerFilters: string;
-    metadata: EventMetadata;
 }
 
-export default function EvemtEditDialog({ event, isOpen, onClose }: Props) {
-    const auth = useAuth();
-    const isAdmin = auth?.isAdmin;
-
+export default function EventEditDialog({ event, isOpen, onClose }: Props) {
     const { t } = useTranslation();
     const { mutateAsync, isLoading } = useUpdateEvent(event);
     const { enqueueSnackbar } = useSnackbar();
@@ -34,26 +26,19 @@ export default function EvemtEditDialog({ event, isOpen, onClose }: Props) {
     const methods = useForm<FormInput>();
     const { handleSubmit, reset } = methods;
 
-    const createDefaultValues = (user: User) => {
+    const createDefaultValues = (event: Event) => {
         const values: FormInput = {
-            name: user.name,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            displayName: event.displayName,
         };
-
-        if (isAdmin) {
-            values.email = user.email;
-            values.role = user.role;
-        }
 
         return values;
     };
 
-    const resetWithDefault = (updatedUser: User = user) => reset(createDefaultValues(updatedUser));
+    const resetWithDefault = (updatedEvent: Event = event) => reset(createDefaultValues(updatedEvent));
 
     useEffect(() => {
-        resetWithDefault(user);
-    }, [user]);
+        resetWithDefault(event);
+    }, [event]);
 
     const closeDialog = () => {
         onClose();
@@ -63,7 +48,7 @@ export default function EvemtEditDialog({ event, isOpen, onClose }: Props) {
         try {
             await mutateAsync(payload);
         } catch {
-            enqueueSnackbar(t('users:errors.failedToUpdateUser'), {
+            enqueueSnackbar(t('events:errors.failedToUpdateEvent'), {
                 variant: 'error',
             });
 
@@ -73,68 +58,20 @@ export default function EvemtEditDialog({ event, isOpen, onClose }: Props) {
         closeDialog();
     };
 
-    const roleSelectItems = [
-        {
-            value: UserRole.Admin,
-            label: t(`users:role.${UserRole.Admin}`),
-        },
-        {
-            value: UserRole.User,
-            label: t(`users:role.${UserRole.User}`),
-        },
-    ];
-
     return (
         <Dialog open={isOpen} onClose={closeDialog}>
             <DialogTitle>
-                {t('generic:edit')} {user.firstName} {user.lastName}
+                {t('generic:edit')} {event.displayName}
             </DialogTitle>
             <DialogContent>
                 <FormProvider {...methods}>
                     <FormGroup sx={{ m: 1 }}>
-                        {isAdmin ? (
-                            <FormInputText
-                                name="email"
-                                label={t('users:entity.email')}
-                                autoComplete="email"
-                                validation={{ required: true }}
-                                margin="dense"
-                            />
-                        ) : (
-                            <></>
-                        )}
                         <FormInputText
-                            name="name"
-                            label={t('users:entity.name')}
-                            autoComplete="name"
+                            name="displayName"
+                            label={t('events:entity.displayName')}
                             validation={{ required: true }}
                             margin="dense"
                         />
-                        <FormInputText
-                            name="firstName"
-                            label={t('users:entity.firstName')}
-                            autoComplete="given-name"
-                            validation={{ required: true }}
-                            margin="dense"
-                        />
-                        <FormInputText
-                            name="lastName"
-                            label={t('users:entity.lastName')}
-                            autoComplete="family-name"
-                            validation={{ required: true }}
-                            margin="dense"
-                        />
-                        {isAdmin ? (
-                            <FormInputSelect
-                                name="role"
-                                label={t('users:entity.role')}
-                                items={roleSelectItems}
-                                validation={{ required: true }}
-                                margin="dense"
-                            />
-                        ) : (
-                            <></>
-                        )}
                     </FormGroup>
                 </FormProvider>
             </DialogContent>

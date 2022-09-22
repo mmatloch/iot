@@ -1,4 +1,4 @@
-import { Event, EventState } from '@definitions/eventTypes';
+import { Event, EventState } from '@definitions/entities/eventTypes';
 import { MoreVert } from '@mui/icons-material';
 import {
     Badge,
@@ -17,6 +17,7 @@ import { formatDistance, formatISO9075, intlFormat } from 'date-fns';
 import { MouseEvent, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 
+import EventEditDialog from './EventEditDialog';
 import EventMenu from './EventMenu';
 
 interface Props {
@@ -133,6 +134,8 @@ export default function EventCard({ event }: Props) {
                     anchorEl={eventMenuAnchorEl}
                     onEdit={openEditDialog}
                 />
+
+                <EventEditDialog event={event} isOpen={isEditDialogOpen} onClose={closeEditDialog} />
             </Card>
         </Badge>
     );

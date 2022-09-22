@@ -59,7 +59,7 @@ export default function Sidebar({ isOpen, onClose }: Props) {
         {
             icon: <Event />,
             text: t('events:title'),
-            navigateTo: AppRoute.Events,
+            navigateTo: AppRoute.Events.Root,
             adminOnly: true,
         },
     ].filter((item) => {

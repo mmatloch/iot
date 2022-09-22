@@ -1,7 +1,7 @@
 import { useEvents } from '@api/eventsApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
-import { EventsSearchQuery } from '@definitions/eventTypes';
+import { EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { SortValue } from '@definitions/searchTypes';
 import EventCard from '@features/events/components/EventCard';
 import EventFilterMenu from '@features/events/components/EventFilterMenu';

@@ -23,5 +23,9 @@ export const AppRoute = {
         },
     },
     Users: '/users',
-    Events: '/events',
+    Events: {
+        Root: '/events',
+        Creator: '/events/create',
+        Editor: '/events/:eventId',
+    },
 };

@@ -1,4 +1,4 @@
-import { User } from '@definitions/userTypes';
+import { User } from '@definitions/entities/userTypes';
 import { Avatar } from '@mui/material';
 
 interface Props {

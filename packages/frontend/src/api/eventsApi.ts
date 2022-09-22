@@ -1,7 +1,8 @@
-import { Event, EventsSearchQuery, EventsSearchResponse } from '@definitions/eventTypes';
+import { Event, EventsSearchQuery, EventsSearchResponse } from '@definitions/entities/eventTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
-import { useQueryClient } from 'react-query';
+import isNumber from 'lodash/isNumber';
+import { UseQueryOptions, useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
 
@@ -17,12 +18,14 @@ export const useEvents = (query: EventsSearchQuery) =>
         },
     );
 
-export const useUpdateEvent = (event: Event) => {
+export const useUpdateEvent = (event: Event | number) => {
     const queryClient = useQueryClient();
+
+    const eventId = isNumber(event) ? event : event._id;
 
     return useGenericMutation<Event, Partial<Event>>(
         {
-            url: `${ApiRoute.Events.Root}/${event._id}`,
+            url: `${ApiRoute.Events.Root}/${eventId}`,
             method: 'PATCH',
         },
         {
@@ -32,3 +35,12 @@ export const useUpdateEvent = (event: Event) => {
         },
     );
 };
+
+export const useEvent = (id: number, useQueryOptions?: UseQueryOptions<Event, Error>) =>
+    useFetch<Event>(
+        {
+            url: `${ApiRoute.Events.Root}/${id}`,
+            method: 'GET',
+        },
+        useQueryOptions,
+    );

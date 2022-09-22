@@ -1,6 +1,6 @@
-import { EventState, EventTriggerType } from '@definitions/eventTypes';
+import { EventState, EventTriggerType } from '@definitions/entities/eventTypes';
+import { UserRole, UserState } from '@definitions/entities/userTypes';
 import { Locale } from '@definitions/localeTypes';
-import { UserRole, UserState } from '@definitions/userTypes';
 
 export const PolishLocale: Locale = {
     generic: {
@@ -78,6 +78,7 @@ export const PolishLocale: Locale = {
             [EventTriggerType.Scheduler]: 'Harmonogram',
         },
         entity: {
+            displayName: 'Nazwa',
             triggerType: 'Typ wyzwalacza',
         },
         errors: {
