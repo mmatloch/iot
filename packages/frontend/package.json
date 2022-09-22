@@ -6,11 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "sdk": "tsc --project tsconfig.sdk.json && node prepareSdk.js"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@monaco-editor/react": "^4.4.5",
     "@mui/icons-material": "^5.10.3",
     "@mui/lab": "^5.0.0-alpha.97",
     "@mui/material": "^5.10.3",
@@ -20,7 +22,9 @@
     "i18next": "^21.9.1",
     "i18next-browser-languagedetector": "^6.1.5",
     "lodash": "^4.17.21",
+    "monaco-editor": "^0.34.0",
     "notistack": "^2.0.5",
+    "prettier": "^2.7.1",
     "qs": "6.9.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -34,6 +38,7 @@
   "devDependencies": {
     "@types/flat": "^5.0.2",
     "@types/lodash": "^4.14.185",
+    "@types/prettier": "^2.7.0",
     "@types/qs": "^6.9.7",
     "@types/react": "^18.0.18",
     "@types/react-dom": "^18.0.6",
