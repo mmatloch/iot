@@ -1,5 +1,10 @@
+import {
+    EventMetadataOnMultipleInstances,
+    EventMetadataTaskType,
+    EventState,
+    EventTriggerType,
+} from '@definitions/entities/eventTypes';
 import { UserRole, UserState } from '@definitions/entities/userTypes';
-import { EventState, EventTriggerType } from '@definitions/entities/eventTypes';
 import { Locale } from '@definitions/localeTypes';
 
 export const EnglishLocale: Locale = {
@@ -77,9 +82,29 @@ export const EnglishLocale: Locale = {
             [EventTriggerType.OutgoingDeviceData]: 'Outgoing device data',
             [EventTriggerType.Scheduler]: 'Scheduler',
         },
+        metadataOnMultipleInstances: {
+            [EventMetadataOnMultipleInstances.Create]: 'Create',
+            [EventMetadataOnMultipleInstances.Replace]: 'Replace',
+            [EventMetadataOnMultipleInstances.Skip]: 'Skip',
+        },
+        metadataTaskType: {
+            [EventMetadataTaskType.RelativeCron]: 'Relative CRON',
+            [EventMetadataTaskType.RelativeInterval]: 'Relative interval',
+            [EventMetadataTaskType.StaticCron]: 'Static CRON',
+            [EventMetadataTaskType.StaticInterval]: 'Static interval',
+        },
         entity: {
             displayName: 'Name',
             triggerType: 'Trigger type',
+            metadata: {
+                retryImmediatelyAfterBoot: 'Retry immediately after boot',
+                recurring: 'Recurring',
+                runAfterEvent: 'Run after event',
+                interval: 'Interval',
+                cronExpression: 'CRON expression',
+                taskType: 'Task type',
+                onMultipleInstances: 'On multiple instances',
+            },
         },
         errors: {
             failedToUpdateEvent: 'Failed to update event',

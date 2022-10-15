@@ -1,55 +1,32 @@
-import { useEvent, useUpdateEvent } from '@api/eventsApi';
 import Editor, { EditorRef } from '@components/editor/Editor';
-import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
-import FullScreenLoader from '@components/FullScreenLoader';
+import { EventDto } from '@definitions/entities/eventTypes';
+import EventEditorBasicInformationForm from '@features/events/components/EventEditor/EventEditorBasicInformationForm';
 import Layout from '@layout/Layout';
 import { ExpandMore } from '@mui/icons-material';
-import { Accordion, AccordionDetails, AccordionSummary, Container, Toolbar, Typography } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { Accordion, AccordionDetails, AccordionSummary, Button, Container, Toolbar, Typography } from '@mui/material';
+import { useCallback, useRef } from 'react';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useSearchParams } from 'react-router-dom';
 
 export default function EventCreator() {
     const actionDefinitionEditorRef = useRef<EditorRef>(null);
 
     const { t } = useTranslation();
 
-    const [searchParams] = useSearchParams();
-    const eventId = searchParams.get('eventId');
-    const isEventDefined = !!eventId;
-
-    const { data: event, isLoading, isSuccess } = useEvent(Number(eventId), { enabled: isEventDefined });
-    const {} = useUpdateEvent();
-
-    const setDefaultActionDefinition = () => {
-        if (event && actionDefinitionEditorRef.current) {
-            const ref = actionDefinitionEditorRef.current;
-
-            if (!ref.getValue().length) {
-                ref.setValue(event.actionDefinition);
-            }
-        }
-    };
-
-    useEffect(() => {
-        setDefaultActionDefinition();
-    }, [event]);
-
-    if (isLoading) {
-        return <FullScreenLoader />;
-    }
-
-    if (isEventDefined && !isSuccess) {
-        return <FailedToLoadDataDialog />;
-    }
+    const methods = useForm<EventDto>({
+        defaultValues: {
+            metadata: {
+                runAfterEvent: null as any,
+            },
+        },
+    });
 
     const onActionDefinitionSave = (value: string) => {
         console.log(value);
     };
 
-    const onActionDefinitionEditorMount = () => {
-        setDefaultActionDefinition();
-    };
+    const handleSave = useCallback(() => {}, []);
+    const handleClear = useCallback(() => {}, []);
 
     return (
         <Layout>
@@ -58,13 +35,22 @@ export default function EventCreator() {
                     <Typography sx={{ typography: { sm: 'h4', xs: 'h5' }, flexGrow: 1 }} component="div">
                         Event Creator
                     </Typography>
+
+                    <Button variant="contained" color="warning" onClick={handleClear}>
+                        Clear
+                    </Button>
+                    <Button variant="contained" color="success" sx={{ ml: 1 }} onClick={handleClear}>
+                        Save
+                    </Button>
                 </Toolbar>
 
-                <Accordion>
+                <Accordion defaultExpanded>
                     <AccordionSummary expandIcon={<ExpandMore />}>
                         <Typography>Basic information</Typography>
                     </AccordionSummary>
-                    <AccordionDetails></AccordionDetails>
+                    <AccordionDetails>
+                        <EventEditorBasicInformationForm methods={methods} />
+                    </AccordionDetails>
                 </Accordion>
 
                 <Accordion>
@@ -92,7 +78,6 @@ export default function EventCreator() {
                             defaultValue=""
                             onSave={onActionDefinitionSave}
                             formatOnSave
-                            onMount={onActionDefinitionEditorMount}
                         />
                     </AccordionDetails>
                 </Accordion>

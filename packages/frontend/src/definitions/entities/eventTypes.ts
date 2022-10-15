@@ -1,6 +1,5 @@
 import { GenericEntity } from '../commonTypes';
 import { SearchQuery, SearchResponse } from '../searchTypes';
-import { User } from './userTypes';
 
 export enum EventTriggerType {
     Api = 'API',
@@ -43,7 +42,7 @@ interface EventSchedulerIntervalMetadata {
 interface EventSchedulerStaticMetadata {}
 
 interface EventSchedulerRelativeMetadata {
-    runAfterEvent: number;
+    runAfterEvent: Pick<GenericEntity, '_id'>;
 }
 
 export interface EventScheduleGenericMetadata {
@@ -87,7 +86,7 @@ export type EventMetadata =
     | EventSchedulerStaticCronMetadata
     | EventSchedulerStaticIntervalMetadata;
 
-export interface Event extends GenericEntity {
+export interface EventDto {
     displayName: string;
     triggerType: EventTriggerType;
     triggerFilters: Record<string, unknown>;
@@ -96,6 +95,8 @@ export interface Event extends GenericEntity {
     state: EventState;
     metadata: EventMetadata | null;
 }
+
+export type Event = EventDto & GenericEntity;
 
 export type EventsSearchQuery = SearchQuery<Event>;
 export type EventsSearchResponse = SearchResponse<Event>;

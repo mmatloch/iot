@@ -1,5 +1,5 @@
 import { FormControl, InputLabel, MenuItem, Select, SelectProps } from '@mui/material';
-import { useId } from 'react';
+import { useId, useMemo } from 'react';
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 
 interface SelectItem {
@@ -22,12 +22,15 @@ export default function FormInputSelect(props: Props) {
         formState: { errors },
     } = useFormContext();
 
-    const generateItems = () =>
-        props.items.map((item, index) => (
-            <MenuItem key={index} value={item.value}>
-                {item.label}
-            </MenuItem>
-        ));
+    const items = useMemo(
+        () =>
+            props.items.map((item, index) => (
+                <MenuItem key={index} value={item.value}>
+                    {item.label}
+                </MenuItem>
+            )),
+        [props.items],
+    );
 
     return (
         <FormControl margin={props.margin}>
@@ -44,7 +47,7 @@ export default function FormInputSelect(props: Props) {
                         error={!!errors[props.name]}
                         labelId={id}
                     >
-                        {generateItems()}
+                        {items}
                     </Select>
                 )}
                 defaultValue={props.defaultValue || ''}

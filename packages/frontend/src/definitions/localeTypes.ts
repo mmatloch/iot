@@ -1,4 +1,9 @@
-import { EventState, EventTriggerType } from './entities/eventTypes';
+import {
+    EventMetadataOnMultipleInstances,
+    EventMetadataTaskType,
+    EventState,
+    EventTriggerType,
+} from './entities/eventTypes';
 import { UserRole, UserState } from './entities/userTypes';
 
 export enum AvailableLanguage {
@@ -72,9 +77,20 @@ export interface Locale {
         title: string;
         state: Record<EventState, string>;
         triggerType: Record<EventTriggerType, string>;
+        metadataOnMultipleInstances: Record<EventMetadataOnMultipleInstances, string>;
+        metadataTaskType: Record<EventMetadataTaskType, string>;
         entity: {
             displayName: string;
             triggerType: string;
+            metadata: {
+                retryImmediatelyAfterBoot: string;
+                recurring: string;
+                runAfterEvent: string;
+                interval: string;
+                cronExpression: string;
+                taskType: string;
+                onMultipleInstances: string;
+            };
         };
         errors: {
             failedToUpdateEvent: string;

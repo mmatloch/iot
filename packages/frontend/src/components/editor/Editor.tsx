@@ -12,7 +12,7 @@ import libSdk from '../../definitions/eventSdk.d.ts?raw';
 interface Props {
     editorName: string;
     defaultValue: string;
-    onMount: () => void;
+    onMount?: () => void;
     onSave: (value: string) => void;
     formatOnSave?: boolean;
 }
@@ -81,7 +81,7 @@ const Editor = forwardRef<EditorRef, Props>(
 
             editorRef.current = editor;
 
-            onMount();
+            onMount?.();
         };
 
         const format = (value: string) => {

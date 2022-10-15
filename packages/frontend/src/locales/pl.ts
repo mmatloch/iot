@@ -1,4 +1,9 @@
-import { EventState, EventTriggerType } from '@definitions/entities/eventTypes';
+import {
+    EventMetadataOnMultipleInstances,
+    EventMetadataTaskType,
+    EventState,
+    EventTriggerType,
+} from '@definitions/entities/eventTypes';
 import { UserRole, UserState } from '@definitions/entities/userTypes';
 import { Locale } from '@definitions/localeTypes';
 
@@ -77,9 +82,29 @@ export const PolishLocale: Locale = {
             [EventTriggerType.OutgoingDeviceData]: 'Wychodzące dane do urządzenia',
             [EventTriggerType.Scheduler]: 'Harmonogram',
         },
+        metadataOnMultipleInstances: {
+            [EventMetadataOnMultipleInstances.Create]: 'Stwórz',
+            [EventMetadataOnMultipleInstances.Replace]: 'Zamień',
+            [EventMetadataOnMultipleInstances.Skip]: 'Pomiń',
+        },
+        metadataTaskType: {
+            [EventMetadataTaskType.RelativeCron]: 'Relatywny CRON',
+            [EventMetadataTaskType.RelativeInterval]: 'Relatywny interwał',
+            [EventMetadataTaskType.StaticCron]: 'Statyczny CRON',
+            [EventMetadataTaskType.StaticInterval]: 'Statyczny interwał',
+        },
         entity: {
             displayName: 'Nazwa',
             triggerType: 'Typ wyzwalacza',
+            metadata: {
+                retryImmediatelyAfterBoot: 'Ponów próbę natychmiast po uruchomieniu systemu',
+                recurring: 'Powtarzający się',
+                runAfterEvent: 'Uruchom po zdarzeniu',
+                interval: 'Interwał',
+                cronExpression: 'Wyrażenie CRON',
+                taskType: 'Typ zadania',
+                onMultipleInstances: 'Przy wielu instancjach',
+            },
         },
         errors: {
             failedToUpdateEvent: 'Nie udało się zaktualizować zdarzenia',
