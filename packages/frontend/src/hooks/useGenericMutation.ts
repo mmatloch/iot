@@ -3,7 +3,7 @@ import { UseMutationOptions, useMutation } from 'react-query';
 
 type DefaultVariables = Record<string, unknown>;
 
-export const useGenericMutation = <TResponseBody, TVariables extends Record<string, unknown> = DefaultVariables>(
+export const useGenericMutation = <TResponseBody, TVariables = DefaultVariables>(
     requestOptions: RequestOptions,
     useMutationOptions?: UseMutationOptions<TResponseBody, Error, TVariables>,
 ) => {

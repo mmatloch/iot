@@ -109,6 +109,12 @@ export const PolishLocale: Locale = {
             },
         },
         editor: {
+            creator: {
+                title: 'Kreator zdarzeń',
+            },
+            editor: {
+                title: 'Edytor zdarzeń',
+            },
             basicInformation: {
                 title: 'Podstawowe informacje',
             },
@@ -130,6 +136,7 @@ export const PolishLocale: Locale = {
             onMultipleInstancesDescription: 'Co powinno się stać, gdy to wydarzenie zostało już zaplanowane',
         },
         errors: {
+            failedToCreateEvent: 'Nie udało się utworzyć zdarzenia',
             failedToUpdateEvent: 'Nie udało się zaktualizować zdarzenia',
             failedToParseCronExpression: 'Nie udało się przetworzyć wyrażenia CRON',
         },

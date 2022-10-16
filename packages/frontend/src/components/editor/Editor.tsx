@@ -17,6 +17,7 @@ interface Props {
     onSave?: (value: string) => void;
     formatOnSave?: boolean;
     language: string;
+    filename?: string;
 }
 
 export type EditorRef = editor.IStandaloneCodeEditor;
@@ -28,7 +29,7 @@ const EDITOR_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
 };
 
 const Editor = forwardRef<EditorRef, Props>(
-    ({ defaultValue, formatOnSave, onSave, onMount, onChange, language, value }, editorRef) => {
+    ({ defaultValue, formatOnSave, onSave, onMount, onChange, language, value, filename }, editorRef) => {
         const { enqueueSnackbar } = useSnackbar();
 
         useEventListener('keydown', (e) => {
@@ -108,11 +109,12 @@ const Editor = forwardRef<EditorRef, Props>(
         };
 
         const path = useMemo(() => {
+            const defaultFilename = 'index';
             switch (language) {
                 case 'javascript':
-                    return 'index.js';
+                    return `${filename || defaultFilename}.js`;
                 case 'json':
-                    return 'index.json';
+                    return `${filename || defaultFilename}.json`;
                 default:
                     throw new Error(`Unsupported language '${language}'`);
             }

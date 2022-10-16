@@ -95,6 +95,12 @@ export interface Locale {
             };
         };
         editor: {
+            creator: {
+                title: string;
+            };
+            editor: {
+                title: string;
+            };
             basicInformation: {
                 title: string;
             };
@@ -116,6 +122,7 @@ export interface Locale {
             onMultipleInstancesDescription: string;
         };
         errors: {
+            failedToCreateEvent: string;
             failedToUpdateEvent: string;
             failedToParseCronExpression: string;
         };

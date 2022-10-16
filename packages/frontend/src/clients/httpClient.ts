@@ -15,7 +15,7 @@ const getAuthorizationHeader = () => {
 export interface RequestOptions {
     method: string;
     url: string;
-    body?: Record<string, unknown>;
+    body?: unknown;
     headers?: Record<string, string>;
 }
 

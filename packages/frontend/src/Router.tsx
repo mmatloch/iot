@@ -5,7 +5,7 @@ import { AppRoute } from './constants';
 import AuthRedirectGoogle from './pages/AuthRedirectGoogle';
 import AuthSignIn from './pages/AuthSignIn';
 import EventCreator from './pages/EventCreator';
-import EventEditor from './pages/EventEditor';
+import EventEditorWrapper from './pages/EventEditorWrapper';
 import Events from './pages/Events';
 import Home from './pages/Home';
 import Users from './pages/Users';
@@ -19,7 +19,7 @@ export default function Router() {
             <Route path={AppRoute.Users} element={<ProtectedRoute element={<Users />} />} />
             <Route path={AppRoute.Events.Root} element={<ProtectedRoute element={<Events />} />} />
             <Route path={AppRoute.Events.Creator} element={<ProtectedRoute element={<EventCreator />} />} />
-            <Route path={AppRoute.Events.Editor} element={<ProtectedRoute element={<EventEditor />} />} />
+            <Route path={AppRoute.Events.Editor} element={<ProtectedRoute element={<EventEditorWrapper />} />} />
         </Routes>
     );
 }

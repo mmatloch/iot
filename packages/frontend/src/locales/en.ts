@@ -109,6 +109,12 @@ export const EnglishLocale: Locale = {
             },
         },
         editor: {
+            creator: {
+                title: 'Event creator',
+            },
+            editor: {
+                title: 'Event editor',
+            },
             basicInformation: {
                 title: 'Basic information',
             },
@@ -130,6 +136,7 @@ export const EnglishLocale: Locale = {
             onMultipleInstancesDescription: 'What should happen when this event has already been planned. ',
         },
         errors: {
+            failedToCreateEvent: 'Failed to create event',
             failedToUpdateEvent: 'Failed to update event',
             failedToParseCronExpression: 'Failed to parse CRON expression',
         },

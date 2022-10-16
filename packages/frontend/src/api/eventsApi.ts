@@ -1,4 +1,4 @@
-import { Event, EventsSearchQuery, EventsSearchResponse } from '@definitions/entities/eventTypes';
+import { Event, EventDto, EventsSearchQuery, EventsSearchResponse } from '@definitions/entities/eventTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 import isNumber from 'lodash/isNumber';
@@ -17,6 +17,22 @@ export const useEvents = (query: EventsSearchQuery) =>
             keepPreviousData: true,
         },
     );
+
+export const useCreateEvent = () => {
+    const queryClient = useQueryClient();
+
+    return useGenericMutation<Event, EventDto>(
+        {
+            url: ApiRoute.Events.Root,
+            method: 'POST',
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([ApiRoute.Events.Root]);
+            },
+        },
+    );
+};
 
 export const useUpdateEvent = (event: Event | number) => {
     const queryClient = useQueryClient();

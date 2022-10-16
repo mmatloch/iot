@@ -4,6 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 interface Props {
     name: string;
     language: string;
+    filename?: string;
 }
 
 export default function FormInputEditor(props: Props) {
