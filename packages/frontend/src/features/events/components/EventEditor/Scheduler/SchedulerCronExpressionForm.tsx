@@ -1,9 +1,11 @@
 import FormInputText from '@components/forms/FormInputText';
 import { EventDto } from '@definitions/entities/eventTypes';
 import { useCronParser } from '@features/events/hooks/useCronParser';
-import { Alert, AlertTitle, FormGroup, Paper, Stack, Typography } from '@mui/material';
+import { Alert, AlertTitle, FormGroup } from '@mui/material';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+
+import NextTriggerAtContainer from './NextTriggerAtContainer';
 
 interface Props {
     methods: UseFormReturn<EventDto>;
@@ -32,16 +34,7 @@ export default function SchedulerCronExpressionForm({ methods }: Props) {
                     </Alert>
                 )}
 
-                {cronDates && (
-                    <Paper elevation={0} sx={{ p: 1, mt: 1 }}>
-                        <Typography variant="h5">{t('events:cronExpression.nextTriggerAt')}</Typography>
-                        <Stack spacing={1} sx={{ mt: 1 }}>
-                            {cronDates?.map((cronDate) => (
-                                <Typography>{cronDate.toLocaleString()}</Typography>
-                            ))}
-                        </Stack>
-                    </Paper>
-                )}
+                {cronDates && <NextTriggerAtContainer dates={cronDates} />}
             </FormGroup>
         </FormProvider>
     );

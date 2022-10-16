@@ -21,6 +21,7 @@ export interface Locale {
         retry: string;
         default: string;
         error: string;
+        clear: string;
         search: {
             filters: string;
             filtering: string;
@@ -93,8 +94,26 @@ export interface Locale {
                 onMultipleInstances: string;
             };
         };
-        cronExpression: {
+        editor: {
+            basicInformation: {
+                title: string;
+            };
+            conditionDefinition: {
+                title: string;
+            };
+            actionDefinition: {
+                title: string;
+            };
+            triggerFilters: {
+                title: string;
+                description: string;
+                forDevice: string;
+            };
+        };
+        scheduler: {
             nextTriggerAt: string;
+            intervalDescription: string;
+            onMultipleInstancesDescription: string;
         };
         errors: {
             failedToUpdateEvent: string;

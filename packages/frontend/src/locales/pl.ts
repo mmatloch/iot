@@ -17,6 +17,7 @@ export const PolishLocale: Locale = {
         retry: 'Ponów próbę',
         default: 'Domyślne',
         error: 'Błąd',
+        clear: 'Wyszyść',
         search: {
             filters: 'Filtry',
             filtering: 'Filtrowanie',
@@ -84,9 +85,9 @@ export const PolishLocale: Locale = {
             [EventTriggerType.Scheduler]: 'Harmonogram',
         },
         metadataOnMultipleInstances: {
-            [EventMetadataOnMultipleInstances.Create]: 'Stwórz',
-            [EventMetadataOnMultipleInstances.Replace]: 'Zamień',
-            [EventMetadataOnMultipleInstances.Skip]: 'Pomiń',
+            [EventMetadataOnMultipleInstances.Create]: 'Stwórz nowy',
+            [EventMetadataOnMultipleInstances.Replace]: 'Zastąp aktualnie zaplanowany',
+            [EventMetadataOnMultipleInstances.Skip]: 'Pomiń planowanie',
         },
         metadataTaskType: {
             [EventMetadataTaskType.RelativeCron]: 'Relatywny CRON',
@@ -107,8 +108,26 @@ export const PolishLocale: Locale = {
                 onMultipleInstances: 'Przy wielu instancjach',
             },
         },
-        cronExpression: {
+        editor: {
+            basicInformation: {
+                title: 'Podstawowe informacje',
+            },
+            conditionDefinition: {
+                title: 'Określenie warunku',
+            },
+            actionDefinition: {
+                title: 'Określenie akcji',
+            },
+            triggerFilters: {
+                title: 'Filtry zdarzenia',
+                description: 'Filtry określają w jaki sposób system może znaleźć dane zdarzenie',
+                forDevice: 'Dla urządzenia',
+            },
+        },
+        scheduler: {
             nextTriggerAt: 'Następne aktywowanie o:',
+            intervalDescription: 'Co ile sekund zdarzenie powinno zostać wywołane',
+            onMultipleInstancesDescription: 'Co powinno się stać, gdy to wydarzenie zostało już zaplanowane',
         },
         errors: {
             failedToUpdateEvent: 'Nie udało się zaktualizować zdarzenia',

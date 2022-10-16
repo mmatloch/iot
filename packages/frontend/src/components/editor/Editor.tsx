@@ -4,17 +4,19 @@ import type { editor } from 'monaco-editor/esm/vs/editor/editor.api';
 import { useSnackbar } from 'notistack';
 import babylon from 'prettier/parser-babel';
 import prettier from 'prettier/standalone';
-import { forwardRef } from 'react';
+import { forwardRef, useMemo } from 'react';
 import libEs5 from 'typescript/lib/lib.es5.d.ts?raw';
 
 import libSdk from '../../definitions/eventSdk.d.ts?raw';
 
 interface Props {
-    editorName: string;
-    defaultValue: string;
+    defaultValue?: string;
+    value?: string;
     onMount?: () => void;
-    onSave: (value: string) => void;
+    onChange?: (value: string | undefined) => void;
+    onSave?: (value: string) => void;
     formatOnSave?: boolean;
+    language: string;
 }
 
 export type EditorRef = editor.IStandaloneCodeEditor;
@@ -26,10 +28,14 @@ const EDITOR_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
 };
 
 const Editor = forwardRef<EditorRef, Props>(
-    ({ editorName, defaultValue, formatOnSave, onSave, onMount }, editorRef) => {
+    ({ defaultValue, formatOnSave, onSave, onMount, onChange, language, value }, editorRef) => {
         const { enqueueSnackbar } = useSnackbar();
 
         useEventListener('keydown', (e) => {
+            if (!onSave) {
+                return;
+            }
+
             if (e.ctrlKey && e.key === 's') {
                 e.preventDefault();
 
@@ -92,7 +98,7 @@ const Editor = forwardRef<EditorRef, Props>(
                         plugins: [babylon],
                     });
                 } catch (e) {
-                    enqueueSnackbar(`Failed to format ${editorName}`, {
+                    enqueueSnackbar(`Failed to format`, {
                         variant: 'error',
                     });
                 }
@@ -101,15 +107,28 @@ const Editor = forwardRef<EditorRef, Props>(
             return value;
         };
 
+        const path = useMemo(() => {
+            switch (language) {
+                case 'javascript':
+                    return 'index.js';
+                case 'json':
+                    return 'index.json';
+                default:
+                    throw new Error(`Unsupported language '${language}'`);
+            }
+        }, [language]);
+
         return (
             <MonacoEditor
-                defaultLanguage="javascript"
-                path="index.js"
+                defaultLanguage={language}
+                path={path}
                 defaultValue={defaultValue}
+                value={value}
                 theme="vs-dark"
                 beforeMount={beforeMount}
                 onMount={handleMount}
                 options={EDITOR_OPTIONS}
+                onChange={onChange}
             />
         );
     },

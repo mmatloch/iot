@@ -6,8 +6,10 @@ import { useMemo } from 'react';
 import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-import SchedulerRelativeCronForm from './SchedulerRelativeCronForm';
-import SchedulerStaticCronForm from './SchedulerStaticCronForm';
+import SchedulerRelativeCronForm from './Scheduler/SchedulerRelativeCronForm';
+import SchedulerRelativeIntervalForm from './Scheduler/SchedulerRelativeIntervalForm';
+import SchedulerStaticCronForm from './Scheduler/SchedulerStaticCronForm';
+import SchedulerStaticIntervalForm from './Scheduler/SchedulerStaticIntervalForm';
 
 interface Props {
     methods: UseFormReturn<EventDto>;
@@ -47,12 +49,20 @@ export default function EventEditorSchedulerMetadataForm({ methods }: Props) {
                     items={taskTypeSelectItems}
                 />
 
-                <Divider sx={{ my: 2 }} />
+                {currentTaskType && <Divider sx={{ my: 2 }} />}
 
                 {currentTaskType === EventMetadataTaskType.StaticCron && <SchedulerStaticCronForm methods={methods} />}
 
                 {currentTaskType === EventMetadataTaskType.RelativeCron && (
                     <SchedulerRelativeCronForm methods={methods} />
+                )}
+
+                {currentTaskType === EventMetadataTaskType.StaticInterval && (
+                    <SchedulerStaticIntervalForm methods={methods} />
+                )}
+
+                {currentTaskType === EventMetadataTaskType.RelativeInterval && (
+                    <SchedulerRelativeIntervalForm methods={methods} />
                 )}
 
                 <Divider sx={{ my: 2 }} />
@@ -63,19 +73,14 @@ export default function EventEditorSchedulerMetadataForm({ methods }: Props) {
                     validation={{ required: true }}
                     margin="dense"
                     items={onMultipleInstancesSelectItems}
+                    helperText={t('events:scheduler.onMultipleInstancesDescription')}
                 />
 
-                <FormCheckbox
-                    name="metadata.recurring"
-                    label={t('events:entity.metadata.recurring')}
-                    validation={{ required: true }}
-                    margin="dense"
-                />
+                <FormCheckbox name="metadata.recurring" label={t('events:entity.metadata.recurring')} margin="dense" />
 
                 <FormCheckbox
                     name="metadata.retryImmediatelyAfterBoot"
                     label={t('events:entity.metadata.retryImmediatelyAfterBoot')}
-                    validation={{ required: true }}
                     margin="dense"
                 />
             </FormGroup>

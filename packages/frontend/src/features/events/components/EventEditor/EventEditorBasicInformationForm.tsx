@@ -3,10 +3,11 @@ import FormInputText from '@components/forms/FormInputText';
 import { EventDto, EventTriggerType } from '@definitions/entities/eventTypes';
 import { Divider, FormGroup } from '@mui/material';
 import { useMemo } from 'react';
-import { FormProvider, UseFormReturn, useForm } from 'react-hook-form';
+import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import EventEditorSchedulerMetadataForm from './EventEditorSchedulerMetadataForm';
+import EventEditorTriggerFiltersForm from './EventEditorTriggerFiltersForm';
 
 interface Props {
     methods: UseFormReturn<EventDto>;
@@ -28,7 +29,7 @@ export default function EventEditorBasicInformationForm({ methods }: Props) {
 
     return (
         <FormProvider {...methods}>
-            <FormGroup sx={{ m: 1 }}>
+            <FormGroup>
                 <FormInputText
                     name="displayName"
                     label={t('events:entity.displayName')}
@@ -49,6 +50,13 @@ export default function EventEditorBasicInformationForm({ methods }: Props) {
                     <>
                         <Divider sx={{ my: 2 }} />
                         <EventEditorSchedulerMetadataForm methods={methods} />
+                    </>
+                )}
+
+                {currentTriggerType !== EventTriggerType.Scheduler && (
+                    <>
+                        <Divider sx={{ my: 2 }} />
+                        <EventEditorTriggerFiltersForm methods={methods} />
                     </>
                 )}
             </FormGroup>

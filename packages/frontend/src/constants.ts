@@ -12,6 +12,9 @@ export const ApiRoute = {
     Events: {
         Root: addPrefix('events'),
     },
+    Devices: {
+        Root: addPrefix('devices'),
+    },
 };
 
 export const AppRoute = {

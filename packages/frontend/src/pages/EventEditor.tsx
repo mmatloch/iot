@@ -97,11 +97,11 @@ export default function EventEditor() {
                     <AccordionDetails sx={{ height: 400 }}>
                         <Editor
                             ref={actionDefinitionEditorRef}
-                            editorName="ActionDefinition"
                             defaultValue=""
                             onSave={onActionDefinitionSave}
                             formatOnSave
                             onMount={onActionDefinitionEditorMount}
+                            language="javascript"
                         />
                     </AccordionDetails>
                 </Accordion>

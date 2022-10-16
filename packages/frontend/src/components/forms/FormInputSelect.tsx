@@ -1,4 +1,5 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectProps } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectProps } from '@mui/material';
+import has from 'lodash/has';
 import { useId, useMemo } from 'react';
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 
@@ -11,9 +12,10 @@ interface Props extends Omit<SelectProps, 'name'> {
     name: string;
     validation?: RegisterOptions;
     items: SelectItem[];
+    helperText?: string;
 }
 
-export default function FormInputSelect(props: Props) {
+export default function FormInputSelect({ helperText, ...props }: Props) {
     const id = useId();
 
     const {
@@ -44,7 +46,7 @@ export default function FormInputSelect(props: Props) {
                         {...field}
                         {...props}
                         {...register(props.name, props.validation)}
-                        error={!!errors[props.name]}
+                        error={has(errors, props.name)}
                         labelId={id}
                     >
                         {items}
@@ -52,6 +54,8 @@ export default function FormInputSelect(props: Props) {
                 )}
                 defaultValue={props.defaultValue || ''}
             />
+
+            <FormHelperText>{helperText}</FormHelperText>
         </FormControl>
     );
 }

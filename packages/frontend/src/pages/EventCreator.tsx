@@ -1,5 +1,5 @@
 import Editor, { EditorRef } from '@components/editor/Editor';
-import { EventDto } from '@definitions/entities/eventTypes';
+import { EventDto, EventTriggerType } from '@definitions/entities/eventTypes';
 import EventEditorBasicInformationForm from '@features/events/components/EventEditor/EventEditorBasicInformationForm';
 import Layout from '@layout/Layout';
 import { ExpandMore } from '@mui/icons-material';
@@ -15,18 +15,26 @@ export default function EventCreator() {
 
     const methods = useForm<EventDto>({
         defaultValues: {
+            displayName: '',
+            triggerFilters: {},
+            triggerType: EventTriggerType.Api,
             metadata: {
+                interval: 60,
                 runAfterEvent: null as any,
                 cronExpression: '* * * * *',
             },
         },
     });
 
+    const { handleSubmit } = methods;
+
     const onActionDefinitionSave = (value: string) => {
         console.log(value);
     };
 
-    const handleSave = useCallback(() => {}, []);
+    const handleSave = (eventDto: EventDto) => {
+        console.log(eventDto);
+    };
     const handleClear = useCallback(() => {}, []);
 
     return (
@@ -38,16 +46,16 @@ export default function EventCreator() {
                     </Typography>
 
                     <Button variant="contained" color="warning" onClick={handleClear}>
-                        Clear
+                        {t('generic:clear')}
                     </Button>
-                    <Button variant="contained" color="success" sx={{ ml: 1 }} onClick={handleClear}>
-                        Save
+                    <Button variant="contained" color="success" sx={{ ml: 1 }} onClick={handleSubmit(handleSave)}>
+                        {t('generic:save')}
                     </Button>
                 </Toolbar>
 
                 <Accordion defaultExpanded>
                     <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Basic information</Typography>
+                        <Typography>{t('events:editor.basicInformation.title')}</Typography>
                     </AccordionSummary>
                     <AccordionDetails>
                         <EventEditorBasicInformationForm methods={methods} />
@@ -56,29 +64,22 @@ export default function EventCreator() {
 
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Trigger options</Typography>
+                        <Typography>{t('events:editor.conditionDefinition.title')}</Typography>
                     </AccordionSummary>
                     <AccordionDetails></AccordionDetails>
                 </Accordion>
 
                 <Accordion>
                     <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Condition definition</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails></AccordionDetails>
-                </Accordion>
-
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Action definition</Typography>
+                        <Typography>{t('events:editor.actionDefinition.title')}</Typography>
                     </AccordionSummary>
                     <AccordionDetails sx={{ height: 400 }}>
                         <Editor
                             ref={actionDefinitionEditorRef}
-                            editorName="ActionDefinition"
                             defaultValue=""
                             onSave={onActionDefinitionSave}
                             formatOnSave
+                            language="javascript"
                         />
                     </AccordionDetails>
                 </Accordion>

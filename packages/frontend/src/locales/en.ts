@@ -17,6 +17,7 @@ export const EnglishLocale: Locale = {
         retry: 'Retry',
         default: 'Default',
         error: 'Error',
+        clear: 'Clear',
         search: {
             filters: 'Filters',
             filtering: 'Filtering',
@@ -84,9 +85,9 @@ export const EnglishLocale: Locale = {
             [EventTriggerType.Scheduler]: 'Scheduler',
         },
         metadataOnMultipleInstances: {
-            [EventMetadataOnMultipleInstances.Create]: 'Create',
-            [EventMetadataOnMultipleInstances.Replace]: 'Replace',
-            [EventMetadataOnMultipleInstances.Skip]: 'Skip',
+            [EventMetadataOnMultipleInstances.Create]: 'Create a new task',
+            [EventMetadataOnMultipleInstances.Replace]: 'Replace the current task',
+            [EventMetadataOnMultipleInstances.Skip]: 'Skip the planning',
         },
         metadataTaskType: {
             [EventMetadataTaskType.RelativeCron]: 'Relative CRON',
@@ -107,8 +108,26 @@ export const EnglishLocale: Locale = {
                 onMultipleInstances: 'On multiple instances',
             },
         },
-        cronExpression: {
+        editor: {
+            basicInformation: {
+                title: 'Basic information',
+            },
+            conditionDefinition: {
+                title: 'Condition definition',
+            },
+            actionDefinition: {
+                title: 'Action definition',
+            },
+            triggerFilters: {
+                title: 'Trigger filters',
+                description: 'Filters determine how the system can find an event',
+                forDevice: 'For device',
+            },
+        },
+        scheduler: {
             nextTriggerAt: 'Next trigger at:',
+            intervalDescription: 'Every how many seconds the event should be triggered',
+            onMultipleInstancesDescription: 'What should happen when this event has already been planned. ',
         },
         errors: {
             failedToUpdateEvent: 'Failed to update event',
