@@ -16,6 +16,7 @@ export const EnglishLocale: Locale = {
         cancel: 'Cancel',
         retry: 'Retry',
         default: 'Default',
+        error: 'Error',
         search: {
             filters: 'Filters',
             filtering: 'Filtering',
@@ -106,8 +107,12 @@ export const EnglishLocale: Locale = {
                 onMultipleInstances: 'On multiple instances',
             },
         },
+        cronExpression: {
+            nextTriggerAt: 'Next trigger at:',
+        },
         errors: {
             failedToUpdateEvent: 'Failed to update event',
+            failedToParseCronExpression: 'Failed to parse CRON expression',
         },
         dates: {
             createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',

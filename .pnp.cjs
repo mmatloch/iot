@@ -5990,6 +5990,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/whatwg-mimetype", "npm:2.1.1"],\
             ["@vitejs/plugin-react", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:2.0.1"],\
             ["country-flag-icons", "npm:1.5.5"],\
+            ["cron-parser", "npm:4.6.0"],\
             ["date-fns", "npm:2.29.3"],\
             ["flat", "npm:5.0.2"],\
             ["i18next", "npm:21.9.1"],\

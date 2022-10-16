@@ -20,6 +20,7 @@ export interface Locale {
         cancel: string;
         retry: string;
         default: string;
+        error: string;
         search: {
             filters: string;
             filtering: string;
@@ -92,8 +93,12 @@ export interface Locale {
                 onMultipleInstances: string;
             };
         };
+        cronExpression: {
+            nextTriggerAt: string;
+        };
         errors: {
             failedToUpdateEvent: string;
+            failedToParseCronExpression: string;
         };
         dates: {
             createdAt: string;

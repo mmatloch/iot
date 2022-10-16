@@ -17,6 +17,7 @@ export default function EventCreator() {
         defaultValues: {
             metadata: {
                 runAfterEvent: null as any,
+                cronExpression: '* * * * *',
             },
         },
     });

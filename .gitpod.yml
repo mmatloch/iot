@@ -13,9 +13,8 @@ ports:
     visibility: public
 
 tasks:
-  - init: >
-      yarn install &&
-      yarn script dev -b
+  - init: yarn install
+  - command: yarn script dev -b
 
 github:
   prebuilds:

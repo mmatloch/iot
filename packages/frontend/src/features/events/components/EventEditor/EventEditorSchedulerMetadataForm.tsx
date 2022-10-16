@@ -7,6 +7,7 @@ import { FormProvider, UseFormReturn } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import SchedulerRelativeCronForm from './SchedulerRelativeCronForm';
+import SchedulerStaticCronForm from './SchedulerStaticCronForm';
 
 interface Props {
     methods: UseFormReturn<EventDto>;
@@ -45,6 +46,10 @@ export default function EventEditorSchedulerMetadataForm({ methods }: Props) {
                     margin="dense"
                     items={taskTypeSelectItems}
                 />
+
+                <Divider sx={{ my: 2 }} />
+
+                {currentTaskType === EventMetadataTaskType.StaticCron && <SchedulerStaticCronForm methods={methods} />}
 
                 {currentTaskType === EventMetadataTaskType.RelativeCron && (
                     <SchedulerRelativeCronForm methods={methods} />

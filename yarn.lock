@@ -4647,6 +4647,7 @@ __metadata:
     "@types/whatwg-mimetype": ^2.1.1
     "@vitejs/plugin-react": ^2.0.1
     country-flag-icons: ^1.5.5
+    cron-parser: ^4.6.0
     date-fns: ^2.29.3
     flat: ^5.0.2
     i18next: ^21.9.1

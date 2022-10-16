@@ -17,6 +17,7 @@
     "@mui/lab": "^5.0.0-alpha.97",
     "@mui/material": "^5.10.3",
     "country-flag-icons": "^1.5.5",
+    "cron-parser": "^4.6.0",
     "date-fns": "^2.29.3",
     "flat": "^5.0.2",
     "i18next": "^21.9.1",

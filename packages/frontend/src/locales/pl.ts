@@ -16,6 +16,7 @@ export const PolishLocale: Locale = {
         cancel: 'Anuluj',
         retry: 'Ponów próbę',
         default: 'Domyślne',
+        error: 'Błąd',
         search: {
             filters: 'Filtry',
             filtering: 'Filtrowanie',
@@ -106,8 +107,12 @@ export const PolishLocale: Locale = {
                 onMultipleInstances: 'Przy wielu instancjach',
             },
         },
+        cronExpression: {
+            nextTriggerAt: 'Następne aktywowanie o:',
+        },
         errors: {
             failedToUpdateEvent: 'Nie udało się zaktualizować zdarzenia',
+            failedToParseCronExpression: 'Nie udało się przetworzyć wyrażenia CRON',
         },
         dates: {
             createdAt: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
