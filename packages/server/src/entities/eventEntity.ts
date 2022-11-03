@@ -57,11 +57,18 @@ export class Event extends GenericEntity {
     };
 }
 
+const simpleEventSchema = mergeSchemas(
+    Type.Pick(genericEntitySchema, ['_id']),
+    Type.Object({
+        displayName: Type.String(),
+    }),
+);
+
 const eventSchedulerMetadataSchema = Type.Object({
     type: Type.Literal(EventMetadataType.Scheduler),
     retryImmediatelyAfterBoot: Type.Boolean(), // not implemented yet
     recurring: Type.Boolean(),
-    runAfterEvent: Type.Optional(Type.Integer()), // relative tasks
+    runAfterEvent: Type.Optional(simpleEventSchema), // relative tasks
     interval: Type.Optional(Type.Integer({ minimum: 5, maximum: 2147483647 })), // interval tasks
     cronExpression: Type.Optional(Type.String()), // cron tasks
     taskType: Type.Enum(EventMetadataTaskType),

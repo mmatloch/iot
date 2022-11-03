@@ -10,3 +10,14 @@ export interface GenericEntity {
     _updatedBy: number | null;
     _updatedByUser: User | null;
 }
+
+export const GENERIC_ENTITY_FIELDS = [
+    '_id',
+    '_version',
+    '_createdAt',
+    '_createdBy',
+    '_createdByUser',
+    '_updatedAt',
+    '_updatedBy',
+    '_updatedByUser',
+];

@@ -6,7 +6,6 @@ import {
     FormControlLabelProps,
     FormControlProps,
 } from '@mui/material';
-import { useId } from 'react';
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 
 interface Props extends CheckboxProps {
@@ -17,8 +16,6 @@ interface Props extends CheckboxProps {
 }
 
 export default function FormCheckbox(props: Props) {
-    const id = useId();
-
     const {
         control,
         register,
@@ -33,7 +30,15 @@ export default function FormCheckbox(props: Props) {
                 render={({ field }) => (
                     <FormControlLabel
                         label={props.label}
-                        control={<Checkbox {...field} {...props} {...register(props.name, props.validation)} />}
+                        control={
+                            <Checkbox
+                                {...field}
+                                {...props}
+                                {...register(props.name, props.validation)}
+                                onChange={(e) => field.onChange(e.target.checked)}
+                                checked={field.value}
+                            />
+                        }
                     ></FormControlLabel>
                 )}
                 defaultValue={props.defaultValue || ''}

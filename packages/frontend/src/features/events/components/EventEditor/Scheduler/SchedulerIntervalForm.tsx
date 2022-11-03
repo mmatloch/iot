@@ -1,24 +1,21 @@
-import FormInputText from '@components/forms/FormInputText';
-import { EventDto } from '@definitions/entities/eventTypes';
+import FormInputNumber from '@components/forms/FormInputNumber';
 import { FormGroup } from '@mui/material';
 import { addSeconds } from 'date-fns';
 import times from 'lodash/times';
 import { useMemo } from 'react';
-import { FormProvider, UseFormReturn } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import NextTriggerAtContainer from './NextTriggerAtContainer';
 
-interface Props {
-    methods: UseFormReturn<EventDto>;
-}
-
 const NUMBER_OF_DATES = 5;
 
-export default function SchedulerIntervalForm({ methods }: Props) {
+export default function SchedulerIntervalForm() {
     const { t } = useTranslation();
 
-    const currentInterval = methods.watch('metadata.interval');
+    const currentInterval = useWatch({
+        name: 'metadata.interval',
+    });
 
     const dates = useMemo(() => {
         const now = new Date();
@@ -27,19 +24,16 @@ export default function SchedulerIntervalForm({ methods }: Props) {
     }, [currentInterval]);
 
     return (
-        <FormProvider {...methods}>
-            <FormGroup>
-                <FormInputText
-                    name="metadata.interval"
-                    type="number"
-                    label={t('events:entity.metadata.interval')}
-                    validation={{ required: true }}
-                    margin="dense"
-                    helperText={t('events:scheduler.intervalDescription')}
-                />
+        <FormGroup>
+            <FormInputNumber
+                name="metadata.interval"
+                label={t('events:entity.metadata.interval')}
+                validation={{ required: true }}
+                margin="dense"
+                helperText={t('events:scheduler.intervalDescription')}
+            />
 
-                <NextTriggerAtContainer dates={dates} />
-            </FormGroup>
-        </FormProvider>
+            <NextTriggerAtContainer dates={dates} />
+        </FormGroup>
     );
 }

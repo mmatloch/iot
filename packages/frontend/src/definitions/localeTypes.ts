@@ -22,6 +22,7 @@ export interface Locale {
         default: string;
         error: string;
         clear: string;
+        create: string;
         search: {
             filters: string;
             filtering: string;
@@ -115,6 +116,7 @@ export interface Locale {
                 description: string;
                 forDevice: string;
             };
+            openInEditor: string;
         };
         scheduler: {
             nextTriggerAt: string;

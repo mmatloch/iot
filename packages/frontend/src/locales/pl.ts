@@ -18,6 +18,7 @@ export const PolishLocale: Locale = {
         default: 'Domyślne',
         error: 'Błąd',
         clear: 'Wyszyść',
+        create: 'Stwórz',
         search: {
             filters: 'Filtry',
             filtering: 'Filtrowanie',
@@ -129,6 +130,7 @@ export const PolishLocale: Locale = {
                 description: 'Filtry określają w jaki sposób system może znaleźć dane zdarzenie',
                 forDevice: 'Dla urządzenia',
             },
+            openInEditor: 'Otwórz w edytorze zdarzeń',
         },
         scheduler: {
             nextTriggerAt: 'Następne aktywowanie o:',

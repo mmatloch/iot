@@ -18,6 +18,7 @@ export const EnglishLocale: Locale = {
         default: 'Default',
         error: 'Error',
         clear: 'Clear',
+        create: 'Create',
         search: {
             filters: 'Filters',
             filtering: 'Filtering',
@@ -129,6 +130,7 @@ export const EnglishLocale: Locale = {
                 description: 'Filters determine how the system can find an event',
                 forDevice: 'For device',
             },
+            openInEditor: 'Open in event editor',
         },
         scheduler: {
             nextTriggerAt: 'Next trigger at:',

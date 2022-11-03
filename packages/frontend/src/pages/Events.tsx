@@ -7,11 +7,14 @@ import EventCard from '@features/events/components/EventCard';
 import EventFilterMenu from '@features/events/components/EventFilterMenu';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
-import { FilterList } from '@mui/icons-material';
+import { Add, FilterList } from '@mui/icons-material';
 import { Box, Button, Container, Grid, Pagination, Toolbar, Typography } from '@mui/material';
 import { mergeQuery } from '@utils/searchQuery';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
+import { AppRoute } from '../constants';
 
 const defaultQuery: EventsSearchQuery = {
     sort: {
@@ -30,6 +33,7 @@ const defaultQuery: EventsSearchQuery = {
 
 export default function Events() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { page, setPage } = useQueryPage();
     const [eventFilterMenuAnchorEl, setEventFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [searchQuery, setSearchQuery] = useState<EventsSearchQuery>(defaultQuery);
@@ -63,6 +67,10 @@ export default function Events() {
         setSearchQuery(mergeQuery(searchQuery, updatedQuery));
     };
 
+    const redirectToEventCreator = () => {
+        navigate(AppRoute.Events.Creator);
+    };
+
     return (
         <Layout>
             <Container>
@@ -70,6 +78,9 @@ export default function Events() {
                     <Typography sx={{ typography: { sm: 'h4', xs: 'h5' }, flexGrow: 1 }} component="div">
                         {t('events:title')}
                     </Typography>
+                    <Button size="large" onClick={redirectToEventCreator} endIcon={<Add fontSize="inherit" />}>
+                        {t('generic:create')}
+                    </Button>
                     <Button size="large" onClick={openEventFilterMenu} endIcon={<FilterList fontSize="inherit" />}>
                         {t('generic:search.filters')}
                     </Button>

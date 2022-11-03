@@ -64,7 +64,7 @@ export default function EventMenu({ event, onClose, onEdit, anchorEl }: Props) {
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
             <MenuItem onClick={openEventEditor}>
-                <ListItemButton text={'Open in Event Editor'} icon={<Preview />} />
+                <ListItemButton text={t('events:editor.openInEditor')} icon={<Preview />} />
             </MenuItem>
             <MenuItem onClick={onEdit}>
                 <ListItemButton text={t('generic:edit')} icon={<Edit />} />

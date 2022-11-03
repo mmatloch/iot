@@ -38,15 +38,17 @@ export const useUpdateEvent = (event: Event | number) => {
     const queryClient = useQueryClient();
 
     const eventId = isNumber(event) ? event : event._id;
+    const url = `${ApiRoute.Events.Root}/${eventId}`;
 
     return useGenericMutation<Event, Partial<Event>>(
         {
-            url: `${ApiRoute.Events.Root}/${eventId}`,
+            url: url,
             method: 'PATCH',
         },
         {
             onSuccess: () => {
                 queryClient.invalidateQueries([ApiRoute.Events.Root]);
+                queryClient.invalidateQueries([url]);
             },
         },
     );

@@ -1,63 +1,41 @@
-import { useEvent, useUpdateEvent } from '@api/eventsApi';
-import Editor, { EditorRef } from '@components/editor/Editor';
-import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
-import FullScreenLoader from '@components/FullScreenLoader';
+import { useUpdateEvent } from '@api/eventsApi';
+import { Event, EventDto } from '@definitions/entities/eventTypes';
+import EventEditorForm from '@features/events/components/EventEditorForm';
 import Layout from '@layout/Layout';
-import { ExpandMore } from '@mui/icons-material';
-import { Accordion, AccordionDetails, AccordionSummary, Container, Toolbar, Typography } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { Container, Toolbar, Typography } from '@mui/material';
+import { getChangedFields } from '@utils/entityHelpers';
+import { omitGenericEntityFields } from '@utils/entityHelpers';
 import { useSnackbar } from 'notistack';
-import { useEffect, useRef } from 'react';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
 
-export default function EventEditor() {
-    const { eventId: eventIdFromParam } = useParams();
-    const eventId = Number(eventIdFromParam);
+interface Props {
+    event: Event;
+}
 
-    const { data: event, isLoading, isSuccess } = useEvent(eventId);
-    const { mutateAsync: updateEvent } = useUpdateEvent(eventId);
-
-    const actionDefinitionEditorRef = useRef<EditorRef>(null);
+export default function EventEditor({ event }: Props) {
+    const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
 
-    const { t } = useTranslation();
+    const { mutateAsync, isLoading } = useUpdateEvent(event);
 
-    const setDefaultActionDefinition = () => {
-        if (event && actionDefinitionEditorRef.current) {
-            const ref = actionDefinitionEditorRef.current;
+    const methods = useForm<EventDto>({
+        defaultValues: omitGenericEntityFields(event) as any,
+    });
 
-            if (!ref.getValue().length) {
-                ref.setValue(event.actionDefinition);
-            }
-        }
-    };
+    const { handleSubmit } = methods;
 
-    useEffect(() => {
-        setDefaultActionDefinition();
-    }, [event]);
+    const handleSave = async (eventDto: EventDto) => {
+        const payload = getChangedFields(omitGenericEntityFields(event), eventDto);
 
-    if (isLoading) {
-        return <FullScreenLoader />;
-    }
-
-    if (!isSuccess) {
-        return <FailedToLoadDataDialog />;
-    }
-
-    const onActionDefinitionSave = async (value: string) => {
         try {
-            await updateEvent({
-                actionDefinition: value,
-            });
-        } catch {
-            enqueueSnackbar(t('events:errors.failedToUpdateEvent'), {
+            await mutateAsync(payload);
+        } catch (e) {
+            enqueueSnackbar(t('events:errors.failedToCreateEvent'), {
                 variant: 'error',
             });
         }
-    };
-
-    const onActionDefinitionEditorMount = () => {
-        setDefaultActionDefinition();
     };
 
     return (
@@ -65,46 +43,23 @@ export default function EventEditor() {
             <Container>
                 <Toolbar sx={{ mb: 3 }}>
                     <Typography sx={{ typography: { sm: 'h4', xs: 'h5' }, flexGrow: 1 }} component="div">
-                        Event Editor
+                        {t('events:editor.editor.title')}
                     </Typography>
+
+                    <LoadingButton
+                        variant="contained"
+                        color="success"
+                        sx={{ ml: 1 }}
+                        onClick={handleSubmit(handleSave)}
+                        loading={isLoading}
+                    >
+                        {t('generic:save')}
+                    </LoadingButton>
                 </Toolbar>
 
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Basic information</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails></AccordionDetails>
-                </Accordion>
-
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Trigger options</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails></AccordionDetails>
-                </Accordion>
-
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Condition definition</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails></AccordionDetails>
-                </Accordion>
-
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>Action definition</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails sx={{ height: 400 }}>
-                        <Editor
-                            ref={actionDefinitionEditorRef}
-                            defaultValue=""
-                            onSave={onActionDefinitionSave}
-                            formatOnSave
-                            onMount={onActionDefinitionEditorMount}
-                            language="javascript"
-                        />
-                    </AccordionDetails>
-                </Accordion>
+                <FormProvider {...methods}>
+                    <EventEditorForm />
+                </FormProvider>
             </Container>
         </Layout>
     );

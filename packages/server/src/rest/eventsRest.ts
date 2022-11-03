@@ -162,7 +162,6 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
         const service = createEventsService();
         const event = await service.create(request.body);
-        console.log(event);
 
         return reply.status(StatusCodes.CREATED).send(event);
     });

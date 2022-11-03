@@ -1,16 +1,13 @@
 import { useCreateEvent } from '@api/eventsApi';
 import { EventDto, EventMetadataType, EventState, EventTriggerType } from '@definitions/entities/eventTypes';
-import EventEditorActionDefinitionForm from '@features/events/components/EventEditor/EventEditorActionDefinitionForm';
-import EventEditorBasicInformationForm from '@features/events/components/EventEditor/EventEditorBasicInformationForm';
-import EventEditorConditionDefinitionForm from '@features/events/components/EventEditor/EventEditorConditionDefinitionForm';
+import EventEditorForm from '@features/events/components/EventEditorForm';
 import Layout from '@layout/Layout';
-import { ExpandMore } from '@mui/icons-material';
-import { Accordion, AccordionDetails, AccordionSummary, Button, Container, Toolbar, Typography } from '@mui/material';
-import { enrichEventDto } from '@utils/enrichEventDto';
+import { Button, Container, Toolbar, Typography } from '@mui/material';
+import { prepareEventDto } from '@utils/modifyEventDto';
 import { useSnackbar } from 'notistack';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { generatePath, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { AppRoute } from '../constants';
 
@@ -34,6 +31,8 @@ export default function EventCreator() {
                 interval: 60,
                 runAfterEvent: null as any,
                 cronExpression: '* * * * *',
+                retryImmediatelyAfterBoot: false,
+                recurring: false,
             },
         },
     });
@@ -42,8 +41,8 @@ export default function EventCreator() {
 
     const handleSave = async (eventDto: EventDto) => {
         try {
-            const createdEvent = await mutateAsync(enrichEventDto(eventDto));
-            navigate(generatePath(AppRoute.Events.Editor, { eventId: String(createdEvent._id) }));
+            await mutateAsync(prepareEventDto(eventDto));
+            navigate(AppRoute.Events.Root);
         } catch (e) {
             enqueueSnackbar(t('events:errors.failedToCreateEvent'), {
                 variant: 'error',
@@ -64,32 +63,9 @@ export default function EventCreator() {
                     </Button>
                 </Toolbar>
 
-                <Accordion defaultExpanded>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>{t('events:editor.basicInformation.title')}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <EventEditorBasicInformationForm methods={methods} />
-                    </AccordionDetails>
-                </Accordion>
-
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>{t('events:editor.conditionDefinition.title')}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <EventEditorConditionDefinitionForm methods={methods} />
-                    </AccordionDetails>
-                </Accordion>
-
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography>{t('events:editor.actionDefinition.title')}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        <EventEditorActionDefinitionForm methods={methods} />
-                    </AccordionDetails>
-                </Accordion>
+                <FormProvider {...methods}>
+                    <EventEditorForm />
+                </FormProvider>
             </Container>
         </Layout>
     );
