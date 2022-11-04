@@ -1,5 +1,5 @@
 import { ExpandMore } from '@mui/icons-material';
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 import EventEditorActionDefinitionForm from './EventEditor/EventEditorActionDefinitionForm';
@@ -10,7 +10,7 @@ export default function EventEditorForm() {
     const { t } = useTranslation();
 
     return (
-        <>
+        <Box>
             <Accordion defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMore />}>
                     <Typography>{t('events:editor.basicInformation.title')}</Typography>
@@ -37,6 +37,6 @@ export default function EventEditorForm() {
                     <EventEditorActionDefinitionForm />
                 </AccordionDetails>
             </Accordion>
-        </>
+        </Box>
     );
 }

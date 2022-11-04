@@ -9,7 +9,7 @@ import libEs5 from 'typescript/lib/lib.es5.d.ts?raw';
 
 import libSdk from '../../definitions/eventSdk.d.ts?raw';
 
-interface Props {
+export interface Props {
     defaultValue?: string;
     value?: string;
     onMount?: () => void;
@@ -18,6 +18,7 @@ interface Props {
     formatOnSave?: boolean;
     language: string;
     filename?: string;
+    editorOptions?: editor.IStandaloneEditorConstructionOptions;
 }
 
 export type EditorRef = editor.IStandaloneCodeEditor;
@@ -29,7 +30,10 @@ const EDITOR_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
 };
 
 const Editor = forwardRef<EditorRef, Props>(
-    ({ defaultValue, formatOnSave, onSave, onMount, onChange, language, value, filename }, editorRef) => {
+    (
+        { defaultValue, formatOnSave, onSave, onMount, onChange, language, value, filename, editorOptions },
+        editorRef,
+    ) => {
         const { enqueueSnackbar } = useSnackbar();
 
         useEventListener('keydown', (e) => {
@@ -120,6 +124,13 @@ const Editor = forwardRef<EditorRef, Props>(
             }
         }, [language]);
 
+        const options = useMemo(() => {
+            return {
+                ...EDITOR_OPTIONS,
+                ...editorOptions,
+            };
+        }, [editorOptions]);
+
         return (
             <MonacoEditor
                 defaultLanguage={language}
@@ -129,7 +140,7 @@ const Editor = forwardRef<EditorRef, Props>(
                 theme="vs-dark"
                 beforeMount={beforeMount}
                 onMount={handleMount}
-                options={EDITOR_OPTIONS}
+                options={options}
                 onChange={onChange}
             />
         );

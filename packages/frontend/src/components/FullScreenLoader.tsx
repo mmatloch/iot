@@ -14,7 +14,7 @@ export default function FullScreenLoader() {
                 style={{ minHeight: '100vh' }}
             >
                 <Grid item>
-                    <CircularProgressLoader />
+                    <CircularProgressLoader variant="normal" />
                 </Grid>
             </Grid>
         </div>

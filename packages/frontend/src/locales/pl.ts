@@ -1,4 +1,5 @@
 import {
+    EventActionOnInactive,
     EventMetadataOnMultipleInstances,
     EventMetadataTaskType,
     EventState,
@@ -96,6 +97,11 @@ export const PolishLocale: Locale = {
             [EventMetadataTaskType.StaticCron]: 'Statyczny CRON',
             [EventMetadataTaskType.StaticInterval]: 'Statyczny interwał',
         },
+        onInactive: {
+            [EventActionOnInactive.Continue]: 'Kontynuuj',
+            [EventActionOnInactive.Error]: 'Zwróć błąd',
+            [EventActionOnInactive.Skip]: 'Pomiń',
+        },
         entity: {
             displayName: 'Nazwa',
             triggerType: 'Typ wyzwalacza',
@@ -131,6 +137,21 @@ export const PolishLocale: Locale = {
                 forDevice: 'Dla urządzenia',
             },
             openInEditor: 'Otwórz w edytorze zdarzeń',
+            triggerPanel: {
+                buttonText: 'Wywołaj zdarzenie',
+                context: {
+                    title: 'Kontekst',
+                    description:
+                        'Dane w formacie JSON z którymi zostanie wywołane zdarzenie np. dane przysłane przez urządzenie',
+                },
+                options: {
+                    title: 'Opcje',
+                },
+                onInactive: {
+                    title: 'Gdy nieaktywne',
+                    description: 'Co powinno się stać, gdy to wydarzenie jest nieaktywne',
+                },
+            },
         },
         scheduler: {
             nextTriggerAt: 'Następne aktywowanie o:',
@@ -140,6 +161,8 @@ export const PolishLocale: Locale = {
         errors: {
             failedToCreateEvent: 'Nie udało się utworzyć zdarzenia',
             failedToUpdateEvent: 'Nie udało się zaktualizować zdarzenia',
+            failedToTriggerEvent: 'Nie udało się wywołać zdarzenia',
+            failedToParseTriggerContext: 'Nie udało się przetworzyć kontekstu wywołania',
             failedToParseCronExpression: 'Nie udało się przetworzyć wyrażenia CRON',
         },
         dates: {

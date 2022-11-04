@@ -11,6 +11,7 @@ export const ApiRoute = {
     },
     Events: {
         Root: addPrefix('events'),
+        Trigger: addPrefix('events/trigger'),
     },
     Devices: {
         Root: addPrefix('devices'),

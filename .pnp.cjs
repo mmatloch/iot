@@ -2009,6 +2009,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["@juggle/resize-observer", [\
+        ["npm:3.4.0", {\
+          "packageLocation": "./.yarn/cache/@juggle-resize-observer-npm-3.4.0-659544c6b5-2505028c05.zip/node_modules/@juggle/resize-observer/",\
+          "packageDependencies": [\
+            ["@juggle/resize-observer", "npm:3.4.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["@monaco-editor/loader", [\
         ["npm:1.3.2", {\
           "packageLocation": "./.yarn/cache/@monaco-editor-loader-npm-1.3.2-a1ecf5411f-7a1b65052b.zip/node_modules/@monaco-editor/loader/",\
@@ -3404,6 +3413,38 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["allotment", [\
+        ["npm:1.17.0", {\
+          "packageLocation": "./.yarn/cache/allotment-npm-1.17.0-518b43d1ef-0ad579a514.zip/node_modules/allotment/",\
+          "packageDependencies": [\
+            ["allotment", "npm:1.17.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:1.17.0", {\
+          "packageLocation": "./.yarn/__virtual__/allotment-virtual-64857532fa/0/cache/allotment-npm-1.17.0-518b43d1ef-0ad579a514.zip/node_modules/allotment/",\
+          "packageDependencies": [\
+            ["allotment", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:1.17.0"],\
+            ["@types/react", "npm:18.0.18"],\
+            ["@types/react-dom", "npm:18.0.6"],\
+            ["classnames", "npm:2.3.2"],\
+            ["eventemitter3", "npm:4.0.7"],\
+            ["lodash.clamp", "npm:4.0.3"],\
+            ["lodash.debounce", "npm:4.0.8"],\
+            ["lodash.isequal", "npm:4.5.0"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:18.2.0"],\
+            ["use-resize-observer", "virtual:64857532fa4ab994ad0922504115cfa6504403f454afb1674c7b92cbcd9454d43c70cd2e4255aeb2dffeb69bec2ce11c1882faa9875fbbfab23dc8f4049ded97#npm:9.0.2"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["ansi-escapes", [\
         ["npm:3.2.0", {\
           "packageLocation": "./.yarn/cache/ansi-escapes-npm-3.2.0-a9d573100e-0f94695b67.zip/node_modules/ansi-escapes/",\
@@ -4156,6 +4197,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/cjs-module-lexer-npm-1.2.2-473ce063ea-977f3f042b.zip/node_modules/cjs-module-lexer/",\
           "packageDependencies": [\
             ["cjs-module-lexer", "npm:1.2.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["classnames", [\
+        ["npm:2.3.2", {\
+          "packageLocation": "./.yarn/cache/classnames-npm-2.3.2-d2fdae468d-2c62199789.zip/node_modules/classnames/",\
+          "packageDependencies": [\
+            ["classnames", "npm:2.3.2"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -5630,6 +5680,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["eventemitter3", [\
+        ["npm:4.0.7", {\
+          "packageLocation": "./.yarn/cache/eventemitter3-npm-4.0.7-7afcdd74ae-1875311c42.zip/node_modules/eventemitter3/",\
+          "packageDependencies": [\
+            ["eventemitter3", "npm:4.0.7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["execa", [\
         ["npm:0.10.0", {\
           "packageLocation": "./.yarn/cache/execa-npm-0.10.0-d18cb8f7af-da132af2b2.zip/node_modules/execa/",\
@@ -5989,6 +6048,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@types/react-dom", "npm:18.0.6"],\
             ["@types/whatwg-mimetype", "npm:2.1.1"],\
             ["@vitejs/plugin-react", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:2.0.1"],\
+            ["allotment", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:1.17.0"],\
             ["country-flag-icons", "npm:1.5.5"],\
             ["cron-parser", "npm:4.6.0"],\
             ["date-fns", "npm:2.29.3"],\
@@ -8097,6 +8157,24 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["lodash.clamp", [\
+        ["npm:4.0.3", {\
+          "packageLocation": "./.yarn/cache/lodash.clamp-npm-4.0.3-e1fd419f1d-02baa03ebb.zip/node_modules/lodash.clamp/",\
+          "packageDependencies": [\
+            ["lodash.clamp", "npm:4.0.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["lodash.debounce", [\
+        ["npm:4.0.8", {\
+          "packageLocation": "./.yarn/cache/lodash.debounce-npm-4.0.8-f1d6e09799-a3f527d22c.zip/node_modules/lodash.debounce/",\
+          "packageDependencies": [\
+            ["lodash.debounce", "npm:4.0.8"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["lodash.includes", [\
         ["npm:4.3.0", {\
           "packageLocation": "./.yarn/cache/lodash.includes-npm-4.3.0-3a2f6fa22c-71092c1305.zip/node_modules/lodash.includes/",\
@@ -8111,6 +8189,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/lodash.isboolean-npm-3.0.3-b575b41488-b70068b4a8.zip/node_modules/lodash.isboolean/",\
           "packageDependencies": [\
             ["lodash.isboolean", "npm:3.0.3"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["lodash.isequal", [\
+        ["npm:4.5.0", {\
+          "packageLocation": "./.yarn/cache/lodash.isequal-npm-4.5.0-f8b0f64d63-da27515dc5.zip/node_modules/lodash.isequal/",\
+          "packageDependencies": [\
+            ["lodash.isequal", "npm:4.5.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -11491,6 +11578,33 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "packagePeers": [\
             "@types/react",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["use-resize-observer", [\
+        ["npm:9.0.2", {\
+          "packageLocation": "./.yarn/cache/use-resize-observer-npm-9.0.2-3e94561264-a79f9f4027.zip/node_modules/use-resize-observer/",\
+          "packageDependencies": [\
+            ["use-resize-observer", "npm:9.0.2"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:64857532fa4ab994ad0922504115cfa6504403f454afb1674c7b92cbcd9454d43c70cd2e4255aeb2dffeb69bec2ce11c1882faa9875fbbfab23dc8f4049ded97#npm:9.0.2", {\
+          "packageLocation": "./.yarn/__virtual__/use-resize-observer-virtual-39ce9b1eea/0/cache/use-resize-observer-npm-9.0.2-3e94561264-a79f9f4027.zip/node_modules/use-resize-observer/",\
+          "packageDependencies": [\
+            ["use-resize-observer", "virtual:64857532fa4ab994ad0922504115cfa6504403f454afb1674c7b92cbcd9454d43c70cd2e4255aeb2dffeb69bec2ce11c1882faa9875fbbfab23dc8f4049ded97#npm:9.0.2"],\
+            ["@juggle/resize-observer", "npm:3.4.0"],\
+            ["@types/react", "npm:18.0.18"],\
+            ["@types/react-dom", "npm:18.0.6"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:a315446cd0626d69c81bb371962241fad2e843699b8251d1a49a3231d7821af7bdb2285677102303361c3219ca15ceeabaa438b7b5ead02c2587180fe2eace6b#npm:18.2.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
             "react"\
           ],\
           "linkType": "HARD"\

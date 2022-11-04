@@ -13,6 +13,7 @@ import {
     Typography,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { getEventStateBadgeColor } from '@utils/badgeColor';
 import { formatDistance, formatISO9075, intlFormat } from 'date-fns';
 import { MouseEvent, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
@@ -23,19 +24,6 @@ import EventMenu from './EventMenu';
 interface Props {
     event: Event;
 }
-
-const getBadgeColor = (state: EventState) => {
-    switch (state) {
-        case EventState.Active:
-            return 'success';
-        case EventState.Inactive:
-            return 'error';
-        case EventState.Completed:
-            return 'warning';
-        default:
-            return 'default';
-    }
-};
 
 const formatRelativeDate = (date: string) => formatDistance(new Date(date), new Date(), { addSuffix: true });
 const formatFullDate = (date: string) =>
@@ -73,7 +61,7 @@ export default function EventCard({ event }: Props) {
     };
 
     return (
-        <Badge color={getBadgeColor(event.state)} badgeContent={t(stateTransKey)}>
+        <Badge color={getEventStateBadgeColor(event.state)} badgeContent={t(stateTransKey)}>
             <Card
                 sx={{
                     p: 2,

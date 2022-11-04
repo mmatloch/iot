@@ -1,7 +1,7 @@
-import Editor from '@components/editor/Editor';
+import Editor, { Props as EditorProps } from '@components/editor/Editor';
 import { Controller, useFormContext } from 'react-hook-form';
 
-interface Props {
+interface Props extends EditorProps {
     name: string;
     language: string;
     filename?: string;

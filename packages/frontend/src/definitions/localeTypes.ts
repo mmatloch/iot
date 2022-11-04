@@ -1,4 +1,5 @@
 import {
+    EventActionOnInactive,
     EventMetadataOnMultipleInstances,
     EventMetadataTaskType,
     EventState,
@@ -82,6 +83,7 @@ export interface Locale {
         triggerType: Record<EventTriggerType, string>;
         metadataOnMultipleInstances: Record<EventMetadataOnMultipleInstances, string>;
         metadataTaskType: Record<EventMetadataTaskType, string>;
+        onInactive: Record<EventActionOnInactive, string>;
         entity: {
             displayName: string;
             triggerType: string;
@@ -117,6 +119,20 @@ export interface Locale {
                 forDevice: string;
             };
             openInEditor: string;
+            triggerPanel: {
+                buttonText: string;
+                context: {
+                    title: string;
+                    description: string;
+                };
+                options: {
+                    title: string;
+                };
+                onInactive: {
+                    title: string;
+                    description: string;
+                };
+            };
         };
         scheduler: {
             nextTriggerAt: string;
@@ -126,6 +142,8 @@ export interface Locale {
         errors: {
             failedToCreateEvent: string;
             failedToUpdateEvent: string;
+            failedToTriggerEvent: string;
+            failedToParseTriggerContext: string;
             failedToParseCronExpression: string;
         };
         dates: {

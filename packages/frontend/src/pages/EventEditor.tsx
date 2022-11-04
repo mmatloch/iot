@@ -1,11 +1,19 @@
 import { useUpdateEvent } from '@api/eventsApi';
-import { Event, EventDto } from '@definitions/entities/eventTypes';
+import { Event, EventDto, EventState } from '@definitions/entities/eventTypes';
+import ActivateEventButton from '@features/events/components/ActivateEventButton';
+import DeactivateEventButton from '@features/events/components/DeactivateEventButton';
 import EventEditorForm from '@features/events/components/EventEditorForm';
+import EventTriggerPanel from '@features/events/components/EventTriggerPanel';
+import useAppBarHeight from '@hooks/useAppBarHeight';
 import Layout from '@layout/Layout';
+import { ExpandMore, Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Container, Toolbar, Typography } from '@mui/material';
+import { Badge, Box, Button, Container, Grid, Toolbar, Typography, useTheme } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
+import { getEventStateBadgeColor } from '@utils/badgeColor';
 import { getChangedFields } from '@utils/entityHelpers';
 import { omitGenericEntityFields } from '@utils/entityHelpers';
+import { Allotment } from 'allotment';
 import { useSnackbar } from 'notistack';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +34,8 @@ export default function EventEditor({ event }: Props) {
 
     const { handleSubmit } = methods;
 
+    const stateTransKey = `events:state.${event.state}` as const;
+
     const handleSave = async (eventDto: EventDto) => {
         const payload = getChangedFields(omitGenericEntityFields(event), eventDto);
 
@@ -45,22 +55,52 @@ export default function EventEditor({ event }: Props) {
                     <Typography sx={{ typography: { sm: 'h4', xs: 'h5' }, flexGrow: 1 }} component="div">
                         {t('events:editor.editor.title')}
                     </Typography>
-
-                    <LoadingButton
-                        variant="contained"
-                        color="success"
-                        sx={{ ml: 1 }}
-                        onClick={handleSubmit(handleSave)}
-                        loading={isLoading}
-                    >
-                        {t('generic:save')}
-                    </LoadingButton>
                 </Toolbar>
-
-                <FormProvider {...methods}>
-                    <EventEditorForm />
-                </FormProvider>
             </Container>
+
+            <Box sx={{ height: '83vh' }}>
+                <Allotment defaultSizes={[4, 1]}>
+                    <Grid
+                        container
+                        justifyContent="center"
+                        sx={{
+                            overflowY: 'auto',
+                            height: '83vh',
+                            '&::-webkit-scrollbar': {
+                                display: 'none',
+                            },
+                        }}
+                    >
+                        <Grid item sx={{ width: '80%' }}>
+                            <Toolbar sx={{ mb: 3 }}>
+                                <Box sx={{ flexGrow: 1 }}></Box>
+                                <LoadingButton
+                                    variant="contained"
+                                    color="success"
+                                    sx={{ mx: 1 }}
+                                    onClick={handleSubmit(handleSave)}
+                                    loading={isLoading}
+                                    startIcon={<Save />}
+                                >
+                                    {t('generic:save')}
+                                </LoadingButton>
+
+                                {event.state !== EventState.Active ? (
+                                    <ActivateEventButton event={event} />
+                                ) : (
+                                    <DeactivateEventButton event={event} />
+                                )}
+                            </Toolbar>
+
+                            <FormProvider {...methods}>
+                                <EventEditorForm />
+                            </FormProvider>
+                        </Grid>
+                    </Grid>
+
+                    <EventTriggerPanel event={event} />
+                </Allotment>
+            </Box>
         </Layout>
     );
 }

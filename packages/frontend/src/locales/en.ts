@@ -1,4 +1,5 @@
 import {
+    EventActionOnInactive,
     EventMetadataOnMultipleInstances,
     EventMetadataTaskType,
     EventState,
@@ -96,6 +97,11 @@ export const EnglishLocale: Locale = {
             [EventMetadataTaskType.StaticCron]: 'Static CRON',
             [EventMetadataTaskType.StaticInterval]: 'Static interval',
         },
+        onInactive: {
+            [EventActionOnInactive.Continue]: 'Continue',
+            [EventActionOnInactive.Error]: 'Return error',
+            [EventActionOnInactive.Skip]: 'Skip',
+        },
         entity: {
             displayName: 'Name',
             triggerType: 'Trigger type',
@@ -131,6 +137,21 @@ export const EnglishLocale: Locale = {
                 forDevice: 'For device',
             },
             openInEditor: 'Open in event editor',
+            triggerPanel: {
+                buttonText: 'Trigger event',
+                context: {
+                    title: 'Context',
+                    description:
+                        'Data in JSON format with which the event will be triggered, such as data sent by the device',
+                },
+                options: {
+                    title: 'Options',
+                },
+                onInactive: {
+                    title: 'On inactive',
+                    description: 'What should happen when this event is inactive',
+                },
+            },
         },
         scheduler: {
             nextTriggerAt: 'Next trigger at:',
@@ -140,6 +161,8 @@ export const EnglishLocale: Locale = {
         errors: {
             failedToCreateEvent: 'Failed to create event',
             failedToUpdateEvent: 'Failed to update event',
+            failedToTriggerEvent: 'Failed to trigger event',
+            failedToParseTriggerContext: 'Failed to parse trigger context',
             failedToParseCronExpression: 'Failed to parse CRON expression',
         },
         dates: {

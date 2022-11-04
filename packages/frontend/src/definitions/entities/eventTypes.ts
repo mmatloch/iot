@@ -31,6 +31,12 @@ export enum EventMetadataOnMultipleInstances {
     Skip = 'SKIP',
 }
 
+export enum EventActionOnInactive {
+    Skip = 'SKIP',
+    Error = 'ERROR',
+    Continue = 'CONTINUE',
+}
+
 interface EventSchedulerCronMetadata {
     cronExpression: string;
 }

@@ -1,4 +1,5 @@
 import { Event, EventDto, EventsSearchQuery, EventsSearchResponse } from '@definitions/entities/eventTypes';
+import { EventsTriggerPayload, EventsTriggerResponse } from '@definitions/eventTriggerTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 import isNumber from 'lodash/isNumber';
@@ -62,3 +63,10 @@ export const useEvent = (id: number, useQueryOptions?: UseQueryOptions<Event, Er
         },
         useQueryOptions,
     );
+
+export const useTriggerEvent = () => {
+    return useGenericMutation<EventsTriggerResponse, EventsTriggerPayload>({
+        url: ApiRoute.Events.Trigger,
+        method: 'POST',
+    });
+};
