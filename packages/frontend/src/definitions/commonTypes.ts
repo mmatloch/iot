@@ -21,3 +21,12 @@ export const GENERIC_ENTITY_FIELDS = [
     '_updatedBy',
     '_updatedByUser',
 ];
+
+export interface StructuredError {
+    message: string;
+    errorCode?: string;
+    detail?: string;
+    validationDetails?: Record<string, unknown>;
+    stack?: string;
+    cause?: StructuredError;
+}

@@ -4,13 +4,10 @@ import ActivateEventButton from '@features/events/components/ActivateEventButton
 import DeactivateEventButton from '@features/events/components/DeactivateEventButton';
 import EventEditorForm from '@features/events/components/EventEditorForm';
 import EventTriggerPanel from '@features/events/components/EventTriggerPanel';
-import useAppBarHeight from '@hooks/useAppBarHeight';
 import Layout from '@layout/Layout';
-import { ExpandMore, Save } from '@mui/icons-material';
+import { Save } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Badge, Box, Button, Container, Grid, Toolbar, Typography, useTheme } from '@mui/material';
-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
-import { getEventStateBadgeColor } from '@utils/badgeColor';
+import { Box, Container, Grid, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { getChangedFields } from '@utils/entityHelpers';
 import { omitGenericEntityFields } from '@utils/entityHelpers';
 import { Allotment } from 'allotment';
@@ -26,6 +23,9 @@ export default function EventEditor({ event }: Props) {
     const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
 
+    const theme = useTheme();
+    const isMediumMedia = useMediaQuery(theme.breakpoints.up('sm'));
+
     const { mutateAsync, isLoading } = useUpdateEvent(event);
 
     const methods = useForm<EventDto>({
@@ -33,8 +33,6 @@ export default function EventEditor({ event }: Props) {
     });
 
     const { handleSubmit } = methods;
-
-    const stateTransKey = `events:state.${event.state}` as const;
 
     const handleSave = async (eventDto: EventDto) => {
         const payload = getChangedFields(omitGenericEntityFields(event), eventDto);
@@ -59,7 +57,7 @@ export default function EventEditor({ event }: Props) {
             </Container>
 
             <Box sx={{ height: '83vh' }}>
-                <Allotment defaultSizes={[4, 1]}>
+                <Allotment defaultSizes={[5, 2]} vertical={!isMediumMedia}>
                     <Grid
                         container
                         justifyContent="center"
@@ -98,7 +96,17 @@ export default function EventEditor({ event }: Props) {
                         </Grid>
                     </Grid>
 
-                    <EventTriggerPanel event={event} />
+                    <Box
+                        sx={{
+                            overflowY: 'auto',
+                            height: '83vh',
+                            '&::-webkit-scrollbar': {
+                                display: 'none',
+                            },
+                        }}
+                    >
+                        <EventTriggerPanel event={event} />
+                    </Box>
                 </Allotment>
             </Box>
         </Layout>

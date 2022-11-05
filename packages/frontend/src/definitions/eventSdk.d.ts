@@ -26,6 +26,7 @@
         _updatedBy: number | null;
         _updatedByUser: User | null;
     }
+    declare const GENERIC_ENTITY_FIELDS: string[];
     declare enum DeviceType {
         Unknown = "UNKNOWN",
         Coordinator = "COORDINATOR",
@@ -124,6 +125,11 @@
         Create = "CREATE",
         Skip = "SKIP"
     }
+    declare enum EventActionOnInactive {
+        Skip = "SKIP",
+        Error = "ERROR",
+        Continue = "CONTINUE"
+    }
     interface EventSchedulerCronMetadata {
         cronExpression: string;
     }
@@ -133,7 +139,7 @@
     interface EventSchedulerStaticMetadata {
     }
     interface EventSchedulerRelativeMetadata {
-        runAfterEvent: number;
+        runAfterEvent: Pick<GenericEntity, '_id'>;
     }
     declare interface EventScheduleGenericMetadata {
         type: EventMetadataType.Scheduler;
@@ -154,7 +160,7 @@
         taskType: EventMetadataTaskType.StaticInterval;
     }
     declare type EventMetadata = EventSchedulerRelativeCronMetadata | EventSchedulerRelativeIntervalMetadata | EventSchedulerStaticCronMetadata | EventSchedulerStaticIntervalMetadata;
-    declare interface Event extends GenericEntity {
+    declare interface EventDto {
         displayName: string;
         triggerType: EventTriggerType;
         triggerFilters: Record<string, unknown>;
@@ -163,11 +169,68 @@
         state: EventState;
         metadata: EventMetadata | null;
     }
+    declare type Event = EventDto & GenericEntity;
     declare type EventsSearchQuery = SearchQuery<Event>;
     declare type EventsSearchResponse = SearchResponse<Event>;
     declare interface SensorData extends GenericEntity {
         deviceId: number;
         data: Record<string, unknown>;
+    }
+    declare enum EventInstanceState {
+        UnknownError = "UNKNOWN_ERROR",
+        FailedOnCondition = "FAILED_ON_CONDITION",
+        FailedOnAction = "FAILED_ON_ACTION",
+        Success = "SUCCESS",
+        ConditionNotMet = "CONDITION_NOT_MET"
+    }
+    interface PerformanceMetricsStep {
+        name: string;
+        executionStartDate: string;
+        executionEndDate: string;
+        executionDuration: number;
+    }
+    interface PerformanceMetrics {
+        executionStartDate: string;
+        executionEndDate: string;
+        executionDuration: number;
+        steps: PerformanceMetricsStep[];
+    }
+    declare interface EventInstance extends GenericEntity {
+        eventId: number;
+        parentEventId: number | null;
+        triggerContext: Record<string, unknown>;
+        state: EventInstanceState;
+        error: unknown;
+        performanceMetrics: PerformanceMetrics;
+        eventRunId: string;
+    }
+    declare interface EventRunSummaryChild {
+        event: Event;
+        parentEvent?: Event;
+        eventInstance?: EventInstance;
+        children: EventRunSummaryChild[];
+    }
+    declare interface EventRunSummary {
+        children: EventRunSummaryChild[];
+    }
+    declare type EventsTriggerResponse = {
+        runId: string;
+        summary: EventRunSummary;
+    }[];
+    declare type EventTriggerContext = Record<string, unknown>;
+    declare interface EventTriggerOptions {
+        onInactive?: EventActionOnInactive;
+    }
+    declare interface EventsTriggerPayload {
+        filters: {
+            triggerType?: EventTriggerType;
+            triggerFilters: Record<string, unknown>;
+        };
+        context: EventTriggerContext;
+        options?: EventTriggerOptions;
+    }
+    interface EventWithTrigger extends Event {
+        trigger: (context?: EventTriggerContext, opts?: EventTriggerOptions) => Promise<void>;
     }
     interface DevicesSdk {
         findByIdOrFail: (id: number) => Promise<Device>;
@@ -175,7 +238,7 @@
         publishData: (device: Device, data: Record<string, unknown>) => Promise<void>;
     }
     interface EventsSdk {
-        findByIdOrFail: (id: number) => Promise<Event>;
+        findByIdOrFail: (id: number) => Promise<EventWithTrigger>;
     }
     declare var sdk: {
         devices: DevicesSdk;

@@ -1,4 +1,4 @@
-import { GenericEntity } from '@definitions/commonTypes';
+import { GenericEntity, StructuredError } from '@definitions/commonTypes';
 
 export enum EventInstanceState {
     UnknownError = 'UNKNOWN_ERROR',
@@ -27,7 +27,7 @@ export interface EventInstance extends GenericEntity {
     parentEventId: number | null;
     triggerContext: Record<string, unknown>;
     state: EventInstanceState;
-    error: unknown;
+    error: StructuredError;
     performanceMetrics: PerformanceMetrics;
     eventRunId: string;
 }

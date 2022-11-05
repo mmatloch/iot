@@ -50,7 +50,7 @@ export const createEventScheduler = () => {
         await eventSchedulerTasksService.removeByEvent(event, { listeners });
 
         if (event.metadata?.runAfterEvent) {
-            relativeEventMetadataMap.delete(event.metadata.runAfterEvent);
+            relativeEventMetadataMap.delete(event.metadata.runAfterEvent._id);
         }
 
         logger.debug({
@@ -160,7 +160,7 @@ export const createEventScheduler = () => {
                         return;
                     }
 
-                    relativeEventMetadataMap.set(event.metadata.runAfterEvent, event);
+                    relativeEventMetadataMap.set(event.metadata.runAfterEvent._id, event);
                 }
 
                 break;

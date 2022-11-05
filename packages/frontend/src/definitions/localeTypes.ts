@@ -1,3 +1,4 @@
+import { EventInstanceState } from './entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
     EventMetadataOnMultipleInstances,
@@ -24,6 +25,11 @@ export interface Locale {
         error: string;
         clear: string;
         create: string;
+        statusCode: string;
+        entity: {
+            id: string;
+            state: string;
+        };
         search: {
             filters: string;
             filtering: string;
@@ -37,6 +43,8 @@ export interface Locale {
         errors: {
             failedToLoadData: string;
             noInternetConnection: string;
+            errorOccured: string;
+            unknownErrorOccured: string;
         };
     };
     i18n: {
@@ -121,6 +129,7 @@ export interface Locale {
             openInEditor: string;
             triggerPanel: {
                 buttonText: string;
+                runId: string;
                 context: {
                     title: string;
                     description: string;
@@ -154,5 +163,15 @@ export interface Locale {
             showOnlyActive: string;
             showOnlyUserCreated: string;
         };
+    };
+    eventInstances: {
+        entity: {
+            triggeredBy: string;
+            performanceMetrics: {
+                executionDuration: string;
+                steps: string;
+            };
+        };
+        state: Record<EventInstanceState, string>;
     };
 }

@@ -1,3 +1,4 @@
+import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
     EventMetadataOnMultipleInstances,
@@ -20,6 +21,11 @@ export const PolishLocale: Locale = {
         error: 'Błąd',
         clear: 'Wyszyść',
         create: 'Stwórz',
+        statusCode: 'Kod statusu',
+        entity: {
+            id: 'ID',
+            state: 'Stan',
+        },
         search: {
             filters: 'Filtry',
             filtering: 'Filtrowanie',
@@ -33,6 +39,8 @@ export const PolishLocale: Locale = {
         errors: {
             failedToLoadData: 'Nie udało się załadować danych',
             noInternetConnection: 'Sprawdź połączenie internetowe i spróbuj ponownie',
+            errorOccured: 'Wystąpił błąd',
+            unknownErrorOccured: 'Wystąpił nieznany błąd',
         },
     },
     i18n: {
@@ -139,6 +147,7 @@ export const PolishLocale: Locale = {
             openInEditor: 'Otwórz w edytorze zdarzeń',
             triggerPanel: {
                 buttonText: 'Wywołaj zdarzenie',
+                runId: 'ID uruchomienia',
                 context: {
                     title: 'Kontekst',
                     description:
@@ -172,6 +181,22 @@ export const PolishLocale: Locale = {
         search: {
             showOnlyActive: 'Pokaż tylko aktywne',
             showOnlyUserCreated: 'Pokaż tylko stworzone przez użytkownika',
+        },
+    },
+    eventInstances: {
+        entity: {
+            triggeredBy: 'Wywołany przez',
+            performanceMetrics: {
+                executionDuration: 'Czas wykonywania',
+                steps: 'Kroki',
+            },
+        },
+        state: {
+            [EventInstanceState.ConditionNotMet]: 'Niespełniony warunek',
+            [EventInstanceState.FailedOnAction]: 'Akcja nie powiodła się',
+            [EventInstanceState.FailedOnCondition]: 'Warunek nie powiódł się',
+            [EventInstanceState.Success]: 'Sukces',
+            [EventInstanceState.UnknownError]: 'Nieznany błąd',
         },
     },
 };

@@ -1,8 +1,14 @@
-import { EventsTriggerResponse } from '@definitions/eventTriggerTypes';
-import { HttpError } from '@errors/httpError';
+import { EventRunSummaryChild, EventsTriggerResponse } from '@definitions/eventTriggerTypes';
 import { ChevronRight, ExpandMore } from '@mui/icons-material';
-import { TreeItem, TreeView } from '@mui/lab';
-import { Alert, AlertTitle, Badge, Chip, Typography } from '@mui/material';
+import { TreeView } from '@mui/lab';
+import { Box, Chip, Divider } from '@mui/material';
+import { findNodeInResponse, toTree } from '@utils/eventTriggerTree';
+import { buildTreeItems } from '@utils/tree';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import EventRunSummaryChildPanel from './EventRunSummaryChildPanel';
+import EventTriggerResultError from './EventTriggerResultError';
 
 interface Props {
     data: EventsTriggerResponse | undefined;
@@ -10,49 +16,48 @@ interface Props {
 }
 
 export default function EventTriggerResultPanel({ data, error }: Props) {
+    const { t } = useTranslation();
+    const [selectedNode, setSelectedNode] = useState<EventRunSummaryChild>();
+
     if (error) {
-        if (error instanceof HttpError) {
-            return (
-                <>
-                    <Alert severity="error">
-                        <AlertTitle>Wystąpił błąd (kod statusu: {error.statusCode})</AlertTitle>
-                        {error.message}
-                    </Alert>
-
-                    <Alert severity="error">{error.detail}</Alert>
-                </>
-            );
-        }
-
-        return (
-            <>
-                <Alert severity="error">
-                    <AlertTitle>Wystąpił nieznany błąd</AlertTitle>
-                    {error.message}
-                </Alert>
-            </>
-        );
+        return <EventTriggerResultError error={error} />;
     }
 
     if (!data) {
-        return null;
+        return <></>;
     }
 
-    return data.map(({ runId, summary }) => {
-        return (
-            <>
-                <Chip label={`Run ID: ${runId}`} sx={{ mb: 2 }} />
+    const handleNodeSelect = (_event: React.SyntheticEvent, nodeIds: string[]) => {
+        const [nodeId] = nodeIds;
 
-                <TreeView defaultCollapseIcon={<ExpandMore />} defaultExpandIcon={<ChevronRight />}>
-                    <TreeItem nodeId="1" label="Applications">
-                        <TreeItem nodeId="2" label="Calendar" />
-                    </TreeItem>
-                </TreeView>
+        const node = findNodeInResponse(nodeId, data);
 
-                {summary.children.map(({ event }) => {
-                    return <></>;
-                })}
-            </>
-        );
-    });
+        if (node) {
+            setSelectedNode(node);
+        }
+    };
+
+    return (
+        <>
+            {data.map(({ runId, summary }) => {
+                return (
+                    <Box key={runId}>
+                        <Chip label={`${t('events:editor.triggerPanel.runId')}: ${runId}`} sx={{ mb: 2 }} />
+
+                        <TreeView
+                            defaultCollapseIcon={<ExpandMore />}
+                            defaultExpandIcon={<ChevronRight />}
+                            onNodeSelect={handleNodeSelect}
+                        >
+                            {buildTreeItems(toTree(summary.children))}
+                        </TreeView>
+
+                        <Divider sx={{ my: 2 }} />
+
+                        {selectedNode && <EventRunSummaryChildPanel runSummary={selectedNode} />}
+                    </Box>
+                );
+            })}
+        </>
+    );
 }

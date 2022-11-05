@@ -4,7 +4,7 @@ import type { Event, EventActionOnInactive, EventTriggerType } from './entities/
 export interface EventRunSummaryChild {
     event: Event;
     parentEvent?: Event;
-    eventInstance?: EventInstance;
+    eventInstance: EventInstance;
     children: EventRunSummaryChild[];
 }
 
@@ -17,13 +17,16 @@ export type EventsTriggerResponse = {
     summary: EventRunSummary;
 }[];
 
+export type EventTriggerContext = Record<string, unknown>;
+export interface EventTriggerOptions {
+    onInactive?: EventActionOnInactive;
+}
+
 export interface EventsTriggerPayload {
     filters: {
         triggerType?: EventTriggerType;
         triggerFilters: Record<string, unknown>;
     };
-    context: Record<string, unknown>;
-    options?: {
-        onInactive?: EventActionOnInactive;
-    };
+    context: EventTriggerContext;
+    options?: EventTriggerOptions;
 }

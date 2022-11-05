@@ -4,7 +4,7 @@ import { Event, EventActionOnInactive } from '@definitions/entities/eventTypes';
 import { EventsTriggerPayload } from '@definitions/eventTriggerTypes';
 import { Send } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
-import { Box, CircularProgress, Divider, Toolbar } from '@mui/material';
+import { Box, Divider, Toolbar } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

@@ -42,6 +42,9 @@ export const generateEventSchedulerMetadata = () => {
         recurring: faker.datatype.boolean(),
         cronExpression: '0 0 * * *',
         interval: 3600,
-        runAfterEvent: 99999999,
+        runAfterEvent: {
+            _id: 99999999,
+            displayName: generateEventDisplayName(),
+        },
     };
 };

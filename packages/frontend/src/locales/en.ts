@@ -1,3 +1,4 @@
+import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
     EventMetadataOnMultipleInstances,
@@ -20,6 +21,11 @@ export const EnglishLocale: Locale = {
         error: 'Error',
         clear: 'Clear',
         create: 'Create',
+        statusCode: 'Status code',
+        entity: {
+            id: 'ID',
+            state: 'State',
+        },
         search: {
             filters: 'Filters',
             filtering: 'Filtering',
@@ -33,6 +39,8 @@ export const EnglishLocale: Locale = {
         errors: {
             failedToLoadData: 'Failed to load data',
             noInternetConnection: 'Check your internet connection and try again',
+            errorOccured: 'Error occured',
+            unknownErrorOccured: 'An unknown error occurred',
         },
     },
     i18n: {
@@ -139,6 +147,7 @@ export const EnglishLocale: Locale = {
             openInEditor: 'Open in event editor',
             triggerPanel: {
                 buttonText: 'Trigger event',
+                runId: 'Run ID',
                 context: {
                     title: 'Context',
                     description:
@@ -172,6 +181,22 @@ export const EnglishLocale: Locale = {
         search: {
             showOnlyActive: 'Show only active',
             showOnlyUserCreated: 'Show only user-created',
+        },
+    },
+    eventInstances: {
+        entity: {
+            triggeredBy: 'Triggered by',
+            performanceMetrics: {
+                executionDuration: 'Execution duration',
+                steps: 'Steps',
+            },
+        },
+        state: {
+            [EventInstanceState.ConditionNotMet]: 'Condition not met',
+            [EventInstanceState.FailedOnAction]: 'Failed on action',
+            [EventInstanceState.FailedOnCondition]: 'Failed on condition',
+            [EventInstanceState.Success]: 'Success',
+            [EventInstanceState.UnknownError]: 'Unknown error',
         },
     },
 };
