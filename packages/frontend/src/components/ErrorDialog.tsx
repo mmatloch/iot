@@ -1,4 +1,4 @@
-import { SentimentVeryDissatisfied, Warning } from '@mui/icons-material';
+import { SentimentVeryDissatisfied } from '@mui/icons-material';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 

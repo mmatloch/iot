@@ -1,25 +1,16 @@
-import { SocialLoginResponse, useGetSocialLogin } from '@api/usersApi';
-import CircularProgressLoader from '@components/CircularProgressLoader';
 import GoogleIcon from '@mui/icons-material/Google';
 import { Button, ButtonGroup } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
-export default function SignInForm() {
-    const { data, isSuccess, isLoading } = useGetSocialLogin();
+interface Props {
+    googleAuthUrl: string;
+}
+
+export default function SignInForm({ googleAuthUrl }: Props) {
     const { t } = useTranslation();
 
-    if (isLoading) {
-        return <CircularProgressLoader />;
-    }
-
-    if (!isSuccess) {
-        return <CircularProgressLoader />;
-    }
-
-    const redirectTo = (key: keyof SocialLoginResponse) => {
-        const { authenticationUrl } = data[key];
-
-        location.replace(authenticationUrl);
+    const redirectToGoogle = () => {
+        location.replace(googleAuthUrl);
     };
 
     return (
@@ -27,12 +18,7 @@ export default function SignInForm() {
             <h1>{t('auth:signIn.title')}</h1>
 
             <ButtonGroup>
-                <Button
-                    size="large"
-                    startIcon={<GoogleIcon />}
-                    sx={{ px: 10, py: 2 }}
-                    onClick={() => redirectTo('google')}
-                >
+                <Button size="large" startIcon={<GoogleIcon />} sx={{ px: 10, py: 2 }} onClick={redirectToGoogle}>
                     Google
                 </Button>
             </ButtonGroup>

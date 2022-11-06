@@ -1,5 +1,13 @@
-import { DeviceState } from './deviceTypes';
-import { UserRole, UserState } from './userTypes';
+import { DeviceState } from './entities/deviceTypes';
+import { EventInstanceState } from './entities/eventInstanceTypes';
+import {
+    EventActionOnInactive,
+    EventMetadataOnMultipleInstances,
+    EventMetadataTaskType,
+    EventState,
+    EventTriggerType,
+} from './entities/eventTypes';
+import { UserRole, UserState } from './entities/userTypes';
 
 export enum AvailableLanguage {
     English = 'en',
@@ -14,9 +22,30 @@ export interface Locale {
         save: string;
         cancel: string;
         retry: string;
+        default: string;
+        error: string;
+        clear: string;
+        create: string;
+        statusCode: string;
+        entity: {
+            id: string;
+            state: string;
+        };
+        search: {
+            filters: string;
+            filtering: string;
+            sorting: {
+                title: string;
+                oldestFirst: string;
+                newestFirst: string;
+                recentlyUpdated: string;
+            };
+        };
         errors: {
             failedToLoadData: string;
             noInternetConnection: string;
+            errorOccured: string;
+            unknownErrorOccured: string;
         };
     };
     i18n: {
@@ -69,5 +98,94 @@ export interface Locale {
         errors: {
             failedToRequestBridge: string;
         };
+    };
+    events: {
+        title: string;
+        state: Record<EventState, string>;
+        triggerType: Record<EventTriggerType, string>;
+        metadataOnMultipleInstances: Record<EventMetadataOnMultipleInstances, string>;
+        metadataTaskType: Record<EventMetadataTaskType, string>;
+        onInactive: Record<EventActionOnInactive, string>;
+        entity: {
+            displayName: string;
+            triggerType: string;
+            metadata: {
+                retryImmediatelyAfterBoot: string;
+                recurring: string;
+                runAfterEvent: string;
+                interval: string;
+                cronExpression: string;
+                taskType: string;
+                onMultipleInstances: string;
+            };
+        };
+        editor: {
+            creator: {
+                title: string;
+            };
+            editor: {
+                title: string;
+            };
+            basicInformation: {
+                title: string;
+            };
+            conditionDefinition: {
+                title: string;
+            };
+            actionDefinition: {
+                title: string;
+            };
+            triggerFilters: {
+                title: string;
+                description: string;
+                forDevice: string;
+            };
+            openInEditor: string;
+            triggerPanel: {
+                buttonText: string;
+                runId: string;
+                context: {
+                    title: string;
+                    description: string;
+                };
+                options: {
+                    title: string;
+                };
+                onInactive: {
+                    title: string;
+                    description: string;
+                };
+            };
+        };
+        scheduler: {
+            nextTriggerAt: string;
+            intervalDescription: string;
+            onMultipleInstancesDescription: string;
+        };
+        errors: {
+            failedToCreateEvent: string;
+            failedToUpdateEvent: string;
+            failedToTriggerEvent: string;
+            failedToParseTriggerContext: string;
+            failedToParseCronExpression: string;
+        };
+        dates: {
+            createdAt: string;
+            updatedAt: string;
+        };
+        search: {
+            showOnlyActive: string;
+            showOnlyUserCreated: string;
+        };
+    };
+    eventInstances: {
+        entity: {
+            triggeredBy: string;
+            performanceMetrics: {
+                executionDuration: string;
+                steps: string;
+            };
+        };
+        state: Record<EventInstanceState, string>;
     };
 }

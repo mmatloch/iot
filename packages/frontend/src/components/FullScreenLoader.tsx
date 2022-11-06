@@ -1,4 +1,4 @@
-import { Backdrop, Grid } from '@mui/material';
+import { Backdrop } from '@mui/material';
 
 import CircularProgressLoader from './CircularProgressLoader';
 
@@ -7,7 +7,7 @@ export default function FullScreenLoader() {
 
     return (
         <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open={isOpen}>
-            <CircularProgressLoader />
+            <CircularProgressLoader variant="normal" />
         </Backdrop>
     );
 }

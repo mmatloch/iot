@@ -58,6 +58,9 @@ const searchOptions: RestSearchOptions<Device> = {
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
     },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
+    },
 };
 
 const getDeviceSchema = {

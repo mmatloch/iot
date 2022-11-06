@@ -17,6 +17,7 @@ import {
 import {
     FilterLogicalOperator,
     FilterOperator,
+    RelationsQuery,
     SearchFilterOperatorValue,
     SearchFilterWithFilterOperatorValue,
     SearchQuery,
@@ -63,6 +64,9 @@ export interface BuildQueryFromRawOptions<TEntity> {
         };
     };
     filters: {
+        allowedFields: (keyof TEntity)[];
+    };
+    relations: {
         allowedFields: (keyof TEntity)[];
     };
 }
@@ -114,7 +118,7 @@ export const buildQueryFromRaw = <TEntity>(
 
                 const operatorValue = filterValue[operator];
 
-                if (operatorValue) {
+                if (!_.isUndefined(operatorValue)) {
                     const buildWhereOperator = buildMap[operator];
 
                     // @ts-expect-error
@@ -139,10 +143,25 @@ export const buildQueryFromRaw = <TEntity>(
         return where;
     };
 
+    const buildRelations = (): SearchQuery['relations'] => {
+        if (!rawSearchQuery.relations) {
+            return;
+        }
+
+        Object.keys(rawSearchQuery.relations).forEach((key) => {
+            if (!opts.relations.allowedFields.includes(key as keyof TEntity)) {
+                throw SearchError.disallowedRelationsField(key);
+            }
+        });
+
+        return rawSearchQuery.relations;
+    };
+
     const query: SearchQuery = {
         take: rawSearchQuery.size || opts.size.default,
         order: buildOrder(),
         where: buildWhere(),
+        relations: buildRelations(),
     };
 
     return query;

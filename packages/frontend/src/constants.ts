@@ -15,6 +15,10 @@ export const ApiRoute = {
     Configurations: {
         Root: addPrefix('configurations'),
     },
+    Events: {
+        Root: addPrefix('events'),
+        Trigger: addPrefix('events/trigger'),
+    },
 };
 
 export const AppRoute = {
@@ -27,4 +31,9 @@ export const AppRoute = {
     },
     Users: '/users',
     Devices: '/devices',
+    Events: {
+        Root: '/events',
+        Creator: '/events/create',
+        Editor: '/events/:eventId',
+    },
 };

@@ -1,5 +1,5 @@
 import { useUsers } from '@api/usersApi';
-import ErrorDialog from '@components/ErrorDialog';
+import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import UserCard from '@features/users/components/UserCard';
 import useQueryPage from '@hooks/useQueryPage';
@@ -21,12 +21,7 @@ export default function Users() {
     }
 
     if (!isSuccess) {
-        return (
-            <ErrorDialog
-                title={t('generic:errors.failedToLoadData')}
-                message={t('generic:errors.noInternetConnection')}
-            />
-        );
+        return <FailedToLoadDataDialog />;
     }
 
     const onPageChange = (_event: ChangeEvent<unknown>, value: number) => {

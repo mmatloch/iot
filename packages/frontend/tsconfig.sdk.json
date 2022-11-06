@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "AMD",
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "outFile": "./src/definitions/eventSdk.js",
+    "paths": {
+      "@definitions/*": ["./src/definitions/*"]
+    }
+  },
+  "include": ["src/definitions/eventSdk.ts"]
+}

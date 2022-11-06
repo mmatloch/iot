@@ -1,4 +1,4 @@
-import { Device } from '@definitions/deviceTypes';
+import { Device } from '@definitions/entities/deviceTypes';
 import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 import { useFetch } from '@hooks/useFetch';
 

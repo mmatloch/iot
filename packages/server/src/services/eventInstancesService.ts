@@ -11,7 +11,7 @@ export const createEventInstancesService = (): EventInstancesService => {
     const create: EventInstancesService['create'] = (dto) => {
         const eventInstance = repository.create(dto);
 
-        return repository.save(eventInstance);
+        return repository.saveAndFind(eventInstance);
     };
 
     const search: EventInstancesService['search'] = (query) => {

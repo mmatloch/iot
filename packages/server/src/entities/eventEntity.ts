@@ -12,12 +12,14 @@ import {
 import { EventTriggerContext } from '../events/eventRunDefinitions';
 import { eventTrigger } from '../events/eventTrigger';
 import { mergeSchemas, removeSchemaDefaults } from '../utils/schemaUtils';
-import { GenericEntity, genericEntitySchema } from './genericEntity';
+import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
 
 @Entity({ name: 'events' })
 export class Event extends GenericEntity {
     constructor() {
-        super(eventSchema);
+        super(eventSchema, {
+            skipValidationFor: ['trigger'],
+        });
     }
 
     @Column('text')
@@ -57,11 +59,18 @@ export class Event extends GenericEntity {
     };
 }
 
+const simpleEventSchema = mergeSchemas(
+    Type.Pick(genericEntitySchema, ['_id']),
+    Type.Object({
+        displayName: Type.String(),
+    }),
+);
+
 const eventSchedulerMetadataSchema = Type.Object({
     type: Type.Literal(EventMetadataType.Scheduler),
     retryImmediatelyAfterBoot: Type.Boolean(), // not implemented yet
     recurring: Type.Boolean(),
-    runAfterEvent: Type.Optional(Type.Integer()), // relative tasks
+    runAfterEvent: Type.Optional(simpleEventSchema), // relative tasks
     interval: Type.Optional(Type.Integer({ minimum: 5, maximum: 2147483647 })), // interval tasks
     cronExpression: Type.Optional(Type.String()), // cron tasks
     taskType: Type.Enum(EventMetadataTaskType),
@@ -70,19 +79,24 @@ const eventSchedulerMetadataSchema = Type.Object({
 
 export type EventSchedulerMetadata = Static<typeof eventSchedulerMetadataSchema>;
 
-export const eventDtoSchema = Type.Object({
-    displayName: Type.String(),
-    triggerType: Type.Enum(EventTriggerType),
-    triggerFilters: Type.Record(Type.String(), Type.Unknown()),
-    conditionDefinition: Type.String(),
-    actionDefinition: Type.String(),
-    state: Type.Enum(EventState, {
-        default: EventState.Active,
-    }),
-    metadata: Type.Union([Type.Null(), eventSchedulerMetadataSchema], {
-        default: null,
-    }),
-});
+export const eventDtoSchema = Type.Object(
+    {
+        displayName: Type.String(),
+        triggerType: Type.Enum(EventTriggerType),
+        triggerFilters: Type.Record(Type.String(), Type.Unknown()),
+        conditionDefinition: Type.String(),
+        actionDefinition: Type.String(),
+        state: Type.Enum(EventState, {
+            default: EventState.Active,
+        }),
+        metadata: Type.Union([Type.Null(), eventSchedulerMetadataSchema], {
+            default: null,
+        }),
+    },
+    {
+        additionalProperties: false,
+    },
+);
 
 export const eventSchema = mergeSchemas(eventDtoSchema, genericEntitySchema);
 

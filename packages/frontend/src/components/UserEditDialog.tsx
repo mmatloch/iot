@@ -1,7 +1,7 @@
 import { useUpdateUser } from '@api/usersApi';
 import FormInputSelect from '@components/forms/FormInputSelect';
 import FormInputText from '@components/forms/FormInputText';
-import { User, UserRole } from '@definitions/userTypes';
+import { User, UserRole } from '@definitions/entities/userTypes';
 import { useAuth } from '@hooks/useAuth';
 import { LoadingButton } from '@mui/lab';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup } from '@mui/material';

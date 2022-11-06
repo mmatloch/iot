@@ -1,4 +1,5 @@
 import { AvailableLanguage } from '@definitions/localeTypes';
+import { useLocale } from '@hooks/useLocale';
 import { Dialog, DialogTitle, List, ListItem, ListItemIcon, ListItemText, SvgIcon } from '@mui/material';
 import { PL, US } from 'country-flag-icons/react/3x2';
 import { ReactNode } from 'react';
@@ -26,11 +27,11 @@ interface Props {
 }
 
 export default function ChangeLanguageDialog({ isOpen, onClose }: Props) {
-    const { i18n, t } = useTranslation();
+    const { t } = useTranslation();
+    const { changeLanguage } = useLocale();
 
     const selectLanguage = (lang: AvailableLanguage) => {
-        i18n.changeLanguage(lang);
-
+        changeLanguage(lang);
         onClose();
     };
 

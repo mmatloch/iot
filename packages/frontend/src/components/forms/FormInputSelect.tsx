@@ -1,5 +1,6 @@
-import { FormControl, InputLabel, MenuItem, Select, SelectProps } from '@mui/material';
-import { useId } from 'react';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectProps } from '@mui/material';
+import has from 'lodash/has';
+import { useId, useMemo } from 'react';
 import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
 
 interface SelectItem {
@@ -11,9 +12,10 @@ interface Props extends Omit<SelectProps, 'name'> {
     name: string;
     validation?: RegisterOptions;
     items: SelectItem[];
+    helperText?: string;
 }
 
-export default function FormInputSelect(props: Props) {
+export default function FormInputSelect({ helperText, ...props }: Props) {
     const id = useId();
 
     const {
@@ -22,12 +24,15 @@ export default function FormInputSelect(props: Props) {
         formState: { errors },
     } = useFormContext();
 
-    const generateItems = () =>
-        props.items.map((item, index) => (
-            <MenuItem key={index} value={item.value}>
-                {item.label}
-            </MenuItem>
-        ));
+    const items = useMemo(
+        () =>
+            props.items.map((item, index) => (
+                <MenuItem key={index} value={item.value}>
+                    {item.label}
+                </MenuItem>
+            )),
+        [props.items],
+    );
 
     return (
         <FormControl margin={props.margin}>
@@ -41,14 +46,16 @@ export default function FormInputSelect(props: Props) {
                         {...field}
                         {...props}
                         {...register(props.name, props.validation)}
-                        error={!!errors[props.name]}
+                        error={has(errors, props.name)}
                         labelId={id}
                     >
-                        {generateItems()}
+                        {items}
                     </Select>
                 )}
                 defaultValue={props.defaultValue || ''}
             />
+
+            <FormHelperText>{helperText}</FormHelperText>
         </FormControl>
     );
 }

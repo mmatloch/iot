@@ -166,7 +166,10 @@ describe('Event scheduler', () => {
 
             const metadata = generateEventSchedulerMetadata();
             metadata.taskType = 'RELATIVE_CRON';
-            metadata.runAfterEvent = event._id;
+            metadata.runAfterEvent = {
+                _id: event._id,
+                displayName: event.displayName,
+            };
             payload.metadata = metadata;
 
             const { body: scheduledEvent } = await eventHelpers.post(payload).expectSuccess();
@@ -246,7 +249,10 @@ describe('Event scheduler', () => {
 
             const metadata = generateEventSchedulerMetadata();
             metadata.taskType = 'RELATIVE_INTERVAL';
-            metadata.runAfterEvent = event._id;
+            metadata.runAfterEvent = {
+                _id: event._id,
+                displayName: event.displayName,
+            };
             metadata.interval = 3600;
             payload.metadata = metadata;
 

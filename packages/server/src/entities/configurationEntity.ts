@@ -2,7 +2,7 @@ import { Static, Type } from '@sinclair/typebox';
 import { Column, Entity } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
-import { GenericEntity, genericEntitySchema } from './genericEntity';
+import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
 
 export enum ConfigurationState {
     Active = 'ACTIVE',

@@ -12,7 +12,7 @@ export const createDevicesService = (): DevicesService => {
     const create: DevicesService['create'] = async (dto) => {
         const device = repository.create(dto);
 
-        return repository.save(device);
+        return repository.saveAndFind(device);
     };
 
     const search: DevicesService['search'] = (query) => {
@@ -24,14 +24,23 @@ export const createDevicesService = (): DevicesService => {
     };
 
     const findByIdOrFail: DevicesService['findByIdOrFail'] = async (_id) => {
-        return repository.findOneByOrFail({
-            _id,
+        return repository.findOneOrFail({
+            where: { _id },
+            relations: {
+                _createdByUser: true,
+                _updatedByUser: true,
+            },
         });
     };
 
-    const update: DevicesService['update'] = (device, updatedDevice) => {
-        const deviceClone = repository.create(device);
-        return repository.save(repository.merge(deviceClone, updatedDevice));
+    const update: DevicesService['update'] = async (device, updatedDevice) => {
+        const newDevice = repository.merge(repository.create(device), updatedDevice);
+
+        if (_.isEqual(device, newDevice)) {
+            return device;
+        }
+
+        return repository.saveAndFind(newDevice);
     };
 
     return {

@@ -1,5 +1,6 @@
 import './index.css';
 import './i18n';
+import 'allotment/dist/style.css';
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
