@@ -1,13 +1,14 @@
-import { Configuration, ConfigurationDto } from '@definitions/configurationTypes';
-import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+import {
+    Configuration,
+    ConfigurationDto,
+    ConfigurationsSearchQuery,
+    ConfigurationsSearchResponse,
+} from '@definitions/entities/configurationTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 import { UseQueryOptions, useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
-
-export type ConfigurationsSearchQuery = SearchQuery<Configuration>;
-export type ConfigurationsSearchResponse = SearchResponse<Configuration>;
 
 export const useCreateConfiguration = () => {
     const queryClient = useQueryClient();

@@ -1,6 +1,6 @@
 import { useCreateConfiguration } from '@api/configurationsApi';
 import FormInputText from '@components/forms/FormInputText';
-import { ConfigurationDto, ConfigurationState, ConfigurationType } from '@definitions/configurationTypes';
+import { ConfigurationDto, ConfigurationState, ConfigurationType } from '@definitions/entities/configurationTypes';
 import { LoadingButton } from '@mui/lab';
 import { FormGroup, Link } from '@mui/material';
 import { useSnackbar } from 'notistack';

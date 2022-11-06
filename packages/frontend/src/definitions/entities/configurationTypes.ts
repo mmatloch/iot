@@ -1,4 +1,5 @@
-import { GenericEntity } from './commonTypes';
+import { GenericEntity } from '../commonTypes';
+import { SearchQuery, SearchResponse } from '../searchTypes';
 
 export enum ConfigurationState {
     Active = 'ACTIVE',
@@ -22,3 +23,6 @@ export type ConfigurationDto = {
 };
 
 export type Configuration = ConfigurationDto & GenericEntity;
+
+export type ConfigurationsSearchQuery = SearchQuery<Configuration>;
+export type ConfigurationsSearchResponse = SearchResponse<Configuration>;

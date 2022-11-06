@@ -1,5 +1,5 @@
-import { ConfigurationType } from '@definitions/configurationTypes';
-import { DeviceProtocol } from '@definitions/deviceTypes';
+import { ConfigurationType } from '@definitions/entities/configurationTypes';
+import { DeviceProtocol } from '@definitions/entities/deviceTypes';
 
 export const getConfigurationTypeByProtocol = (protocol: DeviceProtocol): ConfigurationType => {
     switch (protocol) {

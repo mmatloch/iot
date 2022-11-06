@@ -1,4 +1,4 @@
-import { ConfigurationType } from '@definitions/configurationTypes';
+import { ConfigurationType } from '@definitions/entities/configurationTypes';
 
 import CreateZigbeeBridgeConfigurationForm from './CreateZigbeeBridgeConfigurationForm';
 

@@ -1,3 +1,5 @@
+import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+
 import { GenericEntity } from '../commonTypes';
 
 export enum DeviceType {
@@ -60,3 +62,6 @@ export interface Device extends GenericEntity {
     state: DeviceState;
     deactivatedBy: DeviceDeactivatedBy | null;
 }
+
+export type DevicesSearchQuery = SearchQuery<Device>;
+export type DevicesSearchResponse = SearchResponse<Device>;

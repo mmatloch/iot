@@ -1,5 +1,5 @@
 import AllowDevicesToJoinButton from '@components/configurations/AllowDevicesToJoinButton';
-import { Configuration } from '@definitions/configurationTypes';
+import { Configuration } from '@definitions/entities/configurationTypes';
 import { Box, Typography } from '@mui/material';
 
 interface Props {

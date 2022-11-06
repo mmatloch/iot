@@ -1,9 +1,9 @@
-import { requestBridge } from '@api/bridgeApi';
+import { useRequestBridge } from '@api/bridgeApi';
 import { BridgeRequestType } from '@definitions/bridgeTypes';
-import { Configuration } from '@definitions/configurationTypes';
+import { Configuration } from '@definitions/entities/configurationTypes';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -15,28 +15,24 @@ interface Props {
 export default function AllowDevicesToJoinButton({ configuration, onSuccess, children }: Props) {
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslation();
-    const [isLoading, setLoading] = useState(false);
+    const { mutateAsync, isLoading } = useRequestBridge(configuration);
 
-    const onClickHandler = async () => {
+    const onClickHandler = useCallback(async () => {
         const payload = {
             requestType: BridgeRequestType.PermitJoin,
             value: true,
             time: 300,
         };
 
-        setLoading(true);
-
         try {
-            await requestBridge(configuration, payload);
+            await mutateAsync(payload);
             onSuccess();
         } catch (e) {
             enqueueSnackbar(t('bridge:errors.failedToRequestBridge'), {
                 variant: 'error',
             });
-        } finally {
-            setLoading(false);
         }
-    };
+    }, [onSuccess]);
 
     return (
         <LoadingButton color="error" variant="contained" size="large" onClick={onClickHandler} loading={isLoading}>
