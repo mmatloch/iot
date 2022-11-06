@@ -92,13 +92,10 @@ describe('Zigbee bridge outgoingDeviceData', () => {
         triggerPayload.filters.triggerFilters = triggerFilters;
 
         // when
-        const { body } = await eventTriggerHelpers.post(triggerPayload).expectSuccess();
-
-        console.log(device);
-        console.log(triggerPayload);
-        console.log(body);
+        await eventTriggerHelpers.post(triggerPayload).expectSuccess();
 
         // then
+        await sleep(500);
         expect(receivedMessages).toBeArrayOfSize(1);
         expect(receivedMessages[0]).toStrictEqual(triggerPayload.context);
     });
@@ -123,6 +120,7 @@ describe('Zigbee bridge outgoingDeviceData', () => {
         await eventTriggerHelpers.post(triggerPayload).expectSuccess();
 
         // then
+        await sleep(500);
         expect(receivedMessages).toBeArrayOfSize(0);
     });
 
