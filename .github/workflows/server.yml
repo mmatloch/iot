@@ -6,6 +6,7 @@ on:
     paths:
       - 'packages/server/**'
       - 'packages/common-*/**'
+      - 'packages/tests/**'
 
 env:
   IMAGE_TAG: latest
