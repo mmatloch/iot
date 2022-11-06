@@ -33,6 +33,13 @@ jobs:
       - name: Run tests
         run: yarn script test
 
+      - name: Collect Docker Logs
+        uses: jwalton/gh-docker-logs@v2.2.0
+        if: failure()
+        with:
+          images: 'iot-server'
+          tail: '100'
+
   publish:
     name: Publish Docker image
     runs-on: ubuntu-latest

@@ -71,5 +71,5 @@ export default function RedirectGoogle() {
         };
     }, [code]);
 
-    return <CircularProgressLoader />;
+    return <CircularProgressLoader variant="normal" />;
 }
