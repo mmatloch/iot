@@ -97,8 +97,6 @@ export abstract class AbstractGenericEntity {
         const store = getRequestStore();
         this._updatedBy = store?.user?._id || null;
 
-        console.log(this);
-
         validator.validateOrThrow(this.#entitySchema, _.omit(this, this.#opts.skipValidationFor));
     }
 

@@ -38,7 +38,7 @@ jobs:
         if: failure()
         with:
           images: '${{ secrets.DOCKER_USERNAME }}/iot-server'
-          tail: '100'
+          tail: '500'
 
   publish:
     name: Publish Docker image
