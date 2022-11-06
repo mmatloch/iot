@@ -78,7 +78,7 @@ describe('Zigbee bridge outgoingDeviceData', () => {
         await disconnectFromBroker();
     });
 
-    it('should publish data', async () => {
+    it.only('should publish data', async () => {
         // given
         const topic = getZigbeeTopic(device).toPublishData;
         const receivedMessages = await H.subscribe(topic);

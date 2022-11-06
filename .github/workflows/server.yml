@@ -31,14 +31,13 @@ jobs:
         run: yarn script start
 
       - name: Run tests
-        run: yarn script test
+        run: yarn script test:integration --group=zigbeeBridge/outgoingDeviceData
 
       - name: Collect Docker Logs
         uses: jwalton/gh-docker-logs@v2.2.0
         if: failure()
         with:
           images: '${{ secrets.DOCKER_USERNAME }}/iot-server'
-          tail: '500'
 
   publish:
     name: Publish Docker image
