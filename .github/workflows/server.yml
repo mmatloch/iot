@@ -37,7 +37,7 @@ jobs:
         uses: jwalton/gh-docker-logs@v2.2.0
         if: failure()
         with:
-          images: 'iot-server'
+          images: '${{ secrets.DOCKER_USERNAME }}/iot-server'
           tail: '100'
 
   publish:
