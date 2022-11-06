@@ -96,6 +96,7 @@ describe('Zigbee bridge outgoingDeviceData', () => {
 
         console.log(device);
         console.log(triggerPayload);
+        console.log(eventPayload);
 
         // then
         expect(receivedMessages).toBeArrayOfSize(1);
