@@ -94,6 +94,8 @@ describe('Zigbee bridge outgoingDeviceData', () => {
         // when
         await eventTriggerHelpers.post(triggerPayload).expectSuccess();
 
+        console.log(device);
+
         // then
         expect(receivedMessages).toBeArrayOfSize(1);
         expect(receivedMessages[0]).toStrictEqual(triggerPayload.context);
