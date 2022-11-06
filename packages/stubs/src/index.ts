@@ -1,5 +1,4 @@
 import { createApplication } from '@common/application';
-import _ from 'lodash';
 
 import { getConfig } from './config';
 import { getLogger } from './logger';

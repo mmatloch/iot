@@ -1,6 +1,5 @@
 import { TransformedErrorBody } from '@common/errors';
 import { Static, Type } from '@sinclair/typebox';
-import _ from 'lodash';
 import { Column, Entity, Index } from 'typeorm';
 
 import { PerformanceMetrics } from '../definitions';

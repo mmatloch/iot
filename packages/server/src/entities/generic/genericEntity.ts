@@ -1,5 +1,4 @@
 import { Type } from '@sinclair/typebox';
-import _ from 'lodash';
 import { CreateDateColumn, UpdateDateColumn } from 'typeorm';
 
 import { AbstractGenericEntity } from './abstractGenericEntity';

@@ -20,6 +20,7 @@ export const buildTreeItems = (treeItems: TreeItem[]) => {
                 key={treeItemData.nodeId}
                 nodeId={treeItemData.nodeId}
                 label={treeItemData.label}
+                // eslint-disable-next-line react/no-children-prop
                 children={children}
             />
         );

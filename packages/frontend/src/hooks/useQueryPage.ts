@@ -5,7 +5,7 @@ const DEFAULT_PAGE = 1;
 
 export default function useQueryPage() {
     const [page, setPage] = useState(DEFAULT_PAGE);
-    let [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const pageFromParams = searchParams.get('page');
 

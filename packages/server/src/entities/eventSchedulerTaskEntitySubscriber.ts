@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { EntitySubscriberInterface, InsertEvent, EventSubscriber as OrmEventSubscriber, RemoveEvent } from 'typeorm';
 
 import { EventSchedulerTask } from './eventSchedulerTaskEntity';
@@ -26,5 +25,6 @@ const listenerMap: EntityListenerMap<EventSchedulerTask> = {
 };
 
 export const createEventSchedulerTaskSubscriber: CreateEntitySubscriber<EventSchedulerTask> = (event, listenerCb) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     listenerMap[event].push(listenerCb as any);
 };

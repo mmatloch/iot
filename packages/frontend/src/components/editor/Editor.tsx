@@ -122,7 +122,7 @@ const Editor = forwardRef<EditorRef, Props>(
                 default:
                     throw new Error(`Unsupported language '${language}'`);
             }
-        }, [language]);
+        }, [filename, language]);
 
         const options = useMemo(() => {
             return {
@@ -147,4 +147,5 @@ const Editor = forwardRef<EditorRef, Props>(
     },
 );
 
+Editor.displayName = 'Editor';
 export default Editor;

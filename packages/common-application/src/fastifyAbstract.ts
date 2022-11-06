@@ -9,7 +9,6 @@ import {
     fastify,
 } from 'fastify';
 import fp from 'fastify-plugin';
-import _ from 'lodash';
 import Qs from 'qs';
 
 export type RawServer = RawServerDefault;

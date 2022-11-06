@@ -22,7 +22,7 @@ export interface SetupState {
 const STATE_PATH = join(PATH.Root, '.cache', 'setupState.json');
 
 export const createStateCacheManager = () => {
-    let cache: SetupState = {
+    const cache: SetupState = {
         rawData: {
             steps: {},
         },

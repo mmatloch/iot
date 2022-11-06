@@ -207,7 +207,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
             };
         } else {
             // update the description only once
-            let description =
+            const description =
                 device.type === DeviceType.Unknown ? zigbeeDevice.definition.description : device.description;
 
             return {

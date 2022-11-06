@@ -12,7 +12,7 @@ import { getChangedFields } from '@utils/entityHelpers';
 import { omitGenericEntityFields } from '@utils/entityHelpers';
 import { Allotment } from 'allotment';
 import { useSnackbar } from 'notistack';
-import { FormProvider, useForm } from 'react-hook-form';
+import { DefaultValues, FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -29,7 +29,7 @@ export default function EventEditor({ event }: Props) {
     const { mutateAsync, isLoading } = useUpdateEvent(event);
 
     const methods = useForm<EventDto>({
-        defaultValues: omitGenericEntityFields(event) as any,
+        defaultValues: omitGenericEntityFields(event) as DefaultValues<EventDto>,
     });
 
     const { handleSubmit } = methods;

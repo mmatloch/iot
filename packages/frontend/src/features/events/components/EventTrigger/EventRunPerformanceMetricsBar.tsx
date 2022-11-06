@@ -35,6 +35,7 @@ export default function EventRunPerformanceMetricsBar({ performanceMetrics }: Pr
                                     <Typography>{step.executionDuration.toFixed(5)}ms</Typography>
                                 </Stack>
                             }
+                            key={step.name}
                         >
                             <Box
                                 sx={{ width: `${width}%`, height: HEIGHT, backgroundColor: COLORS.random[index] }}

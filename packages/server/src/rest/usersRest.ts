@@ -2,7 +2,6 @@ import { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 import _ from 'lodash';
-import { QueryFailedError } from 'typeorm';
 
 import { AccessControlSubject, createAccessControl } from '../accessControl';
 import {

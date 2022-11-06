@@ -13,6 +13,7 @@ interface ProcessOptions {
 }
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/AsyncFunction
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 
 export const createEventProcessor = (sdk: EventRunSdk) => {

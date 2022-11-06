@@ -38,24 +38,24 @@ export const LocaleProvider = ({ children }: Props) => {
         }
     };
 
-    const changeLanguage = (lang: AvailableLanguage) => {
-        setDefaults(lang);
-
-        i18n.changeLanguage(lang);
-
-        setLocale(lang);
-    };
-
     useEffect(() => {
         setDefaults(locale);
-    }, []);
+    }, [locale]);
 
     const value = useMemo(() => {
+        const changeLanguage = (lang: AvailableLanguage) => {
+            setDefaults(lang);
+
+            i18n.changeLanguage(lang);
+
+            setLocale(lang);
+        };
+
         return {
             locale,
             changeLanguage,
         };
-    }, [locale]);
+    }, [i18n, locale, setLocale]);
 
     return <LocaleContext.Provider value={value}>{children}</LocaleContext.Provider>;
 };

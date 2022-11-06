@@ -3,7 +3,6 @@ import { Type } from '@sinclair/typebox';
 import _ from 'lodash';
 
 import { MqttClient } from '../../clients/mqttClient';
-import { MqttMessageHandler } from '../../clients/mqttHandlerStore';
 import { ZigbeeBridgeConfiguration } from '../../entities/configurationEntity';
 import { DeviceState } from '../../entities/deviceEntity';
 import { EventTriggerType } from '../../events/eventDefinitions';
@@ -129,17 +128,12 @@ export const createZigbeeDataPublisher = (mqttClient: MqttClient) => {
 
         const promise = new DeferredPromise<void>();
 
-        let timeoutRef: undefined | NodeJS.Timeout;
-        let handler: undefined | MqttMessageHandler;
-
         const cancelTimeout = () => clearTimeout(timeoutRef);
         const removeHandler = () => {
-            if (handler) {
-                mqttClient.removeHandler(handler);
-            }
+            mqttClient.removeHandler(handler);
         };
 
-        handler = await mqttClient.addHandler({
+        const handler = await mqttClient.addHandler({
             topic: responseTopic,
             onMessage: async (message) => {
                 if (message.transaction === transactionId) {
@@ -170,7 +164,7 @@ export const createZigbeeDataPublisher = (mqttClient: MqttClient) => {
             });
         }
 
-        timeoutRef = setTimeout(() => {
+        const timeoutRef = setTimeout(() => {
             promise.reject(new Error('Timeout'));
         }, 1000 * 10);
 

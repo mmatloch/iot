@@ -3,7 +3,6 @@ import { Event, EventState } from '@definitions/entities/eventTypes';
 import { PublishedWithChanges } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -15,7 +14,7 @@ export default function ActivateEventButton({ event }: Props) {
     const { enqueueSnackbar } = useSnackbar();
     const { t } = useTranslation();
 
-    const handleClick = useCallback(async () => {
+    const handleClick = async () => {
         try {
             await mutateAsync({
                 state: EventState.Active,
@@ -25,7 +24,7 @@ export default function ActivateEventButton({ event }: Props) {
                 variant: 'error',
             });
         }
-    }, []);
+    };
 
     return (
         <LoadingButton

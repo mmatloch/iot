@@ -60,6 +60,7 @@ const suppressExperimentalWarning = () => {
             }
         }
 
+        // eslint-disable-next-line prefer-rest-params
         return originalEmit.apply(process, arguments as unknown as Parameters<typeof process.emit>);
     };
 };

@@ -22,17 +22,17 @@ export const prepareEventDto = (orginalDto: EventDto): EventDto => {
 
     if (dto.metadata) {
         if (isRelative(dto)) {
-            // @ts-expect-error
+            // @ts-expect-error this field doesn't exist in the interface
             delete dto.metadata.runAfterEvent;
         }
 
         if (isStatic(dto)) {
-            // @ts-expect-error
+            // @ts-expect-error this field doesn't exist in the interface
             delete dto.metadata.interval;
         }
 
         if (!isCron(dto)) {
-            // @ts-expect-error
+            // @ts-expect-error this field doesn't exist in the interface
             delete dto.metadata.cronExpression;
         }
     }

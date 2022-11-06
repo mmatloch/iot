@@ -42,7 +42,6 @@ export default function Sidebar({ isOpen, onClose }: Props) {
     const isAdmin = auth?.isAdmin;
 
     const { t } = useTranslation();
-    const navigate = useNavigate();
 
     const items = [
         {

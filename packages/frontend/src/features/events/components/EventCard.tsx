@@ -1,20 +1,8 @@
-import { Event, EventState } from '@definitions/entities/eventTypes';
+import { Event } from '@definitions/entities/eventTypes';
 import { MoreVert } from '@mui/icons-material';
-import {
-    Badge,
-    BadgeProps,
-    Card,
-    CardActionArea,
-    CardContent,
-    CardHeader,
-    Grid,
-    IconButton,
-    Tooltip,
-    Typography,
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Badge, Card, CardContent, CardHeader, Grid, IconButton, Tooltip, Typography } from '@mui/material';
 import { getEventStateBadgeColor } from '@utils/badgeColor';
-import { formatDistance, formatISO9075, intlFormat } from 'date-fns';
+import { formatDistance, formatISO9075 } from 'date-fns';
 import { MouseEvent, useState } from 'react';
 import { Trans, useTranslation } from 'react-i18next';
 

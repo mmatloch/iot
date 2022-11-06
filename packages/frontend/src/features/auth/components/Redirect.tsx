@@ -5,7 +5,7 @@ import { HttpError } from '@errors/httpError';
 import { ServerErrorCode, getServerErrorCode } from '@errors/serverErrors';
 import { useAuth } from '@hooks/useAuth';
 import { useSnackbar } from 'notistack';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -28,18 +28,21 @@ export default function RedirectGoogle() {
         return token;
     };
 
-    const getErrorMessage = (error: Error) => {
-        if (error instanceof HttpError) {
-            if (
-                error.errorCode === getServerErrorCode(ServerErrorCode.CannotCreateTokenForUser) &&
-                (error.detail === UserState.PendingApproval || error.detail === UserState.Inactive)
-            ) {
-                return t('auth:errors.userInactive');
+    const getErrorMessage = useCallback(
+        (error: Error) => {
+            if (error instanceof HttpError) {
+                if (
+                    error.errorCode === getServerErrorCode(ServerErrorCode.CannotCreateTokenForUser) &&
+                    (error.detail === UserState.PendingApproval || error.detail === UserState.Inactive)
+                ) {
+                    return t('auth:errors.userInactive');
+                }
             }
-        }
 
-        return error.message;
-    };
+            return error.message;
+        },
+        [t],
+    );
 
     useEffect(() => {
         if (!code) {
@@ -69,7 +72,7 @@ export default function RedirectGoogle() {
         return () => {
             ignore = true;
         };
-    }, [code]);
+    }, [auth, code, enqueueSnackbar, getErrorMessage, navigate]);
 
     return <CircularProgressLoader variant="normal" />;
 }

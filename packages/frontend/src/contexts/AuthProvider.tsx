@@ -26,22 +26,23 @@ export const AuthProvider = ({ children }: Props) => {
     const navigate = useNavigate();
 
     // call this function when you want to authenticate the user
-    const login = (accessToken: string) => {
-        setAccessToken(accessToken);
-
-        // wait for localStorage update
-        setTimeout(() => {
-            navigate(AppRoute.Home);
-        }, 500);
-    };
-
-    // call this function to sign out logged in user
-    const logout = () => {
-        setAccessToken('');
-        navigate(AppRoute.Home, { replace: true });
-    };
 
     const value = useMemo(() => {
+        const login = (accessToken: string) => {
+            setAccessToken(accessToken);
+
+            // wait for localStorage update
+            setTimeout(() => {
+                navigate(AppRoute.Home);
+            }, 500);
+        };
+
+        // call this function to sign out logged in user
+        const logout = () => {
+            setAccessToken('');
+            navigate(AppRoute.Home, { replace: true });
+        };
+
         if (!accessToken) {
             return {
                 accessToken,
@@ -59,7 +60,7 @@ export const AuthProvider = ({ children }: Props) => {
             login,
             logout,
         };
-    }, [accessToken]);
+    }, [accessToken, navigate, setAccessToken]);
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

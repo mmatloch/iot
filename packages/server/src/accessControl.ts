@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 import { UserRole } from './entities/userEntity';
 import { Errors } from './errors';
 import { getRequestStore } from './requestLocalStorage';

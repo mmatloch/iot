@@ -4,7 +4,6 @@ import { join } from 'node:path';
 import { Command, Flags } from '@oclif/core';
 import { cyan, green } from 'chalk';
 import { chmodSync, ensureFileSync, existsSync, moveSync, pathExistsSync, readFileSync, writeFileSync } from 'fs-extra';
-import _ from 'lodash';
 
 import { PATH } from '../utils/constants';
 import { SetupState, createStateCacheManager } from '../utils/setupCache';
