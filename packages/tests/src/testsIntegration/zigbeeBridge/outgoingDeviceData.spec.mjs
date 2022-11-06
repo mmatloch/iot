@@ -70,7 +70,7 @@ describe('Zigbee bridge outgoingDeviceData', () => {
             const device = await sdk.devices.findByIdOrFail(${device._id});
             await sdk.devices.publishData(device, context);
         `;
-        console.log(eventPayload);
+
         await eventHelpers.post(eventPayload).expectSuccess();
     });
 
