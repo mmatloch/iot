@@ -3,7 +3,9 @@
     "name": "server",
     "urlPrefix": "/api"
   },
-  "logger": {},
+  "logger": {
+    "level": "debug"
+  },
   "externalServices": {
     "google": {
       "oAuth2": {
