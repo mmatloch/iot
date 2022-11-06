@@ -12,7 +12,7 @@ export const createDevicesService = (): DevicesService => {
     const create: DevicesService['create'] = async (dto) => {
         const device = repository.create(dto);
 
-        return repository.save(device);
+        return repository.saveAndFind(device);
     };
 
     const search: DevicesService['search'] = (query) => {
@@ -33,9 +33,14 @@ export const createDevicesService = (): DevicesService => {
         });
     };
 
-    const update: DevicesService['update'] = (device, updatedDevice) => {
-        const deviceClone = repository.create(device);
-        return repository.save(repository.merge(deviceClone, updatedDevice));
+    const update: DevicesService['update'] = async (device, updatedDevice) => {
+        const newDevice = repository.merge(repository.create(device), updatedDevice);
+
+        if (_.isEqual(device, newDevice)) {
+            return device;
+        }
+
+        return repository.saveAndFind(newDevice);
     };
 
     return {

@@ -10442,7 +10442,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["reflect-metadata", "npm:0.1.13"],\
             ["snakecase-keys", "npm:5.4.4"],\
             ["ts-node", "virtual:6398134f5e433ac35b52cf86a9fa3921e4206d8baf9e9712756ad2c3623bcb38d709f30d55fdb977601de8d236585e4303f80c459a9cc82a5997b9ce33f63890#npm:10.9.1"],\
-            ["typeorm", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.9"],\
+            ["typeorm", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.10"],\
             ["typescript", "patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"]\
           ],\
           "linkType": "SOFT"\
@@ -11364,17 +11364,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["typeorm", [\
-        ["npm:0.3.9", {\
-          "packageLocation": "./.yarn/cache/typeorm-npm-0.3.9-b3091089d9-5de1e5ac35.zip/node_modules/typeorm/",\
+        ["npm:0.3.10", {\
+          "packageLocation": "./.yarn/cache/typeorm-npm-0.3.10-4667857f33-8a4ce43b42.zip/node_modules/typeorm/",\
           "packageDependencies": [\
-            ["typeorm", "npm:0.3.9"]\
+            ["typeorm", "npm:0.3.10"]\
           ],\
           "linkType": "SOFT"\
         }],\
-        ["virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.9", {\
-          "packageLocation": "./.yarn/__virtual__/typeorm-virtual-3ec8ff1960/0/cache/typeorm-npm-0.3.9-b3091089d9-5de1e5ac35.zip/node_modules/typeorm/",\
+        ["virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.10", {\
+          "packageLocation": "./.yarn/__virtual__/typeorm-virtual-21ca5094e3/0/cache/typeorm-npm-0.3.10-4667857f33-8a4ce43b42.zip/node_modules/typeorm/",\
           "packageDependencies": [\
-            ["typeorm", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.9"],\
+            ["typeorm", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:0.3.10"],\
             ["@google-cloud/spanner", null],\
             ["@sap/hana-client", null],\
             ["@sqltools/formatter", "npm:1.2.3"],\

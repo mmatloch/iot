@@ -17,7 +17,9 @@ import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
 @Entity({ name: 'events' })
 export class Event extends GenericEntity {
     constructor() {
-        super(eventSchema);
+        super(eventSchema, {
+            skipValidationFor: ['trigger'],
+        });
     }
 
     @Column('text')
@@ -77,19 +79,24 @@ const eventSchedulerMetadataSchema = Type.Object({
 
 export type EventSchedulerMetadata = Static<typeof eventSchedulerMetadataSchema>;
 
-export const eventDtoSchema = Type.Object({
-    displayName: Type.String(),
-    triggerType: Type.Enum(EventTriggerType),
-    triggerFilters: Type.Record(Type.String(), Type.Unknown()),
-    conditionDefinition: Type.String(),
-    actionDefinition: Type.String(),
-    state: Type.Enum(EventState, {
-        default: EventState.Active,
-    }),
-    metadata: Type.Union([Type.Null(), eventSchedulerMetadataSchema], {
-        default: null,
-    }),
-});
+export const eventDtoSchema = Type.Object(
+    {
+        displayName: Type.String(),
+        triggerType: Type.Enum(EventTriggerType),
+        triggerFilters: Type.Record(Type.String(), Type.Unknown()),
+        conditionDefinition: Type.String(),
+        actionDefinition: Type.String(),
+        state: Type.Enum(EventState, {
+            default: EventState.Active,
+        }),
+        metadata: Type.Union([Type.Null(), eventSchedulerMetadataSchema], {
+            default: null,
+        }),
+    },
+    {
+        additionalProperties: false,
+    },
+);
 
 export const eventSchema = mergeSchemas(eventDtoSchema, genericEntitySchema);
 

@@ -38,6 +38,8 @@ const getSchemas = (schema: Schema) => {
     const entitySchema = mergeSchemas(
         Type.Omit(schema, ['_createdAt', '_updatedAt', '_createdByUser', '_updatedByUser']),
         Type.Object({
+            _createdByUser: Type.Unknown(),
+            _updatedByUser: Type.Unknown(),
             _createdAt: Type.Unknown(),
             _updatedAt: Type.Unknown(),
         }),
@@ -60,15 +62,23 @@ const getSchemas = (schema: Schema) => {
     };
 };
 
+interface Options {
+    skipValidationFor?: string[];
+}
+
 export abstract class AbstractGenericEntity {
     #entitySchema: Schema;
     #dtoSchema: Schema;
+    #opts: Required<Options>;
 
-    constructor(schema: Schema) {
+    constructor(schema: Schema, opts?: Options) {
         const { entitySchema, dtoSchema } = getSchemas(schema);
 
         this.#entitySchema = entitySchema;
         this.#dtoSchema = dtoSchema;
+        this.#opts = _.defaults(opts, {
+            skipValidationFor: [],
+        });
     }
 
     @BeforeInsert()
@@ -77,7 +87,7 @@ export abstract class AbstractGenericEntity {
         this._createdBy = store?.user?._id || null;
         this._updatedBy = null;
 
-        validator.validateOrThrow(this.#dtoSchema, this);
+        validator.validateOrThrow(this.#dtoSchema, _.omit(this, this.#opts.skipValidationFor));
     }
 
     @BeforeUpdate()
@@ -85,7 +95,9 @@ export abstract class AbstractGenericEntity {
         const store = getRequestStore();
         this._updatedBy = store?.user?._id || null;
 
-        validator.validateOrThrow(this.#entitySchema, this);
+        console.log(this);
+
+        validator.validateOrThrow(this.#entitySchema, _.omit(this, this.#opts.skipValidationFor));
     }
 
     @AfterLoad()
@@ -107,8 +119,6 @@ export abstract class AbstractGenericEntity {
     @ManyToOne('User', {
         createForeignKeyConstraints: false,
         nullable: true,
-        persistence: false,
-        cascade: false,
     })
     @JoinColumn({ name: '_createdBy' })
     _createdByUser!: User | null;
@@ -116,8 +126,6 @@ export abstract class AbstractGenericEntity {
     @ManyToOne('User', {
         createForeignKeyConstraints: false,
         nullable: true,
-        persistence: false,
-        cascade: false,
     })
     @JoinColumn({ name: '_updatedBy' })
     _updatedByUser!: User | null;
@@ -125,6 +133,7 @@ export abstract class AbstractGenericEntity {
     @Column({
         type: 'integer',
         nullable: true,
+        update: false,
     })
     _createdBy!: number | null;
 

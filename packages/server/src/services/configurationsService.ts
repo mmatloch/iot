@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Raw } from 'typeorm';
 
 import { GenericDataPublisher } from '../bridges/generic/genericDataPublisher';
@@ -18,7 +19,7 @@ export const createConfigurationsService = (): ConfigurationsService => {
     const create: ConfigurationsService['create'] = async (dto) => {
         const configuration = repository.create(dto);
 
-        return repository.save(configuration);
+        return repository.saveAndFind(configuration);
     };
 
     const search: ConfigurationsService['search'] = (query) => {
@@ -47,10 +48,14 @@ export const createConfigurationsService = (): ConfigurationsService => {
         });
     };
 
-    const update: ConfigurationsService['update'] = (configuration, updatedConfiguration) => {
-        const configurationClone = repository.create(configuration);
+    const update: ConfigurationsService['update'] = async (configuration, updatedConfiguration) => {
+        const newConfiguration = repository.merge(repository.create(configuration), updatedConfiguration);
 
-        return repository.save(repository.merge(configurationClone, updatedConfiguration));
+        if (_.isEqual(configuration, newConfiguration)) {
+            return configuration;
+        }
+
+        return repository.saveAndFind(newConfiguration);
     };
 
     const getBridgeDataPublisher: ConfigurationsService['getBridgeDataPublisher'] = (configuration) => {

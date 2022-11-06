@@ -17,7 +17,7 @@ export const createEventSchedulerTasksService = (): EventSchedulerTasksService =
     const create: EventSchedulerTasksService['create'] = async (dto) => {
         const schedulerTask = repository.create(dto);
 
-        return repository.save(schedulerTask);
+        return repository.saveAndFind(schedulerTask);
     };
 
     const search: EventSchedulerTasksService['search'] = (query) => {
@@ -38,9 +38,14 @@ export const createEventSchedulerTasksService = (): EventSchedulerTasksService =
         });
     };
 
-    const update: EventSchedulerTasksService['update'] = (schedulerTask, updatedSchedulerTask) => {
-        const schedulerTaskClone = repository.create(schedulerTask);
-        return repository.save(repository.merge(schedulerTaskClone, updatedSchedulerTask));
+    const update: EventSchedulerTasksService['update'] = async (schedulerTask, updatedSchedulerTask) => {
+        const newSchedulerTask = repository.merge(repository.create(schedulerTask), updatedSchedulerTask);
+
+        if (_.isEqual(schedulerTask, newSchedulerTask)) {
+            return schedulerTask;
+        }
+
+        return repository.saveAndFind(newSchedulerTask);
     };
 
     const remove: EventSchedulerTasksService['remove'] = (schedulerTask) => {
