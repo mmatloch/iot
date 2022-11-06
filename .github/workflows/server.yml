@@ -32,7 +32,7 @@ jobs:
         run: yarn script start
 
       - name: Run tests
-        run: yarn script test:integration --group=zigbeeBridge/outgoingDeviceData
+        run: yarn script test:integration
 
       - name: Collect Docker Logs
         uses: jwalton/gh-docker-logs@v2.2.0
