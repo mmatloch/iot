@@ -1,5 +1,6 @@
 import MimeType from 'whatwg-mimetype';
 
+import { AppRoute } from '../constants';
 import { HttpError } from '../errors/httpError';
 
 const getAuthorizationHeader = () => {
@@ -12,10 +13,14 @@ const getAuthorizationHeader = () => {
     return;
 };
 
+const removeAccessToken = () => {
+    window.localStorage.removeItem('accessToken');
+};
+
 export interface RequestOptions {
     method: string;
     url: string;
-    body?: Record<string, unknown>;
+    body?: unknown;
     headers?: Record<string, string>;
 }
 
@@ -107,6 +112,11 @@ export const createHttpClient = () => {
 
         const responseHeaders = serializeResponseHeaders(response.headers);
         const responseBody = await parseResponseBody(response, responseHeaders);
+
+        if (response.status === 401) {
+            removeAccessToken();
+            window.location.replace(AppRoute.Auth.SignIn);
+        }
 
         if (response.status >= 400) {
             throw new HttpError({

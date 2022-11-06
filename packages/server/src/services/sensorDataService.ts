@@ -11,7 +11,7 @@ export const createSensorDataService = (): SensorDataService => {
     const create: SensorDataService['create'] = async (dto) => {
         const sensorData = repository.create(dto);
 
-        return repository.save(sensorData);
+        return repository.saveAndFind(sensorData);
     };
 
     const search: SensorDataService['search'] = (query) => {

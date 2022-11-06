@@ -1,6 +1,6 @@
 import { createHttpClient } from '@clients/httpClient';
+import { User } from '@definitions/entities/userTypes';
 import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
-import { User } from '@definitions/userTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 import { useQueryClient } from 'react-query';

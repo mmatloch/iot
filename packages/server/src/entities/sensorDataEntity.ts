@@ -2,7 +2,7 @@ import { Static, Type } from '@sinclair/typebox';
 import { Column, Entity, Index } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
-import { GenericTimeseriesEntity, genericEntitySchema } from './genericEntity';
+import { GenericTimeseriesEntity, genericEntitySchema } from './generic/genericEntity';
 
 @Entity({ name: 'sensordata' })
 @Index(['deviceId', '_createdAt'])

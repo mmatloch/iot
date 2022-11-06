@@ -1,4 +1,5 @@
 import CronParser from 'cron-parser';
+import _ from 'lodash';
 
 import { Event, EventDto } from '../entities/eventEntity';
 import { Errors } from '../errors';
@@ -89,24 +90,34 @@ export const createEventsService = (): EventsService => {
         }
     };
 
-    const create: EventsService['create'] = (dto) => {
+    const create: EventsService['create'] = async (dto) => {
         const event = repository.create(dto);
 
         validateMetadata(event);
 
-        return repository.save(event);
+        return repository.saveAndFind(event);
     };
 
     const findByIdOrFail: EventsService['findByIdOrFail'] = (_id) => {
-        return repository.findOneByOrFail({ _id });
+        return repository.findOneOrFail({
+            where: { _id },
+            relations: {
+                _createdByUser: true,
+                _updatedByUser: true,
+            },
+        });
     };
 
-    const update: EventsService['update'] = (event, updatedEvent) => {
-        const newEvent = repository.merge(event, updatedEvent);
+    const update: EventsService['update'] = async (event, updatedEvent) => {
+        const newEvent = repository.merge(repository.create(event), updatedEvent);
 
         validateMetadata(newEvent);
 
-        return repository.save(newEvent);
+        if (_.isEqual(_.omit(event, 'trigger'), _.omit(newEvent, 'trigger'))) {
+            return event;
+        }
+
+        return repository.saveAndFind(newEvent);
     };
 
     const search: EventsService['search'] = (query) => {

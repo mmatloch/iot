@@ -37,6 +37,9 @@ const searchOptions: RestSearchOptions<EventSchedulerTask> = {
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
     },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
+    },
 };
 
 export const createEventSchedulerTasksRest: ApplicationPlugin = async (app) => {

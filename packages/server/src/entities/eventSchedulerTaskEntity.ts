@@ -4,7 +4,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
 import { Event } from './eventEntity';
-import { GenericEntity, genericEntitySchema } from './genericEntity';
+import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
 
 export enum EventSchedulerTaskState {
     Queued = 'QUEUED',

@@ -7,10 +7,10 @@ import { createAccessControl } from '../accessControl';
 import {
     RestSearchOptions,
     SortValue,
+    createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
-    createOffsetPaginationStrategy,
 } from '../apis/searchApi';
 import { Event, EventDto, eventDtoSchema, eventSchema, eventUpdateSchema } from '../entities/eventEntity';
 import { EventInstance, eventInstanceSchema } from '../entities/eventInstanceEntity';
@@ -56,10 +56,13 @@ const searchOptions: RestSearchOptions<Event> = {
         },
     },
     filters: {
-        allowedFields: ['displayName', 'state', 'triggerFilters', 'triggerType'],
+        allowedFields: ['displayName', 'state', 'triggerFilters', 'triggerType', '_createdBy'],
     },
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
+    },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
     },
 };
 
@@ -120,6 +123,9 @@ const eventInstanceSearchOptions: RestSearchOptions<EventInstance> = {
     },
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
+    },
+    relations: {
+        allowedFields: ['_createdByUser', '_updatedByUser'],
     },
 };
 

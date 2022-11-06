@@ -1,5 +1,5 @@
 import { useUpdateUser } from '@api/usersApi';
-import { User, UserState } from '@definitions/userTypes';
+import { User, UserState } from '@definitions/entities/userTypes';
 import { Edit, PublishedWithChanges } from '@mui/icons-material';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';

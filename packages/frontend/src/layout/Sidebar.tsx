@@ -1,5 +1,5 @@
 import { useAuth } from '@hooks/useAuth';
-import { Home, ManageAccounts } from '@mui/icons-material';
+import { Event, Home, ManageAccounts } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -12,14 +12,19 @@ const DRAWER_WIDTH = 300;
 interface ItemProps {
     icon: ReactNode;
     text: string;
-    onClick: () => void;
+    navigateTo: string;
     adminOnly?: boolean;
 }
 
-const Item: FC<ItemProps> = ({ icon, text, onClick }) => {
+const Item: FC<ItemProps> = ({ icon, text, navigateTo }) => {
+    const navigate = useNavigate();
+
+    const onClick = () => navigate(navigateTo);
+    const onAuxClick = () => window.open(navigateTo);
+
     return (
         <ListItem disablePadding>
-            <ListItemButton onClick={onClick}>
+            <ListItemButton onClick={onClick} onAuxClick={onAuxClick}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={text} />
             </ListItemButton>
@@ -43,12 +48,18 @@ export default function Sidebar({ isOpen, onClose }: Props) {
         {
             icon: <Home />,
             text: 'Home',
-            onClick: () => navigate(AppRoute.Home),
+            navigateTo: AppRoute.Home,
         },
         {
             icon: <ManageAccounts />,
             text: t('users:title'),
-            onClick: () => navigate(AppRoute.Users),
+            navigateTo: AppRoute.Users,
+            adminOnly: true,
+        },
+        {
+            icon: <Event />,
+            text: t('events:title'),
+            navigateTo: AppRoute.Events.Root,
             adminOnly: true,
         },
     ].filter((item) => {

@@ -1,5 +1,5 @@
 import UserEditDialog from '@components/UserEditDialog';
-import { User, UserState } from '@definitions/userTypes';
+import { User, UserState } from '@definitions/entities/userTypes';
 import { MoreVert } from '@mui/icons-material';
 import { Badge, Card, CardContent, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';

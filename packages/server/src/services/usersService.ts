@@ -1,4 +1,5 @@
 import JWT from 'jsonwebtoken';
+import _ from 'lodash';
 
 import { getConfig } from '../config';
 import { User, UserDto, UserRole, UserState } from '../entities/userEntity';
@@ -38,7 +39,7 @@ export const createUsersService = () => {
     const create: UsersService['create'] = (userDto) => {
         const user = repository.create(userDto);
 
-        return repository.save(user);
+        return repository.saveAndFind(user);
     };
 
     const findByEmail: UsersService['findByEmail'] = (email) => {
@@ -46,7 +47,13 @@ export const createUsersService = () => {
     };
 
     const findByIdOrFail: UsersService['findByIdOrFail'] = (_id) => {
-        return repository.findOneByOrFail({ _id });
+        return repository.findOneOrFail({
+            where: { _id },
+            relations: {
+                _createdByUser: true,
+                _updatedByUser: true,
+            },
+        });
     };
 
     const createToken: UsersService['createToken'] = async (tokenDto) => {
@@ -116,8 +123,14 @@ export const createUsersService = () => {
         return repository.findAndCount(query);
     };
 
-    const update: UsersService['update'] = (user, updatedUser) => {
-        return repository.save(repository.merge(user, updatedUser));
+    const update: UsersService['update'] = async (user, updatedUser) => {
+        const newUser = repository.merge(repository.create(user), updatedUser);
+
+        if (_.isEqual(user, newUser)) {
+            return user;
+        }
+
+        return repository.saveAndFind(newUser);
     };
 
     const getSocialLogin: UsersService['getSocialLogin'] = (referer?: string) => {

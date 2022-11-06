@@ -1,6 +1,6 @@
 import { createToken } from '@api/usersApi';
 import CircularProgressLoader from '@components/CircularProgressLoader';
-import { UserState } from '@definitions/userTypes';
+import { UserState } from '@definitions/entities/userTypes';
 import { HttpError } from '@errors/httpError';
 import { ServerErrorCode, getServerErrorCode } from '@errors/serverErrors';
 import { useAuth } from '@hooks/useAuth';
@@ -71,5 +71,5 @@ export default function RedirectGoogle() {
         };
     }, [code]);
 
-    return <CircularProgressLoader />;
+    return <CircularProgressLoader variant="normal" />;
 }
