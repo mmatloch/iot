@@ -48,7 +48,9 @@ const getSchemas = (schema: Schema) => {
     // https://github.com/ajv-validator/ajv/issues/1240
     const dtoSchema = mergeSchemas(
         Type.Omit(schema, ['_id', '_version', '_createdAt', '_updatedAt', '_createdByUser', '_updatedByUser']),
-        Type.Partial(Type.Pick(schema, ['_id', '_version', '_createdAt', '_updatedAt'])),
+        Type.Partial(
+            Type.Pick(schema, ['_id', '_version', '_createdAt', '_updatedAt', '_createdByUser', '_updatedByUser']),
+        ),
     );
 
     schemaCache.set(schema, {
