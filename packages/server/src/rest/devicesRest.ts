@@ -53,6 +53,7 @@ const searchOptions: RestSearchOptions<Device> = {
             'type',
             'vendor',
             'state',
+            '_createdAt',
         ],
     },
     pagination: {

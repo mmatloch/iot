@@ -30,7 +30,10 @@ export const AppRoute = {
         },
     },
     Users: '/users',
-    Devices: '/devices',
+    Devices: {
+        Root: '/devices',
+        Creator: '/devices/create',
+    },
     Events: {
         Root: '/events',
         Creator: '/events/create',

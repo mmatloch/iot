@@ -1,5 +1,5 @@
 import ZigbeeLogo from '@assets/zigbeeLogo.png';
-import { DeviceProtocol } from '@definitions/deviceTypes';
+import { DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { DeviceUnknown } from '@mui/icons-material';
 import { Avatar, List, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 

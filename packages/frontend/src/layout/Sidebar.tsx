@@ -50,11 +50,6 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             navigateTo: AppRoute.Home,
         },
         {
-            icon: <SpeakerPhone />,
-            text: t('devices:title'),
-            onClick: () => navigate(AppRoute.Devices),
-        },
-        {
             icon: <ManageAccounts />,
             text: t('users:title'),
             navigateTo: AppRoute.Users,
@@ -65,6 +60,11 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             text: t('events:title'),
             navigateTo: AppRoute.Events.Root,
             adminOnly: true,
+        },
+        {
+            icon: <SpeakerPhone />,
+            text: t('devices:title'),
+            navigateTo: AppRoute.Devices.Root,
         },
     ].filter((item) => {
         if (isAdmin) {

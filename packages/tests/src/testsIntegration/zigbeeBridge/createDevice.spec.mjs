@@ -67,7 +67,7 @@ describe('Zigbee bridge createDevice', () => {
         });
     });
 
-    it(`should create a device with 'UNCONFIGURED' state if the Zigbee device has been interviewed`, async () => {
+    it.only(`should create a device with 'UNCONFIGURED' state if the Zigbee device has been interviewed`, async () => {
         // given
         const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interviewing = false;

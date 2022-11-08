@@ -1,15 +1,18 @@
 import { useDevices } from '@api/devicesApi';
 import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
-import { Device } from '@definitions/deviceTypes';
+import { Device } from '@definitions/entities/deviceTypes';
 import AddDeviceStepper from '@features/devices/components/AddDeviceStepper';
 import DeviceCard from '@features/devices/components/DeviceCard';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
-import { SettingsSuggest } from '@mui/icons-material';
-import { Box, Container, Grid, Pagination, Typography } from '@mui/material';
+import { Add, SettingsSuggest } from '@mui/icons-material';
+import { Box, Button, Container, Grid, Pagination, Toolbar, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
+import { AppRoute } from '../constants';
 
 const getDevicesGrid = (devices: Device[]) => (
     <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
@@ -39,6 +42,7 @@ const NoDevicesYet = () => {
 
 export default function Devices() {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { page, setPage } = useQueryPage();
 
     const { data, isSuccess, isLoading, isPreviousData } = useDevices({
@@ -62,10 +66,21 @@ export default function Devices() {
         setPage(value);
     };
 
+    const redirectToDeviceCreator = () => {
+        navigate(AppRoute.Devices.Creator);
+    };
+
     return (
         <Layout>
             <Container>
-                <h1>{t('devices:title')}</h1>
+                <Toolbar sx={{ mb: 3 }}>
+                    <Typography sx={{ typography: { sm: 'h4', xs: 'h5' }, flexGrow: 1 }} component="div">
+                        {t('devices:title')}
+                    </Typography>
+                    <Button size="large" onClick={redirectToDeviceCreator} endIcon={<Add fontSize="inherit" />}>
+                        {t('generic:create')}
+                    </Button>
+                </Toolbar>
 
                 {data._hits.length ? getDevicesGrid(data._hits) : <NoDevicesYet />}
 

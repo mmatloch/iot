@@ -1,4 +1,4 @@
-import { DeviceState } from '@definitions/deviceTypes';
+import { DeviceState } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -17,11 +17,6 @@ export const EnglishLocale: Locale = {
         edit: 'Edit',
         save: 'Save',
         cancel: 'Cancel',
-        retry: 'Retry',
-        errors: {
-            failedToLoadData: 'Failed to load data',
-            noInternetConnection: 'Check your internet connection and try again',
-        },
         retry: 'Retry',
         default: 'Default',
         error: 'Error',
@@ -95,6 +90,9 @@ export const EnglishLocale: Locale = {
             [DeviceState.Interviewing]: 'Interviewing',
             [DeviceState.New]: 'New',
             [DeviceState.Error]: 'Error',
+        },
+        creator: {
+            title: 'Device creator',
         },
     },
     configurations: {

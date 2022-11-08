@@ -3,7 +3,7 @@ import { BridgeRequestType } from '@definitions/bridgeTypes';
 import { Configuration } from '@definitions/entities/configurationTypes';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { ReactNode, useCallback } from 'react';
+import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -17,7 +17,7 @@ export default function AllowDevicesToJoinButton({ configuration, onSuccess, chi
     const { t } = useTranslation();
     const { mutateAsync, isLoading } = useRequestBridge(configuration);
 
-    const onClickHandler = useCallback(async () => {
+    const onClickHandler = async () => {
         const payload = {
             requestType: BridgeRequestType.PermitJoin,
             value: true,
@@ -32,7 +32,7 @@ export default function AllowDevicesToJoinButton({ configuration, onSuccess, chi
                 variant: 'error',
             });
         }
-    }, [onSuccess]);
+    };
 
     return (
         <LoadingButton color="error" variant="contained" size="large" onClick={onClickHandler} loading={isLoading}>

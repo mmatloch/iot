@@ -51,7 +51,9 @@ export interface SearchFilterWithLogicalOperatorValue {
     [FilterLogicalOperator.Not]?: Omit<SearchFilterWithFilterOperatorValue, FilterOperator.Exists>;
 }
 
-export type SearchFilterOperatorValue = SearchFilterWithFilterOperatorValue & SearchFilterWithLogicalOperatorValue;
+export type SearchFilterOperatorValue =
+    | SimpleFilterValue
+    | (SearchFilterWithFilterOperatorValue & SearchFilterWithLogicalOperatorValue);
 
 export interface SearchQuery<TEntity extends GenericEntity> {
     size?: number;
@@ -61,5 +63,8 @@ export interface SearchQuery<TEntity extends GenericEntity> {
     };
     filters?: {
         [key in keyof TEntity]?: SearchFilterOperatorValue;
+    };
+    relations?: {
+        [key in keyof TEntity]?: boolean;
     };
 }

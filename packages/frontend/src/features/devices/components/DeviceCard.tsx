@@ -1,4 +1,4 @@
-import { Device, DeviceState } from '@definitions/deviceTypes';
+import { Device, DeviceState } from '@definitions/entities/deviceTypes';
 import { MoreVert } from '@mui/icons-material';
 import { Badge, Card, CardContent, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 
 interface Props {
     device: Device;
+    hideMenu?: boolean;
+    raised?: boolean;
 }
 
 const getBadgeColor = (state: DeviceState) => {
@@ -22,7 +24,7 @@ const getBadgeColor = (state: DeviceState) => {
     }
 };
 
-export default function DeviceCard({ device }: Props) {
+export default function DeviceCard({ device, hideMenu, raised }: Props) {
     const { t } = useTranslation();
     const theme = useTheme();
     const isMediumMedia = useMediaQuery(theme.breakpoints.up('sm'));
@@ -49,6 +51,7 @@ export default function DeviceCard({ device }: Props) {
                         md: 450,
                     },
                 }}
+                raised={raised}
             >
                 <CardContent>
                     <Grid container spacing={3}>
@@ -65,13 +68,18 @@ export default function DeviceCard({ device }: Props) {
                         >
                             <Typography variant="h6">{device.displayName}</Typography>
                         </Grid>
-                        <Grid item>
-                            <IconButton>
-                                <MoreVert />
-                            </IconButton>
 
-                            {/* <DeviceEditDialog device={device} isOpen={isEditDialogOpen} onClose={closeEditDialog} /> */}
-                        </Grid>
+                        {hideMenu ? (
+                            <></>
+                        ) : (
+                            <Grid item>
+                                <IconButton>
+                                    <MoreVert />
+                                </IconButton>
+
+                                {/* <DeviceEditDialog device={device} isOpen={isEditDialogOpen} onClose={closeEditDialog} /> */}
+                            </Grid>
+                        )}
                     </Grid>
                 </CardContent>
             </Card>

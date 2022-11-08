@@ -1,4 +1,4 @@
-import { DeviceProtocol } from '@definitions/deviceTypes';
+import { DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { Box, Typography } from '@mui/material';
 
 import DeviceProtocolList from '../DeviceProtocolList';

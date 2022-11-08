@@ -1,4 +1,4 @@
-import { DeviceState } from '@definitions/deviceTypes';
+import { DeviceState } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -42,11 +42,6 @@ export const PolishLocale: Locale = {
             noInternetConnection: 'Sprawdź połączenie internetowe i spróbuj ponownie',
             errorOccured: 'Wystąpił błąd',
             unknownErrorOccured: 'Wystąpił nieznany błąd',
-        },
-        retry: 'Ponów próbę',
-        errors: {
-            failedToLoadData: 'Nie udało się załadować danych',
-            noInternetConnection: 'Sprawdź połączenie internetowe i spróbuj ponownie',
         },
     },
     i18n: {
@@ -95,6 +90,9 @@ export const PolishLocale: Locale = {
             [DeviceState.Interviewing]: 'Przesłuchiwane',
             [DeviceState.New]: 'Nowe',
             [DeviceState.Error]: 'Błąd',
+        },
+        creator: {
+            title: 'Kreator urządzeń',
         },
     },
     configurations: {

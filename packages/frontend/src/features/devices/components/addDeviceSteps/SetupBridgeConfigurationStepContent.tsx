@@ -1,5 +1,5 @@
 import CreateConfigurationForm from '@components/configurations/CreateConfigurationForm';
-import { DeviceProtocol } from '@definitions/deviceTypes';
+import { DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { useAuth } from '@hooks/useAuth';
 import { Alert, AlertTitle } from '@mui/material';
 import { getConfigurationTypeByProtocol } from '@utils/configurationUtils';

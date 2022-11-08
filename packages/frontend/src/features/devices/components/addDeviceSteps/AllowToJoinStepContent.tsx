@@ -7,7 +7,7 @@ interface Props {
     onSuccess: () => void;
 }
 
-export default function AllowToJoinStepContext({ configuration, onSuccess }: Props) {
+export default function AllowToJoinStepContent({ configuration, onSuccess }: Props) {
     return (
         <Box>
             <Typography>To allow devices to join the network joining has to be permitted.</Typography>

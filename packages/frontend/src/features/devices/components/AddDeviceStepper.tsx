@@ -3,7 +3,7 @@ import CreateConfigurationForm from '@components/configurations/CreateConfigurat
 import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import { ConfigurationType } from '@definitions/entities/configurationTypes';
-import { DeviceProtocol } from '@definitions/entities/deviceTypes';
+import { Device, DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { FilterOperator } from '@definitions/searchTypes';
 import { useAuth } from '@hooks/useAuth';
 import { Box, Step, StepContent, StepLabel, Stepper, Typography } from '@mui/material';
@@ -11,7 +11,8 @@ import { getConfigurationTypeByProtocol } from '@utils/configurationUtils';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import AllowToJoinStepContext from './addDeviceSteps/AllowToJoinStepContext';
+import AddDeviceStepContent from './addDeviceSteps/AddDeviceStepContent';
+import AllowToJoinStepContent from './addDeviceSteps/AllowToJoinStepContent';
 import SelectProtocolStepContent from './addDeviceSteps/SelectProtocolStepContent';
 import SetupBridgeConfigurationStepContent from './addDeviceSteps/SetupBridgeConfigurationStepContent';
 import DeviceProtocolList from './DeviceProtocolList';
@@ -43,6 +44,7 @@ export default function AddDeviceStepper() {
 
     const [activeStep, setActiveStep] = useState(AvailableStep.SelectProtocol);
     const [deviceProtocol, setDeviceProtocol] = useState<DeviceProtocol>();
+    const [selectedDevice, setSelectedDevice] = useState<Device>();
 
     const {
         data,
@@ -64,7 +66,7 @@ export default function AddDeviceStepper() {
         if (deviceProtocol) {
             fetchConfigurations();
         }
-    }, [deviceProtocol]);
+    }, [deviceProtocol, fetchConfigurations]);
 
     useEffect(() => {
         switch (deviceProtocol) {
@@ -84,7 +86,7 @@ export default function AddDeviceStepper() {
                 }
                 break;
         }
-    }, [data]);
+    }, [configuration, data, deviceProtocol]);
 
     if (isRefetching) {
         return <FullScreenLoader />;
@@ -109,6 +111,11 @@ export default function AddDeviceStepper() {
 
     const onAllowedToJoin = () => {
         setActiveStep(AvailableStep.AddDevice);
+    };
+
+    const onDeviceSelect = (device: Device) => {
+        setActiveStep(AvailableStep.DeviceSetup);
+        setSelectedDevice(device);
     };
 
     return (
@@ -154,7 +161,7 @@ export default function AddDeviceStepper() {
                     </StepLabel>
                     <StepContent>
                         {activeStep === AvailableStep.AllowToJoin && configuration ? (
-                            <AllowToJoinStepContext configuration={configuration} onSuccess={onAllowedToJoin} />
+                            <AllowToJoinStepContent configuration={configuration} onSuccess={onAllowedToJoin} />
                         ) : (
                             <></>
                         )}
@@ -164,8 +171,11 @@ export default function AddDeviceStepper() {
                 <Step>
                     <StepLabel>Add device</StepLabel>
                     <StepContent>
-                        <Typography>The protocol defines how to communicate with the device</Typography>
-                        <Box sx={{ mt: 2 }}></Box>
+                        {activeStep === AvailableStep.AddDevice && deviceProtocol ? (
+                            <AddDeviceStepContent deviceProtocol={deviceProtocol} onDeviceSelect={onDeviceSelect} />
+                        ) : (
+                            <></>
+                        )}
                     </StepContent>
                 </Step>
 
