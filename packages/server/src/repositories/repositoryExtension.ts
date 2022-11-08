@@ -24,11 +24,11 @@ export const getRepositoryExtension = <T extends GenericEntity>(opts?: Options) 
             const savedEntity = await this.save(entity);
 
             return this.findOneOrFail({
-                // @ts-expect-error
+                // @ts-expect-error not working, probably because 'this'
                 where: {
                     _id: savedEntity._id,
                 },
-                // @ts-expect-error
+                // @ts-expect-error not working, probably because 'this'
                 relations,
             });
         },

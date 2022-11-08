@@ -14,7 +14,7 @@ interface CronParserError {
 
 type UseCronParserResult = CronParserSuccess | CronParserError;
 
-export const useCronParser = (cronExpression: string, numberOfIterations: number = 5): UseCronParserResult => {
+export const useCronParser = (cronExpression: string, numberOfIterations = 5): UseCronParserResult => {
     return useMemo(() => {
         try {
             const result = CronParser.parseExpression(cronExpression);
@@ -33,5 +33,5 @@ export const useCronParser = (cronExpression: string, numberOfIterations: number
                 parsingCronError: e as Error,
             };
         }
-    }, [cronExpression]);
+    }, [cronExpression, numberOfIterations]);
 };

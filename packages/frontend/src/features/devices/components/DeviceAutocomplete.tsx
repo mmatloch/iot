@@ -2,10 +2,10 @@ import { useDevices } from '@api/devicesApi';
 import { Device } from '@definitions/entities/deviceTypes';
 import { useDebounce } from '@hooks/useDebounce';
 import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 interface Props extends Omit<AutocompleteProps<Device, false, true, false>, 'renderInput' | 'options'> {
-    onSelect?: () => {};
+    onSelect?: () => void;
 }
 
 export default function DeviceAutocomplete(props: Props) {
@@ -20,9 +20,9 @@ export default function DeviceAutocomplete(props: Props) {
         },
     });
 
-    const handleChange = useCallback((_: unknown, value: string) => {
+    const handleChange = (_: unknown, value: string) => {
         setSearchValue(value);
-    }, []);
+    };
 
     return (
         <Autocomplete<Device, false, true, false>

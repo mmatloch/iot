@@ -6,7 +6,9 @@ export class DeferredPromise<T> extends Promise<T> {
     public reject!: RejectFn;
 
     constructor() {
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         let resolveSelf: ResolveFn<T> = () => {};
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         let rejectSelf: RejectFn = () => {};
 
         super((resolve, reject) => {

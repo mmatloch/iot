@@ -1,7 +1,6 @@
 import { Validator, createValidator } from '@common/validator';
 import { Type } from '@sinclair/typebox';
 import JWT from 'jsonwebtoken';
-import _ from 'lodash';
 
 export interface UserInfo {
     email: string;

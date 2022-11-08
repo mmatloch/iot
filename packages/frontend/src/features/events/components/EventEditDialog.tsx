@@ -26,19 +26,11 @@ export default function EventEditDialog({ event, isOpen, onClose }: Props) {
     const methods = useForm<FormInput>();
     const { handleSubmit, reset } = methods;
 
-    const createDefaultValues = (event: Event) => {
-        const values: FormInput = {
-            displayName: event.displayName,
-        };
-
-        return values;
-    };
-
-    const resetWithDefault = (updatedEvent: Event = event) => reset(createDefaultValues(updatedEvent));
-
     useEffect(() => {
-        resetWithDefault(event);
-    }, [event]);
+        reset({
+            displayName: event.displayName,
+        });
+    }, [event, reset]);
 
     const closeDialog = () => {
         onClose();

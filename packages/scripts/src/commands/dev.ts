@@ -1,5 +1,3 @@
-import { EOL } from 'node:os';
-
 import { Command, Flags } from '@oclif/core';
 import { x } from 'qqjs';
 

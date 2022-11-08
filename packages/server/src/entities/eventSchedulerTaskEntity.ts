@@ -1,5 +1,4 @@
 import { Static, Type } from '@sinclair/typebox';
-import _ from 'lodash';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';

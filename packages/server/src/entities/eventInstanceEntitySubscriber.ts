@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { EntitySubscriberInterface, InsertEvent, EventSubscriber as OrmEventSubscriber } from 'typeorm';
 
 import { EventInstance } from './eventInstanceEntity';
@@ -22,5 +21,6 @@ const listenerMap: EntityListenerMap<EventInstance> = {
 };
 
 export const createEventInstanceSubscriber: CreateEntitySubscriber<EventInstance> = (event, listenerCb) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     listenerMap[event].push(listenerCb as any);
 };

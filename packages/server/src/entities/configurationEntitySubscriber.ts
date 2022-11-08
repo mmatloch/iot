@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import {
     EntitySubscriberInterface,
     InsertEvent,
@@ -38,5 +37,6 @@ const listenerMap: EntityListenerMap<Configuration> = {
 };
 
 export const createConfigurationSubscriber: CreateEntitySubscriber<Configuration> = (event, listenerCb) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     listenerMap[event].push(listenerCb as any);
 };

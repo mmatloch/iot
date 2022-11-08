@@ -28,7 +28,9 @@ export const waitForServer = async (url: URL) => {
         try {
             statusCode = (await sendRequest(url)) || 500;
             isOk = statusCode >= 200 && statusCode < 300;
-        } catch {}
+        } catch {
+            // ignore
+        }
 
         retries--;
         if (retries === 0) {

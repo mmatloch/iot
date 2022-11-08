@@ -29,6 +29,7 @@ export default function EventCreator() {
             metadata: {
                 type: EventMetadataType.Scheduler, // There is only 1 type
                 interval: 60,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 runAfterEvent: null as any,
                 cronExpression: '* * * * *',
                 retryImmediatelyAfterBoot: false,

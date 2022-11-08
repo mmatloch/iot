@@ -8,5 +8,6 @@ interface Context {
 
 export const LocaleContext = createContext<Context>({
     locale: AvailableLanguage.English,
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     changeLanguage: () => {},
 });

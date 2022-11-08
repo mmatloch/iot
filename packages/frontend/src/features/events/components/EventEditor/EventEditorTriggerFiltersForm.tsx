@@ -2,7 +2,7 @@ import { Device } from '@definitions/entities/deviceTypes';
 import { EventDto } from '@definitions/entities/eventTypes';
 import DeviceAutocomplete from '@features/devices/components/DeviceAutocomplete';
 import { FormGroup, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { MouseEvent, useCallback, useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -20,7 +20,7 @@ export default function EventEditorTriggerFiltersForm() {
         setFilterOption(newFilterOption);
     };
 
-    const handleDeviceSelect = useCallback((_: unknown, newDevice: Device | null) => {
+    const handleDeviceSelect = (_: unknown, newDevice: Device | null) => {
         if (!newDevice) {
             return;
         }
@@ -30,7 +30,7 @@ export default function EventEditorTriggerFiltersForm() {
         };
 
         methods.setValue('triggerFilters', value);
-    }, []);
+    };
 
     return (
         <FormGroup>

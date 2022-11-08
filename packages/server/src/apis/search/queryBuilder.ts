@@ -17,7 +17,6 @@ import {
 import {
     FilterLogicalOperator,
     FilterOperator,
-    RelationsQuery,
     SearchFilterOperatorValue,
     SearchFilterWithFilterOperatorValue,
     SearchQuery,
@@ -121,7 +120,7 @@ export const buildQueryFromRaw = <TEntity>(
                 if (!_.isUndefined(operatorValue)) {
                     const buildWhereOperator = buildMap[operator];
 
-                    // @ts-expect-error
+                    // @ts-expect-error type mismatch
                     where[field] = buildWhereOperator(operatorValue);
                 }
             });

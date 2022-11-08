@@ -17,7 +17,7 @@ export const onInfoHandler = async (info: ZigbeeInfo) => {
     const [configuration] = await service.searchByDataType(ConfigurationType.ZigbeeBridge);
 
     if (configuration) {
-        let payload: Configuration['data'] = {
+        const payload: Configuration['data'] = {
             ...configuration.data,
             permitDevicesJoin: info.permitJoin,
         };

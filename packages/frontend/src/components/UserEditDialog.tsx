@@ -6,7 +6,7 @@ import { useAuth } from '@hooks/useAuth';
 import { LoadingButton } from '@mui/lab';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -35,26 +35,27 @@ export default function UserEditDialog({ user, isOpen, onClose }: Props) {
     const methods = useForm<FormInput>();
     const { handleSubmit, reset } = methods;
 
-    const createDefaultValues = (user: User) => {
-        const values: FormInput = {
-            name: user.name,
-            firstName: user.firstName,
-            lastName: user.lastName,
-        };
+    const createDefaultValues = useCallback(
+        (user: User) => {
+            const values: FormInput = {
+                name: user.name,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            };
 
-        if (isAdmin) {
-            values.email = user.email;
-            values.role = user.role;
-        }
+            if (isAdmin) {
+                values.email = user.email;
+                values.role = user.role;
+            }
 
-        return values;
-    };
-
-    const resetWithDefault = (updatedUser: User = user) => reset(createDefaultValues(updatedUser));
+            return values;
+        },
+        [isAdmin],
+    );
 
     useEffect(() => {
-        resetWithDefault(user);
-    }, [user]);
+        reset(createDefaultValues(user));
+    }, [createDefaultValues, reset, user]);
 
     const closeDialog = () => {
         onClose();

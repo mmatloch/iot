@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 import { Device, DeviceDeactivatedByType, DeviceState } from '../../entities/deviceEntity';
 import { getLogger } from '../../logger';
 import { ZigbeeDevice } from './zigbeeDefinitions';
