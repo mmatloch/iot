@@ -1,4 +1,5 @@
-import { EventsSearchQuery } from '@definitions/entities/eventTypes';
+import { GenericEntity } from '@definitions/commonTypes';
+import { SearchQuery } from '@definitions/searchTypes';
 import { Checkbox, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import get from 'lodash/get';
 import set from 'lodash/set';
@@ -11,17 +12,22 @@ export interface CheckboxFilterMapItem {
     text: string;
 }
 
-interface Props {
-    searchQuery: EventsSearchQuery;
+interface Props<TEntity extends GenericEntity, TSearchQuery extends SearchQuery<TEntity>> {
     filterMap: CheckboxFilterMapItem;
-    onFilterChange: (query: EventsSearchQuery) => void;
+
+    searchQuery: TSearchQuery;
+    onFilterChange: (query: TSearchQuery) => void;
 }
 
-export default function EventFilterMenuCheckbox({ filterMap, searchQuery, onFilterChange }: Props) {
+export default function SearchFilterCheckbox<TEntity extends GenericEntity, TSearchQuery extends SearchQuery<TEntity>>({
+    filterMap,
+    searchQuery,
+    onFilterChange,
+}: Props<TEntity, TSearchQuery>) {
     const isChecked = get(searchQuery, filterMap.path) === filterMap.checkValue;
 
     const onListClick = () => {
-        const obj = {};
+        const obj = {} as TSearchQuery;
 
         if (isChecked) {
             set(obj, filterMap.path, filterMap.uncheckValue);
@@ -33,7 +39,7 @@ export default function EventFilterMenuCheckbox({ filterMap, searchQuery, onFilt
     };
 
     const onCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-        const obj = {};
+        const obj = {} as TSearchQuery;
 
         if (event.target.checked) {
             set(obj, filterMap.path, filterMap.checkValue);

@@ -35,7 +35,10 @@ export interface Locale {
         };
         search: {
             filters: string;
-            filtering: string;
+            filtering: {
+                title: string;
+                showOnlyActive: string;
+            };
             sorting: {
                 title: string;
                 oldestFirst: string;
@@ -220,7 +223,6 @@ export interface Locale {
             updatedAt: string;
         };
         search: {
-            showOnlyActive: string;
             showOnlyUserCreated: string;
         };
     };

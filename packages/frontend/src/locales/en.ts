@@ -31,7 +31,10 @@ export const EnglishLocale: Locale = {
         },
         search: {
             filters: 'Filters',
-            filtering: 'Filtering',
+            filtering: {
+                title: 'Filtering',
+                showOnlyActive: 'Show only active',
+            },
             sorting: {
                 title: 'Sorting',
                 oldestFirst: 'Oldest first',
@@ -257,7 +260,6 @@ export const EnglishLocale: Locale = {
             updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
         },
         search: {
-            showOnlyActive: 'Show only active',
             showOnlyUserCreated: 'Show only user-created',
         },
     },

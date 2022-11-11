@@ -31,7 +31,10 @@ export const PolishLocale: Locale = {
         },
         search: {
             filters: 'Filtry',
-            filtering: 'Filtrowanie',
+            filtering: {
+                title: 'Filtrowanie',
+                showOnlyActive: 'Pokaż tylko aktywne',
+            },
             sorting: {
                 title: 'Sortowanie',
                 oldestFirst: 'Najpierw najstarsze',
@@ -257,7 +260,6 @@ export const PolishLocale: Locale = {
             updatedAt: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
         },
         search: {
-            showOnlyActive: 'Pokaż tylko aktywne',
             showOnlyUserCreated: 'Pokaż tylko stworzone przez użytkownika',
         },
     },

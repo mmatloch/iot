@@ -1,17 +1,17 @@
 import SearchFilterCheckbox, { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
 import SearchFilterSorting from '@components/search/filters/SearchFilterSorting';
-import { EventState, EventsSearchQuery } from '@definitions/entities/eventTypes';
+import { DeviceState, DevicesSearchQuery } from '@definitions/entities/deviceTypes';
 import { Divider, ListSubheader, Menu, MenuList } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
     onClose: () => void;
-    onFilterChange: (query: EventsSearchQuery) => void;
-    searchQuery: EventsSearchQuery;
+    onFilterChange: (query: DevicesSearchQuery) => void;
+    searchQuery: DevicesSearchQuery;
     anchorEl: HTMLElement | null;
 }
 
-export default function EventFilterMenu({ onClose, anchorEl, onFilterChange, searchQuery }: Props) {
+export default function DeviceFilterMenu({ onClose, anchorEl, onFilterChange, searchQuery }: Props) {
     const { t } = useTranslation();
 
     const isMenuOpen = Boolean(anchorEl);
@@ -19,15 +19,9 @@ export default function EventFilterMenu({ onClose, anchorEl, onFilterChange, sea
     const checkboxFilterMap: Record<string, CheckboxFilterMapItem> = {
         showOnlyActive: {
             path: 'filters.state',
-            checkValue: EventState.Active,
+            checkValue: DeviceState.Active,
             uncheckValue: undefined,
             text: t('generic:search.filtering.showOnlyActive'),
-        },
-        showOnlyUserCreated: {
-            path: 'filters._createdBy.$exists',
-            checkValue: true,
-            uncheckValue: undefined,
-            text: t('events:search.showOnlyUserCreated'),
         },
     };
 
@@ -41,11 +35,6 @@ export default function EventFilterMenu({ onClose, anchorEl, onFilterChange, sea
                 <SearchFilterCheckbox
                     searchQuery={searchQuery}
                     filterMap={checkboxFilterMap.showOnlyActive}
-                    onFilterChange={onFilterChange}
-                />
-                <SearchFilterCheckbox
-                    searchQuery={searchQuery}
-                    filterMap={checkboxFilterMap.showOnlyUserCreated}
                     onFilterChange={onFilterChange}
                 />
 
