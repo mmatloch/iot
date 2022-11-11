@@ -80,6 +80,9 @@ export const EnglishLocale: Locale = {
             lastName: 'Last name',
             role: 'Role',
         },
+        search: {
+            inputLabel: 'Search for users',
+        },
         errors: {
             failedToUpdateUser: 'Failed to update user',
         },
@@ -138,6 +141,9 @@ export const EnglishLocale: Locale = {
         },
         errors: {
             failedToUpdateDevice: 'Failed to update device',
+        },
+        search: {
+            inputLabel: 'Search for devices',
         },
     },
     configurations: {
@@ -260,6 +266,7 @@ export const EnglishLocale: Locale = {
             updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
         },
         search: {
+            inputLabel: 'Search for events',
             showOnlyUserCreated: 'Show only user-created',
         },
     },

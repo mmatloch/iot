@@ -1,18 +1,33 @@
-import { useUsers } from '@api/usersApi';
+import { UsersSearchQuery, useUsers } from '@api/usersApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
+import SearchToolbar from '@components/search/SearchToolbar';
 import UserCard from '@features/users/components/UserCard';
+import UserFilterMenu from '@features/users/components/UserFilterMenu';
+import { useDebounce } from '@hooks/useDebounce';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
 import { Box, Container, Grid, Pagination } from '@mui/material';
-import { ChangeEvent } from 'react';
+import { mergeQuery } from '@utils/searchQuery';
+import { ChangeEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Users() {
     const { t } = useTranslation();
     const { page, setPage } = useQueryPage();
+    const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
+    const [searchQuery, setSearchQuery] = useState<UsersSearchQuery>({});
+    const [searchValue, setSearchValue] = useState('');
+    const debouncedSearchValue = useDebounce(searchValue, 200);
 
     const { data, isSuccess, isLoading, isPreviousData } = useUsers({
+        ...searchQuery,
+        filters: {
+            ...searchQuery.filters,
+            name: {
+                $iLike: `${debouncedSearchValue}%`,
+            },
+        },
         page,
     });
 
@@ -24,6 +39,18 @@ export default function Users() {
         return <FailedToLoadDataDialog />;
     }
 
+    const openFilterMenu = (event: MouseEvent<HTMLButtonElement>) => {
+        setFilterMenuAnchorEl(event.currentTarget);
+    };
+
+    const closeFilterMenu = () => {
+        setFilterMenuAnchorEl(null);
+    };
+
+    const onFilterChange = (updatedQuery: UsersSearchQuery) => {
+        setSearchQuery(mergeQuery(searchQuery, updatedQuery));
+    };
+
     const onPageChange = (_event: ChangeEvent<unknown>, value: number) => {
         setPage(value);
     };
@@ -31,7 +58,12 @@ export default function Users() {
     return (
         <Layout>
             <Container>
-                <h1>{t('users:title')}</h1>
+                <SearchToolbar
+                    title={t('users:title')}
+                    searchLabel={t('users:search.inputLabel')}
+                    onSearchChange={setSearchValue}
+                    onFiltersClick={openFilterMenu}
+                />
 
                 <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
                     {data._hits.map((user) => (
@@ -52,6 +84,13 @@ export default function Users() {
                     />
                 </Box>
             </Container>
+
+            <UserFilterMenu
+                searchQuery={searchQuery}
+                onFilterChange={onFilterChange}
+                onClose={closeFilterMenu}
+                anchorEl={filterMenuAnchorEl}
+            />
         </Layout>
     );
 }

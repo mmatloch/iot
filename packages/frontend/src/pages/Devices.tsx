@@ -1,13 +1,14 @@
 import { useDevices } from '@api/devicesApi';
 import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
+import SearchToolbar from '@components/search/SearchToolbar';
 import { DevicesSearchQuery } from '@definitions/entities/deviceTypes';
 import DeviceCard from '@features/devices/components/DeviceCard';
 import DeviceFilterMenu from '@features/devices/components/DeviceFilterMenu';
+import { useDebounce } from '@hooks/useDebounce';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
-import { Add, FilterList } from '@mui/icons-material';
-import { Box, Button, Container, Grid, Pagination, Toolbar, Typography } from '@mui/material';
+import { Box, Container, Grid, Pagination } from '@mui/material';
 import { mergeQuery } from '@utils/searchQuery';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -21,8 +22,17 @@ export default function Devices() {
     const { page, setPage } = useQueryPage();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [searchQuery, setSearchQuery] = useState<DevicesSearchQuery>({});
+    const [searchValue, setSearchValue] = useState('');
+    const debouncedSearchValue = useDebounce(searchValue, 200);
+
     const { data, isSuccess, isLoading, isPreviousData } = useDevices({
         ...searchQuery,
+        filters: {
+            ...searchQuery.filters,
+            displayName: {
+                $iLike: `${debouncedSearchValue}%`,
+            },
+        },
         page,
     });
 
@@ -55,31 +65,20 @@ export default function Devices() {
         setSearchQuery(mergeQuery(searchQuery, updatedQuery));
     };
 
-    const redirectToDeviceCreator = () => {
+    const redirectToCreator = () => {
         navigate(AppRoute.Devices.Creator);
     };
 
     return (
         <Layout>
             <Container>
-                <Toolbar sx={{ mb: 3 }}>
-                    <Typography sx={{ typography: { sm: 'h4', xs: 'h5' }, flexGrow: 1 }} component="div">
-                        {t('devices:title')}
-                    </Typography>
-                    <Button size="large" onClick={redirectToDeviceCreator} endIcon={<Add fontSize="inherit" />}>
-                        {t('generic:create')}
-                    </Button>
-                    <Button size="large" onClick={openFilterMenu} endIcon={<FilterList fontSize="inherit" />}>
-                        {t('generic:search.filters')}
-                    </Button>
-
-                    <DeviceFilterMenu
-                        searchQuery={searchQuery}
-                        onFilterChange={onFilterChange}
-                        onClose={closeFilterMenu}
-                        anchorEl={filterMenuAnchorEl}
-                    />
-                </Toolbar>
+                <SearchToolbar
+                    title={t('devices:title')}
+                    searchLabel={t('devices:search.inputLabel')}
+                    onSearchChange={setSearchValue}
+                    onCreateClick={redirectToCreator}
+                    onFiltersClick={openFilterMenu}
+                />
 
                 <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
                     {data._hits.map((device) => (
@@ -104,6 +103,13 @@ export default function Devices() {
                     <></>
                 )}
             </Container>
+
+            <DeviceFilterMenu
+                searchQuery={searchQuery}
+                onFilterChange={onFilterChange}
+                onClose={closeFilterMenu}
+                anchorEl={filterMenuAnchorEl}
+            />
         </Layout>
     );
 }

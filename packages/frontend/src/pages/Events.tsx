@@ -1,14 +1,15 @@
 import { useEvents } from '@api/eventsApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
+import SearchToolbar from '@components/search/SearchToolbar';
 import { EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { SortValue } from '@definitions/searchTypes';
 import EventCard from '@features/events/components/EventCard';
 import EventFilterMenu from '@features/events/components/EventFilterMenu';
+import { useDebounce } from '@hooks/useDebounce';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
-import { Add, FilterList } from '@mui/icons-material';
-import { Box, Button, Container, Grid, Pagination, Toolbar, Typography } from '@mui/material';
+import { Box, Container, Grid, Pagination } from '@mui/material';
 import { mergeQuery } from '@utils/searchQuery';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -35,11 +36,19 @@ export default function Events() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { page, setPage } = useQueryPage();
-    const [eventFilterMenuAnchorEl, setEventFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
+    const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [searchQuery, setSearchQuery] = useState<EventsSearchQuery>(defaultQuery);
+    const [searchValue, setSearchValue] = useState('');
+    const debouncedSearchValue = useDebounce(searchValue, 200);
 
     const { data, isSuccess, isLoading, isPreviousData } = useEvents({
         ...searchQuery,
+        filters: {
+            ...searchQuery.filters,
+            displayName: {
+                $iLike: `${debouncedSearchValue}%`,
+            },
+        },
         page,
     });
 
@@ -55,43 +64,33 @@ export default function Events() {
         setPage(value);
     };
 
-    const openEventFilterMenu = (event: MouseEvent<HTMLButtonElement>) => {
-        setEventFilterMenuAnchorEl(event.currentTarget);
+    const openFilterMenu = (event: MouseEvent<HTMLButtonElement>) => {
+        setFilterMenuAnchorEl(event.currentTarget);
     };
 
-    const closeEventFilterMenu = () => {
-        setEventFilterMenuAnchorEl(null);
+    const closeFilterMenu = () => {
+        setFilterMenuAnchorEl(null);
     };
 
     const onFilterChange = (updatedQuery: EventsSearchQuery) => {
         setSearchQuery(mergeQuery(searchQuery, updatedQuery));
     };
 
-    const redirectToEventCreator = () => {
+    const redirectToCreator = () => {
         navigate(AppRoute.Events.Creator);
     };
 
     return (
         <Layout>
             <Container>
-                <Toolbar sx={{ mb: 3 }}>
-                    <Typography sx={{ typography: { sm: 'h4', xs: 'h5' }, flexGrow: 1 }} component="div">
-                        {t('events:title')}
-                    </Typography>
-                    <Button size="large" onClick={redirectToEventCreator} endIcon={<Add fontSize="inherit" />}>
-                        {t('generic:create')}
-                    </Button>
-                    <Button size="large" onClick={openEventFilterMenu} endIcon={<FilterList fontSize="inherit" />}>
-                        {t('generic:search.filters')}
-                    </Button>
+                <SearchToolbar
+                    title={t('events:title')}
+                    searchLabel={t('events:search.inputLabel')}
+                    onSearchChange={setSearchValue}
+                    onCreateClick={redirectToCreator}
+                    onFiltersClick={openFilterMenu}
+                />
 
-                    <EventFilterMenu
-                        searchQuery={searchQuery}
-                        onFilterChange={onFilterChange}
-                        onClose={closeEventFilterMenu}
-                        anchorEl={eventFilterMenuAnchorEl}
-                    />
-                </Toolbar>
                 <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
                     {data._hits.map((event) => (
                         <Grid item key={event._id} sx={{ display: 'flex' }}>
@@ -115,6 +114,13 @@ export default function Events() {
                     <></>
                 )}
             </Container>
+
+            <EventFilterMenu
+                searchQuery={searchQuery}
+                onFilterChange={onFilterChange}
+                onClose={closeFilterMenu}
+                anchorEl={filterMenuAnchorEl}
+            />
         </Layout>
     );
 }

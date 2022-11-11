@@ -80,6 +80,9 @@ export const PolishLocale: Locale = {
             lastName: 'Nazwisko',
             role: 'Rola',
         },
+        search: {
+            inputLabel: 'Szukaj użytkowników',
+        },
         errors: {
             failedToUpdateUser: 'Nie udało się zaktualizować użytkownika',
         },
@@ -135,6 +138,9 @@ export const PolishLocale: Locale = {
         editor: {
             title: 'Edytor urządzeń',
             openInEditor: 'Otwórz w edytorze urządzeń',
+        },
+        search: {
+            inputLabel: 'Szukaj urządzeń',
         },
         errors: {
             failedToUpdateDevice: 'Nie udało się zaktualizować urządzenia',
@@ -261,6 +267,7 @@ export const PolishLocale: Locale = {
         },
         search: {
             showOnlyUserCreated: 'Pokaż tylko stworzone przez użytkownika',
+            inputLabel: 'Szukaj zdarzeń',
         },
     },
     eventInstances: {

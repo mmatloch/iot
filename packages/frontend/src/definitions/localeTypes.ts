@@ -77,6 +77,9 @@ export interface Locale {
             lastName: string;
             role: string;
         };
+        search: {
+            inputLabel: string;
+        },
         errors: {
             failedToUpdateUser: string;
         };
@@ -122,6 +125,9 @@ export interface Locale {
         editor: {
             title: string;
             openInEditor: string;
+        };
+        search: {
+            inputLabel: string;
         };
         errors: {
             failedToUpdateDevice: string;
@@ -223,6 +229,7 @@ export interface Locale {
             updatedAt: string;
         };
         search: {
+            inputLabel: string;
             showOnlyUserCreated: string;
         };
     };
