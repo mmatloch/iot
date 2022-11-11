@@ -100,16 +100,20 @@ export default function Events() {
                     ))}
                 </Grid>
 
-                <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
-                    <Pagination
-                        count={data._meta.totalPages}
-                        size="large"
-                        color="primary"
-                        onChange={onPageChange}
-                        page={page}
-                        disabled={isPreviousData}
-                    />
-                </Box>
+                {data._hits.length ? (
+                    <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
+                        <Pagination
+                            count={data._meta.totalPages}
+                            size="large"
+                            color="primary"
+                            onChange={onPageChange}
+                            page={page}
+                            disabled={isPreviousData}
+                        />
+                    </Box>
+                ) : (
+                    <></>
+                )}
             </Container>
         </Layout>
     );

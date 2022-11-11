@@ -1,44 +1,16 @@
 import { useDevices } from '@api/devicesApi';
 import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
-import { Device } from '@definitions/entities/deviceTypes';
-import AddDeviceStepper from '@features/devices/components/AddDeviceStepper';
 import DeviceCard from '@features/devices/components/DeviceCard';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
-import { Add, SettingsSuggest } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import { Box, Button, Container, Grid, Pagination, Toolbar, Typography } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
 import { AppRoute } from '../constants';
-
-const getDevicesGrid = (devices: Device[]) => (
-    <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
-        {devices.map((device) => (
-            <Grid item key={device._id} sx={{ display: 'flex' }}>
-                <DeviceCard device={device} />
-            </Grid>
-        ))}
-    </Grid>
-);
-
-const NoDevicesYet = () => {
-    return (
-        <Grid container spacing={0} direction="column" alignItems="center" sx={{ py: 5 }}>
-            <Grid item sx={{ fontSize: '96px', height: '120px' }}>
-                <SettingsSuggest fontSize="inherit" color="warning" />
-            </Grid>
-            <Grid item>
-                <Typography variant="h5">Add your first device</Typography>
-            </Grid>
-            <Grid item sx={{ pt: 8 }}>
-                <AddDeviceStepper />
-            </Grid>
-        </Grid>
-    );
-};
 
 export default function Devices() {
     const { t } = useTranslation();
@@ -82,7 +54,13 @@ export default function Devices() {
                     </Button>
                 </Toolbar>
 
-                {data._hits.length ? getDevicesGrid(data._hits) : <NoDevicesYet />}
+                <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
+                    {data._hits.map((device) => (
+                        <Grid item key={device._id} sx={{ display: 'flex' }}>
+                            <DeviceCard device={device} />
+                        </Grid>
+                    ))}
+                </Grid>
 
                 {data._hits.length ? (
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
