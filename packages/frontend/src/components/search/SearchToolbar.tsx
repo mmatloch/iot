@@ -38,7 +38,7 @@ export default function SearchToolbar({ title, searchLabel, onSearchChange, onCr
                 onChange={(event) => onSearchChange(event.target.value)}
             />
 
-            <Box>
+            <Box sx={{ mt: 1 }}>
                 {onCreateClick ? (
                     <Button size="large" onClick={onCreateClick} endIcon={<Add fontSize="inherit" />}>
                         {t('generic:create')}
