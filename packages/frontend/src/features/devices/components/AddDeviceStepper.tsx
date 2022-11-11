@@ -1,21 +1,18 @@
 import { useConfigurations } from '@api/configurationsApi';
-import CreateConfigurationForm from '@components/configurations/CreateConfigurationForm';
 import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
-import { ConfigurationType } from '@definitions/entities/configurationTypes';
 import { Device, DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { FilterOperator } from '@definitions/searchTypes';
-import { useAuth } from '@hooks/useAuth';
 import { Box, Step, StepContent, StepLabel, Stepper, Typography } from '@mui/material';
 import { getConfigurationTypeByProtocol } from '@utils/configurationUtils';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import AddDeviceStepContent from './addDeviceSteps/AddDeviceStepContent';
-import AllowToJoinStepContent from './addDeviceSteps/AllowToJoinStepContent';
-import SelectProtocolStepContent from './addDeviceSteps/SelectProtocolStepContent';
-import SetupBridgeConfigurationStepContent from './addDeviceSteps/SetupBridgeConfigurationStepContent';
-import DeviceProtocolList from './DeviceProtocolList';
+import AddDeviceStep from './addDeviceSteps/AddDeviceStep';
+import AllowToJoinStep from './addDeviceSteps/AllowToJoinStep';
+import SelectProtocolStep from './addDeviceSteps/SelectProtocolStep';
+import SetupBridgeConfigurationStep from './addDeviceSteps/SetupBridgeConfigurationStep';
+import SetupDeviceStep from './addDeviceSteps/SetupDeviceStep';
 
 export enum AvailableStep {
     SelectProtocol,
@@ -129,10 +126,10 @@ export default function AddDeviceStepper() {
         >
             <Stepper activeStep={activeStep} orientation="vertical">
                 <Step>
-                    <StepLabel>Select your device protocol</StepLabel>
+                    <StepLabel>{t('devices:creator.selectProtocolStep.title')}</StepLabel>
                     <StepContent>
                         {activeStep === AvailableStep.SelectProtocol ? (
-                            <SelectProtocolStepContent onSelect={onProcotolSelect} />
+                            <SelectProtocolStep onSelect={onProcotolSelect} />
                         ) : (
                             <></>
                         )}
@@ -140,12 +137,12 @@ export default function AddDeviceStepper() {
                 </Step>
 
                 <Step>
-                    <StepLabel optional={<Typography variant="caption">Optional</Typography>}>
-                        Set the bridge configuration
+                    <StepLabel optional={<Typography variant="caption">{t('generic:optional')}</Typography>}>
+                        {t('devices:creator.bridgeSetupStep.title')}
                     </StepLabel>
                     <StepContent>
                         {activeStep === AvailableStep.BridgeSetup ? (
-                            <SetupBridgeConfigurationStepContent
+                            <SetupBridgeConfigurationStep
                                 deviceProtocol={deviceProtocol}
                                 onCreatedConfiguration={onCreatedConfiguration}
                             />
@@ -156,12 +153,12 @@ export default function AddDeviceStepper() {
                 </Step>
 
                 <Step>
-                    <StepLabel optional={<Typography variant="caption">Optional</Typography>}>
-                        Allow devices to join the network
+                    <StepLabel optional={<Typography variant="caption">{t('generic:optional')}</Typography>}>
+                        {t('devices:creator.allowToJoin.title')}
                     </StepLabel>
                     <StepContent>
                         {activeStep === AvailableStep.AllowToJoin && configuration ? (
-                            <AllowToJoinStepContent configuration={configuration} onSuccess={onAllowedToJoin} />
+                            <AllowToJoinStep configuration={configuration} onSuccess={onAllowedToJoin} />
                         ) : (
                             <></>
                         )}
@@ -169,10 +166,10 @@ export default function AddDeviceStepper() {
                 </Step>
 
                 <Step>
-                    <StepLabel>Add device</StepLabel>
+                    <StepLabel>{t('devices:creator.addDevice.title')}</StepLabel>
                     <StepContent>
                         {activeStep === AvailableStep.AddDevice && deviceProtocol ? (
-                            <AddDeviceStepContent deviceProtocol={deviceProtocol} onDeviceSelect={onDeviceSelect} />
+                            <AddDeviceStep deviceProtocol={deviceProtocol} onDeviceSelect={onDeviceSelect} />
                         ) : (
                             <></>
                         )}
@@ -180,10 +177,13 @@ export default function AddDeviceStepper() {
                 </Step>
 
                 <Step>
-                    <StepLabel>Set up the device</StepLabel>
+                    <StepLabel>{t('devices:creator.deviceSetup.title')}</StepLabel>
                     <StepContent>
-                        <Typography>The protocol defines how to communicate with the device</Typography>
-                        <Box sx={{ mt: 2 }}></Box>
+                        {activeStep === AvailableStep.DeviceSetup && selectedDevice ? (
+                            <SetupDeviceStep device={selectedDevice} />
+                        ) : (
+                            <></>
+                        )}
                     </StepContent>
                 </Step>
             </Stepper>

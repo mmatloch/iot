@@ -11,7 +11,7 @@ type PermitDevicesJoinPayload = {
 };
 
 export type RequestBridgePayload = PermitDevicesJoinPayload;
-export type BridgeResponse = {};
+export interface BridgeResponse {}
 
 export const useRequestBridge = (configuration: Configuration) => {
     return useGenericMutation<BridgeResponse, RequestBridgePayload>({

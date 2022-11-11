@@ -1,29 +1,32 @@
 import AllowDevicesToJoinButton from '@components/configurations/AllowDevicesToJoinButton';
 import { Configuration } from '@definitions/entities/configurationTypes';
 import { Box, Typography } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     configuration: Configuration;
     onSuccess: () => void;
 }
 
-export default function AllowToJoinStepContent({ configuration, onSuccess }: Props) {
+export default function AllowToJoinStep({ configuration, onSuccess }: Props) {
+    const { t } = useTranslation();
+
     return (
         <Box>
-            <Typography>To allow devices to join the network joining has to be permitted.</Typography>
+            <Typography>{t('devices:creator.allowToJoin.description')}</Typography>
             <Box sx={{ mt: 4 }}></Box>
 
             <Typography color="error" fontWeight="bold">
-                Do you want to allow devices to join?
+                {t('devices:creator.allowToJoin.prompt.title')}
             </Typography>
             <Typography color="error" fontStyle="italic">
-                This option will turn off after 5 minutes
+                {t('devices:creator.allowToJoin.prompt.helper')}
             </Typography>
 
             <Box sx={{ mt: 4 }}></Box>
 
             <AllowDevicesToJoinButton configuration={configuration} onSuccess={onSuccess}>
-                Allow
+                {t('generic:allow')}
             </AllowDevicesToJoinButton>
         </Box>
     );

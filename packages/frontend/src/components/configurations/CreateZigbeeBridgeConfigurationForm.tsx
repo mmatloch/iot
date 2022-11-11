@@ -59,7 +59,7 @@ export default function CreateZigbeeBridgeConfigurationForm({ onSubmitSuccess }:
                     defaultValue={DEFAULT_ZIGBEE_TOPIC_PREFIX}
                     helperText={
                         <Link href={ZIGBEE2MQTT_DOCS} target="_blank">
-                            MQTT Topics and Messages
+                            {t('configurations:zigbee.mqttTopicsAndMessages')}
                         </Link>
                     }
                 />

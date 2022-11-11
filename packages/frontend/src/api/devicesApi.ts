@@ -1,6 +1,7 @@
-import { DevicesSearchQuery, DevicesSearchResponse } from '@definitions/entities/deviceTypes';
+import { Device, DevicesSearchQuery, DevicesSearchResponse } from '@definitions/entities/deviceTypes';
 import { useFetch } from '@hooks/useFetch';
-import { UseQueryOptions } from 'react-query';
+import { useGenericMutation } from '@hooks/useGenericMutation';
+import { UseQueryOptions, useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
 
@@ -16,3 +17,22 @@ export const useDevices = (query: DevicesSearchQuery, opts: UseQueryOptions<Devi
             keepPreviousData: true,
         },
     );
+
+export const useUpdateDevice = (device: Device) => {
+    const queryClient = useQueryClient();
+
+    const url = `${ApiRoute.Devices.Root}/${device._id}`;
+
+    return useGenericMutation<Device, Partial<Device>>(
+        {
+            url: url,
+            method: 'PATCH',
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([ApiRoute.Devices.Root]);
+                queryClient.invalidateQueries([url]);
+            },
+        },
+    );
+};

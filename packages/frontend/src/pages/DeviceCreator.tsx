@@ -1,22 +1,10 @@
-import { useCreateEvent } from '@api/eventsApi';
-import { EventDto, EventMetadataType, EventState, EventTriggerType } from '@definitions/entities/eventTypes';
 import AddDeviceStepper from '@features/devices/components/AddDeviceStepper';
-import EventEditorForm from '@features/events/components/EventEditorForm';
 import Layout from '@layout/Layout';
-import { SettingsSuggest } from '@mui/icons-material';
-import { Button, Container, Grid, Paper, Toolbar, Typography } from '@mui/material';
-import { prepareEventDto } from '@utils/modifyEventDto';
-import { useSnackbar } from 'notistack';
-import { FormProvider, useForm } from 'react-hook-form';
+import { Container, Grid, Paper, Toolbar, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-
-import { AppRoute } from '../constants';
 
 export default function DeviceCreator() {
     const { t } = useTranslation();
-    const { enqueueSnackbar } = useSnackbar();
-    const navigate = useNavigate();
 
     return (
         <Layout>

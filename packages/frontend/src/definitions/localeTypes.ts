@@ -1,4 +1,4 @@
-import { DeviceState } from './entities/deviceTypes';
+import { DeviceProtocol, DeviceState } from './entities/deviceTypes';
 import { EventInstanceState } from './entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -26,6 +26,8 @@ export interface Locale {
         error: string;
         clear: string;
         create: string;
+        allow: string;
+        optional: string;
         statusCode: string;
         entity: {
             id: string;
@@ -46,6 +48,7 @@ export interface Locale {
             noInternetConnection: string;
             errorOccured: string;
             unknownErrorOccured: string;
+            permissionDenied: string;
         };
     };
     i18n: {
@@ -81,6 +84,45 @@ export interface Locale {
     devices: {
         title: string;
         state: Record<DeviceState, string>;
+        protocol: Record<DeviceProtocol, string>;
+        entity: {
+            displayName: string;
+            description: string;
+        };
+        creator: {
+            title: string;
+            selectProtocolStep: {
+                title: string;
+                description: string;
+            };
+            bridgeSetupStep: {
+                title: string;
+            };
+            allowToJoin: {
+                title: string;
+                description: string;
+                prompt: {
+                    title: string;
+                    helper: string;
+                };
+            };
+            addDevice: {
+                title: string;
+                lookingForDevices: string;
+            };
+            deviceSetup: {
+                title: string;
+                deviceAdded: string;
+                goToDeviceConfiguration: string;
+            };
+        };
+        editor: {
+            title: string;
+            openInEditor: string;
+        };
+        errors: {
+            failedToUpdateDevice: string;
+        };
     };
     configurations: {
         title: string;
@@ -89,9 +131,13 @@ export interface Locale {
                 topicPrefix: string;
             };
         };
+        zigbee: {
+            mqttTopicsAndMessages: string;
+        };
         errors: {
             failedToCreateConfiguration: string;
             failedToUpdateConfiguration: string;
+            noPermissionToCreateConfiguration: string;
         };
     };
     bridge: {

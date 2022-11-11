@@ -1,4 +1,4 @@
-import { DeviceState } from '@definitions/entities/deviceTypes';
+import { DeviceProtocol, DeviceState } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -22,6 +22,8 @@ export const EnglishLocale: Locale = {
         error: 'Error',
         clear: 'Clear',
         create: 'Create',
+        allow: 'Allow',
+        optional: 'Optional',
         statusCode: 'Status code',
         entity: {
             id: 'ID',
@@ -42,6 +44,7 @@ export const EnglishLocale: Locale = {
             noInternetConnection: 'Check your internet connection and try again',
             errorOccured: 'Error occured',
             unknownErrorOccured: 'An unknown error occurred',
+            permissionDenied: 'Permission denied',
         },
     },
     i18n: {
@@ -91,8 +94,47 @@ export const EnglishLocale: Locale = {
             [DeviceState.New]: 'New',
             [DeviceState.Error]: 'Error',
         },
+        protocol: {
+            [DeviceProtocol.Zigbee]: 'Zigbee',
+            [DeviceProtocol.Virtual]: 'Virtual device',
+        },
+        entity: {
+            displayName: 'Name',
+            description: 'Description',
+        },
         creator: {
             title: 'Device creator',
+            selectProtocolStep: {
+                title: 'Select your device protocol',
+                description: 'The protocol defines how to communicate with the device',
+            },
+            bridgeSetupStep: {
+                title: 'Set the bridge configuration',
+            },
+            allowToJoin: {
+                title: 'Allow devices to join the network',
+                description: 'To allow devices to join the network joining has to be permitted',
+                prompt: {
+                    title: 'Do you want to allow devices to join?',
+                    helper: 'This option will turn off after 5 minutes',
+                },
+            },
+            addDevice: {
+                title: 'Add device',
+                lookingForDevices: 'Looking for devices',
+            },
+            deviceSetup: {
+                title: 'Set up the device',
+                deviceAdded: 'Device added successfully!',
+                goToDeviceConfiguration: 'Go to the device configuration',
+            },
+        },
+        editor: {
+            title: 'Device editor',
+            openInEditor: 'Open in device editor',
+        },
+        errors: {
+            failedToUpdateDevice: 'Failed to update device',
         },
     },
     configurations: {
@@ -102,9 +144,14 @@ export const EnglishLocale: Locale = {
                 topicPrefix: 'MQTT topic prefix',
             },
         },
+        zigbee: {
+            mqttTopicsAndMessages: 'MQTT Topics and Messages',
+        },
         errors: {
             failedToCreateConfiguration: 'Failed to create configuration',
             failedToUpdateConfiguration: 'Failed to update configuration',
+            noPermissionToCreateConfiguration:
+                'You do not have permission to create a configuration - <strong>please contact your system administrator</strong>',
         },
     },
     bridge: {

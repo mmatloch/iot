@@ -14,10 +14,11 @@ export class ErrorBoundary extends Component<Props, State> {
         this.state = { hasError: false };
     }
 
-    static getDerivedStateFromError(error: unknown) {
+    static getDerivedStateFromError() {
         return { hasError: true };
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     componentDidCatch() {}
 
     render() {

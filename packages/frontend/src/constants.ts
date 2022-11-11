@@ -33,6 +33,7 @@ export const AppRoute = {
     Devices: {
         Root: '/devices',
         Creator: '/devices/create',
+        Editor: '/devices/:deviceId',
     },
     Events: {
         Root: '/events',

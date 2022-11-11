@@ -1,4 +1,4 @@
-import { DeviceState } from '@definitions/entities/deviceTypes';
+import { DeviceProtocol, DeviceState } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -22,6 +22,8 @@ export const PolishLocale: Locale = {
         error: 'Błąd',
         clear: 'Wyszyść',
         create: 'Stwórz',
+        allow: 'Pozwól',
+        optional: 'Opcjonalne',
         statusCode: 'Kod statusu',
         entity: {
             id: 'ID',
@@ -42,6 +44,7 @@ export const PolishLocale: Locale = {
             noInternetConnection: 'Sprawdź połączenie internetowe i spróbuj ponownie',
             errorOccured: 'Wystąpił błąd',
             unknownErrorOccured: 'Wystąpił nieznany błąd',
+            permissionDenied: 'Brak uprawnień',
         },
     },
     i18n: {
@@ -91,8 +94,47 @@ export const PolishLocale: Locale = {
             [DeviceState.New]: 'Nowe',
             [DeviceState.Error]: 'Błąd',
         },
+        protocol: {
+            [DeviceProtocol.Zigbee]: 'Zigbee',
+            [DeviceProtocol.Virtual]: 'Urządzenie wirtualne',
+        },
+        entity: {
+            displayName: 'Nazwa',
+            description: 'Opis',
+        },
         creator: {
             title: 'Kreator urządzeń',
+            selectProtocolStep: {
+                title: 'Wybierz protokół urządzenia',
+                description: 'Protokół określa sposób komunikacji z urządzeniem',
+            },
+            bridgeSetupStep: {
+                title: 'Skonfiguruj most',
+            },
+            allowToJoin: {
+                title: 'Zezwól urządzeniom na dołączenie do sieci',
+                description: 'Aby urządzenia mogły dołączyć do sieci należy im na to zezwolić',
+                prompt: {
+                    title: 'Czy chcesz zezwolić urządzeniom na dołączanie?',
+                    helper: 'Ta opcja wyłączy się sama po 5 minutach',
+                },
+            },
+            addDevice: {
+                title: 'Dodaj urządzenie',
+                lookingForDevices: 'Szukanie urządzeń',
+            },
+            deviceSetup: {
+                title: 'Skonfiguruj urządzenie',
+                deviceAdded: 'Urządzenie dodane pomyślnie!',
+                goToDeviceConfiguration: 'Przejdź do konfiguracji urządzenia',
+            },
+        },
+        editor: {
+            title: 'Edytor urządzeń',
+            openInEditor: 'Otwórz w edytorze urządzeń',
+        },
+        errors: {
+            failedToUpdateDevice: 'Nie udało się zaktualizować urządzenia',
         },
     },
     configurations: {
@@ -102,9 +144,14 @@ export const PolishLocale: Locale = {
                 topicPrefix: 'Prefiks tematu MQTT',
             },
         },
+        zigbee: {
+            mqttTopicsAndMessages: 'Tematy i wiadomości MQTT',
+        },
         errors: {
             failedToCreateConfiguration: 'Nie udało się stworzyć konfiguracji',
             failedToUpdateConfiguration: 'Nie udało się zaktualizować konfiguracji',
+            noPermissionToCreateConfiguration:
+                'Nie masz uprawnień do stworzenia konfiguracji - <strong>skontaktuj się z administratorem</strong>',
         },
     },
     bridge: {

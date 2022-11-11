@@ -3,14 +3,16 @@ import { Device, DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { subMinutes } from 'date-fns';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-import DeviceCard from '../DeviceCard';
+import DeviceCard from '../../DeviceCard';
 
 interface Props {
     onDeviceSelect: (device: Device) => void;
 }
 
-export default function AddZigbeeDeviceStepContent({ onDeviceSelect }: Props) {
+export default function AddZigbeeDeviceStep({ onDeviceSelect }: Props) {
+    const { t } = useTranslation();
     const [now] = useState(new Date());
 
     const { data } = useDevices(
@@ -29,7 +31,7 @@ export default function AddZigbeeDeviceStepContent({ onDeviceSelect }: Props) {
 
     return (
         <Box>
-            <Typography variant="h6">Szukanie urządzeń</Typography>
+            <Typography variant="h6">{t('devices:creator.addDevice.lookingForDevices')}</Typography>
 
             <CircularProgress sx={{ mt: 3 }} />
 
