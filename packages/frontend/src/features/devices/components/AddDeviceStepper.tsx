@@ -118,9 +118,8 @@ export default function AddDeviceStepper() {
     return (
         <Box
             sx={{
-                width: {
-                    sm: 250,
-                    md: 350,
+                maxWidth: {
+                    md: 500,
                 },
             }}
         >

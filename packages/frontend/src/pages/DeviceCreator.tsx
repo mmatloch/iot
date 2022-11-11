@@ -1,6 +1,6 @@
 import AddDeviceStepper from '@features/devices/components/AddDeviceStepper';
 import Layout from '@layout/Layout';
-import { Container, Grid, Paper, Toolbar, Typography } from '@mui/material';
+import { Box, Container, Paper, Toolbar, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 export default function DeviceCreator() {
@@ -16,11 +16,9 @@ export default function DeviceCreator() {
                 </Toolbar>
 
                 <Paper>
-                    <Grid container direction="column" alignItems="center" sx={{ py: 5 }}>
-                        <Grid item sx={{ pt: 8 }}>
-                            <AddDeviceStepper />
-                        </Grid>
-                    </Grid>
+                    <Box sx={{ py: 5, mx: 2 }}>
+                        <AddDeviceStepper />
+                    </Box>
                 </Paper>
             </Container>
         </Layout>
