@@ -1,6 +1,7 @@
 import { useEvents } from '@api/eventsApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
+import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchToolbar from '@components/search/SearchToolbar';
 import { EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { SortValue } from '@definitions/searchTypes';
@@ -91,13 +92,7 @@ export default function Events() {
                     onFiltersClick={openFilterMenu}
                 />
 
-                <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
-                    {data._hits.map((event) => (
-                        <Grid item key={event._id} sx={{ display: 'flex' }}>
-                            <EventCard event={event} />
-                        </Grid>
-                    ))}
-                </Grid>
+                <EntityCardGrid entities={data._hits} Item={EventCard} />
 
                 {data._hits.length ? (
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>

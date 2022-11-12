@@ -25,6 +25,10 @@ export const PolishLocale: Locale = {
         allow: 'Pozwól',
         optional: 'Opcjonalne',
         statusCode: 'Kod statusu',
+        dates: {
+            createdAt: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+            updatedAt: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+        },
         entity: {
             id: 'ID',
             state: 'Stan',
@@ -95,7 +99,6 @@ export const PolishLocale: Locale = {
         state: {
             [DeviceState.Active]: 'Aktywne',
             [DeviceState.Inactive]: 'Nieaktywne',
-            [DeviceState.Unconfigured]: 'Nieskonfigurowane',
             [DeviceState.Interviewing]: 'Przesłuchiwane',
             [DeviceState.New]: 'Nowe',
             [DeviceState.Error]: 'Błąd',
@@ -107,6 +110,10 @@ export const PolishLocale: Locale = {
         entity: {
             displayName: 'Nazwa',
             description: 'Opis',
+        },
+        deactivatedBy: {
+            bridge: 'Dezaktywowane przez most <strong>{{name}}</strong>',
+            user: 'Dezaktywowane przez <strong>{{name}}</strong>',
         },
         creator: {
             title: 'Kreator urządzeń',
@@ -260,10 +267,6 @@ export const PolishLocale: Locale = {
             failedToTriggerEvent: 'Nie udało się wywołać zdarzenia',
             failedToParseTriggerContext: 'Nie udało się przetworzyć kontekstu wywołania',
             failedToParseCronExpression: 'Nie udało się przetworzyć wyrażenia CRON',
-        },
-        dates: {
-            createdAt: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
-            updatedAt: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
         },
         search: {
             showOnlyUserCreated: 'Pokaż tylko stworzone przez użytkownika',

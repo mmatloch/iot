@@ -25,6 +25,10 @@ export const EnglishLocale: Locale = {
         allow: 'Allow',
         optional: 'Optional',
         statusCode: 'Status code',
+        dates: {
+            createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+        },
         entity: {
             id: 'ID',
             state: 'State',
@@ -95,7 +99,6 @@ export const EnglishLocale: Locale = {
         state: {
             [DeviceState.Active]: 'Active',
             [DeviceState.Inactive]: 'Inactive',
-            [DeviceState.Unconfigured]: 'Unconfigured',
             [DeviceState.Interviewing]: 'Interviewing',
             [DeviceState.New]: 'New',
             [DeviceState.Error]: 'Error',
@@ -107,6 +110,10 @@ export const EnglishLocale: Locale = {
         entity: {
             displayName: 'Name',
             description: 'Description',
+        },
+        deactivatedBy: {
+            bridge: 'Deactivated by <strong>{{name}}</strong> bridge',
+            user: 'Deactivated by <strong>{{name}}</strong>',
         },
         creator: {
             title: 'Device creator',
@@ -260,10 +267,6 @@ export const EnglishLocale: Locale = {
             failedToTriggerEvent: 'Failed to trigger event',
             failedToParseTriggerContext: 'Failed to parse trigger context',
             failedToParseCronExpression: 'Failed to parse CRON expression',
-        },
-        dates: {
-            createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
-            updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
         },
         search: {
             inputLabel: 'Search for events',

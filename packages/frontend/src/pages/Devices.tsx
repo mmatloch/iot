@@ -1,6 +1,7 @@
 import { useDevices } from '@api/devicesApi';
 import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
+import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchToolbar from '@components/search/SearchToolbar';
 import { DevicesSearchQuery } from '@definitions/entities/deviceTypes';
 import DeviceCard from '@features/devices/components/DeviceCard';
@@ -8,7 +9,7 @@ import DeviceFilterMenu from '@features/devices/components/DeviceFilterMenu';
 import { useDebounce } from '@hooks/useDebounce';
 import useQueryPage from '@hooks/useQueryPage';
 import Layout from '@layout/Layout';
-import { Box, Container, Grid, Pagination } from '@mui/material';
+import { Box, Container, Pagination } from '@mui/material';
 import { mergeQuery } from '@utils/searchQuery';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -16,12 +17,19 @@ import { useNavigate } from 'react-router-dom';
 
 import { AppRoute } from '../constants';
 
+const defaultQuery: DevicesSearchQuery = {
+    relations: {
+        _createdByUser: true,
+        _updatedByUser: true,
+    },
+};
+
 export default function Devices() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { page, setPage } = useQueryPage();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const [searchQuery, setSearchQuery] = useState<DevicesSearchQuery>({});
+    const [searchQuery, setSearchQuery] = useState<DevicesSearchQuery>(defaultQuery);
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue, 200);
 
@@ -80,13 +88,7 @@ export default function Devices() {
                     onFiltersClick={openFilterMenu}
                 />
 
-                <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
-                    {data._hits.map((device) => (
-                        <Grid item key={device._id} sx={{ display: 'flex' }}>
-                            <DeviceCard device={device} />
-                        </Grid>
-                    ))}
-                </Grid>
+                <EntityCardGrid entities={data._hits} Item={DeviceCard} />
 
                 {data._hits.length ? (
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>

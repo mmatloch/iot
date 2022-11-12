@@ -1,6 +1,7 @@
 import { UsersSearchQuery, useUsers } from '@api/usersApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
+import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchToolbar from '@components/search/SearchToolbar';
 import UserCard from '@features/users/components/UserCard';
 import UserFilterMenu from '@features/users/components/UserFilterMenu';
@@ -12,11 +13,18 @@ import { mergeQuery } from '@utils/searchQuery';
 import { ChangeEvent, MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+const defaultQuery: UsersSearchQuery = {
+    relations: {
+        _createdByUser: true,
+        _updatedByUser: true,
+    },
+};
+
 export default function Users() {
     const { t } = useTranslation();
     const { page, setPage } = useQueryPage();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const [searchQuery, setSearchQuery] = useState<UsersSearchQuery>({});
+    const [searchQuery, setSearchQuery] = useState<UsersSearchQuery>(defaultQuery);
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue, 200);
 
@@ -65,13 +73,7 @@ export default function Users() {
                     onFiltersClick={openFilterMenu}
                 />
 
-                <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
-                    {data._hits.map((user) => (
-                        <Grid item key={user._id} sx={{ display: 'flex' }}>
-                            <UserCard user={user} />
-                        </Grid>
-                    ))}
-                </Grid>
+                <EntityCardGrid entities={data._hits} Item={UserCard} />
 
                 <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
                     <Pagination

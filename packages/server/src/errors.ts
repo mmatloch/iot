@@ -16,6 +16,7 @@ export enum ErrorCode {
     FailedToTriggerEvent,
     NoDataPublisherForConfiguration,
     CannotRequestBridgeForConfiguration,
+    CannotUpdateDeviceState,
 }
 
 const prefix = 'SRV';
@@ -138,5 +139,12 @@ export const Errors = {
             ...opts,
             errorCode: getErrorCode(ErrorCode.CannotRequestBridgeForConfiguration),
             message: `Cannot request bridge for configuration with type '${configurationType}'`,
+        }),
+
+    cannotUpdateDeviceState: (opts: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.conflict({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.CannotUpdateDeviceState),
+            message: `Cannot update the state of the device`,
         }),
 };

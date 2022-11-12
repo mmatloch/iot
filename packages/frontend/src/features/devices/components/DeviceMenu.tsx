@@ -1,5 +1,5 @@
 import { useUpdateDevice } from '@api/devicesApi';
-import { Device, DeviceState } from '@definitions/entities/deviceTypes';
+import { Device, DeviceDeactivatedByType, DeviceState } from '@definitions/entities/deviceTypes';
 import { Edit, Preview, PublishedWithChanges } from '@mui/icons-material';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';
@@ -39,10 +39,12 @@ export default function DeviceMenu({ device, onClose, onEdit, anchorEl }: Props)
     const isMenuOpen = Boolean(anchorEl);
 
     const isActive = device.state === DeviceState.Active;
-    const isInactive = device.state === DeviceState.Inactive;
+    const canBeActivated =
+        device.state === DeviceState.Inactive && device.deactivatedBy?.type === DeviceDeactivatedByType.User;
+    const canBeDeactivated = device.state === DeviceState.Active;
 
     const changeState = async () => {
-        const newState = isInactive ? DeviceState.Active : DeviceState.Inactive;
+        const newState = isActive ? DeviceState.Inactive : DeviceState.Active;
 
         try {
             await mutateAsync({
@@ -70,13 +72,13 @@ export default function DeviceMenu({ device, onClose, onEdit, anchorEl }: Props)
                 <ListItemButton text={t('generic:edit')} icon={<Edit />} />
             </MenuItem>
 
-            {isInactive && (
+            {canBeActivated && (
                 <MenuItem onClick={changeState}>
                     <ListItemButton text={t(`generic:activate`)} icon={<PublishedWithChanges />} />
                 </MenuItem>
             )}
 
-            {isActive && (
+            {canBeDeactivated && (
                 <MenuItem onClick={changeState}>
                     <ListItemButton text={t(`generic:deactivate`)} icon={<PublishedWithChanges />} />
                 </MenuItem>

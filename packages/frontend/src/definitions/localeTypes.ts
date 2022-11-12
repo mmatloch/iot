@@ -29,6 +29,10 @@ export interface Locale {
         allow: string;
         optional: string;
         statusCode: string;
+        dates: {
+            createdAt: string;
+            updatedAt: string;
+        };
         entity: {
             id: string;
             state: string;
@@ -79,7 +83,7 @@ export interface Locale {
         };
         search: {
             inputLabel: string;
-        },
+        };
         errors: {
             failedToUpdateUser: string;
         };
@@ -94,6 +98,10 @@ export interface Locale {
         entity: {
             displayName: string;
             description: string;
+        };
+        deactivatedBy: {
+            bridge: string;
+            user: string;
         };
         creator: {
             title: string;
@@ -223,10 +231,6 @@ export interface Locale {
             failedToTriggerEvent: string;
             failedToParseTriggerContext: string;
             failedToParseCronExpression: string;
-        };
-        dates: {
-            createdAt: string;
-            updatedAt: string;
         };
         search: {
             inputLabel: string;
