@@ -1,17 +1,31 @@
+import { GenericEntity } from '@definitions/commonTypes';
+import { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { Add, FilterList } from '@mui/icons-material';
-import { Box, Button, TextField, Toolbar, Typography } from '@mui/material';
+import { Box, Button, Toolbar, Typography } from '@mui/material';
 import { MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
-interface Props {
+import SearchTextInput from './SearchTextInput';
+
+interface Props<TEntity extends GenericEntity> {
     title: string;
-    searchLabel: string;
     onFiltersClick: (event: MouseEvent<HTMLButtonElement>) => void;
     onCreateClick?: (event: MouseEvent<HTMLButtonElement>) => void;
-    onSearchChange: (value: string) => void;
+
+    searchLabel: string;
+    searchField: keyof TEntity;
+    setSearchQuery: SetSearchQuery<TEntity>;
 }
 
-export default function SearchToolbar({ title, searchLabel, onSearchChange, onCreateClick, onFiltersClick }: Props) {
+export default function SearchToolbar<TEntity extends GenericEntity>({
+    title,
+    onCreateClick,
+    onFiltersClick,
+
+    searchLabel,
+    searchField,
+    setSearchQuery,
+}: Props<TEntity>) {
     const { t } = useTranslation();
 
     return (
@@ -32,10 +46,11 @@ export default function SearchToolbar({ title, searchLabel, onSearchChange, onCr
                 {title}
             </Typography>
 
-            <TextField
+            <SearchTextInput
                 label={searchLabel}
                 sx={{ mt: 1, mr: 1 }}
-                onChange={(event) => onSearchChange(event.target.value)}
+                setSearchQuery={setSearchQuery}
+                searchField={searchField}
             />
 
             <Box sx={{ mt: 1 }}>
