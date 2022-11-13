@@ -1,4 +1,5 @@
 import { GenericEntity } from '@definitions/commonTypes';
+import { SearchQuery } from '@definitions/searchTypes';
 import { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { Add, FilterList } from '@mui/icons-material';
 import { Box, Button, Toolbar, Typography } from '@mui/material';
@@ -15,6 +16,7 @@ interface Props<TEntity extends GenericEntity> {
     searchLabel: string;
     searchField: keyof TEntity;
     setSearchQuery: SetSearchQuery<TEntity>;
+    searchQuery: SearchQuery<TEntity>;
 }
 
 export default function SearchToolbar<TEntity extends GenericEntity>({
@@ -25,6 +27,7 @@ export default function SearchToolbar<TEntity extends GenericEntity>({
     searchLabel,
     searchField,
     setSearchQuery,
+    searchQuery,
 }: Props<TEntity>) {
     const { t } = useTranslation();
 
@@ -50,6 +53,7 @@ export default function SearchToolbar<TEntity extends GenericEntity>({
                 label={searchLabel}
                 sx={{ mt: 1, mr: 1 }}
                 setSearchQuery={setSearchQuery}
+                searchQuery={searchQuery}
                 searchField={searchField}
             />
 

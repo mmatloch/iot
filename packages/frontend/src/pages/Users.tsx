@@ -45,6 +45,7 @@ export default function Users() {
                     searchLabel={t('users:search.inputLabel')}
                     onFiltersClick={openFilterMenu}
                     setSearchQuery={setSearchQuery}
+                    searchQuery={searchQuery}
                     searchField={SEARCH_FIELD}
                 />
 

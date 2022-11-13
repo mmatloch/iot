@@ -2,17 +2,16 @@ import { useEvents } from '@api/eventsApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
+import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbar from '@components/search/SearchToolbar';
-import { EventsSearchQuery } from '@definitions/entities/eventTypes';
+import { Event, EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { SortValue } from '@definitions/searchTypes';
 import EventCard from '@features/events/components/EventCard';
 import EventFilterMenu from '@features/events/components/EventFilterMenu';
-import { useDebounce } from '@hooks/useDebounce';
-import useQueryPage from '@hooks/useQueryPage';
+import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
-import { Box, Container, Grid, Pagination } from '@mui/material';
-import { mergeQuery } from '@utils/searchQuery';
-import { ChangeEvent, MouseEvent, useState } from 'react';
+import { Box, Container } from '@mui/material';
+import { MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,31 +26,19 @@ const defaultQuery: EventsSearchQuery = {
             $exists: true,
         },
     },
-    relations: {
-        _createdByUser: true,
-        _updatedByUser: true,
-    },
 };
+
+const SEARCH_FIELD = 'displayName';
 
 export default function Events() {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { page, setPage } = useQueryPage();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const [searchQuery, setSearchQuery] = useState<EventsSearchQuery>(defaultQuery);
-    const [searchValue, setSearchValue] = useState('');
-    const debouncedSearchValue = useDebounce(searchValue, 200);
 
-    const { data, isSuccess, isLoading, isPreviousData } = useEvents({
-        ...searchQuery,
-        filters: {
-            ...searchQuery.filters,
-            displayName: {
-                $iLike: `${debouncedSearchValue}%`,
-            },
-        },
-        page,
+    const { searchQuery, setSearchQuery } = useSearchQuery<Event>({
+        defaultQuery: defaultQuery,
     });
+    const { data, isSuccess, isLoading, isPreviousData } = useEvents(searchQuery);
 
     if (isLoading) {
         return <FullScreenLoader />;
@@ -61,20 +48,12 @@ export default function Events() {
         return <FailedToLoadDataDialog />;
     }
 
-    const onPageChange = (_event: ChangeEvent<unknown>, value: number) => {
-        setPage(value);
-    };
-
     const openFilterMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setFilterMenuAnchorEl(event.currentTarget);
     };
 
     const closeFilterMenu = () => {
         setFilterMenuAnchorEl(null);
-    };
-
-    const onFilterChange = (updatedQuery: EventsSearchQuery) => {
-        setSearchQuery(mergeQuery(searchQuery, updatedQuery));
     };
 
     const redirectToCreator = () => {
@@ -87,22 +66,22 @@ export default function Events() {
                 <SearchToolbar
                     title={t('events:title')}
                     searchLabel={t('events:search.inputLabel')}
-                    onSearchChange={setSearchValue}
                     onCreateClick={redirectToCreator}
                     onFiltersClick={openFilterMenu}
+                    setSearchQuery={setSearchQuery}
+                    searchQuery={searchQuery}
+                    searchField={SEARCH_FIELD}
                 />
 
                 <EntityCardGrid entities={data._hits} Item={EventCard} />
 
                 {data._hits.length ? (
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
-                        <Pagination
-                            count={data._meta.totalPages}
-                            size="large"
-                            color="primary"
-                            onChange={onPageChange}
-                            page={page}
+                        <SearchPagination
+                            data={data}
                             disabled={isPreviousData}
+                            searchQuery={searchQuery}
+                            setSearchQuery={setSearchQuery}
                         />
                     </Box>
                 ) : (
@@ -112,7 +91,7 @@ export default function Events() {
 
             <EventFilterMenu
                 searchQuery={searchQuery}
-                onFilterChange={onFilterChange}
+                onFilterChange={setSearchQuery}
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
             />
