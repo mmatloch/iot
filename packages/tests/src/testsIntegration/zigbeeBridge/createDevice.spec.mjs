@@ -52,7 +52,7 @@ describe('Zigbee bridge createDevice', () => {
 
         const [device] = _hits;
         expect(device).toMatchObject({
-            state: 'UNCONFIGURED',
+            state: 'ACTIVE',
 
             protocol: 'ZIGBEE',
             powerSource: 'DC',
@@ -67,7 +67,7 @@ describe('Zigbee bridge createDevice', () => {
         });
     });
 
-    it.only(`should create a device with 'UNCONFIGURED' state if the Zigbee device has been interviewed`, async () => {
+    it(`should create a device with 'ACTIVE' state if the Zigbee device has been interviewed`, async () => {
         // given
         const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interviewing = false;
@@ -89,7 +89,7 @@ describe('Zigbee bridge createDevice', () => {
 
         const [device] = _hits;
         expect(device).toMatchObject({
-            state: 'UNCONFIGURED',
+            state: 'ACTIVE',
 
             protocol: 'ZIGBEE',
             powerSource: 'BATTERY',
