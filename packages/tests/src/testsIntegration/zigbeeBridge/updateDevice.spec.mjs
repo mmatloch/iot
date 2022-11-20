@@ -95,7 +95,7 @@ describe('Zigbee bridge updateDevice', () => {
         await findDevice({
             filters: {
                 ...query.filters,
-                state: 'UNCONFIGURED',
+                state: 'ACTIVE',
             },
         });
 
@@ -120,7 +120,7 @@ describe('Zigbee bridge updateDevice', () => {
         const activeDevice = await findDevice({
             filters: {
                 ...query.filters,
-                state: 'UNCONFIGURED',
+                state: 'ACTIVE',
             },
         });
 
@@ -164,7 +164,7 @@ describe('Zigbee bridge updateDevice', () => {
         });
     });
 
-    it('should update the state to "UNCONFIGURED" if the device has finished the interviewing phase', async () => {
+    it('should update the state to "ACTIVE" if the device has finished the interviewing phase', async () => {
         // given
         const zigbeeDevice = generateZigbeeDevice.temperatureAndHumiditySensor();
         zigbeeDevice.interview_completed = false;
@@ -196,7 +196,7 @@ describe('Zigbee bridge updateDevice', () => {
         await findDevice({
             filters: {
                 ...query.filters,
-                state: 'UNCONFIGURED',
+                state: 'ACTIVE',
             },
         });
     });

@@ -1,4 +1,7 @@
+import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+
 import { GenericEntity } from '../commonTypes';
+import type { User } from './userTypes';
 
 export enum DeviceType {
     Unknown = 'UNKNOWN',
@@ -26,7 +29,6 @@ export enum DeviceProtocol {
 export enum DeviceState {
     Active = 'ACTIVE',
     Inactive = 'INACTIVE',
-    Unconfigured = 'UNCONFIGURED',
     Interviewing = 'INTERVIEWING',
     Error = 'ERROR',
     New = 'NEW',
@@ -37,14 +39,15 @@ export enum DeviceDeactivatedByType {
     User = 'USER',
 }
 
-type DeviceDeactivatedBy =
+export type DeviceDeactivatedBy =
     | {
           type: DeviceDeactivatedByType.Bridge;
           name: string;
       }
     | {
           type: DeviceDeactivatedByType.User;
-          id: number;
+          userId: number;
+          _user: User;
       };
 
 export interface Device extends GenericEntity {
@@ -60,3 +63,6 @@ export interface Device extends GenericEntity {
     state: DeviceState;
     deactivatedBy: DeviceDeactivatedBy | null;
 }
+
+export type DevicesSearchQuery = SearchQuery<Device>;
+export type DevicesSearchResponse = SearchResponse<Device>;

@@ -3,6 +3,7 @@ import { Column, Entity, Index } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
 import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
+import type { User } from './userEntity';
 
 export enum DeviceType {
     Unknown = 'UNKNOWN',
@@ -36,11 +37,6 @@ export enum DeviceState {
      */
     Inactive = 'INACTIVE',
     /**
-     * The device has been successfully interviewed but not configured by the user.
-     * It has a default `displayName`, etc.
-     */
-    Unconfigured = 'UNCONFIGURED',
-    /**
      * The device is being interviewed by an external bridge
      */
     Interviewing = 'INTERVIEWING',
@@ -68,7 +64,8 @@ type DeviceDeactivatedBy =
       }
     | {
           type: DeviceDeactivatedByType.User;
-          id: number;
+          userId: number;
+          _user?: User;
       };
 
 @Entity({ name: 'devices' })
@@ -126,7 +123,8 @@ const deactivatedByBridgeSchema = Type.Object({
 
 const deactivatedByUserSchema = Type.Object({
     type: Type.Literal(DeviceDeactivatedByType.User),
-    id: Type.Integer(),
+    userId: Type.Integer(),
+    _user: Type.Optional(Type.Any()),
 });
 
 const deactivatedBySchema = Type.Union([deactivatedByBridgeSchema, deactivatedByUserSchema]);

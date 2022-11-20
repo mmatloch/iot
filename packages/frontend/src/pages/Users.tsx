@@ -1,26 +1,25 @@
 import { useUsers } from '@api/usersApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
-import { SortValue } from '@definitions/searchTypes';
+import EntityCardGrid from '@components/grid/EntityCardGrid';
+import SearchPagination from '@components/search/SearchPagination';
+import SearchToolbar from '@components/search/SearchToolbar';
+import { User } from '@definitions/entities/userTypes';
 import UserCard from '@features/users/components/UserCard';
-import useQueryPage from '@hooks/useQueryPage';
+import UserFilterMenu from '@features/users/components/UserFilterMenu';
+import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
-import { Box, Container, Grid, Pagination } from '@mui/material';
-import { ChangeEvent } from 'react';
+import { Box, Container } from '@mui/material';
+import { MouseEvent, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const sortQuery = {
-    _createdAt: SortValue.Desc,
-};
+const SEARCH_FIELD = 'name';
 
 export default function Users() {
     const { t } = useTranslation();
-    const { page, setPage } = useQueryPage();
-
-    const { data, isSuccess, isLoading, isPreviousData } = useUsers({
-        page,
-        sort: sortQuery,
-    });
+    const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
+    const { searchQuery, setSearchQuery } = useSearchQuery<User>({});
+    const { data, isSuccess, isLoading, isPreviousData } = useUsers(searchQuery);
 
     if (isLoading) {
         return <FullScreenLoader />;
@@ -30,34 +29,44 @@ export default function Users() {
         return <FailedToLoadDataDialog />;
     }
 
-    const onPageChange = (_event: ChangeEvent<unknown>, value: number) => {
-        setPage(value);
+    const openFilterMenu = (event: MouseEvent<HTMLButtonElement>) => {
+        setFilterMenuAnchorEl(event.currentTarget);
+    };
+
+    const closeFilterMenu = () => {
+        setFilterMenuAnchorEl(null);
     };
 
     return (
         <Layout>
             <Container>
-                <h1>{t('users:title')}</h1>
+                <SearchToolbar
+                    title={t('users:title')}
+                    searchLabel={t('users:search.inputLabel')}
+                    onFiltersClick={openFilterMenu}
+                    setSearchQuery={setSearchQuery}
+                    searchQuery={searchQuery}
+                    searchField={SEARCH_FIELD}
+                />
 
-                <Grid container spacing={5} direction="row" justifyContent="center" alignItems="center">
-                    {data._hits.map((user) => (
-                        <Grid item key={user._id} sx={{ display: 'flex' }}>
-                            <UserCard user={user} />
-                        </Grid>
-                    ))}
-                </Grid>
+                <EntityCardGrid entities={data._hits} Item={UserCard} />
 
                 <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
-                    <Pagination
-                        count={data._meta.totalPages}
-                        size="large"
-                        color="primary"
-                        onChange={onPageChange}
-                        page={page}
+                    <SearchPagination
+                        data={data}
                         disabled={isPreviousData}
+                        searchQuery={searchQuery}
+                        setSearchQuery={setSearchQuery}
                     />
                 </Box>
             </Container>
+
+            <UserFilterMenu
+                searchQuery={searchQuery}
+                onFilterChange={setSearchQuery}
+                onClose={closeFilterMenu}
+                anchorEl={filterMenuAnchorEl}
+            />
         </Layout>
     );
 }

@@ -1,3 +1,4 @@
+import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -21,14 +22,24 @@ export const EnglishLocale: Locale = {
         error: 'Error',
         clear: 'Clear',
         create: 'Create',
+        allow: 'Allow',
+        optional: 'Optional',
         statusCode: 'Status code',
+        showDetails: 'Show details',
+        dates: {
+            createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+        },
         entity: {
             id: 'ID',
             state: 'State',
         },
         search: {
             filters: 'Filters',
-            filtering: 'Filtering',
+            filtering: {
+                title: 'Filtering',
+                showOnlyActive: 'Show only active',
+            },
             sorting: {
                 title: 'Sorting',
                 oldestFirst: 'Oldest first',
@@ -41,6 +52,7 @@ export const EnglishLocale: Locale = {
             noInternetConnection: 'Check your internet connection and try again',
             errorOccured: 'Error occured',
             unknownErrorOccured: 'An unknown error occurred',
+            permissionDenied: 'Permission denied',
         },
     },
     i18n: {
@@ -73,13 +85,109 @@ export const EnglishLocale: Locale = {
             lastName: 'Last name',
             role: 'Role',
         },
+        search: {
+            inputLabel: 'Search for users',
+        },
         errors: {
-            failedToLoadUsers: 'Failed to load users',
             failedToUpdateUser: 'Failed to update user',
         },
     },
     profile: {
         editProfile: 'Edit profile',
+    },
+    devices: {
+        title: 'Devices',
+        state: {
+            [DeviceState.Active]: 'Active',
+            [DeviceState.Inactive]: 'Inactive',
+            [DeviceState.Interviewing]: 'Interviewing',
+            [DeviceState.New]: 'New',
+            [DeviceState.Error]: 'Error',
+        },
+        type: {
+            [DeviceType.Coordinator]: 'Coordinator',
+            [DeviceType.EndDevice]: 'End device',
+            [DeviceType.Router]: 'Router',
+            [DeviceType.Unknown]: 'Unknown device type',
+            [DeviceType.Virtual]: 'Virtual device',
+        },
+        powerSource: {
+            [DevicePowerSource.Battery]: 'Battery',
+            [DevicePowerSource.Dc]: 'DC',
+            [DevicePowerSource.EmergencyMains]: 'Emergency mains',
+            [DevicePowerSource.MainsSinglePhase]: 'Mains single phase',
+            [DevicePowerSource.MainsThreePhase]: 'Mains three phase',
+            [DevicePowerSource.Unknown]: 'Unknown power source',
+            [DevicePowerSource.Virtual]: 'Virtual device',
+        },
+        protocol: {
+            [DeviceProtocol.Zigbee]: 'Zigbee',
+            [DeviceProtocol.Virtual]: 'Virtual device',
+        },
+        entity: {
+            displayName: 'Name',
+            description: 'Description',
+            ieeeAddress: 'IEEE address',
+        },
+        deactivatedBy: {
+            bridge: 'Deactivated by <strong>{{name}}</strong> bridge',
+            user: 'Deactivated by <strong>{{name}}</strong>',
+        },
+        creator: {
+            title: 'Device creator',
+            selectProtocolStep: {
+                title: 'Select your device protocol',
+                description: 'The protocol defines how to communicate with the device',
+            },
+            bridgeSetupStep: {
+                title: 'Set the bridge configuration',
+            },
+            allowToJoin: {
+                title: 'Allow devices to join the network',
+                description: 'To allow devices to join the network joining has to be permitted',
+                prompt: {
+                    title: 'Do you want to allow devices to join?',
+                    helper: 'This option will turn off after 5 minutes',
+                },
+            },
+            addDevice: {
+                title: 'Add device',
+                lookingForDevices: 'Looking for devices',
+            },
+            deviceSetup: {
+                title: 'Set up the device',
+                deviceAdded: 'Device added successfully!',
+                goToDeviceConfiguration: 'Go to the device configuration',
+            },
+        },
+        errors: {
+            failedToUpdateDevice: 'Failed to update device',
+        },
+        search: {
+            inputLabel: 'Search for devices',
+        },
+    },
+    configurations: {
+        title: 'Configurations',
+        entity: {
+            data: {
+                topicPrefix: 'MQTT topic prefix',
+            },
+        },
+        zigbee: {
+            mqttTopicsAndMessages: 'MQTT Topics and Messages',
+        },
+        errors: {
+            failedToCreateConfiguration: 'Failed to create configuration',
+            failedToUpdateConfiguration: 'Failed to update configuration',
+            noPermissionToCreateConfiguration:
+                'You do not have permission to create a configuration - <strong>please contact your system administrator</strong>',
+        },
+    },
+    bridge: {
+        errors: {
+            failedToRequestBridge: 'Failed to send a request to the bridge',
+        },
     },
     events: {
         title: 'Events',
@@ -174,12 +282,8 @@ export const EnglishLocale: Locale = {
             failedToParseTriggerContext: 'Failed to parse trigger context',
             failedToParseCronExpression: 'Failed to parse CRON expression',
         },
-        dates: {
-            createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
-            updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
-        },
         search: {
-            showOnlyActive: 'Show only active',
+            inputLabel: 'Search for events',
             showOnlyUserCreated: 'Show only user-created',
         },
     },

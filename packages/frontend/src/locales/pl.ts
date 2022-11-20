@@ -1,3 +1,4 @@
+import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -21,14 +22,24 @@ export const PolishLocale: Locale = {
         error: 'Błąd',
         clear: 'Wyszyść',
         create: 'Stwórz',
+        allow: 'Pozwól',
+        optional: 'Opcjonalne',
         statusCode: 'Kod statusu',
+        showDetails: 'Pokaż szczegóły',
+        dates: {
+            createdAt: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+            updatedAt: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+        },
         entity: {
             id: 'ID',
             state: 'Stan',
         },
         search: {
             filters: 'Filtry',
-            filtering: 'Filtrowanie',
+            filtering: {
+                title: 'Filtrowanie',
+                showOnlyActive: 'Pokaż tylko aktywne',
+            },
             sorting: {
                 title: 'Sortowanie',
                 oldestFirst: 'Najpierw najstarsze',
@@ -41,6 +52,7 @@ export const PolishLocale: Locale = {
             noInternetConnection: 'Sprawdź połączenie internetowe i spróbuj ponownie',
             errorOccured: 'Wystąpił błąd',
             unknownErrorOccured: 'Wystąpił nieznany błąd',
+            permissionDenied: 'Brak uprawnień',
         },
     },
     i18n: {
@@ -73,13 +85,109 @@ export const PolishLocale: Locale = {
             lastName: 'Nazwisko',
             role: 'Rola',
         },
+        search: {
+            inputLabel: 'Szukaj użytkowników',
+        },
         errors: {
-            failedToLoadUsers: 'Nie udało się załadować użytkowników',
             failedToUpdateUser: 'Nie udało się zaktualizować użytkownika',
         },
     },
     profile: {
         editProfile: 'Edytuj profil',
+    },
+    devices: {
+        title: 'Urządzenia',
+        state: {
+            [DeviceState.Active]: 'Aktywne',
+            [DeviceState.Inactive]: 'Nieaktywne',
+            [DeviceState.Interviewing]: 'Przesłuchiwane',
+            [DeviceState.New]: 'Nowe',
+            [DeviceState.Error]: 'Błąd',
+        },
+        type: {
+            [DeviceType.Coordinator]: 'Koordynator',
+            [DeviceType.EndDevice]: 'Urządzenie końcowe',
+            [DeviceType.Router]: 'Router',
+            [DeviceType.Unknown]: 'Nieznany typ urządzenia',
+            [DeviceType.Virtual]: 'Urządzenie wirtualne',
+        },
+        powerSource: {
+            [DevicePowerSource.Battery]: 'Baterie',
+            [DevicePowerSource.Dc]: 'Prąd stały',
+            [DevicePowerSource.EmergencyMains]: 'Sieć awaryjna',
+            [DevicePowerSource.MainsSinglePhase]: 'Sieć jednofazowa',
+            [DevicePowerSource.MainsThreePhase]: 'Sieć trójfazowa',
+            [DevicePowerSource.Unknown]: 'Nieznane źródło zasilania',
+            [DevicePowerSource.Virtual]: 'Urządzenie wirtualne',
+        },
+        protocol: {
+            [DeviceProtocol.Zigbee]: 'Zigbee',
+            [DeviceProtocol.Virtual]: 'Urządzenie wirtualne',
+        },
+        entity: {
+            displayName: 'Nazwa',
+            description: 'Opis',
+            ieeeAddress: 'Adres IEEE',
+        },
+        deactivatedBy: {
+            bridge: 'Dezaktywowane przez most <strong>{{name}}</strong>',
+            user: 'Dezaktywowane przez <strong>{{name}}</strong>',
+        },
+        creator: {
+            title: 'Kreator urządzeń',
+            selectProtocolStep: {
+                title: 'Wybierz protokół urządzenia',
+                description: 'Protokół określa sposób komunikacji z urządzeniem',
+            },
+            bridgeSetupStep: {
+                title: 'Skonfiguruj most',
+            },
+            allowToJoin: {
+                title: 'Zezwól urządzeniom na dołączenie do sieci',
+                description: 'Aby urządzenia mogły dołączyć do sieci należy im na to zezwolić',
+                prompt: {
+                    title: 'Czy chcesz zezwolić urządzeniom na dołączanie?',
+                    helper: 'Ta opcja wyłączy się sama po 5 minutach',
+                },
+            },
+            addDevice: {
+                title: 'Dodaj urządzenie',
+                lookingForDevices: 'Szukanie urządzeń',
+            },
+            deviceSetup: {
+                title: 'Skonfiguruj urządzenie',
+                deviceAdded: 'Urządzenie dodane pomyślnie!',
+                goToDeviceConfiguration: 'Przejdź do konfiguracji urządzenia',
+            },
+        },
+        search: {
+            inputLabel: 'Szukaj urządzeń',
+        },
+        errors: {
+            failedToUpdateDevice: 'Nie udało się zaktualizować urządzenia',
+        },
+    },
+    configurations: {
+        title: 'Konfiguracje',
+        entity: {
+            data: {
+                topicPrefix: 'Prefiks tematu MQTT',
+            },
+        },
+        zigbee: {
+            mqttTopicsAndMessages: 'Tematy i wiadomości MQTT',
+        },
+        errors: {
+            failedToCreateConfiguration: 'Nie udało się stworzyć konfiguracji',
+            failedToUpdateConfiguration: 'Nie udało się zaktualizować konfiguracji',
+            noPermissionToCreateConfiguration:
+                'Nie masz uprawnień do stworzenia konfiguracji - <strong>skontaktuj się z administratorem</strong>',
+        },
+    },
+    bridge: {
+        errors: {
+            failedToRequestBridge: 'Nie udało się wysłać żądania do mostu',
+        },
     },
     events: {
         title: 'Zdarzenia',
@@ -174,13 +282,9 @@ export const PolishLocale: Locale = {
             failedToParseTriggerContext: 'Nie udało się przetworzyć kontekstu wywołania',
             failedToParseCronExpression: 'Nie udało się przetworzyć wyrażenia CRON',
         },
-        dates: {
-            createdAt: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
-            updatedAt: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
-        },
         search: {
-            showOnlyActive: 'Pokaż tylko aktywne',
             showOnlyUserCreated: 'Pokaż tylko stworzone przez użytkownika',
+            inputLabel: 'Szukaj zdarzeń',
         },
     },
     eventInstances: {

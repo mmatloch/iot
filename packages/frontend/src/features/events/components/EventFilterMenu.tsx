@@ -1,17 +1,8 @@
+import SearchFilterCheckbox, { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
+import SearchFilterSorting from '@components/search/filters/SearchFilterSorting';
 import { EventState, EventsSearchQuery } from '@definitions/entities/eventTypes';
-import { SortValue } from '@definitions/searchTypes';
 import { Divider, ListSubheader, Menu, MenuList } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-
-import EventFilterMenuCheckbox, { CheckboxFilterMapItem } from './FilterMenu/EventFilterMenuCheckbox';
-import EventFilterMenuSelect from './FilterMenu/EventFilterMenuSelect';
-
-enum SortOption {
-    Default = 0,
-    OldestFirst,
-    NewestFirst,
-    RecentlyUpdated,
-}
 
 interface Props {
     onClose: () => void;
@@ -30,7 +21,7 @@ export default function EventFilterMenu({ onClose, anchorEl, onFilterChange, sea
             path: 'filters.state',
             checkValue: EventState.Active,
             uncheckValue: undefined,
-            text: t('events:search.showOnlyActive'),
+            text: t('generic:search.filtering.showOnlyActive'),
         },
         showOnlyUserCreated: {
             path: 'filters._createdBy.$exists',
@@ -40,40 +31,19 @@ export default function EventFilterMenu({ onClose, anchorEl, onFilterChange, sea
         },
     };
 
-    const sortingMap = [
-        {
-            path: 'sort._createdAt',
-            value: SortValue.Desc,
-            option: SortOption.OldestFirst,
-            text: t('generic:search.sorting.oldestFirst'),
-        },
-        {
-            path: 'sort._createdAt',
-            value: SortValue.Asc,
-            option: SortOption.NewestFirst,
-            text: t('generic:search.sorting.newestFirst'),
-        },
-        {
-            path: 'sort._updatedAt',
-            value: SortValue.Desc,
-            option: SortOption.RecentlyUpdated,
-            text: t('generic:search.sorting.recentlyUpdated'),
-        },
-    ];
-
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
             <MenuList sx={{ pt: 0 }}>
-                <ListSubheader sx={{ bgcolor: 'transparent' }}>{t('generic:search.filtering')}</ListSubheader>
+                <ListSubheader sx={{ bgcolor: 'transparent' }}>{t('generic:search.filtering.title')}</ListSubheader>
 
                 <Divider />
 
-                <EventFilterMenuCheckbox
+                <SearchFilterCheckbox
                     searchQuery={searchQuery}
                     filterMap={checkboxFilterMap.showOnlyActive}
                     onFilterChange={onFilterChange}
                 />
-                <EventFilterMenuCheckbox
+                <SearchFilterCheckbox
                     searchQuery={searchQuery}
                     filterMap={checkboxFilterMap.showOnlyUserCreated}
                     onFilterChange={onFilterChange}
@@ -81,13 +51,7 @@ export default function EventFilterMenu({ onClose, anchorEl, onFilterChange, sea
 
                 <Divider />
 
-                <EventFilterMenuSelect
-                    label={t('generic:search.sorting.title')}
-                    searchQuery={searchQuery}
-                    onFilterChange={onFilterChange}
-                    defaultOption={SortOption.Default}
-                    filterMap={sortingMap}
-                />
+                <SearchFilterSorting searchQuery={searchQuery} onFilterChange={onFilterChange} />
             </MenuList>
         </Menu>
     );

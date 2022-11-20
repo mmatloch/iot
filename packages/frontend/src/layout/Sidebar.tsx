@@ -1,5 +1,5 @@
 import { useAuth } from '@hooks/useAuth';
-import { Event, Home, ManageAccounts } from '@mui/icons-material';
+import { Event, Home, ManageAccounts, SpeakerPhone } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -60,6 +60,11 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             text: t('events:title'),
             navigateTo: AppRoute.Events.Root,
             adminOnly: true,
+        },
+        {
+            icon: <SpeakerPhone />,
+            text: t('devices:title'),
+            navigateTo: AppRoute.Devices.Root,
         },
     ].filter((item) => {
         if (isAdmin) {

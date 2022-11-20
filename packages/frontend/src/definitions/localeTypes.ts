@@ -1,3 +1,4 @@
+import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from './entities/deviceTypes';
 import { EventInstanceState } from './entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -25,14 +26,24 @@ export interface Locale {
         error: string;
         clear: string;
         create: string;
+        allow: string;
+        optional: string;
         statusCode: string;
+        showDetails: string;
+        dates: {
+            createdAt: string;
+            updatedAt: string;
+        };
         entity: {
             id: string;
             state: string;
         };
         search: {
             filters: string;
-            filtering: string;
+            filtering: {
+                title: string;
+                showOnlyActive: string;
+            };
             sorting: {
                 title: string;
                 oldestFirst: string;
@@ -45,6 +56,7 @@ export interface Locale {
             noInternetConnection: string;
             errorOccured: string;
             unknownErrorOccured: string;
+            permissionDenied: string;
         };
     };
     i18n: {
@@ -61,15 +73,8 @@ export interface Locale {
     };
     users: {
         title: string;
-        role: {
-            [UserRole.Admin]: string;
-            [UserRole.User]: string;
-        };
-        state: {
-            [UserState.Active]: string;
-            [UserState.Inactive]: string;
-            [UserState.PendingApproval]: string;
-        };
+        role: Record<UserRole, string>;
+        state: Record<UserState, string>;
         entity: {
             email: string;
             name: string;
@@ -77,13 +82,85 @@ export interface Locale {
             lastName: string;
             role: string;
         };
+        search: {
+            inputLabel: string;
+        };
         errors: {
-            failedToLoadUsers: string;
             failedToUpdateUser: string;
         };
     };
     profile: {
         editProfile: string;
+    };
+    devices: {
+        title: string;
+        state: Record<DeviceState, string>;
+        powerSource: Record<DevicePowerSource, string>;
+        type: Record<DeviceType, string>;
+        protocol: Record<DeviceProtocol, string>;
+        entity: {
+            displayName: string;
+            description: string;
+            ieeeAddress: string;
+        };
+        deactivatedBy: {
+            bridge: string;
+            user: string;
+        };
+        creator: {
+            title: string;
+            selectProtocolStep: {
+                title: string;
+                description: string;
+            };
+            bridgeSetupStep: {
+                title: string;
+            };
+            allowToJoin: {
+                title: string;
+                description: string;
+                prompt: {
+                    title: string;
+                    helper: string;
+                };
+            };
+            addDevice: {
+                title: string;
+                lookingForDevices: string;
+            };
+            deviceSetup: {
+                title: string;
+                deviceAdded: string;
+                goToDeviceConfiguration: string;
+            };
+        };
+        search: {
+            inputLabel: string;
+        };
+        errors: {
+            failedToUpdateDevice: string;
+        };
+    };
+    configurations: {
+        title: string;
+        entity: {
+            data: {
+                topicPrefix: string;
+            };
+        };
+        zigbee: {
+            mqttTopicsAndMessages: string;
+        };
+        errors: {
+            failedToCreateConfiguration: string;
+            failedToUpdateConfiguration: string;
+            noPermissionToCreateConfiguration: string;
+        };
+    };
+    bridge: {
+        errors: {
+            failedToRequestBridge: string;
+        };
     };
     events: {
         title: string;
@@ -155,12 +232,8 @@ export interface Locale {
             failedToParseTriggerContext: string;
             failedToParseCronExpression: string;
         };
-        dates: {
-            createdAt: string;
-            updatedAt: string;
-        };
         search: {
-            showOnlyActive: string;
+            inputLabel: string;
             showOnlyUserCreated: string;
         };
     };

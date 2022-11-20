@@ -9,12 +9,15 @@ export const ApiRoute = {
         Token: addPrefix('users/token'),
         SocialLogin: addPrefix('users/socialLogin'),
     },
+    Devices: {
+        Root: addPrefix('devices'),
+    },
+    Configurations: {
+        Root: addPrefix('configurations'),
+    },
     Events: {
         Root: addPrefix('events'),
         Trigger: addPrefix('events/trigger'),
-    },
-    Devices: {
-        Root: addPrefix('devices'),
     },
 };
 
@@ -27,6 +30,10 @@ export const AppRoute = {
         },
     },
     Users: '/users',
+    Devices: {
+        Root: '/devices',
+        Creator: '/devices/create',
+    },
     Events: {
         Root: '/events',
         Creator: '/events/create',

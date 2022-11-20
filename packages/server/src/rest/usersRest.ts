@@ -72,7 +72,7 @@ const searchOptions: RestSearchOptions<User> = {
     sort: {
         allowedFields: ['_createdAt', '_updatedAt'],
         default: {
-            _updatedAt: SortValue.Desc,
+            _createdAt: SortValue.Desc,
         },
     },
     filters: {

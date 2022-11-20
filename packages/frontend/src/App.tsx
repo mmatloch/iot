@@ -6,6 +6,7 @@ import { SnackbarProvider } from 'notistack';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter } from 'react-router-dom';
 
+import { ErrorBoundary } from './ErrorBoundary';
 import Router from './Router';
 
 const darkTheme = createTheme({
@@ -24,20 +25,22 @@ const queryClient = new QueryClient({
 
 function App() {
     return (
-        <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <QueryClientProvider client={queryClient}>
-                <SnackbarProvider maxSnack={5}>
-                    <BrowserRouter>
-                        <LocaleProvider>
-                            <AuthProvider>
-                                <Router />
-                            </AuthProvider>
-                        </LocaleProvider>
-                    </BrowserRouter>
-                </SnackbarProvider>
-            </QueryClientProvider>
-        </ThemeProvider>
+        <ErrorBoundary>
+            <ThemeProvider theme={darkTheme}>
+                <CssBaseline />
+                <QueryClientProvider client={queryClient}>
+                    <SnackbarProvider maxSnack={5}>
+                        <BrowserRouter>
+                            <LocaleProvider>
+                                <AuthProvider>
+                                    <Router />
+                                </AuthProvider>
+                            </LocaleProvider>
+                        </BrowserRouter>
+                    </SnackbarProvider>
+                </QueryClientProvider>
+            </ThemeProvider>
+        </ErrorBoundary>
     );
 }
 

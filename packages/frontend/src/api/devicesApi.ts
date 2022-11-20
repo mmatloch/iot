@@ -1,13 +1,20 @@
-import { Device } from '@definitions/entities/deviceTypes';
-import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+import { Device, DevicesSearchQuery, DevicesSearchResponse } from '@definitions/entities/deviceTypes';
 import { useFetch } from '@hooks/useFetch';
+import { useGenericMutation } from '@hooks/useGenericMutation';
+import { UseQueryOptions, useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
 
-export type DevicesSearchQuery = SearchQuery<Device>;
-export type DevicesSearchResponse = SearchResponse<Device>;
+export const useDevice = (id: number, useQueryOptions?: UseQueryOptions<Device, Error>) =>
+    useFetch<Device>(
+        {
+            url: `${ApiRoute.Devices.Root}/${id}`,
+            method: 'GET',
+        },
+        useQueryOptions,
+    );
 
-export const useDevices = (query: DevicesSearchQuery) =>
+export const useDevices = (query: DevicesSearchQuery, opts?: UseQueryOptions<DevicesSearchResponse, Error>) =>
     useFetch<DevicesSearchResponse>(
         {
             url: ApiRoute.Devices.Root,
@@ -15,6 +22,26 @@ export const useDevices = (query: DevicesSearchQuery) =>
             query,
         },
         {
+            ...opts,
             keepPreviousData: true,
         },
     );
+
+export const useUpdateDevice = (device: Device) => {
+    const queryClient = useQueryClient();
+
+    const url = `${ApiRoute.Devices.Root}/${device._id}`;
+
+    return useGenericMutation<Device, Partial<Device>>(
+        {
+            url: url,
+            method: 'PATCH',
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([ApiRoute.Devices.Root]);
+                queryClient.invalidateQueries([url]);
+            },
+        },
+    );
+};

@@ -58,7 +58,7 @@ const buildDeviceState = (zigbeeDevice: ZigbeeDevice): DeviceState => {
     }
 
     if (zigbeeDevice.interviewCompleted) {
-        return DeviceState.Unconfigured;
+        return DeviceState.Active;
     }
 
     return DeviceState.New;
@@ -156,7 +156,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 displayName: zigbeeDevice.friendlyName,
                 description: 'Coordinator',
                 ieeeAddress: zigbeeDevice.ieeeAddress,
-                state: DeviceState.Unconfigured,
+                state: DeviceState.Active,
                 protocol: DeviceProtocol.Zigbee,
                 model: bridgeInfo?.coordinator.type || 'Unknown',
                 vendor: 'Unknown',
