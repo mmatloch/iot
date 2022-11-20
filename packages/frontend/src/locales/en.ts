@@ -1,4 +1,4 @@
-import { DeviceProtocol, DeviceState } from '@definitions/entities/deviceTypes';
+import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -25,6 +25,7 @@ export const EnglishLocale: Locale = {
         allow: 'Allow',
         optional: 'Optional',
         statusCode: 'Status code',
+        showDetails: 'Show details',
         dates: {
             createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
             updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
@@ -103,6 +104,22 @@ export const EnglishLocale: Locale = {
             [DeviceState.New]: 'New',
             [DeviceState.Error]: 'Error',
         },
+        type: {
+            [DeviceType.Coordinator]: 'Coordinator',
+            [DeviceType.EndDevice]: 'End device',
+            [DeviceType.Router]: 'Router',
+            [DeviceType.Unknown]: 'Unknown device type',
+            [DeviceType.Virtual]: 'Virtual device',
+        },
+        powerSource: {
+            [DevicePowerSource.Battery]: 'Battery',
+            [DevicePowerSource.Dc]: 'DC',
+            [DevicePowerSource.EmergencyMains]: 'Emergency mains',
+            [DevicePowerSource.MainsSinglePhase]: 'Mains single phase',
+            [DevicePowerSource.MainsThreePhase]: 'Mains three phase',
+            [DevicePowerSource.Unknown]: 'Unknown power source',
+            [DevicePowerSource.Virtual]: 'Virtual device',
+        },
         protocol: {
             [DeviceProtocol.Zigbee]: 'Zigbee',
             [DeviceProtocol.Virtual]: 'Virtual device',
@@ -110,6 +127,7 @@ export const EnglishLocale: Locale = {
         entity: {
             displayName: 'Name',
             description: 'Description',
+            ieeeAddress: 'IEEE address',
         },
         deactivatedBy: {
             bridge: 'Deactivated by <strong>{{name}}</strong> bridge',
@@ -141,10 +159,6 @@ export const EnglishLocale: Locale = {
                 deviceAdded: 'Device added successfully!',
                 goToDeviceConfiguration: 'Go to the device configuration',
             },
-        },
-        editor: {
-            title: 'Device editor',
-            openInEditor: 'Open in device editor',
         },
         errors: {
             failedToUpdateDevice: 'Failed to update device',

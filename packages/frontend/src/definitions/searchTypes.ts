@@ -68,3 +68,11 @@ export interface SearchQuery<TEntity extends GenericEntity> {
         [key in keyof TEntity]?: boolean;
     };
 }
+
+export const SEARCH_QUERY_FIELDS = [
+    'size',
+    'page',
+    'sort',
+    'filters',
+    'relations',
+];

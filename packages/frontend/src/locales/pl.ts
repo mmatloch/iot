@@ -1,4 +1,4 @@
-import { DeviceProtocol, DeviceState } from '@definitions/entities/deviceTypes';
+import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -25,6 +25,7 @@ export const PolishLocale: Locale = {
         allow: 'Pozwól',
         optional: 'Opcjonalne',
         statusCode: 'Kod statusu',
+        showDetails: 'Pokaż szczegóły',
         dates: {
             createdAt: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
             updatedAt: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
@@ -103,6 +104,22 @@ export const PolishLocale: Locale = {
             [DeviceState.New]: 'Nowe',
             [DeviceState.Error]: 'Błąd',
         },
+        type: {
+            [DeviceType.Coordinator]: 'Koordynator',
+            [DeviceType.EndDevice]: 'Urządzenie końcowe',
+            [DeviceType.Router]: 'Router',
+            [DeviceType.Unknown]: 'Nieznany typ urządzenia',
+            [DeviceType.Virtual]: 'Urządzenie wirtualne',
+        },
+        powerSource: {
+            [DevicePowerSource.Battery]: 'Baterie',
+            [DevicePowerSource.Dc]: 'Prąd stały',
+            [DevicePowerSource.EmergencyMains]: 'Sieć awaryjna',
+            [DevicePowerSource.MainsSinglePhase]: 'Sieć jednofazowa',
+            [DevicePowerSource.MainsThreePhase]: 'Sieć trójfazowa',
+            [DevicePowerSource.Unknown]: 'Nieznane źródło zasilania',
+            [DevicePowerSource.Virtual]: 'Urządzenie wirtualne',
+        },
         protocol: {
             [DeviceProtocol.Zigbee]: 'Zigbee',
             [DeviceProtocol.Virtual]: 'Urządzenie wirtualne',
@@ -110,6 +127,7 @@ export const PolishLocale: Locale = {
         entity: {
             displayName: 'Nazwa',
             description: 'Opis',
+            ieeeAddress: 'Adres IEEE',
         },
         deactivatedBy: {
             bridge: 'Dezaktywowane przez most <strong>{{name}}</strong>',
@@ -141,10 +159,6 @@ export const PolishLocale: Locale = {
                 deviceAdded: 'Urządzenie dodane pomyślnie!',
                 goToDeviceConfiguration: 'Przejdź do konfiguracji urządzenia',
             },
-        },
-        editor: {
-            title: 'Edytor urządzeń',
-            openInEditor: 'Otwórz w edytorze urządzeń',
         },
         search: {
             inputLabel: 'Szukaj urządzeń',

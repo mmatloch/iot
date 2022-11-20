@@ -39,7 +39,7 @@ export default function AddZigbeeDeviceStep({ onDeviceSelect }: Props) {
                 {data?._hits.map((device) => {
                     return (
                         <Box key={device._id} sx={{ mt: 1, cursor: 'pointer' }} onClick={() => onDeviceSelect(device)}>
-                            <DeviceCard device={device} hideMenu raised />
+                            <DeviceCard entity={device} hideMenu raised />
                         </Box>
                     );
                 })}

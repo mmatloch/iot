@@ -1,13 +1,12 @@
 import { useUpdateDevice } from '@api/devicesApi';
 import { Device, DeviceDeactivatedByType, DeviceState } from '@definitions/entities/deviceTypes';
-import { Edit, Preview, PublishedWithChanges } from '@mui/icons-material';
+import { Edit, PublishedWithChanges, ViewSidebar } from '@mui/icons-material';
 import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { generatePath, useNavigate } from 'react-router-dom';
 
-import { AppRoute } from '../../../constants';
+import { useDeviceDetails } from '../hooks/useDeviceDetails';
 
 interface Props {
     device: Device;
@@ -34,7 +33,7 @@ export default function DeviceMenu({ device, onClose, onEdit, anchorEl }: Props)
     const { t } = useTranslation();
     const { enqueueSnackbar } = useSnackbar();
     const { mutateAsync } = useUpdateDevice(device);
-    const navigate = useNavigate();
+    const { openDeviceDetails } = useDeviceDetails();
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -59,14 +58,15 @@ export default function DeviceMenu({ device, onClose, onEdit, anchorEl }: Props)
         onClose();
     };
 
-    const openEventEditor = () => {
-        navigate(generatePath(AppRoute.Devices.Editor, { deviceId: String(device._id) }));
+    const openDetails = () => {
+        openDeviceDetails(device._id);
+        onClose();
     };
 
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
-            <MenuItem onClick={openEventEditor}>
-                <ListItemButton text={t('devices:editor.openInEditor')} icon={<Preview />} />
+            <MenuItem onClick={openDetails}>
+                <ListItemButton text={t('generic:showDetails')} icon={<ViewSidebar />} />
             </MenuItem>
             <MenuItem onClick={onEdit}>
                 <ListItemButton text={t('generic:edit')} icon={<Edit />} />

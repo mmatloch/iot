@@ -1,20 +1,18 @@
 import { Device } from '@definitions/entities/deviceTypes';
+import { useDeviceDetails } from '@features/devices/hooks/useDeviceDetails';
 import { Alert, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { generatePath, useNavigate } from 'react-router-dom';
-
-import { AppRoute } from '../../../../../constants';
 
 interface Props {
     device: Device;
 }
 
 export default function SetupZigbeeDeviceStep({ device }: Props) {
-    const navigate = useNavigate();
     const { t } = useTranslation();
+    const { navigateAndOpenDeviceDetails } = useDeviceDetails();
 
     const onClick = () => {
-        navigate(generatePath(AppRoute.Devices.Editor, { deviceId: String(device._id) }));
+        navigateAndOpenDeviceDetails(device._id);
     };
 
     return (

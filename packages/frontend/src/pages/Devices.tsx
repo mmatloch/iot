@@ -6,6 +6,7 @@ import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbar from '@components/search/SearchToolbar';
 import { Device } from '@definitions/entities/deviceTypes';
 import DeviceCard from '@features/devices/components/DeviceCard';
+import DeviceDetailsDrawerWrapper from '@features/devices/components/DeviceDetailsDrawerWrapper';
 import DeviceFilterMenu from '@features/devices/components/DeviceFilterMenu';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
@@ -21,6 +22,7 @@ const SEARCH_FIELD = 'displayName';
 export default function Devices() {
     const { t } = useTranslation();
     const navigate = useNavigate();
+
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
     const { searchQuery, setSearchQuery } = useSearchQuery<Device>({});
     const { data, isSuccess, isLoading, isPreviousData } = useDevices(searchQuery);
@@ -85,6 +87,7 @@ export default function Devices() {
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
             />
+            <DeviceDetailsDrawerWrapper />
         </Layout>
     );
 }

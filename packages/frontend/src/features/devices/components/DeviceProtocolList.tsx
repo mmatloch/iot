@@ -1,7 +1,7 @@
-import ZigbeeLogo from '@assets/zigbeeLogo.png';
+import VirtualDeviceAvatar from '@components/avatars/VirtualDeviceAvatar';
+import ZigbeeDeviceAvatar from '@components/avatars/ZigbeeDeviceAvatar';
 import { DeviceProtocol } from '@definitions/entities/deviceTypes';
-import { DeviceUnknown } from '@mui/icons-material';
-import { Avatar, List, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
+import { List, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -15,15 +15,13 @@ export default function DeviceProtocolList({ onSelect }: Props) {
         <List>
             <ListItemButton onClick={() => onSelect(DeviceProtocol.Zigbee)}>
                 <ListItemAvatar>
-                    <Avatar src={ZigbeeLogo} />
+                    <ZigbeeDeviceAvatar />
                 </ListItemAvatar>
                 <ListItemText primary={t(`devices:protocol.${DeviceProtocol.Zigbee}`)} />
             </ListItemButton>
             <ListItemButton onClick={() => onSelect(DeviceProtocol.Virtual)}>
                 <ListItemAvatar>
-                    <Avatar>
-                        <DeviceUnknown />
-                    </Avatar>
+                    <VirtualDeviceAvatar />
                 </ListItemAvatar>
                 <ListItemText primary={t(`devices:protocol.${DeviceProtocol.Virtual}`)} />
             </ListItemButton>

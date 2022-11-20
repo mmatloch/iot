@@ -5,6 +5,15 @@ import { UseQueryOptions, useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
 
+export const useDevice = (id: number, useQueryOptions?: UseQueryOptions<Device, Error>) =>
+    useFetch<Device>(
+        {
+            url: `${ApiRoute.Devices.Root}/${id}`,
+            method: 'GET',
+        },
+        useQueryOptions,
+    );
+
 export const useDevices = (query: DevicesSearchQuery, opts?: UseQueryOptions<DevicesSearchResponse, Error>) =>
     useFetch<DevicesSearchResponse>(
         {

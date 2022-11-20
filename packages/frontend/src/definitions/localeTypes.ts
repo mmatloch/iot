@@ -1,4 +1,4 @@
-import { DeviceProtocol, DeviceState } from './entities/deviceTypes';
+import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from './entities/deviceTypes';
 import { EventInstanceState } from './entities/eventInstanceTypes';
 import {
     EventActionOnInactive,
@@ -29,6 +29,7 @@ export interface Locale {
         allow: string;
         optional: string;
         statusCode: string;
+        showDetails: string;
         dates: {
             createdAt: string;
             updatedAt: string;
@@ -94,10 +95,13 @@ export interface Locale {
     devices: {
         title: string;
         state: Record<DeviceState, string>;
+        powerSource: Record<DevicePowerSource, string>;
+        type: Record<DeviceType, string>;
         protocol: Record<DeviceProtocol, string>;
         entity: {
             displayName: string;
             description: string;
+            ieeeAddress: string;
         };
         deactivatedBy: {
             bridge: string;
@@ -129,10 +133,6 @@ export interface Locale {
                 deviceAdded: string;
                 goToDeviceConfiguration: string;
             };
-        };
-        editor: {
-            title: string;
-            openInEditor: string;
         };
         search: {
             inputLabel: string;
