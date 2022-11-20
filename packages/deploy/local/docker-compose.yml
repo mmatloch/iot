@@ -26,6 +26,8 @@ services:
 
   frontend:
     image: ${IMAGE_REPO}/iot-frontend:${IMAGE_TAG}
+    environment:
+      GITPOD_WORKSPACE_URL: ${GITPOD_WORKSPACE_URL}
     volumes:
       - ../../frontend/public:/usr/app/packages/frontend/public
       - ../../frontend/src:/usr/app/packages/frontend/src
