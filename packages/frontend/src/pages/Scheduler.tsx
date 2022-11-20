@@ -1,13 +1,10 @@
-import { useEvents } from '@api/eventsApi';
+import { useEventSchedulerTasks } from '@api/eventSchedulerApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
-import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
-import { Event, EventsSearchQuery } from '@definitions/entities/eventTypes';
-import { SortValue } from '@definitions/searchTypes';
-import EventCard from '@features/events/components/EventCard';
-import EventFilterMenu from '@features/events/components/EventFilterMenu';
+import SearchToolbar from '@components/search/SearchToolbar';
+import EventSchedulerTaskCard from '@features/eventScheduler/EventSchedulerTaskCard';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
 import { Box, Container } from '@mui/material';
@@ -17,28 +14,13 @@ import { useNavigate } from 'react-router-dom';
 
 import { AppRoute } from '../constants';
 
-const defaultQuery: EventsSearchQuery = {
-    sort: {
-        _createdAt: SortValue.Desc,
-    },
-    filters: {
-        _createdBy: {
-            $exists: true,
-        },
-    },
-};
-
-const SEARCH_FIELD = 'displayName';
-
-export default function Events() {
+export default function Scheduler() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
 
-    const { searchQuery, setSearchQuery } = useSearchQuery<Event>({
-        defaultQuery: defaultQuery,
-    });
-    const { data, isSuccess, isLoading, isPreviousData } = useEvents(searchQuery);
+    const { setSearchQuery, searchQuery } = useSearchQuery({});
+    const { data, isLoading, isSuccess, isPreviousData } = useEventSchedulerTasks(searchQuery);
 
     if (isLoading) {
         return <FullScreenLoader />;
@@ -48,6 +30,10 @@ export default function Events() {
         return <FailedToLoadDataDialog />;
     }
 
+    const redirectToEventCreator = () => {
+        navigate(AppRoute.Events.Creator);
+    };
+
     const openFilterMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setFilterMenuAnchorEl(event.currentTarget);
     };
@@ -56,24 +42,16 @@ export default function Events() {
         setFilterMenuAnchorEl(null);
     };
 
-    const redirectToCreator = () => {
-        navigate(AppRoute.Events.Creator);
-    };
-
     return (
         <Layout>
             <Container>
-                <SearchToolbarWithInput
-                    title={t('events:title')}
-                    searchLabel={t('events:search.inputLabel')}
-                    onCreateClick={redirectToCreator}
+                <SearchToolbar
+                    title={t('eventScheduler:title')}
+                    onCreateClick={redirectToEventCreator}
                     onFiltersClick={openFilterMenu}
-                    setSearchQuery={setSearchQuery}
-                    searchQuery={searchQuery}
-                    searchField={SEARCH_FIELD}
                 />
 
-                <EntityCardGrid entities={data._hits} Item={EventCard} />
+                <EntityCardGrid entities={data._hits} Item={EventSchedulerTaskCard} />
 
                 {data._hits.length ? (
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
@@ -88,13 +66,6 @@ export default function Events() {
                     <></>
                 )}
             </Container>
-
-            <EventFilterMenu
-                searchQuery={searchQuery}
-                onFilterChange={setSearchQuery}
-                onClose={closeFilterMenu}
-                anchorEl={filterMenuAnchorEl}
-            />
         </Layout>
     );
 }

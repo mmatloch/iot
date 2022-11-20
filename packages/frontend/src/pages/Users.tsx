@@ -3,7 +3,7 @@ import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
-import SearchToolbar from '@components/search/SearchToolbar';
+import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
 import { User } from '@definitions/entities/userTypes';
 import UserCard from '@features/users/components/UserCard';
 import UserFilterMenu from '@features/users/components/UserFilterMenu';
@@ -40,7 +40,7 @@ export default function Users() {
     return (
         <Layout>
             <Container>
-                <SearchToolbar
+                <SearchToolbarWithInput
                     title={t('users:title')}
                     searchLabel={t('users:search.inputLabel')}
                     onFiltersClick={openFilterMenu}

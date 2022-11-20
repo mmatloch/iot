@@ -1,5 +1,5 @@
 import { useAuth } from '@hooks/useAuth';
-import { Event, Home, ManageAccounts, SpeakerPhone } from '@mui/icons-material';
+import { Event, Home, ManageAccounts, PendingActions, SpeakerPhone } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -65,6 +65,11 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             icon: <SpeakerPhone />,
             text: t('devices:title'),
             navigateTo: AppRoute.Devices.Root,
+        },
+        {
+            icon: <PendingActions />,
+            text: t('eventScheduler:title'),
+            navigateTo: AppRoute.EventScheduler.Root,
         },
     ].filter((item) => {
         if (isAdmin) {

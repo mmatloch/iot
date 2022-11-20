@@ -16,7 +16,7 @@ const StyledBadge = styled(Badge)<BadgeProps>(() => ({
 export default function EntityCardWithBadge({ children, badgeColor, badgeContent, ...cardProps }: Props) {
     return (
         <StyledBadge color={badgeColor} badgeContent={badgeContent} sx={{ height: 1, width: 1 }}>
-            <Card sx={{ p: 2, width: 1 }} {...cardProps}>
+            <Card {...cardProps} sx={{ p: 2, width: 1, ...cardProps.sx }}>
                 {children}
             </Card>
         </StyledBadge>

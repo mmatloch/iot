@@ -64,7 +64,7 @@ export default function EventEditorSchedulerMetadataForm() {
                 validation={{ required: true }}
                 margin="dense"
                 items={onMultipleInstancesSelectItems}
-                helperText={t('events:scheduler.onMultipleInstancesDescription')}
+                helperText={t('eventScheduler:onMultipleInstancesDescription')}
             />
 
             <FormCheckbox name="metadata.recurring" label={t('events:entity.metadata.recurring')} margin="dense" />

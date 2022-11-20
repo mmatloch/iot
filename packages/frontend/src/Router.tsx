@@ -10,6 +10,7 @@ import EventCreator from './pages/EventCreator';
 import EventEditorWrapper from './pages/EventEditorWrapper';
 import Events from './pages/Events';
 import Home from './pages/Home';
+import Scheduler from './pages/Scheduler';
 import Users from './pages/Users';
 
 export default function Router() {
@@ -25,6 +26,8 @@ export default function Router() {
 
             <Route path={AppRoute.Devices.Root} element={<ProtectedRoute element={<Devices />} />} />
             <Route path={AppRoute.Devices.Creator} element={<ProtectedRoute element={<DeviceCreator />} />} />
+
+            <Route path={AppRoute.EventScheduler.Root} element={<ProtectedRoute element={<Scheduler />} />} />
         </Routes>
     );
 }
