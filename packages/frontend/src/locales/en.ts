@@ -1,5 +1,6 @@
 import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
+import { EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
 import {
     EventActionOnInactive,
     EventMetadataOnMultipleInstances,
@@ -39,6 +40,8 @@ export const EnglishLocale: Locale = {
             filtering: {
                 title: 'Filtering',
                 showOnlyActive: 'Show only active',
+                filterByEvent: 'Filter by event',
+                filterByDevice: 'Filter by device',
             },
             sorting: {
                 title: 'Sorting',
@@ -270,11 +273,6 @@ export const EnglishLocale: Locale = {
                 },
             },
         },
-        scheduler: {
-            nextTriggerAt: 'Next trigger at:',
-            intervalDescription: 'Every how many seconds the event should be triggered',
-            onMultipleInstancesDescription: 'What should happen when this event has already been planned. ',
-        },
         errors: {
             failedToCreateEvent: 'Failed to create event',
             failedToUpdateEvent: 'Failed to update event',
@@ -301,6 +299,20 @@ export const EnglishLocale: Locale = {
             [EventInstanceState.FailedOnCondition]: 'Failed on condition',
             [EventInstanceState.Success]: 'Success',
             [EventInstanceState.UnknownError]: 'Unknown error',
+        },
+    },
+    eventScheduler: {
+        title: 'Event scheduler',
+        state: {
+            [EventSchedulerTaskState.Queued]: 'Queued',
+            [EventSchedulerTaskState.Running]: 'Running',
+        },
+        nextTriggerAt: 'Next trigger at:',
+        nextTrigger: 'Next trigger',
+        intervalDescription: 'Every how many seconds the event should be triggered',
+        onMultipleInstancesDescription: 'What should happen when this event has already been planned',
+        errors: {
+            failedToDeleteTask: 'Failed to cancel scheduled task',
         },
     },
 };

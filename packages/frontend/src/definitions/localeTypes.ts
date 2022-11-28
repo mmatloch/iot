@@ -1,5 +1,6 @@
 import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from './entities/deviceTypes';
 import { EventInstanceState } from './entities/eventInstanceTypes';
+import { EventSchedulerTaskState } from './entities/eventSchedulerTypes';
 import {
     EventActionOnInactive,
     EventMetadataOnMultipleInstances,
@@ -43,6 +44,8 @@ export interface Locale {
             filtering: {
                 title: string;
                 showOnlyActive: string;
+                filterByEvent: string;
+                filterByDevice: string;
             };
             sorting: {
                 title: string;
@@ -220,11 +223,7 @@ export interface Locale {
                 };
             };
         };
-        scheduler: {
-            nextTriggerAt: string;
-            intervalDescription: string;
-            onMultipleInstancesDescription: string;
-        };
+
         errors: {
             failedToCreateEvent: string;
             failedToUpdateEvent: string;
@@ -246,5 +245,16 @@ export interface Locale {
             };
         };
         state: Record<EventInstanceState, string>;
+    };
+    eventScheduler: {
+        title: string;
+        state: Record<EventSchedulerTaskState, string>;
+        nextTriggerAt: string;
+        nextTrigger: string;
+        intervalDescription: string;
+        onMultipleInstancesDescription: string;
+        errors: {
+            failedToDeleteTask: string;
+        };
     };
 }

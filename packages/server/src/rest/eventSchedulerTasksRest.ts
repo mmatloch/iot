@@ -1,4 +1,5 @@
 import { ApplicationPlugin } from '@common/application';
+import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
@@ -18,6 +19,15 @@ const searchEventSchedulerTasksSchema = {
     querystring: searchQuerySchema,
     response: {
         [StatusCodes.OK]: createSearchResponseSchema(eventSchedulerTaskSchema),
+    },
+};
+
+const deleteEventSchedulerTaskSchema = {
+    params: Type.Object({
+        id: Type.Integer(),
+    }),
+    response: {
+        [StatusCodes.NO_CONTENT]: Type.Null(),
     },
 };
 
@@ -58,6 +68,22 @@ export const createEventSchedulerTasksRest: ApplicationPlugin = async (app) => {
             );
 
             return reply.status(StatusCodes.OK).send(searchResponse);
+        },
+    );
+
+    app.withTypeProvider().delete(
+        '/events/scheduler/tasks/:id',
+        { schema: deleteEventSchedulerTaskSchema },
+        async (request, reply) => {
+            const accessControl = createAccessControl();
+            accessControl.authorize();
+
+            const service = createEventSchedulerTasksService();
+            const task = await service.findByIdOrFail(request.params.id);
+
+            await service.remove(task);
+
+            return reply.status(StatusCodes.NO_CONTENT).send();
         },
     );
 };

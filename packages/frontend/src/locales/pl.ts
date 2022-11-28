@@ -1,5 +1,6 @@
 import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from '@definitions/entities/deviceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
+import { EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
 import {
     EventActionOnInactive,
     EventMetadataOnMultipleInstances,
@@ -39,6 +40,8 @@ export const PolishLocale: Locale = {
             filtering: {
                 title: 'Filtrowanie',
                 showOnlyActive: 'Pokaż tylko aktywne',
+                filterByEvent: 'Filtruj po zdarzeniu',
+                filterByDevice: 'Filtruj po urządzeniu',
             },
             sorting: {
                 title: 'Sortowanie',
@@ -270,11 +273,6 @@ export const PolishLocale: Locale = {
                 },
             },
         },
-        scheduler: {
-            nextTriggerAt: 'Następne aktywowanie o:',
-            intervalDescription: 'Co ile sekund zdarzenie powinno zostać wywołane',
-            onMultipleInstancesDescription: 'Co powinno się stać, gdy to wydarzenie zostało już zaplanowane',
-        },
         errors: {
             failedToCreateEvent: 'Nie udało się utworzyć zdarzenia',
             failedToUpdateEvent: 'Nie udało się zaktualizować zdarzenia',
@@ -301,6 +299,20 @@ export const PolishLocale: Locale = {
             [EventInstanceState.FailedOnCondition]: 'Warunek nie powiódł się',
             [EventInstanceState.Success]: 'Sukces',
             [EventInstanceState.UnknownError]: 'Nieznany błąd',
+        },
+    },
+    eventScheduler: {
+        title: 'Harmonogram zdarzeń',
+        state: {
+            [EventSchedulerTaskState.Queued]: 'Zakolejkowane',
+            [EventSchedulerTaskState.Running]: 'Uruchomione',
+        },
+        nextTriggerAt: 'Następne aktywowanie o:',
+        nextTrigger: 'Następne aktywowanie',
+        intervalDescription: 'Co ile sekund zdarzenie powinno zostać wywołane',
+        onMultipleInstancesDescription: 'Co powinno się stać, gdy to wydarzenie zostało już zaplanowane',
+        errors: {
+            failedToDeleteTask: 'Nie udało się anulować zaplanowanego zadania',
         },
     },
 };

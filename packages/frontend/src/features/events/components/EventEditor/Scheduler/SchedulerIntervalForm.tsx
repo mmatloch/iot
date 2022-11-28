@@ -30,7 +30,7 @@ export default function SchedulerIntervalForm() {
                 label={t('events:entity.metadata.interval')}
                 validation={{ required: true }}
                 margin="dense"
-                helperText={t('events:scheduler.intervalDescription')}
+                helperText={t('eventScheduler:intervalDescription')}
             />
 
             <NextTriggerAtContainer dates={dates} />

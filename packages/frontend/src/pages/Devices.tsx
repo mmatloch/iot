@@ -3,7 +3,7 @@ import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
-import SearchToolbar from '@components/search/SearchToolbar';
+import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
 import { Device } from '@definitions/entities/deviceTypes';
 import DeviceCard from '@features/devices/components/DeviceCard';
 import DeviceDetailsDrawerWrapper from '@features/devices/components/DeviceDetailsDrawerWrapper';
@@ -55,7 +55,7 @@ export default function Devices() {
     return (
         <Layout>
             <Container>
-                <SearchToolbar
+                <SearchToolbarWithInput
                     title={t('devices:title')}
                     searchLabel={t('devices:search.inputLabel')}
                     onCreateClick={redirectToCreator}

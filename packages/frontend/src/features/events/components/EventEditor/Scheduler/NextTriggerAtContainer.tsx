@@ -11,7 +11,7 @@ export default function NextTriggerAtContainer({ dates }: Props) {
 
     return (
         <Paper elevation={0} sx={{ p: 1, mt: 1 }}>
-            <Typography variant="h5">{t('events:scheduler.nextTriggerAt')}</Typography>
+            <Typography variant="h5">{t('eventScheduler:nextTriggerAt')}</Typography>
             <Stack spacing={1} sx={{ mt: 1 }}>
                 {dates?.map((date) => (
                     <Typography key={date.valueOf()}>

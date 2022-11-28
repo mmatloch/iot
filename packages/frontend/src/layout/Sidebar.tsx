@@ -1,9 +1,9 @@
 import { useAuth } from '@hooks/useAuth';
-import { Event, Home, ManageAccounts, SpeakerPhone } from '@mui/icons-material';
+import { Event, Home, ManageAccounts, PendingActions, SpeakerPhone } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
 import { FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { AppRoute } from '../constants';
 
@@ -17,14 +17,9 @@ interface ItemProps {
 }
 
 const Item: FC<ItemProps> = ({ icon, text, navigateTo }) => {
-    const navigate = useNavigate();
-
-    const onClick = () => navigate(navigateTo);
-    const onAuxClick = () => window.open(navigateTo);
-
     return (
         <ListItem disablePadding>
-            <ListItemButton onClick={onClick} onAuxClick={onAuxClick}>
+            <ListItemButton component={Link} to={navigateTo}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText primary={text} />
             </ListItemButton>
@@ -65,6 +60,11 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             icon: <SpeakerPhone />,
             text: t('devices:title'),
             navigateTo: AppRoute.Devices.Root,
+        },
+        {
+            icon: <PendingActions />,
+            text: t('eventScheduler:title'),
+            navigateTo: AppRoute.EventScheduler.Root,
         },
     ].filter((item) => {
         if (isAdmin) {
