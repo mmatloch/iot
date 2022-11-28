@@ -1,9 +1,9 @@
 import { useUpdateEvent } from '@api/eventsApi';
+import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
 import { Event, EventState } from '@definitions/entities/eventTypes';
 import { Edit, Preview, PublishedWithChanges } from '@mui/icons-material';
-import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { generatePath, useNavigate } from 'react-router-dom';
 
@@ -15,20 +15,6 @@ interface Props {
     onEdit: () => void;
     anchorEl: HTMLElement | null;
 }
-
-interface ListItemButtonProps {
-    text: string;
-    icon: ReactNode;
-}
-
-const ListItemButton = ({ text, icon }: ListItemButtonProps) => {
-    return (
-        <>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText>{text}</ListItemText>
-        </>
-    );
-};
 
 export default function EventMenu({ event, onClose, onEdit, anchorEl }: Props) {
     const { t } = useTranslation();
@@ -64,17 +50,17 @@ export default function EventMenu({ event, onClose, onEdit, anchorEl }: Props) {
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
             <MenuItem onClick={openEventEditor}>
-                <ListItemButton text={t('events:editor.openInEditor')} icon={<Preview />} />
+                <ListItemButtonWithIcon text={t('events:editor.openInEditor')} icon={<Preview />} />
             </MenuItem>
             <MenuItem onClick={onEdit}>
-                <ListItemButton text={t('generic:edit')} icon={<Edit />} />
+                <ListItemButtonWithIcon text={t('generic:edit')} icon={<Edit />} />
             </MenuItem>
             {isUserCreated && (
                 <MenuItem onClick={changeState}>
                     {isEventActive ? (
-                        <ListItemButton text={t(`generic:deactivate`)} icon={<PublishedWithChanges />} />
+                        <ListItemButtonWithIcon text={t(`generic:deactivate`)} icon={<PublishedWithChanges />} />
                     ) : (
-                        <ListItemButton text={t(`generic:activate`)} icon={<PublishedWithChanges />} />
+                        <ListItemButtonWithIcon text={t(`generic:activate`)} icon={<PublishedWithChanges />} />
                     )}
                 </MenuItem>
             )}

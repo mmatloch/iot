@@ -1,12 +1,12 @@
 import { ListItemIcon, ListItemText } from '@mui/material';
 import { ReactNode } from 'react';
 
-interface ListItemButtonProps {
+interface Props {
     text: string;
     icon: ReactNode;
 }
 
-export default function ListItemButton({ text, icon }: ListItemButtonProps) {
+export default function ListItemButtonWithIcon({ text, icon }: Props) {
     return (
         <>
             <ListItemIcon>{icon}</ListItemIcon>

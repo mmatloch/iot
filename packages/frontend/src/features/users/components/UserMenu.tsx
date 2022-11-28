@@ -1,5 +1,5 @@
 import { useUpdateUser } from '@api/usersApi';
-import ListItemButton from '@components/ListItemButton';
+import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
 import { User, UserState } from '@definitions/entities/userTypes';
 import { Edit, PublishedWithChanges } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
@@ -41,14 +41,14 @@ export default function UserMenu({ user, onClose, onEdit, anchorEl }: Props) {
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
             <MenuItem onClick={onEdit}>
-                <ListItemButton text={t('generic:edit')} icon={<Edit />} />
+                <ListItemButtonWithIcon text={t('generic:edit')} icon={<Edit />} />
             </MenuItem>
 
             <MenuItem onClick={changeState}>
                 {isUserActive ? (
-                    <ListItemButton text={t(`generic:deactivate`)} icon={<PublishedWithChanges />} />
+                    <ListItemButtonWithIcon text={t(`generic:deactivate`)} icon={<PublishedWithChanges />} />
                 ) : (
-                    <ListItemButton text={t(`generic:activate`)} icon={<PublishedWithChanges />} />
+                    <ListItemButtonWithIcon text={t(`generic:activate`)} icon={<PublishedWithChanges />} />
                 )}
             </MenuItem>
         </Menu>

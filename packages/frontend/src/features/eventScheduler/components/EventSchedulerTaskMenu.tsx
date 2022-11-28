@@ -1,5 +1,5 @@
 import { useDeleteEventSchedulerTask } from '@api/eventSchedulerApi';
-import ListItemButton from '@components/ListItemButton';
+import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
 import { EventSchedulerTask, EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
 import { CancelScheduleSend, Preview } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
@@ -44,10 +44,10 @@ export default function EventSchedulerTaskMenu({ eventSchedulerTask, onClose, an
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
             <MenuItem onClick={openEventEditor}>
-                <ListItemButton text={t('events:editor.openInEditor')} icon={<Preview />} />
+                <ListItemButtonWithIcon text={t('events:editor.openInEditor')} icon={<Preview />} />
             </MenuItem>
             <MenuItem onClick={cancelTask}>
-                {isQueued && <ListItemButton text={t(`generic:cancel`)} icon={<CancelScheduleSend />} />}
+                {isQueued && <ListItemButtonWithIcon text={t(`generic:cancel`)} icon={<CancelScheduleSend />} />}
             </MenuItem>
         </Menu>
     );
