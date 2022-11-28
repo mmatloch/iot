@@ -21,6 +21,7 @@ export const getRepositoryExtension = <T extends GenericEntity>(opts?: Options) 
 
     return {
         saveAndFind: async function (this: Repository<T>, entity: DeepPartial<T>) {
+            console.log(' saveAndFind', entity);
             const savedEntity = await this.save(entity);
 
             return this.findOneOrFail({

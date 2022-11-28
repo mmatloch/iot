@@ -40,6 +40,8 @@ export const EnglishLocale: Locale = {
             filtering: {
                 title: 'Filtering',
                 showOnlyActive: 'Show only active',
+                filterByEvent: 'Filter by event',
+                filterByDevice: 'Filter by device',
             },
             sorting: {
                 title: 'Sorting',
@@ -309,5 +311,8 @@ export const EnglishLocale: Locale = {
         nextTrigger: 'Next trigger',
         intervalDescription: 'Every how many seconds the event should be triggered',
         onMultipleInstancesDescription: 'What should happen when this event has already been planned',
+        errors: {
+            failedToDeleteTask: 'Failed to cancel scheduled task',
+        },
     },
 };

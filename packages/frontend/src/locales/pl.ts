@@ -40,6 +40,8 @@ export const PolishLocale: Locale = {
             filtering: {
                 title: 'Filtrowanie',
                 showOnlyActive: 'Pokaż tylko aktywne',
+                filterByEvent: 'Filtruj po zdarzeniu',
+                filterByDevice: 'Filtruj po urządzeniu',
             },
             sorting: {
                 title: 'Sortowanie',
@@ -309,5 +311,8 @@ export const PolishLocale: Locale = {
         nextTrigger: 'Następne aktywowanie',
         intervalDescription: 'Co ile sekund zdarzenie powinno zostać wywołane',
         onMultipleInstancesDescription: 'Co powinno się stać, gdy to wydarzenie zostało już zaplanowane',
+        errors: {
+            failedToDeleteTask: 'Nie udało się anulować zaplanowanego zadania',
+        },
     },
 };

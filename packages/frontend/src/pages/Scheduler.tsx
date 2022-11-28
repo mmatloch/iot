@@ -4,7 +4,8 @@ import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbar from '@components/search/SearchToolbar';
-import EventSchedulerTaskCard from '@features/eventScheduler/EventSchedulerTaskCard';
+import EventSchedulerTaskCard from '@features/eventScheduler/components/EventSchedulerTaskCard';
+import EventSchedulerTaskFilterMenu from '@features/eventScheduler/components/EventSchedulerTaskFilterMenu';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
 import { Box, Container } from '@mui/material';
@@ -66,6 +67,13 @@ export default function Scheduler() {
                     <></>
                 )}
             </Container>
+
+            <EventSchedulerTaskFilterMenu
+                searchQuery={searchQuery}
+                onFilterChange={setSearchQuery}
+                onClose={closeFilterMenu}
+                anchorEl={filterMenuAnchorEl}
+            />
         </Layout>
     );
 }

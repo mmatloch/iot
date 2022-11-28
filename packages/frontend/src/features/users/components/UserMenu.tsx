@@ -1,9 +1,9 @@
 import { useUpdateUser } from '@api/usersApi';
+import ListItemButton from '@components/ListItemButton';
 import { User, UserState } from '@definitions/entities/userTypes';
 import { Edit, PublishedWithChanges } from '@mui/icons-material';
-import { ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';
-import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -12,20 +12,6 @@ interface Props {
     onEdit: () => void;
     anchorEl: HTMLElement | null;
 }
-
-interface ListItemButtonProps {
-    text: string;
-    icon: ReactNode;
-}
-
-const ListItemButton = ({ text, icon }: ListItemButtonProps) => {
-    return (
-        <>
-            <ListItemIcon>{icon}</ListItemIcon>
-            <ListItemText>{text}</ListItemText>
-        </>
-    );
-};
 
 export default function UserMenu({ user, onClose, onEdit, anchorEl }: Props) {
     const { t } = useTranslation();

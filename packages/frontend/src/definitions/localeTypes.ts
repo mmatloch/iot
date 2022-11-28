@@ -44,6 +44,8 @@ export interface Locale {
             filtering: {
                 title: string;
                 showOnlyActive: string;
+                filterByEvent: string;
+                filterByDevice: string;
             };
             sorting: {
                 title: string;
@@ -251,5 +253,8 @@ export interface Locale {
         nextTrigger: string;
         intervalDescription: string;
         onMultipleInstancesDescription: string;
+        errors: {
+            failedToDeleteTask: string;
+        };
     };
 }
