@@ -286,6 +286,7 @@ export const EnglishLocale: Locale = {
         },
     },
     eventInstances: {
+        title: 'Event instances',
         entity: {
             triggeredBy: 'Triggered by',
             performanceMetrics: {

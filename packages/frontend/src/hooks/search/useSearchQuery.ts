@@ -9,12 +9,16 @@ import { useSaveQueryInUrl } from './useSaveQueryInUrl';
 
 interface Props<TEntity extends GenericEntity> {
     defaultQuery?: SearchQuery<TEntity>;
+    loadRelations?: boolean;
 }
 
 export type SetSearchQuery<TEntity extends GenericEntity> = (updatedQuery: SearchQuery<TEntity>) => void;
 
-export function useSearchQuery<TEntity extends GenericEntity>({ defaultQuery: defaultQueryOverrides }: Props<TEntity>) {
-    const defaultQuery = useDefaultQuery(defaultQueryOverrides);
+export function useSearchQuery<TEntity extends GenericEntity>({
+    defaultQuery: defaultQueryOverrides,
+    loadRelations,
+}: Props<TEntity>) {
+    const defaultQuery = useDefaultQuery(defaultQueryOverrides, loadRelations);
     const queryFromUrl = useQueryFromUrl();
 
     const [searchQuery, setSearchQuery] = useState<SearchQuery<TEntity>>(() => mergeQuery(defaultQuery, queryFromUrl));

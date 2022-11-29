@@ -22,6 +22,9 @@ export const ApiRoute = {
     EventScheduler: {
         Tasks: addPrefix('events/scheduler/tasks'),
     },
+    EventInstances: {
+        Root: addPrefix('events/instances'),
+    },
 };
 
 export const AppRoute = {
@@ -43,6 +46,9 @@ export const AppRoute = {
         Editor: '/events/:eventId',
     },
     EventScheduler: {
-        Root: '/scheduler',
+        Root: '/events/scheduler',
+    },
+    EventInstances: {
+        Root: '/events/instances',
     },
 };

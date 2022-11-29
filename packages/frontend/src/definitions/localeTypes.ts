@@ -237,6 +237,7 @@ export interface Locale {
         };
     };
     eventInstances: {
+        title: string;
         entity: {
             triggeredBy: string;
             performanceMetrics: {

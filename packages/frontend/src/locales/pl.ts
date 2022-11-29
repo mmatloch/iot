@@ -286,6 +286,7 @@ export const PolishLocale: Locale = {
         },
     },
     eventInstances: {
+        title: 'Instancje zdarzeń',
         entity: {
             triggeredBy: 'Wywołany przez',
             performanceMetrics: {

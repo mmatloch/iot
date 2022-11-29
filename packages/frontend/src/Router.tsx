@@ -8,6 +8,7 @@ import DeviceCreator from './pages/DeviceCreator';
 import Devices from './pages/Devices';
 import EventCreator from './pages/EventCreator';
 import EventEditorWrapper from './pages/EventEditorWrapper';
+import EventInstances from './pages/EventInstances';
 import Events from './pages/Events';
 import Home from './pages/Home';
 import Scheduler from './pages/Scheduler';
@@ -28,6 +29,7 @@ export default function Router() {
             <Route path={AppRoute.Devices.Creator} element={<ProtectedRoute element={<DeviceCreator />} />} />
 
             <Route path={AppRoute.EventScheduler.Root} element={<ProtectedRoute element={<Scheduler />} />} />
+            <Route path={AppRoute.EventInstances.Root} element={<ProtectedRoute element={<EventInstances />} />} />
         </Routes>
     );
 }

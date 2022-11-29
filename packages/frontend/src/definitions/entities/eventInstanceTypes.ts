@@ -1,4 +1,5 @@
 import { GenericEntity, StructuredError } from '@definitions/commonTypes';
+import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 
 export enum EventInstanceState {
     UnknownError = 'UNKNOWN_ERROR',
@@ -31,3 +32,6 @@ export interface EventInstance extends GenericEntity {
     performanceMetrics: PerformanceMetrics;
     eventRunId: string;
 }
+
+export type EventInstancesSearchQuery = SearchQuery<EventInstance>;
+export type EventInstancesSearchResponse = SearchResponse<EventInstance>;
