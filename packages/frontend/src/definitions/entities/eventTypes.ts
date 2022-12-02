@@ -104,5 +104,6 @@ export interface EventDto {
 
 export type Event = EventDto & GenericEntity;
 
-export type EventsSearchQuery = SearchQuery<Event>;
+type VirtualSearchFields = 'deviceId';
+export type EventsSearchQuery = SearchQuery<Event, VirtualSearchFields>;
 export type EventsSearchResponse = SearchResponse<Event>;

@@ -5,6 +5,7 @@ enum SearchErrorCode {
     DisallowedSortField,
     DisallowedFiltersField,
     DisallowedRelationsField,
+    InvalidFieldValue,
 }
 
 export const getSearchErrorCode = (code: SearchErrorCode): string => {
@@ -39,5 +40,9 @@ export const SearchError = {
             `Disallowed relations field '${field}'`,
             SearchErrorCode.DisallowedRelationsField,
         );
+    },
+
+    invalidFieldValue: (field: string): HttpError => {
+        return getInvalidSearchParamsError(`Invalid value of field '${field}'`, SearchErrorCode.InvalidFieldValue);
     },
 };

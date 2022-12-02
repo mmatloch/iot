@@ -1,13 +1,18 @@
 import { useMediaQuery, useTheme } from '@mui/material';
 
-export function useDefaultSize() {
+export interface DefaultSizeMap {
+    md: number;
+    lg: number;
+}
+
+export function useDefaultSize(sizeMap: DefaultSizeMap) {
     const theme = useTheme();
 
     const isLargeMedia = useMediaQuery(theme.breakpoints.up('lg'));
 
     if (isLargeMedia) {
-        return 9;
+        return sizeMap.lg;
     }
 
-    return 10;
+    return sizeMap.md;
 }

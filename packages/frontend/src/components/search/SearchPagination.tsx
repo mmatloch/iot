@@ -6,7 +6,7 @@ import { Pagination } from '@mui/material';
 interface Props<TEntity extends GenericEntity> {
     data: SearchResponse<TEntity>;
     disabled: boolean;
-    setSearchQuery: SetSearchQuery<TEntity>;
+    setSearchQuery: SetSearchQuery<SearchQuery<TEntity>>;
     searchQuery: SearchQuery<TEntity>;
 }
 

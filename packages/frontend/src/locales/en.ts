@@ -28,8 +28,10 @@ export const EnglishLocale: Locale = {
         statusCode: 'Status code',
         showDetails: 'Show details',
         dates: {
-            createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
-            updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            createdAtAndBy: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            updatedAtAndBy: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            createdAt: 'Created <strong>{{when}}</strong>',
+            updatedAt: 'Updated <strong>{{when}}</strong>',
         },
         entity: {
             id: 'ID',

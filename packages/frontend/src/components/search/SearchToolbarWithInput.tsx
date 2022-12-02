@@ -15,7 +15,7 @@ interface Props<TEntity extends GenericEntity> {
 
     searchLabel: string;
     searchField: keyof TEntity;
-    setSearchQuery: SetSearchQuery<TEntity>;
+    setSearchQuery: SetSearchQuery<SearchQuery<TEntity>>;
     searchQuery: SearchQuery<TEntity>;
 }
 

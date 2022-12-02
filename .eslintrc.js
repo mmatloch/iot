@@ -17,7 +17,6 @@ module.exports = {
             parser: '@typescript-eslint/parser',
             rules: {
                 '@typescript-eslint/no-empty-interface': 'off',
-                '@typescript-eslint/consistent-type-imports': 'error',
                 'react/react-in-jsx-scope': 'off',
             },
             settings: {

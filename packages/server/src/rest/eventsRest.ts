@@ -4,6 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 import { Equal } from 'typeorm';
 
 import { createAccessControl } from '../accessControl';
+import { FilterOperator } from '../apis/search/searchDefinitions';
 import type { RestSearchOptions } from '../apis/searchApi';
 import {
     SortValue,
@@ -59,6 +60,20 @@ const searchOptions: RestSearchOptions<Event> = {
     },
     filters: {
         allowedFields: ['displayName', 'state', 'triggerFilters', 'triggerType', '_createdBy'],
+        virtualFields: [
+            {
+                sourceField: 'deviceId',
+                mapQuery: (value) => {
+                    return {
+                        triggerFilters: {
+                            [FilterOperator.Json]: JSON.stringify({
+                                deviceId: Number(value),
+                            }),
+                        },
+                    };
+                },
+            },
+        ],
     },
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),
@@ -121,7 +136,23 @@ const eventInstanceSearchOptions: RestSearchOptions<EventInstance> = {
         },
     },
     filters: {
-        allowedFields: ['eventId', 'eventRunId', 'state'],
+        allowedFields: ['eventId', 'eventRunId', 'state', 'event'],
+        virtualFields: [
+            {
+                sourceField: 'deviceId',
+                mapQuery: (value) => {
+                    return {
+                        event: {
+                            [FilterOperator.Json]: JSON.stringify({
+                                triggerFilters: {
+                                    deviceId: Number(value),
+                                },
+                            }),
+                        },
+                    };
+                },
+            },
+        ],
     },
     pagination: {
         defaultStrategy: createOffsetPaginationStrategy(),

@@ -1,10 +1,10 @@
 import EntityDates from '@components/EntityDates';
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
-import type { EventInstance} from '@definitions/entities/eventInstanceTypes';
+import type { EventInstance } from '@definitions/entities/eventInstanceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import { MoreVert } from '@mui/icons-material';
 import { CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
-import type { MouseEvent} from 'react';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -55,17 +55,25 @@ export default function EventInstanceCard({ entity: eventInstance }: Props) {
         <EntityCardWithBadge badgeColor={getBadgeColor(eventInstance.state)} badgeContent={t(stateTransKey)}>
             <CardHeader
                 title={eventInstance.event.displayName}
-                titleTypographyProps={{ variant: 'h6' }}
+                titleTypographyProps={{ variant: 'body1' }}
                 action={
                     <IconButton onClick={openMenu}>
                         <MoreVert />
                     </IconButton>
                 }
+                sx={{ py: 0 }}
             />
-            <CardContent>
+            <CardContent
+                sx={{
+                    pt: 0,
+                    '&:last-child': {
+                        pb: 0,
+                    },
+                }}
+            >
                 <Grid container spacing={3}>
                     <Grid item>
-                        <EntityDates entity={eventInstance} />
+                        <EntityDates entity={eventInstance} hideCreator />
                     </Grid>
                 </Grid>
             </CardContent>

@@ -3,14 +3,14 @@ import type { SearchQuery } from '@definitions/searchTypes';
 import { FilterOperator } from '@definitions/searchTypes';
 import type { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { useDebounce } from '@hooks/useDebounce';
-import type { BaseTextFieldProps} from '@mui/material';
+import type { BaseTextFieldProps } from '@mui/material';
 import { TextField } from '@mui/material';
 import { get } from 'lodash';
-import type { ChangeEvent} from 'react';
+import type { ChangeEvent } from 'react';
 import { useEffect, useState } from 'react';
 
 interface Props<TEntity extends GenericEntity> extends BaseTextFieldProps {
-    setSearchQuery: SetSearchQuery<TEntity>;
+    setSearchQuery: SetSearchQuery<SearchQuery<TEntity>>;
     searchQuery: SearchQuery<TEntity>;
     searchField: keyof TEntity;
 }

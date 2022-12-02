@@ -36,5 +36,6 @@ export interface EventInstance extends GenericEntity {
     eventRunId: string;
 }
 
-export type EventInstancesSearchQuery = SearchQuery<EventInstance>;
+type VirtualSearchFields = 'deviceId';
+export type EventInstancesSearchQuery = SearchQuery<EventInstance, VirtualSearchFields>;
 export type EventInstancesSearchResponse = SearchResponse<EventInstance>;

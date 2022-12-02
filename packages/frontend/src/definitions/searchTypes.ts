@@ -55,24 +55,17 @@ export type SearchFilterOperatorValue =
     | SimpleFilterValue
     | (SearchFilterWithFilterOperatorValue & SearchFilterWithLogicalOperatorValue);
 
-export interface SearchQuery<TEntity extends GenericEntity> {
+export interface SearchQuery<TEntity extends GenericEntity = GenericEntity, TVirtualFields extends string = ''> {
     size?: number;
     page?: number;
     sort?: {
         [key in keyof TEntity]?: SortValue;
     };
-    filters?: {
-        [key in keyof TEntity]?: SearchFilterOperatorValue;
-    };
+    filters?: Partial<Record<keyof TEntity, SearchFilterOperatorValue>> &
+        Partial<Record<TVirtualFields, SimpleFilterValue>>;
     relations?: {
         [key in keyof TEntity]?: boolean;
     };
 }
 
-export const SEARCH_QUERY_FIELDS = [
-    'size',
-    'page',
-    'sort',
-    'filters',
-    'relations',
-];
+export const SEARCH_QUERY_FIELDS = ['size', 'page', 'sort', 'filters', 'relations'];

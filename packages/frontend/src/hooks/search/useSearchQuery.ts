@@ -1,33 +1,39 @@
-import type { GenericEntity } from '@definitions/commonTypes';
 import type { SearchQuery } from '@definitions/searchTypes';
 import { mergeQuery } from '@utils/searchQuery';
+import { isUndefined } from 'lodash';
 import { useCallback, useState } from 'react';
 
-import { useDefaultQuery } from './useDefaultQuery';
+import { UseDefaultQueryOptions, useDefaultQuery } from './useDefaultQuery';
 import { useQueryFromUrl } from './useQueryFromUrl';
 import { useSaveQueryInUrl } from './useSaveQueryInUrl';
 
-interface Props<TEntity extends GenericEntity> {
-    defaultQuery?: SearchQuery<TEntity>;
-    loadRelations?: boolean;
+interface Props<TSearchQuery extends SearchQuery> extends UseDefaultQueryOptions {
+    defaultQuery?: TSearchQuery;
 }
 
-export type SetSearchQuery<TEntity extends GenericEntity> = (updatedQuery: SearchQuery<TEntity>) => void;
+export type SetSearchQuery<TSearchQuery extends SearchQuery> = (updatedQuery: TSearchQuery | undefined) => void;
 
-export function useSearchQuery<TEntity extends GenericEntity>({
+export function useSearchQuery<TSearchQuery extends SearchQuery>({
     defaultQuery: defaultQueryOverrides,
-    loadRelations,
-}: Props<TEntity>) {
-    const defaultQuery = useDefaultQuery(defaultQueryOverrides, loadRelations);
-    const queryFromUrl = useQueryFromUrl();
+    ...defaultQueryOptions
+}: Props<TSearchQuery>) {
+    const defaultQuery = useDefaultQuery(defaultQueryOverrides, defaultQueryOptions);
+    const queryFromUrl = useQueryFromUrl<TSearchQuery>();
 
-    const [searchQuery, setSearchQuery] = useState<SearchQuery<TEntity>>(() => mergeQuery(defaultQuery, queryFromUrl));
+    const [searchQuery, setSearchQuery] = useState<TSearchQuery>(() => mergeQuery(defaultQuery, queryFromUrl));
 
     useSaveQueryInUrl(searchQuery, defaultQuery);
 
-    const setSearchQueryWithMerge = useCallback((updatedQuery: SearchQuery<TEntity>) => {
-        setSearchQuery((currentSearchQuery) => mergeQuery(currentSearchQuery, { page: 1, ...updatedQuery }));
-    }, []);
+    const setSearchQueryWithMerge = useCallback(
+        (updatedQuery: TSearchQuery | undefined) => {
+            if (isUndefined(updatedQuery)) {
+                setSearchQuery(defaultQuery);
+            } else {
+                setSearchQuery((currentSearchQuery) => mergeQuery(currentSearchQuery, { page: 1, ...updatedQuery }));
+            }
+        },
+        [defaultQuery],
+    );
 
     return {
         searchQuery,

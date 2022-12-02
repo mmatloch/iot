@@ -6,10 +6,11 @@ import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbar from '@components/search/SearchToolbar';
 import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
-import type { EventInstance } from '@definitions/entities/eventInstanceTypes';
+import type { EventInstance, EventInstancesSearchQuery } from '@definitions/entities/eventInstanceTypes';
 import type { EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { Event } from '@definitions/entities/eventTypes';
 import EventInstanceCard from '@features/eventInstances/components/EventInstanceCard';
+import EventInstanceFilterMenu from '@features/eventInstances/components/EventInstanceFilterMenu';
 import EventCard from '@features/events/components/EventCard';
 import EventFilterMenu from '@features/events/components/EventFilterMenu';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
@@ -26,14 +27,20 @@ const defaultQuery: EventsSearchQuery = {};
 
 const SEARCH_FIELD = 'displayName';
 
+const SIZE_MAP = {
+    md: 10,
+    lg: 18,
+};
+
 export default function EventInstances() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
 
-    const { searchQuery, setSearchQuery } = useSearchQuery<EventInstance>({
+    const { searchQuery, setSearchQuery } = useSearchQuery<EventInstancesSearchQuery>({
         defaultQuery: defaultQuery,
         loadRelations: false,
+        defaultSizeMap: SIZE_MAP,
     });
     const { data, isSuccess, isLoading, isPreviousData } = useEventInstances(searchQuery);
 
@@ -53,20 +60,12 @@ export default function EventInstances() {
         setFilterMenuAnchorEl(null);
     };
 
-    const redirectToCreator = () => {
-        navigate(AppRoute.Events.Creator);
-    };
-
     return (
         <Layout>
             <Container>
-                <SearchToolbar
-                    title={t('eventInstances:title')}
-                    onCreateClick={redirectToCreator}
-                    onFiltersClick={openFilterMenu}
-                />
+                <SearchToolbar title={t('eventInstances:title')} onFiltersClick={openFilterMenu} />
 
-                <EntityCardGrid entities={data._hits} Item={EventInstanceCard} />
+                <EntityCardGrid entities={data._hits} Item={EventInstanceCard} spacing={3} />
 
                 {data._hits.length ? (
                     <Box display="flex" justifyContent="center" alignItems="center" sx={{ mt: 3 }}>
@@ -82,12 +81,12 @@ export default function EventInstances() {
                 )}
             </Container>
 
-            {/* <EventFilterMenu
+            <EventInstanceFilterMenu
                 searchQuery={searchQuery}
                 onFilterChange={setSearchQuery}
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
-            /> */}
+            />
         </Layout>
     );
 }

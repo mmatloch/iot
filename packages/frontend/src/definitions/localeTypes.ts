@@ -33,7 +33,9 @@ export interface Locale {
         showDetails: string;
         dates: {
             createdAt: string;
+            createdAtAndBy: string;
             updatedAt: string;
+            updatedAtAndBy: string;
         };
         entity: {
             id: string;

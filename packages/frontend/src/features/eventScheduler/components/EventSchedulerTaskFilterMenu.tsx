@@ -1,10 +1,9 @@
-import { useEvent } from '@api/eventsApi';
-import type { Props as EventAutocompleteProps } from '@components/events/EventAutocomplete';
 import EventAutocomplete from '@components/events/EventAutocomplete';
+import EventAutocompleteWrapper from '@components/events/EventAutocompleteWrapper';
 import SearchFilterSorting from '@components/search/filters/SearchFilterSorting';
 import type { EventSchedulerTasksSearchQuery } from '@definitions/entities/eventSchedulerTypes';
 import type { Event } from '@definitions/entities/eventTypes';
-import { Divider, FormControl, ListItem, ListSubheader, Menu, MenuList, TextField } from '@mui/material';
+import { Divider, FormControl, ListItem, ListSubheader, Menu, MenuList } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -13,20 +12,6 @@ interface Props {
     searchQuery: EventSchedulerTasksSearchQuery;
     anchorEl: HTMLElement | null;
 }
-
-interface WrapperProps extends EventAutocompleteProps {
-    eventId: number;
-}
-
-const EventAutocompleteWrapper = ({ eventId, ...props }: WrapperProps) => {
-    const { data, isSuccess } = useEvent(eventId);
-
-    if (isSuccess) {
-        return <EventAutocomplete defaultValue={data} {...props} />;
-    }
-
-    return <TextField />;
-};
 
 export default function EventSchedulerTaskFilterMenu({ onClose, anchorEl, onFilterChange, searchQuery }: Props) {
     const { t } = useTranslation();
