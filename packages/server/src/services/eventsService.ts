@@ -1,11 +1,11 @@
 import CronParser from 'cron-parser';
 import _ from 'lodash';
 
-import { Event, EventDto } from '../entities/eventEntity';
+import { EventMetadataTaskType, EventMetadataType, EventTriggerType } from '../definitions/eventDefinitions';
+import type { Event, EventDto } from '../entities/eventEntity';
 import { Errors } from '../errors';
-import { EventMetadataTaskType, EventMetadataType, EventTriggerType } from '../events/eventDefinitions';
 import { createEventsRepository } from '../repositories/eventsRepository';
-import { GenericService } from './genericService';
+import type { GenericService } from './genericService';
 
 export interface EventsService extends GenericService<Event, EventDto> {}
 

@@ -1,6 +1,8 @@
-import SearchFilterCheckbox, { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
+import type { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
+import SearchFilterCheckbox from '@components/search/filters/SearchFilterCheckbox';
 import SearchFilterSorting from '@components/search/filters/SearchFilterSorting';
-import { EventState, EventsSearchQuery } from '@definitions/entities/eventTypes';
+import type { EventsSearchQuery } from '@definitions/entities/eventTypes';
+import { EventState } from '@definitions/entities/eventTypes';
 import { Divider, ListSubheader, Menu, MenuList } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 

@@ -1,9 +1,11 @@
 import EntityDates from '@components/EntityDates';
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
-import { EventInstance, EventInstanceState } from '@definitions/entities/eventInstanceTypes';
+import type { EventInstance} from '@definitions/entities/eventInstanceTypes';
+import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
 import { MoreVert } from '@mui/icons-material';
 import { CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -52,7 +54,7 @@ export default function EventInstanceCard({ entity: eventInstance }: Props) {
     return (
         <EntityCardWithBadge badgeColor={getBadgeColor(eventInstance.state)} badgeContent={t(stateTransKey)}>
             <CardHeader
-                title={eventInstance.eventId}
+                title={eventInstance.event.displayName}
                 titleTypographyProps={{ variant: 'h6' }}
                 action={
                     <IconButton onClick={openMenu}>

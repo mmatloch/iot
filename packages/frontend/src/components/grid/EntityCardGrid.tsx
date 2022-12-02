@@ -1,6 +1,6 @@
-import { GenericEntity } from '@definitions/commonTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
 import Grid from '@mui/material/Unstable_Grid2';
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 
 interface Props<TEntity> {
     entities: TEntity[];

@@ -1,6 +1,8 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery, SortValue } from '@definitions/searchTypes';
-import { FormControl, InputLabel, ListItem, MenuItem, Select, SelectChangeEvent } from '@mui/material';
+import type { GenericEntity } from '@definitions/commonTypes';
+import type { SearchQuery} from '@definitions/searchTypes';
+import { SortValue } from '@definitions/searchTypes';
+import type { SelectChangeEvent } from '@mui/material';
+import { FormControl, InputLabel, ListItem, MenuItem, Select } from '@mui/material';
 import get from 'lodash/get';
 import set from 'lodash/set';
 import { useId } from 'react';

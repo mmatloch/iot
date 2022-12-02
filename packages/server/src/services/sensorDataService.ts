@@ -1,6 +1,6 @@
-import { SensorData, SensorDataDto } from '../entities/sensorDataEntity';
+import type { SensorData, SensorDataDto } from '../entities/sensorDataEntity';
 import { createSensorDataRepository } from '../repositories/sensorDataRepository';
-import { GenericService } from './genericService';
+import type { GenericService } from './genericService';
 
 export interface SensorDataService
     extends Pick<GenericService<SensorData, SensorDataDto>, 'create' | 'search' | 'searchAndCount'> {}

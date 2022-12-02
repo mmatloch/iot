@@ -1,7 +1,9 @@
-import { EntitySubscriberInterface, InsertEvent, EventSubscriber as OrmEventSubscriber, RemoveEvent } from 'typeorm';
+import type { EntitySubscriberInterface, InsertEvent, RemoveEvent } from 'typeorm';
+import { EventSubscriber as OrmEventSubscriber } from 'typeorm';
 
 import { EventSchedulerTask } from './eventSchedulerTaskEntity';
-import { CreateEntitySubscriber, EntityListenerMap, EntitySubscriberEvent } from './subscriberDefinitions';
+import type { CreateEntitySubscriber, EntityListenerMap} from './subscriberDefinitions';
+import { EntitySubscriberEvent } from './subscriberDefinitions';
 
 @OrmEventSubscriber()
 export class EventSchedulerTaskSubscriber implements EntitySubscriberInterface<EventSchedulerTask> {

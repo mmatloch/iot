@@ -1,8 +1,8 @@
 import _ from 'lodash';
 
 import { getLogger } from '../../../logger';
-import { ZigbeeDevice } from '../zigbeeDefinitions';
-import { ZigbeeDeviceManager } from '../zigbeeDeviceManager';
+import type { ZigbeeDevice } from '../zigbeeDefinitions';
+import type { ZigbeeDeviceManager } from '../zigbeeDeviceManager';
 import { createDeviceSynchronizer } from '../zigbeeDevicesSynchronizer';
 
 const logger = getLogger();

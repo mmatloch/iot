@@ -1,6 +1,6 @@
-import { EventInstance, EventInstanceDto } from '../entities/eventInstanceEntity';
+import type { EventInstance, EventInstanceDto } from '../entities/eventInstanceEntity';
 import { createEventInstancesRepository } from '../repositories/eventInstancesRepository';
-import { GenericService } from './genericService';
+import type { GenericService } from './genericService';
 
 export interface EventInstancesService
     extends Pick<GenericService<EventInstance, EventInstanceDto>, 'create' | 'search' | 'searchAndCount'> {}

@@ -1,5 +1,6 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SEARCH_QUERY_FIELDS, SearchQuery } from '@definitions/searchTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
+import { SEARCH_QUERY_FIELDS } from '@definitions/searchTypes';
 import { omitQueryDefaults, parseQuery, serializeQuery } from '@utils/searchQuery';
 import { pick } from 'lodash';
 import { useEffect } from 'react';

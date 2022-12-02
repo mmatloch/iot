@@ -9,7 +9,7 @@ import {
     EventTriggerType,
 } from '@definitions/entities/eventTypes';
 import { UserRole, UserState } from '@definitions/entities/userTypes';
-import { Locale } from '@definitions/localeTypes';
+import type { Locale } from '@definitions/localeTypes';
 
 export const EnglishLocale: Locale = {
     generic: {

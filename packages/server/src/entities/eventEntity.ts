@@ -1,15 +1,17 @@
-import { Static, Type } from '@sinclair/typebox';
+import type { Static} from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import { Column, Entity, Index } from 'typeorm';
 
+import type {
+    EventTriggerOptions} from '../definitions/eventDefinitions';
 import {
     EventMetadataOnMultipleInstances,
     EventMetadataTaskType,
     EventMetadataType,
     EventState,
-    EventTriggerOptions,
     EventTriggerType,
-} from '../events/eventDefinitions';
-import { EventTriggerContext } from '../events/eventRunDefinitions';
+} from '../definitions/eventDefinitions';
+import type { EventTriggerContext } from '../events/eventRunDefinitions';
 import { eventTrigger } from '../events/eventTrigger';
 import { mergeSchemas, removeSchemaDefaults } from '../utils/schemaUtils';
 import { GenericEntity, genericEntitySchema } from './generic/genericEntity';

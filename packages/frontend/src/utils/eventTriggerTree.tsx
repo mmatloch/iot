@@ -1,9 +1,10 @@
-import { EventInstance, EventInstanceState } from '@definitions/entities/eventInstanceTypes';
-import { EventRunSummaryChild, EventsTriggerResponse } from '@definitions/eventTriggerTypes';
+import type { EventInstance} from '@definitions/entities/eventInstanceTypes';
+import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
+import type { EventRunSummaryChild, EventsTriggerResponse } from '@definitions/eventTriggerTypes';
 import { Check, Close, Remove } from '@mui/icons-material';
 import { Stack, Typography } from '@mui/material';
 
-import { TreeItem } from './tree';
+import type { TreeItem } from './tree';
 
 const getIcon = (eventInstance: EventInstance) => {
     switch (eventInstance.state) {

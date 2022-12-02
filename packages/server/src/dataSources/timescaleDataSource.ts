@@ -19,6 +19,7 @@ import { CreatedByUpdatedBy1661175358951 } from '../migrations/1661175358951-Cre
 import { Configurations1661374101903 } from '../migrations/1661374101903-Configurations';
 import { UserAvatar1661962398904 } from '../migrations/1661962398904-UserAvatar';
 import { ConfigurationPermitJoin1662924371554 } from '../migrations/1662924371554-ConfigurationPermitJoin';
+import { EventInstanceForeignKey1670009734264 } from '../migrations/1670009734264-EventInstanceForeignKey';
 
 const config = getConfig();
 
@@ -38,5 +39,6 @@ export const timescaleDataSource = new DataSource({
         Configurations1661374101903,
         UserAvatar1661962398904,
         ConfigurationPermitJoin1662924371554,
+        EventInstanceForeignKey1670009734264,
     ],
 });

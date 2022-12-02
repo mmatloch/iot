@@ -1,7 +1,8 @@
 import { useEvents } from '@api/eventsApi';
-import { Event } from '@definitions/entities/eventTypes';
+import type { Event } from '@definitions/entities/eventTypes';
 import { useDebounce } from '@hooks/useDebounce';
-import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
+import type { AutocompleteProps, TextFieldProps } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { useState } from 'react';
 
 export interface Props extends Omit<AutocompleteProps<Event, false, true, false>, 'renderInput' | 'options'> {

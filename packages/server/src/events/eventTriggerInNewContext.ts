@@ -1,8 +1,8 @@
 import crypto from 'node:crypto';
 
+import type { EventTriggerOptions } from '../definitions/eventDefinitions';
 import type { Event } from '../entities/eventEntity';
-import { EventTriggerOptions } from './eventDefinitions';
-import { EventRunStore, EventTriggerContext } from './eventRunDefinitions';
+import type { EventRunStore, EventTriggerContext } from './eventRunDefinitions';
 import { getEventRunLocalStorage } from './eventRunLocalStorage';
 
 interface Options extends EventTriggerOptions {

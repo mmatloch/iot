@@ -1,4 +1,4 @@
-import { queueAsPromised } from 'fastq';
+import type { queueAsPromised } from 'fastq';
 import _ from 'lodash';
 
 type Queue = queueAsPromised<unknown, void>;

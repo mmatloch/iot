@@ -1,7 +1,7 @@
 import { AsyncLocalStorage } from 'async_hooks';
 
-import { Event } from '../entities/eventEntity';
-import { EventRunStore } from './eventRunDefinitions';
+import type { Event } from '../entities/eventEntity';
+import type { EventRunStore } from './eventRunDefinitions';
 
 const localStorage = new AsyncLocalStorage<EventRunStore>();
 

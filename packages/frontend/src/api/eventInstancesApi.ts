@@ -1,4 +1,4 @@
-import { EventInstancesSearchQuery, EventInstancesSearchResponse } from '@definitions/entities/eventInstanceTypes';
+import type { EventInstancesSearchQuery, EventInstancesSearchResponse } from '@definitions/entities/eventInstanceTypes';
 import { useFetch } from '@hooks/useFetch';
 
 import { ApiRoute } from '../constants';

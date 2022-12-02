@@ -1,4 +1,4 @@
-import { UserRole } from './entities/userEntity';
+import type { UserRole } from './entities/userEntity';
 import { Errors } from './errors';
 import { getRequestStore } from './requestLocalStorage';
 

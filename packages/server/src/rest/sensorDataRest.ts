@@ -1,16 +1,18 @@
-import { ApplicationPlugin } from '@common/application';
+import type { ApplicationPlugin } from '@common/application';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
+import type {
+    RestSearchOptions} from '../apis/searchApi';
 import {
-    RestSearchOptions,
     SortValue,
     createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
-import { SensorData, sensorDataSchema } from '../entities/sensorDataEntity';
+import type { SensorData} from '../entities/sensorDataEntity';
+import { sensorDataSchema } from '../entities/sensorDataEntity';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createSensorDataService } from '../services/sensorDataService';
 

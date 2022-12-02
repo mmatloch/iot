@@ -1,6 +1,7 @@
 import { useUpdateEvent } from '@api/eventsApi';
 import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
-import { Event, EventState } from '@definitions/entities/eventTypes';
+import type { Event} from '@definitions/entities/eventTypes';
+import { EventState } from '@definitions/entities/eventTypes';
 import { Edit, Preview, PublishedWithChanges } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';

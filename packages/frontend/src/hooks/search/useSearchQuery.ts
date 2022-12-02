@@ -1,5 +1,5 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery } from '@definitions/searchTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
 import { mergeQuery } from '@utils/searchQuery';
 import { useCallback, useState } from 'react';
 

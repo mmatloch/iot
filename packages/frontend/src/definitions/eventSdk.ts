@@ -1,8 +1,8 @@
-import { Device } from '@definitions/entities/deviceTypes';
-import { Event } from '@definitions/entities/eventTypes';
-import { SensorData } from '@definitions/entities/sensorDataTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
+import type { Event } from '@definitions/entities/eventTypes';
+import type { SensorData } from '@definitions/entities/sensorDataTypes';
 
-import { EventTriggerContext, EventTriggerOptions } from './eventTriggerTypes';
+import type { EventTriggerContext, EventTriggerOptions } from './eventTriggerTypes';
 
 interface EventWithTrigger extends Event {
     trigger: (context?: EventTriggerContext, opts?: EventTriggerOptions) => Promise<void>;

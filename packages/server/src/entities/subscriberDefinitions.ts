@@ -1,4 +1,4 @@
-import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
+import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 export enum EntitySubscriberEvent {
     AfterInsert = 'AFTER_INSERT',

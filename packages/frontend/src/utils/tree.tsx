@@ -1,5 +1,5 @@
 import { TreeItem } from '@mui/lab';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 
 export interface TreeItem {
     nodeId: string;

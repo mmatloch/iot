@@ -1,4 +1,4 @@
-import { GenericEntity } from '@definitions/commonTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
 import { SEARCH_QUERY_FIELDS } from '@definitions/searchTypes';
 import { parseQuery } from '@utils/searchQuery';
 import { pick } from 'lodash';

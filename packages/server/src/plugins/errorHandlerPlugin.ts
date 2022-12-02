@@ -1,4 +1,5 @@
-import { ApplicationPlugin, createApplicationPlugin } from '@common/application';
+import type { ApplicationPlugin} from '@common/application';
+import { createApplicationPlugin } from '@common/application';
 import { EntityNotFoundError, QueryFailedError } from 'typeorm';
 
 import { Errors } from '../errors';

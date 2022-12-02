@@ -1,7 +1,7 @@
 import { useAuth } from '@hooks/useAuth';
 import { ContentPasteSearch, Event, Home, ManageAccounts, PendingActions, SpeakerPhone } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 

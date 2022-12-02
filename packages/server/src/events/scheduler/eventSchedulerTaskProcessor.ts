@@ -1,7 +1,8 @@
 import { addMilliseconds, subMilliseconds } from 'date-fns';
 import { Between } from 'typeorm';
 
-import { EventSchedulerTask, EventSchedulerTaskState } from '../../entities/eventSchedulerTaskEntity';
+import type { EventSchedulerTask} from '../../entities/eventSchedulerTaskEntity';
+import { EventSchedulerTaskState } from '../../entities/eventSchedulerTaskEntity';
 import { getLogger } from '../../logger';
 import { createEventSchedulerTasksService } from '../../services/eventSchedulerTasksService';
 import { eventTriggerInNewContext } from '../eventTriggerInNewContext';

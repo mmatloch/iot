@@ -1,6 +1,6 @@
 import { useUpdateEvent } from '@api/eventsApi';
 import FormInputText from '@components/forms/FormInputText';
-import { Event } from '@definitions/entities/eventTypes';
+import type { Event } from '@definitions/entities/eventTypes';
 import { LoadingButton } from '@mui/lab';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup } from '@mui/material';
 import { useSnackbar } from 'notistack';

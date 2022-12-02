@@ -1,5 +1,6 @@
 import { useCreateEvent } from '@api/eventsApi';
-import { EventDto, EventMetadataType, EventState, EventTriggerType } from '@definitions/entities/eventTypes';
+import type { EventDto} from '@definitions/entities/eventTypes';
+import { EventMetadataType, EventState, EventTriggerType } from '@definitions/entities/eventTypes';
 import EventEditorForm from '@features/events/components/EventEditorForm';
 import Layout from '@layout/Layout';
 import { Button, Container, Toolbar, Typography } from '@mui/material';

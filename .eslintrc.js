@@ -11,12 +11,13 @@ module.exports = {
                 'plugin:@typescript-eslint/eslint-recommended',
                 'plugin:@typescript-eslint/recommended',
                 'plugin:react/recommended',
-                'plugin:react-hooks/recommended'
+                'plugin:react-hooks/recommended',
             ],
             plugins: ['@typescript-eslint'],
             parser: '@typescript-eslint/parser',
             rules: {
                 '@typescript-eslint/no-empty-interface': 'off',
+                '@typescript-eslint/consistent-type-imports': 'error',
                 'react/react-in-jsx-scope': 'off',
             },
             settings: {

@@ -1,6 +1,7 @@
 import { useUpdateDevice } from '@api/devicesApi';
 import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
-import { Device, DeviceDeactivatedByType, DeviceState } from '@definitions/entities/deviceTypes';
+import type { Device} from '@definitions/entities/deviceTypes';
+import { DeviceDeactivatedByType, DeviceState } from '@definitions/entities/deviceTypes';
 import { Edit, PublishedWithChanges, ViewSidebar } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';

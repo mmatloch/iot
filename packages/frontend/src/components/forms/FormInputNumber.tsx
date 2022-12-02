@@ -1,5 +1,7 @@
-import { BaseTextFieldProps, TextField } from '@mui/material';
-import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
+import type { BaseTextFieldProps} from '@mui/material';
+import { TextField } from '@mui/material';
+import type { RegisterOptions} from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props extends Omit<BaseTextFieldProps, 'name'> {
     name: string;

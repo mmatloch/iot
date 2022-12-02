@@ -1,7 +1,8 @@
-import { Device, DevicesSearchQuery, DevicesSearchResponse } from '@definitions/entities/deviceTypes';
+import type { Device, DevicesSearchQuery, DevicesSearchResponse } from '@definitions/entities/deviceTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
-import { UseQueryOptions, useQueryClient } from 'react-query';
+import type { UseQueryOptions} from 'react-query';
+import { useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
 

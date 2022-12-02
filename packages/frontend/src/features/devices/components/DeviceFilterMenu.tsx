@@ -1,6 +1,8 @@
-import SearchFilterCheckbox, { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
+import type { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
+import SearchFilterCheckbox from '@components/search/filters/SearchFilterCheckbox';
 import SearchFilterSorting from '@components/search/filters/SearchFilterSorting';
-import { DeviceState, DevicesSearchQuery } from '@definitions/entities/deviceTypes';
+import type { DevicesSearchQuery } from '@definitions/entities/deviceTypes';
+import { DeviceState } from '@definitions/entities/deviceTypes';
 import { Divider, ListSubheader, Menu, MenuList } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 

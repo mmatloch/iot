@@ -1,4 +1,4 @@
-import { IncomingMessage } from 'http';
+import type { IncomingMessage } from 'http';
 
 import { ValidationError, transformError } from '@common/errors';
 import type { Logger } from '@common/logger';
@@ -7,9 +7,10 @@ import formBody from '@fastify/formbody';
 import _ from 'lodash';
 
 import { createApplicationFromFastify } from './fastifyAbstract';
-import loggerPlugin, { LoggerPluginOptions } from './plugins/loggerPlugin';
+import type { LoggerPluginOptions } from './plugins/loggerPlugin';
+import loggerPlugin from './plugins/loggerPlugin';
 import statusPlugin from './plugins/statusPlugin';
-import { Application } from './types';
+import type { Application } from './types';
 
 interface CreateApplicationOptions {
     logger: Logger;

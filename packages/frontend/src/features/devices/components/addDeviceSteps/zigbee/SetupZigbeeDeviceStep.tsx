@@ -1,4 +1,4 @@
-import { Device } from '@definitions/entities/deviceTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
 import { useDeviceDetails } from '@features/devices/hooks/useDeviceDetails';
 import { Alert, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';

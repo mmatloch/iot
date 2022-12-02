@@ -1,4 +1,4 @@
-import { FindManyOptions } from 'typeorm';
+import type { FindManyOptions } from 'typeorm';
 
 export interface GenericService<TEntity, TEntityDto> {
     create: (dto: TEntityDto) => Promise<TEntity>;

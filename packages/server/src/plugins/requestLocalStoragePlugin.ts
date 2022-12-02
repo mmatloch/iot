@@ -1,8 +1,10 @@
 import { AsyncResource } from 'async_hooks';
 
-import { ApplicationPlugin, createApplicationPlugin } from '@common/application';
+import type { ApplicationPlugin} from '@common/application';
+import { createApplicationPlugin } from '@common/application';
 
-import { RequestUser, getRequestLocalStorage } from '../requestLocalStorage';
+import type { RequestUser} from '../requestLocalStorage';
+import { getRequestLocalStorage } from '../requestLocalStorage';
 
 const asyncResourceProp = '__ASYNC_RESOURCE';
 

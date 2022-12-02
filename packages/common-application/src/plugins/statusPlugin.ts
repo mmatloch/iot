@@ -1,7 +1,7 @@
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 
 import { createApplicationPlugin } from '../applicationPlugin';
-import { ApplicationPlugin } from '../types';
+import type { ApplicationPlugin } from '../types';
 
 const statusPlugin: ApplicationPlugin = async (app) => {
     app.get('/_status', async (_request, reply) => {

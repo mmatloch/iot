@@ -1,5 +1,5 @@
-import { MqttClient } from '../../clients/mqttClient';
-import { ZigbeeBridgeConfiguration } from '../../entities/configurationEntity';
+import type { MqttClient } from '../../clients/mqttClient';
+import type { ZigbeeBridgeConfiguration } from '../../entities/configurationEntity';
 import { DeviceState } from '../../entities/deviceEntity';
 import { getLogger } from '../../logger';
 import { zigbeeDeviceDataSchema, zigbeeDevicesSchema, zigbeeInfoSchema } from './zigbeeDefinitions';

@@ -1,4 +1,4 @@
-import { GenericEntity } from '@definitions/commonTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
 import { Tooltip, Typography } from '@mui/material';
 import { formatFullDate, formatRelativeDate } from '@utils/dateFormatters';
 import { Trans, useTranslation } from 'react-i18next';

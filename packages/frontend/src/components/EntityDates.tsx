@@ -1,4 +1,4 @@
-import { GenericEntity } from '@definitions/commonTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
 import { Alert, Box } from '@mui/material';
 
 import CreatedAtText from './CreatedAtText';

@@ -1,7 +1,8 @@
 import { useDevices } from '@api/devicesApi';
-import { Device } from '@definitions/entities/deviceTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
 import { useDebounce } from '@hooks/useDebounce';
-import { Autocomplete, AutocompleteProps, TextField } from '@mui/material';
+import type { AutocompleteProps} from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
 import { useState } from 'react';
 
 interface Props extends Omit<AutocompleteProps<Device, false, true, false>, 'renderInput' | 'options'> {

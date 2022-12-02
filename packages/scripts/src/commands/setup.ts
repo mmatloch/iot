@@ -6,7 +6,8 @@ import { cyan, green } from 'chalk';
 import { chmodSync, ensureFileSync, existsSync, moveSync, pathExistsSync, readFileSync, writeFileSync } from 'fs-extra';
 
 import { PATH } from '../utils/constants';
-import { SetupState, createStateCacheManager } from '../utils/setupCache';
+import type { SetupState} from '../utils/setupCache';
+import { createStateCacheManager } from '../utils/setupCache';
 import { Step, askQuestion, createEnvVariables, generatePassword, generateUsername } from '../utils/setupUtils';
 
 const TEMLATES_PATH = join(PATH.Scripts, 'setupTemplates');

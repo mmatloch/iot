@@ -1,8 +1,9 @@
 import { useEvent } from '@api/eventsApi';
-import EventAutocomplete, { Props as EventAutocompleteProps } from '@components/events/EventAutocomplete';
+import type { Props as EventAutocompleteProps } from '@components/events/EventAutocomplete';
+import EventAutocomplete from '@components/events/EventAutocomplete';
 import SearchFilterSorting from '@components/search/filters/SearchFilterSorting';
-import { EventSchedulerTasksSearchQuery } from '@definitions/entities/eventSchedulerTypes';
-import { Event } from '@definitions/entities/eventTypes';
+import type { EventSchedulerTasksSearchQuery } from '@definitions/entities/eventSchedulerTypes';
+import type { Event } from '@definitions/entities/eventTypes';
 import { Divider, FormControl, ListItem, ListSubheader, Menu, MenuList, TextField } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 

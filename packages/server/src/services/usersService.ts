@@ -2,11 +2,12 @@ import JWT from 'jsonwebtoken';
 import _ from 'lodash';
 
 import { getConfig } from '../config';
-import { User, UserDto, UserRole, UserState } from '../entities/userEntity';
+import type { User, UserDto} from '../entities/userEntity';
+import { UserRole, UserState } from '../entities/userEntity';
 import { Errors } from '../errors';
 import { getLogger } from '../logger';
 import { createUsersRepository } from '../repositories/usersRepository';
-import { GenericService } from './genericService';
+import type { GenericService } from './genericService';
 import { createGoogleOAuth2Service } from './googleOAuth2Service';
 
 interface TokenDto {

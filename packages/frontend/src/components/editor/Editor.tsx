@@ -1,5 +1,6 @@
 import { useEventListener } from '@hooks/useEventListener';
-import MonacoEditor, { BeforeMount, OnMount } from '@monaco-editor/react';
+import type { BeforeMount, OnMount } from '@monaco-editor/react';
+import MonacoEditor from '@monaco-editor/react';
 import type { editor } from 'monaco-editor/esm/vs/editor/editor.api';
 import { useSnackbar } from 'notistack';
 import babylon from 'prettier/parser-babel';

@@ -1,6 +1,6 @@
-import { RawSearchQuery } from '../searchQuerySchema';
+import type { RawSearchQuery } from '../searchQuerySchema';
 import { createOffsetPaginationStrategy } from './offsetPaginationStrategy';
-import { PaginationStrategy } from './paginationStrategy';
+import type { PaginationStrategy } from './paginationStrategy';
 
 const STRATEGIES = [createOffsetPaginationStrategy()];
 

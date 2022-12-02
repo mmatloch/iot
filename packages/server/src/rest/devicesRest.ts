@@ -1,20 +1,22 @@
-import { ApplicationPlugin } from '@common/application';
+import type { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
+import type {
+    RestSearchOptions} from '../apis/searchApi';
 import {
-    RestSearchOptions,
     SortValue,
     createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
-import {
+import type {
     Device,
+    DeviceDto} from '../entities/deviceEntity';
+import {
     DeviceDeactivatedByType,
-    DeviceDto,
     DeviceState,
     deviceDtoSchema,
     deviceSchema,

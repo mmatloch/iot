@@ -1,6 +1,7 @@
 import { ValidationError } from '@common/errors';
 import type { Static, TSchema } from '@sinclair/typebox';
-import Ajv, { JSONSchemaType, Options, Schema } from 'ajv';
+import type { JSONSchemaType, Options, Schema } from 'ajv';
+import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import addKeywords from 'ajv-keywords';
 

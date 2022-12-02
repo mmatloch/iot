@@ -1,9 +1,9 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery } from '@definitions/searchTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
 import { Checkbox, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import get from 'lodash/get';
 import set from 'lodash/set';
-import { ChangeEvent } from 'react';
+import type { ChangeEvent } from 'react';
 
 export interface CheckboxFilterMapItem {
     path: string;

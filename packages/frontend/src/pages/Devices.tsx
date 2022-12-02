@@ -4,14 +4,15 @@ import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
-import { Device } from '@definitions/entities/deviceTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
 import DeviceCard from '@features/devices/components/DeviceCard';
 import DeviceDetailsDrawerWrapper from '@features/devices/components/DeviceDetailsDrawerWrapper';
 import DeviceFilterMenu from '@features/devices/components/DeviceFilterMenu';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
 import { Box, Container } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 

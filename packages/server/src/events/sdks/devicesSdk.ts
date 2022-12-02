@@ -1,7 +1,8 @@
-import { GenericDataPublisher } from '../../bridges/generic/genericDataPublisher';
+import type { GenericDataPublisher } from '../../bridges/generic/genericDataPublisher';
 import { getZigbeeDataPublisher } from '../../bridges/zigbee/zigbeeDataPublisher';
-import { Device, DeviceProtocol } from '../../entities/deviceEntity';
-import { SensorData } from '../../entities/sensorDataEntity';
+import type { Device} from '../../entities/deviceEntity';
+import { DeviceProtocol } from '../../entities/deviceEntity';
+import type { SensorData } from '../../entities/sensorDataEntity';
 import { createDevicesService } from '../../services/devicesService';
 import { createSensorDataService } from '../../services/sensorDataService';
 

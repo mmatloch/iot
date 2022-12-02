@@ -1,6 +1,7 @@
 import { ReasonPhrases, StatusCodes, getReasonPhrase } from 'http-status-codes';
 
-import { BaseError, BaseErrorOptions } from './baseError';
+import type { BaseErrorOptions } from './baseError';
+import { BaseError } from './baseError';
 
 export interface HttpErrorOptions extends BaseErrorOptions {
     statusCode: number;

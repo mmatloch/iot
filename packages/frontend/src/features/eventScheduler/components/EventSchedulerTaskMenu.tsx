@@ -1,6 +1,7 @@
 import { useDeleteEventSchedulerTask } from '@api/eventSchedulerApi';
 import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
-import { EventSchedulerTask, EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
+import type { EventSchedulerTask} from '@definitions/entities/eventSchedulerTypes';
+import { EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
 import { CancelScheduleSend, Preview } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';

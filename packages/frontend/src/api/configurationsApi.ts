@@ -1,4 +1,4 @@
-import {
+import type {
     Configuration,
     ConfigurationDto,
     ConfigurationsSearchQuery,
@@ -6,7 +6,8 @@ import {
 } from '@definitions/entities/configurationTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
-import { UseQueryOptions, useQueryClient } from 'react-query';
+import type { UseQueryOptions} from 'react-query';
+import { useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
 

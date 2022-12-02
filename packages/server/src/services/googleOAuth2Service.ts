@@ -1,10 +1,12 @@
-import { Validator, createValidator } from '@common/validator';
+import type { Validator} from '@common/validator';
+import { createValidator } from '@common/validator';
 import { Type } from '@sinclair/typebox';
 
 import { getConfig } from '../config';
 import { ApplicationEnv } from '../constants';
 import { Errors } from '../errors';
-import { UserInfo, getUserInfoFromGoogleJWT } from '../utils/authUtils';
+import type { UserInfo} from '../utils/authUtils';
+import { getUserInfoFromGoogleJWT } from '../utils/authUtils';
 
 const config = getConfig();
 const oAuth2Config = config.externalServices.google.oAuth2;

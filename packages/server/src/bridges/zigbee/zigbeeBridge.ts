@@ -1,8 +1,9 @@
 import _ from 'lodash';
-import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
+import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
-import { MqttClient } from '../../clients/mqttClient';
-import { Configuration, ConfigurationState, ConfigurationType } from '../../entities/configurationEntity';
+import type { MqttClient } from '../../clients/mqttClient';
+import type { Configuration} from '../../entities/configurationEntity';
+import { ConfigurationState, ConfigurationType } from '../../entities/configurationEntity';
 import { createConfigurationSubscriber } from '../../entities/configurationEntitySubscriber';
 import { EntitySubscriberEvent } from '../../entities/subscriberDefinitions';
 import { createConfigurationsService } from '../../services/configurationsService';

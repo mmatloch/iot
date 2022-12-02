@@ -14,19 +14,21 @@ import {
     Raw,
 } from 'typeorm';
 
-import {
-    FilterLogicalOperator,
-    FilterOperator,
+import type {
     SearchFilterOperatorValue,
     SearchFilterWithFilterOperatorValue,
     SearchQuery,
     SimpleFilterValue,
     SortQuery,
     SortValue,
-    WhereQueryValue,
+    WhereQueryValue} from './searchDefinitions';
+import {
+    FilterLogicalOperator,
+    FilterOperator
 } from './searchDefinitions';
 import { SearchError } from './searchErrors';
-import { RawSearchQuery, searchQuerySchema } from './searchQuerySchema';
+import type { RawSearchQuery} from './searchQuerySchema';
+import { searchQuerySchema } from './searchQuerySchema';
 
 const isSimpleValue = (value: unknown): value is SimpleFilterValue => {
     return _.isString(value) || _.isNumber(value) || _.isBoolean(value);

@@ -1,9 +1,10 @@
 import { addSeconds } from 'date-fns';
 
-import { Configuration, ConfigurationType } from '../../../entities/configurationEntity';
+import type { Configuration} from '../../../entities/configurationEntity';
+import { ConfigurationType } from '../../../entities/configurationEntity';
 import { getLogger } from '../../../logger';
 import { createConfigurationsService } from '../../../services/configurationsService';
-import { ZigbeeInfo } from '../zigbeeDefinitions';
+import type { ZigbeeInfo } from '../zigbeeDefinitions';
 import { getZigbeeInfo, setZigbeeInfo } from '../zigbeeInfo';
 
 const logger = getLogger();

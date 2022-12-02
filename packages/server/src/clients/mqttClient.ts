@@ -1,15 +1,18 @@
 import { promisify } from 'util';
 
-import { Validator, createValidator } from '@common/validator';
-import { Static, TSchema } from '@sinclair/typebox';
+import type { Validator} from '@common/validator';
+import { createValidator } from '@common/validator';
+import type { Static, TSchema } from '@sinclair/typebox';
 import toCamelCase from 'camelcase-keys';
 import fastq from 'fastq';
 import _ from 'lodash';
-import { IClientSubscribeOptions, connect } from 'mqtt';
+import type { IClientSubscribeOptions} from 'mqtt';
+import { connect } from 'mqtt';
 
 import { getConfig } from '../config';
 import { getLogger } from '../logger';
-import { MqttMessageHandler, createMqttHandlerStore } from './mqttHandlerStore';
+import type { MqttMessageHandler} from './mqttHandlerStore';
+import { createMqttHandlerStore } from './mqttHandlerStore';
 
 const config = getConfig();
 const logger = getLogger();

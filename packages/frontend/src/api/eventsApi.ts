@@ -1,9 +1,10 @@
-import { Event, EventDto, EventsSearchQuery, EventsSearchResponse } from '@definitions/entities/eventTypes';
-import { EventsTriggerPayload, EventsTriggerResponse } from '@definitions/eventTriggerTypes';
+import type { Event, EventDto, EventsSearchQuery, EventsSearchResponse } from '@definitions/entities/eventTypes';
+import type { EventsTriggerPayload, EventsTriggerResponse } from '@definitions/eventTriggerTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 import isNumber from 'lodash/isNumber';
-import { UseQueryOptions, useQueryClient } from 'react-query';
+import type { UseQueryOptions} from 'react-query';
+import { useQueryClient } from 'react-query';
 
 import { ApiRoute } from '../constants';
 

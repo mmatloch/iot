@@ -1,4 +1,5 @@
-import { Device, DeviceProtocol } from '@definitions/entities/deviceTypes';
+import type { Device} from '@definitions/entities/deviceTypes';
+import { DeviceProtocol } from '@definitions/entities/deviceTypes';
 
 import SetupZigbeeDeviceStep from './zigbee/SetupZigbeeDeviceStep';
 

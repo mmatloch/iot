@@ -1,4 +1,4 @@
-import { ApplicationPlugin } from '@common/application';
+import type { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 

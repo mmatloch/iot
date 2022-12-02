@@ -1,5 +1,6 @@
-import { UsersSearchQuery } from '@api/usersApi';
-import SearchFilterCheckbox, { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
+import type { UsersSearchQuery } from '@api/usersApi';
+import type { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
+import SearchFilterCheckbox from '@components/search/filters/SearchFilterCheckbox';
 import SearchFilterSorting from '@components/search/filters/SearchFilterSorting';
 import { UserState } from '@definitions/entities/userTypes';
 import { Divider, ListSubheader, Menu, MenuList } from '@mui/material';

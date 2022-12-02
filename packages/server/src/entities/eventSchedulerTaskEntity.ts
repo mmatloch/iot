@@ -1,8 +1,8 @@
-import { Static, Type } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
-import { Event } from './eventEntity';
+import type { Event } from './eventEntity';
 import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
 
 export enum EventSchedulerTaskState {
@@ -19,7 +19,7 @@ export class EventSchedulerTask extends GenericEntity {
     @Column('integer')
     eventId!: number;
 
-    @ManyToOne(() => Event, { eager: true, onDelete: 'NO ACTION' })
+    @ManyToOne('Event', { eager: true, onDelete: 'NO ACTION' })
     @JoinColumn({ name: 'eventId' })
     event!: Event;
 
@@ -55,14 +55,3 @@ export interface EventSchedulerTaskDto {
 }
 
 export const eventSchedulerTaskSchema = mergeSchemas(eventSchedulerTaskDtoSchema, genericEntitySchema);
-
-export const eventSchedulerTaskSearchQuerySchema = Type.Partial(
-    mergeSchemas(
-        Type.Omit(eventSchedulerTaskDtoSchema, ['event']),
-        Type.Object({
-            eventId: Type.Integer(),
-        }),
-    ),
-);
-
-export type EventSchedulerTaskSearchQuery = Static<typeof eventSchedulerTaskSearchQuerySchema>;

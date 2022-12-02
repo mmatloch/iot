@@ -1,16 +1,17 @@
-import { Validator, createValidator } from '@common/validator';
+import type { Validator} from '@common/validator';
+import { createValidator } from '@common/validator';
 import { Type } from '@sinclair/typebox';
 import _ from 'lodash';
 
-import { MqttClient } from '../../clients/mqttClient';
-import { ZigbeeBridgeConfiguration } from '../../entities/configurationEntity';
+import type { MqttClient } from '../../clients/mqttClient';
+import { EventTriggerType } from '../../definitions/eventDefinitions';
+import type { ZigbeeBridgeConfiguration } from '../../entities/configurationEntity';
 import { DeviceState } from '../../entities/deviceEntity';
-import { EventTriggerType } from '../../events/eventDefinitions';
 import { eventTriggerInNewContext } from '../../events/eventTriggerInNewContext';
 import { getLogger } from '../../logger';
 import { createEventsService } from '../../services/eventsService';
 import { DeferredPromise } from '../../utils/deferredPromise';
-import { GenericDataPublisher } from '../generic/genericDataPublisher';
+import type { GenericDataPublisher } from '../generic/genericDataPublisher';
 import { ZIGBEE_BRIDGE_REQUEST_TYPE_MAP, requestBridgeDataSchema } from './zigbeeDefinitions';
 import { ZigbeeErrors } from './zigbeeErrors';
 

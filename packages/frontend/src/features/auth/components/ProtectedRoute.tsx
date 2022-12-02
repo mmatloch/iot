@@ -1,5 +1,5 @@
 import { useAuth } from '@hooks/useAuth';
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { AppRoute } from '../../../constants';

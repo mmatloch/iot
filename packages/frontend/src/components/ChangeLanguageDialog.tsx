@@ -2,7 +2,7 @@ import { AvailableLanguage } from '@definitions/localeTypes';
 import { useLocale } from '@hooks/useLocale';
 import { Dialog, DialogTitle, List, ListItem, ListItemIcon, ListItemText, SvgIcon } from '@mui/material';
 import { PL, US } from 'country-flag-icons/react/3x2';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface ListItemButtonProps {

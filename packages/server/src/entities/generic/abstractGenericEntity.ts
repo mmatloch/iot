@@ -1,5 +1,7 @@
-import { Validator, createValidator } from '@common/validator';
-import { TObject, TProperties, Type } from '@sinclair/typebox';
+import type { Validator} from '@common/validator';
+import { createValidator } from '@common/validator';
+import type { TObject, TProperties} from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import _ from 'lodash';
 import {
     AfterLoad,

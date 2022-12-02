@@ -1,4 +1,4 @@
-import { Device } from '../../entities/deviceEntity';
+import type { Device } from '../../entities/deviceEntity';
 
 type DefaultRequestBridgeFn = (data: unknown) => Promise<void>;
 

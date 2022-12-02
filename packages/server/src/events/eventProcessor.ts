@@ -1,10 +1,10 @@
 import { performance } from 'node:perf_hooks';
 
-import { PerformanceMetrics } from '../definitions';
+import type { PerformanceMetrics } from '../definitions';
 import type { Event } from '../entities/eventEntity';
 import { Errors } from '../errors';
-import { EventTriggerContext } from './eventRunDefinitions';
-import { EventRunSdk } from './sdks/sdk';
+import type { EventTriggerContext } from './eventRunDefinitions';
+import type { EventRunSdk } from './sdks/sdk';
 
 interface ProcessOptions {
     event: Event;

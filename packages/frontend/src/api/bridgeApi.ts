@@ -1,5 +1,5 @@
-import { BridgeRequestType } from '@definitions/bridgeTypes';
-import { Configuration } from '@definitions/entities/configurationTypes';
+import type { BridgeRequestType } from '@definitions/bridgeTypes';
+import type { Configuration } from '@definitions/entities/configurationTypes';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 
 import { ApiRoute } from '../constants';

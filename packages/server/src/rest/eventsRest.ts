@@ -1,22 +1,24 @@
-import { ApplicationPlugin } from '@common/application';
+import type { ApplicationPlugin } from '@common/application';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 import { Equal } from 'typeorm';
 
 import { createAccessControl } from '../accessControl';
+import type { RestSearchOptions } from '../apis/searchApi';
 import {
-    RestSearchOptions,
     SortValue,
     createOffsetPaginationStrategy,
     createRestSearch,
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
-import { Event, EventDto, eventDtoSchema, eventSchema, eventUpdateSchema } from '../entities/eventEntity';
-import { EventInstance, eventInstanceSchema } from '../entities/eventInstanceEntity';
+import { EventActionOnInactive, EventTriggerType } from '../definitions/eventDefinitions';
+import type { Event, EventDto } from '../entities/eventEntity';
+import { eventDtoSchema, eventSchema, eventUpdateSchema } from '../entities/eventEntity';
+import { eventInstanceSchema } from '../entities/eventInstanceEntity';
+import type { EventInstance } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
-import { EventActionOnInactive, EventTriggerType } from '../events/eventDefinitions';
 import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createEventInstancesService } from '../services/eventInstancesService';

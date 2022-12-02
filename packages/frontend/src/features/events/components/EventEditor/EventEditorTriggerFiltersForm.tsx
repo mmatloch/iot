@@ -1,8 +1,9 @@
 import DeviceAutocomplete from '@components/devices/DeviceAutocomplete';
-import { Device } from '@definitions/entities/deviceTypes';
-import { EventDto } from '@definitions/entities/eventTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
+import type { EventDto } from '@definitions/entities/eventTypes';
 import { FormGroup, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 

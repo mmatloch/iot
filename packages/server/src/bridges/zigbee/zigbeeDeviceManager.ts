@@ -1,18 +1,20 @@
 import { EOL } from 'node:os';
 
-import {
+import { EventState, EventTriggerType } from '../../definitions/eventDefinitions';
+import type {
     Device,
+    DeviceDto} from '../../entities/deviceEntity';
+import {
     DeviceDeactivatedByType,
-    DeviceDto,
     DevicePowerSource,
     DeviceProtocol,
     DeviceState,
     DeviceType,
 } from '../../entities/deviceEntity';
-import { EventState, EventTriggerType } from '../../events/eventDefinitions';
 import { createDevicesService } from '../../services/devicesService';
 import { createEventsService } from '../../services/eventsService';
-import { ZigbeeDevice, ZigbeeDeviceType, ZigbeePowerSource } from './zigbeeDefinitions';
+import type { ZigbeeDevice} from './zigbeeDefinitions';
+import { ZigbeeDeviceType, ZigbeePowerSource } from './zigbeeDefinitions';
 import { getZigbeeInfo } from './zigbeeInfo';
 
 const buildDeviceType = (zigbeeType: ZigbeeDeviceType): DeviceType => {

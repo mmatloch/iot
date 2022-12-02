@@ -1,10 +1,11 @@
 import EntityDates from '@components/EntityDates';
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
-import { Event } from '@definitions/entities/eventTypes';
+import type { Event } from '@definitions/entities/eventTypes';
 import { MoreVert } from '@mui/icons-material';
 import { CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
 import { getEventStateBadgeColor } from '@utils/badgeColor';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import EventEditDialog from './EventEditDialog';

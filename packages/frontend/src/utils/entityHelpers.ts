@@ -1,4 +1,5 @@
-import { GENERIC_ENTITY_FIELDS, GenericEntity } from '@definitions/commonTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
+import { GENERIC_ENTITY_FIELDS } from '@definitions/commonTypes';
 import { entries, get, isEqual, omit, set } from 'lodash';
 
 export const omitGenericEntityFields = <T extends GenericEntity>(entity: T): Omit<T, keyof GenericEntity> => {

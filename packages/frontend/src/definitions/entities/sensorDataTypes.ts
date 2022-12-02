@@ -1,4 +1,4 @@
-import { GenericEntity } from '@definitions/commonTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
 
 export interface SensorData extends GenericEntity {
     deviceId: number;

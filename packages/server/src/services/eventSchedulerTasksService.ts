@@ -1,10 +1,10 @@
 import _ from 'lodash';
-import { RemoveOptions } from 'typeorm';
+import type { RemoveOptions } from 'typeorm';
 
-import { Event } from '../entities/eventEntity';
-import { EventSchedulerTask, EventSchedulerTaskDto } from '../entities/eventSchedulerTaskEntity';
+import type { Event } from '../entities/eventEntity';
+import type { EventSchedulerTask, EventSchedulerTaskDto } from '../entities/eventSchedulerTaskEntity';
 import { createEventSchedulerTasksRepository } from '../repositories/eventSchedulerTasksRepository';
-import { GenericService } from './genericService';
+import type { GenericService } from './genericService';
 
 export interface EventSchedulerTasksService extends GenericService<EventSchedulerTask, EventSchedulerTaskDto> {
     removeByEvent: (event: Event, opts?: RemoveOptions) => Promise<EventSchedulerTask[]>;

@@ -43,7 +43,7 @@ export const DEFAULT_APPS = ['nginx', 'mosquitto', 'timescale'];
 export const PRODUCTION_APPS = ['frontend', 'server'];
 export const DEVELOPMENT_APPS = ['stubs', 'tests'];
 export const ALL_APPS_TO_BUILD = [...PRODUCTION_APPS, ...DEVELOPMENT_APPS];
-export const ALL_APPS_TO_START = [...PRODUCTION_APPS, 'stubs'];
+export const ALL_APPS_TO_START = [...PRODUCTION_APPS, 'stubs', 'pgadmin'];
 
 export const APP_SEPARATOR = ',';
 
