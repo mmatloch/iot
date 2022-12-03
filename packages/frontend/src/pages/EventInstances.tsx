@@ -83,7 +83,7 @@ export default function EventInstances() {
 
             <EventInstanceFilterMenu
                 searchQuery={searchQuery}
-                onFilterChange={setSearchQuery}
+                setSearchQuery={setSearchQuery}
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
             />

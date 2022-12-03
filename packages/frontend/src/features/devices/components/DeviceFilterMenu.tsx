@@ -1,22 +1,21 @@
 import type { CheckboxFilterMapItem } from '@components/search/filters/SearchFilterCheckbox';
 import SearchFilterCheckbox from '@components/search/filters/SearchFilterCheckbox';
-import SearchFilterSorting from '@components/search/filters/SearchFilterSorting';
+import SearchFilterMenu from '@components/search/SearchFilterMenu';
 import type { DevicesSearchQuery } from '@definitions/entities/deviceTypes';
 import { DeviceState } from '@definitions/entities/deviceTypes';
-import { Divider, ListSubheader, Menu, MenuList } from '@mui/material';
+import { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
     onClose: () => void;
-    onFilterChange: (query: DevicesSearchQuery) => void;
-    searchQuery: DevicesSearchQuery;
     anchorEl: HTMLElement | null;
+
+    setSearchQuery: SetSearchQuery<DevicesSearchQuery>;
+    searchQuery: DevicesSearchQuery;
 }
 
-export default function DeviceFilterMenu({ onClose, anchorEl, onFilterChange, searchQuery }: Props) {
+export default function DeviceFilterMenu({ onClose, anchorEl, setSearchQuery, searchQuery }: Props) {
     const { t } = useTranslation();
-
-    const isMenuOpen = Boolean(anchorEl);
 
     const checkboxFilterMap: Record<string, CheckboxFilterMapItem> = {
         showOnlyActive: {
@@ -28,22 +27,17 @@ export default function DeviceFilterMenu({ onClose, anchorEl, onFilterChange, se
     };
 
     return (
-        <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
-            <MenuList sx={{ pt: 0 }}>
-                <ListSubheader sx={{ bgcolor: 'transparent' }}>{t('generic:search.filtering.title')}</ListSubheader>
-
-                <Divider />
-
-                <SearchFilterCheckbox
-                    searchQuery={searchQuery}
-                    filterMap={checkboxFilterMap.showOnlyActive}
-                    onFilterChange={onFilterChange}
-                />
-
-                <Divider />
-
-                <SearchFilterSorting searchQuery={searchQuery} onFilterChange={onFilterChange} />
-            </MenuList>
-        </Menu>
+        <SearchFilterMenu
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            onClose={onClose}
+            anchorEl={anchorEl}
+        >
+            <SearchFilterCheckbox
+                searchQuery={searchQuery}
+                filterMap={checkboxFilterMap.showOnlyActive}
+                setSearchQuery={setSearchQuery}
+            />
+        </SearchFilterMenu>
     );
 }

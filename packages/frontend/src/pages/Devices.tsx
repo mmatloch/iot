@@ -4,14 +4,14 @@ import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
-import type { Device } from '@definitions/entities/deviceTypes';
+import type { DevicesSearchQuery } from '@definitions/entities/deviceTypes';
 import DeviceCard from '@features/devices/components/DeviceCard';
 import DeviceDetailsDrawerWrapper from '@features/devices/components/DeviceDetailsDrawerWrapper';
 import DeviceFilterMenu from '@features/devices/components/DeviceFilterMenu';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
 import { Box, Container } from '@mui/material';
-import type { MouseEvent} from 'react';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +25,7 @@ export default function Devices() {
     const navigate = useNavigate();
 
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const { searchQuery, setSearchQuery } = useSearchQuery<Device>({});
+    const { searchQuery, setSearchQuery } = useSearchQuery<DevicesSearchQuery>({});
     const { data, isSuccess, isLoading, isPreviousData } = useDevices(searchQuery);
 
     if (isLoading) {
@@ -84,7 +84,7 @@ export default function Devices() {
 
             <DeviceFilterMenu
                 searchQuery={searchQuery}
-                onFilterChange={setSearchQuery}
+                setSearchQuery={setSearchQuery}
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
             />

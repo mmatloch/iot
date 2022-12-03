@@ -1,16 +1,15 @@
-import { useUsers } from '@api/usersApi';
+import { UsersSearchQuery, useUsers } from '@api/usersApi';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
-import type { User } from '@definitions/entities/userTypes';
 import UserCard from '@features/users/components/UserCard';
 import UserFilterMenu from '@features/users/components/UserFilterMenu';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
 import { Box, Container } from '@mui/material';
-import type { MouseEvent} from 'react';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -19,7 +18,7 @@ const SEARCH_FIELD = 'name';
 export default function Users() {
     const { t } = useTranslation();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const { searchQuery, setSearchQuery } = useSearchQuery<User>({});
+    const { searchQuery, setSearchQuery } = useSearchQuery<UsersSearchQuery>({});
     const { data, isSuccess, isLoading, isPreviousData } = useUsers(searchQuery);
 
     if (isLoading) {
@@ -64,7 +63,7 @@ export default function Users() {
 
             <UserFilterMenu
                 searchQuery={searchQuery}
-                onFilterChange={setSearchQuery}
+                setSearchQuery={setSearchQuery}
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
             />

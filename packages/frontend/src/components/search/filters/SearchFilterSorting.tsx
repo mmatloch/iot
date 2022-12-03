@@ -1,5 +1,5 @@
 import type { GenericEntity } from '@definitions/commonTypes';
-import type { SearchQuery} from '@definitions/searchTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
 import { SortValue } from '@definitions/searchTypes';
 import type { SelectChangeEvent } from '@mui/material';
 import { FormControl, InputLabel, ListItem, MenuItem, Select } from '@mui/material';
@@ -17,11 +17,11 @@ enum SortOption {
 
 interface Props<TEntity extends GenericEntity, TSearchQuery extends SearchQuery<TEntity>> {
     searchQuery: TSearchQuery;
-    onFilterChange: (query: TSearchQuery) => void;
+    setSearchQuery: (query: TSearchQuery) => void;
 }
 
 export default function SearchFilterSorting<TEntity extends GenericEntity, TSearchQuery extends SearchQuery<TEntity>>({
-    onFilterChange,
+    setSearchQuery,
     searchQuery,
 }: Props<TEntity, TSearchQuery>) {
     const { t } = useTranslation();
@@ -74,7 +74,7 @@ export default function SearchFilterSorting<TEntity extends GenericEntity, TSear
             set(obj, sortingMapItem.path, sortingMapItem.value);
         }
 
-        onFilterChange(obj);
+        setSearchQuery(obj);
     };
 
     return (

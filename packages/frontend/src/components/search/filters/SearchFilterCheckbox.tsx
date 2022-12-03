@@ -16,13 +16,13 @@ interface Props<TEntity extends GenericEntity, TSearchQuery extends SearchQuery<
     filterMap: CheckboxFilterMapItem;
 
     searchQuery: TSearchQuery;
-    onFilterChange: (query: TSearchQuery) => void;
+    setSearchQuery: (query: TSearchQuery) => void;
 }
 
 export default function SearchFilterCheckbox<TEntity extends GenericEntity, TSearchQuery extends SearchQuery<TEntity>>({
     filterMap,
     searchQuery,
-    onFilterChange,
+    setSearchQuery,
 }: Props<TEntity, TSearchQuery>) {
     const isChecked = get(searchQuery, filterMap.path) === filterMap.checkValue;
 
@@ -35,7 +35,7 @@ export default function SearchFilterCheckbox<TEntity extends GenericEntity, TSea
             set(obj, filterMap.path, filterMap.checkValue);
         }
 
-        onFilterChange(obj);
+        setSearchQuery(obj);
     };
 
     const onCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,7 +47,7 @@ export default function SearchFilterCheckbox<TEntity extends GenericEntity, TSea
             set(obj, filterMap.path, filterMap.uncheckValue);
         }
 
-        onFilterChange(obj);
+        setSearchQuery(obj);
     };
 
     return (
