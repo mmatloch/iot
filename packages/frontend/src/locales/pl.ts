@@ -291,6 +291,7 @@ export const PolishLocale: Locale = {
         title: 'Instancje zdarzeń',
         entity: {
             triggeredBy: 'Wywołany przez',
+            triggerContext: 'Kontekst',
             performanceMetrics: {
                 executionDuration: 'Czas wykonywania',
                 steps: 'Kroki',

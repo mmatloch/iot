@@ -1,5 +1,10 @@
-import type { EventInstancesSearchQuery, EventInstancesSearchResponse } from '@definitions/entities/eventInstanceTypes';
+import type {
+    EventInstance,
+    EventInstancesSearchQuery,
+    EventInstancesSearchResponse,
+} from '@definitions/entities/eventInstanceTypes';
 import { useFetch } from '@hooks/useFetch';
+import { UseQueryOptions } from 'react-query';
 
 import { ApiRoute } from '../constants';
 
@@ -13,4 +18,13 @@ export const useEventInstances = (query: EventInstancesSearchQuery) =>
         {
             keepPreviousData: true,
         },
+    );
+
+export const useEventInstance = (id: number, useQueryOptions?: UseQueryOptions<EventInstance, Error>) =>
+    useFetch<EventInstance>(
+        {
+            url: `${ApiRoute.EventInstances.Root}/${id}`,
+            method: 'GET',
+        },
+        useQueryOptions,
     );

@@ -2,9 +2,10 @@ import DeviceAutocomplete from '@components/devices/DeviceAutocomplete';
 import DeviceAutocompleteWrapper from '@components/devices/DeviceAutocompleteWrapper';
 import EventAutocomplete from '@components/events/EventAutocomplete';
 import EventAutocompleteWrapper from '@components/events/EventAutocompleteWrapper';
+import SearchFilterSelect from '@components/search/filters/SearchFilterSelect';
 import SearchFilterMenu from '@components/search/SearchFilterMenu';
 import { Device } from '@definitions/entities/deviceTypes';
-import { EventInstancesSearchQuery } from '@definitions/entities/eventInstanceTypes';
+import { EventInstanceState, EventInstancesSearchQuery } from '@definitions/entities/eventInstanceTypes';
 import type { Event } from '@definitions/entities/eventTypes';
 import { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { FormControl, ListItem } from '@mui/material';
@@ -22,6 +23,33 @@ export default function EventInstanceFilterMenu({ onClose, anchorEl, setSearchQu
     const { t } = useTranslation();
     const currentEventId = Number(searchQuery.filters?.eventId);
     const currentDeviceId = Number(searchQuery.filters?.deviceId);
+
+    const stateFilterMap = [
+        {
+            path: 'filters.state',
+            value: EventInstanceState.Success,
+            option: EventInstanceState.Success,
+            text: t(`eventInstances:state.${EventInstanceState.Success}`),
+        },
+        {
+            path: 'filters.state',
+            value: EventInstanceState.ConditionNotMet,
+            option: EventInstanceState.ConditionNotMet,
+            text: t(`eventInstances:state.${EventInstanceState.ConditionNotMet}`),
+        },
+        {
+            path: 'filters.state',
+            value: EventInstanceState.FailedOnAction,
+            option: EventInstanceState.FailedOnAction,
+            text: t(`eventInstances:state.${EventInstanceState.FailedOnAction}`),
+        },
+        {
+            path: 'filters.state',
+            value: EventInstanceState.FailedOnCondition,
+            option: EventInstanceState.FailedOnCondition,
+            text: t(`eventInstances:state.${EventInstanceState.FailedOnCondition}`),
+        },
+    ];
 
     const handleEventSelect = (_: unknown, selectedEvent: Event | null) => {
         if (selectedEvent) {
@@ -109,6 +137,13 @@ export default function EventInstanceFilterMenu({ onClose, anchorEl, setSearchQu
                     )}
                 </FormControl>
             </ListItem>
+
+            <SearchFilterSelect
+                label={t('generic:entity.state')}
+                searchQuery={searchQuery}
+                setSearchQuery={setSearchQuery}
+                filterMap={stateFilterMap}
+            />
         </SearchFilterMenu>
     );
 }

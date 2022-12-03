@@ -16,13 +16,10 @@ import {
 import { EventActionOnInactive, EventTriggerType } from '../definitions/eventDefinitions';
 import type { Event, EventDto } from '../entities/eventEntity';
 import { eventDtoSchema, eventSchema, eventUpdateSchema } from '../entities/eventEntity';
-import { eventInstanceSchema } from '../entities/eventInstanceEntity';
-import type { EventInstance } from '../entities/eventInstanceEntity';
 import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
 import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
-import { createEventInstancesService } from '../services/eventInstancesService';
 import { createEventsService } from '../services/eventsService';
 
 const createEventSchema = {
@@ -116,50 +113,6 @@ const triggerEventSchema = {
             additionalProperties: false,
         },
     ),
-};
-
-const searchEventInstancesSchema = {
-    querystring: searchQuerySchema,
-    response: {
-        [StatusCodes.OK]: createSearchResponseSchema(eventInstanceSchema),
-    },
-};
-
-const eventInstanceSearchOptions: RestSearchOptions<EventInstance> = {
-    size: {
-        default: 10,
-    },
-    sort: {
-        allowedFields: ['_createdAt', '_updatedAt'],
-        default: {
-            _updatedAt: SortValue.Desc,
-        },
-    },
-    filters: {
-        allowedFields: ['eventId', 'eventRunId', 'state', 'event'],
-        virtualFields: [
-            {
-                sourceField: 'deviceId',
-                mapQuery: (value) => {
-                    return {
-                        event: {
-                            [FilterOperator.Json]: JSON.stringify({
-                                triggerFilters: {
-                                    deviceId: Number(value),
-                                },
-                            }),
-                        },
-                    };
-                },
-            },
-        ],
-    },
-    pagination: {
-        defaultStrategy: createOffsetPaginationStrategy(),
-    },
-    relations: {
-        allowedFields: ['_createdByUser', '_updatedByUser'],
-    },
 };
 
 const userEventUpdatableFields = [
@@ -258,19 +211,5 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
         );
 
         return reply.status(StatusCodes.CREATED).send(result);
-    });
-
-    app.withTypeProvider().get('/events/instances', { schema: searchEventInstancesSchema }, async (request, reply) => {
-        const accessControl = createAccessControl();
-        accessControl.authorize({
-            role: UserRole.Admin,
-        });
-
-        const searchResponse = await createRestSearch(createEventInstancesService()).query(
-            request.query,
-            eventInstanceSearchOptions,
-        );
-
-        return reply.status(StatusCodes.OK).send(searchResponse);
     });
 };

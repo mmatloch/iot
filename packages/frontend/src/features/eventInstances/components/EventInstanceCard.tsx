@@ -2,11 +2,14 @@ import EntityDates from '@components/EntityDates';
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
 import type { EventInstance } from '@definitions/entities/eventInstanceTypes';
 import { EventInstanceState } from '@definitions/entities/eventInstanceTypes';
+import EventRunPerformanceMetricsBar from '@features/events/components/EventTrigger/EventRunPerformanceMetricsBar';
 import { MoreVert } from '@mui/icons-material';
-import { CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
+import { CardContent, CardHeader, Grid, IconButton } from '@mui/material';
 import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
+import EventInstanceMenu from './EventInstanceMenu';
 
 interface Props {
     entity: EventInstance;
@@ -28,9 +31,8 @@ const getBadgeColor = (state: EventInstanceState) => {
 };
 
 export default function EventInstanceCard({ entity: eventInstance }: Props) {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
-    const [isEditDialogOpen, setEditDialogOpen] = useState(false);
 
     const stateTransKey = `eventInstances:state.${eventInstance.state}` as const;
 
@@ -42,44 +44,30 @@ export default function EventInstanceCard({ entity: eventInstance }: Props) {
         setMenuAnchorEl(null);
     };
 
-    const openEditDialog = () => {
-        closeMenu();
-        setEditDialogOpen(true);
-    };
-
-    const closeEditDialog = () => {
-        setEditDialogOpen(false);
-    };
-
     return (
         <EntityCardWithBadge badgeColor={getBadgeColor(eventInstance.state)} badgeContent={t(stateTransKey)}>
             <CardHeader
                 title={eventInstance.event.displayName}
-                titleTypographyProps={{ variant: 'body1' }}
+                titleTypographyProps={{ variant: 'h6' }}
                 action={
                     <IconButton onClick={openMenu}>
                         <MoreVert />
                     </IconButton>
                 }
-                sx={{ py: 0 }}
             />
-            <CardContent
-                sx={{
-                    pt: 0,
-                    '&:last-child': {
-                        pb: 0,
-                    },
-                }}
-            >
-                <Grid container spacing={3}>
+            <CardContent>
+                <Grid container spacing={1} alignItems="stretch">
+                    <Grid item sx={{ width: '100%' }}>
+                        <EventRunPerformanceMetricsBar performanceMetrics={eventInstance.performanceMetrics} />
+                    </Grid>
+
                     <Grid item>
                         <EntityDates entity={eventInstance} hideCreator />
                     </Grid>
                 </Grid>
             </CardContent>
 
-            {/* <EventMenu event={event} onClose={closeEventMenu} anchorEl={eventMenuAnchorEl} onEdit={openEditDialog} />
-            <EventEditDialog event={event} isOpen={isEditDialogOpen} onClose={closeEditDialog} /> */}
+            <EventInstanceMenu eventInstance={eventInstance} onClose={closeMenu} anchorEl={menuAnchorEl} />
         </EntityCardWithBadge>
     );
 }

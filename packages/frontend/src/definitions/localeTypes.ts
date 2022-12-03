@@ -242,6 +242,7 @@ export interface Locale {
         title: string;
         entity: {
             triggeredBy: string;
+            triggerContext: string;
             performanceMetrics: {
                 executionDuration: string;
                 steps: string;

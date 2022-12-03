@@ -10,6 +10,8 @@ import type { EventInstance, EventInstancesSearchQuery } from '@definitions/enti
 import type { EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { Event } from '@definitions/entities/eventTypes';
 import EventInstanceCard from '@features/eventInstances/components/EventInstanceCard';
+import EventInstanceDetailsDrawer from '@features/eventInstances/components/EventInstanceDetailsDrawer';
+import EventInstanceDetailsDrawerWrapper from '@features/eventInstances/components/EventInstanceDetailsDrawerWrapper';
 import EventInstanceFilterMenu from '@features/eventInstances/components/EventInstanceFilterMenu';
 import EventCard from '@features/events/components/EventCard';
 import EventFilterMenu from '@features/events/components/EventFilterMenu';
@@ -87,6 +89,7 @@ export default function EventInstances() {
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
             />
+            <EventInstanceDetailsDrawerWrapper />
         </Layout>
     );
 }

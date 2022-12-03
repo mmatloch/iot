@@ -291,6 +291,7 @@ export const EnglishLocale: Locale = {
         title: 'Event instances',
         entity: {
             triggeredBy: 'Triggered by',
+            triggerContext: 'Context',
             performanceMetrics: {
                 executionDuration: 'Execution duration',
                 steps: 'Steps',
