@@ -61,8 +61,7 @@ export interface SearchQuery<TEntity extends GenericEntity = GenericEntity, TVir
     sort?: {
         [key in keyof TEntity]?: SortValue;
     };
-    filters?: Partial<Record<keyof TEntity, SearchFilterOperatorValue>> &
-        Partial<Record<TVirtualFields, SimpleFilterValue>>;
+    filters?: Partial<Record<keyof TEntity, SearchFilterOperatorValue> & Record<TVirtualFields, SimpleFilterValue>>;
     relations?: {
         [key in keyof TEntity]?: boolean;
     };

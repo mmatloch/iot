@@ -26,7 +26,7 @@
     "lodash": "^4.17.21",
     "mqtt": "^4.3.7",
     "qs": "^6.11.0",
-    "typescript": "^4.8.2",
+    "typescript": "^5.0.4",
     "whatwg-mimetype": "^3.0.0"
   }
 }

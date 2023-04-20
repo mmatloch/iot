@@ -1,5 +1,5 @@
 import type { GenericEntity } from '@definitions/commonTypes';
-import type { SearchQuery } from '@definitions/searchTypes';
+import type { SearchFilterOperatorValue, SearchQuery } from '@definitions/searchTypes';
 import { FilterOperator } from '@definitions/searchTypes';
 import type { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { useDebounce } from '@hooks/useDebounce';
@@ -23,7 +23,7 @@ export default function SearchTextInput<TEntity extends GenericEntity>({
 }: Props<TEntity>) {
     const [inputValue, setInputValue] = useState(() => {
         const initialValue = get(searchQuery, `filters.${String(searchField)}.${FilterOperator.ILike}`, '');
-        return initialValue.slice(0, -1); // remove %
+        return String(initialValue).slice(0, -1); // remove %
     });
     const debouncedInputValue = useDebounce(inputValue, 200);
 
@@ -35,6 +35,7 @@ export default function SearchTextInput<TEntity extends GenericEntity>({
         const filters: SearchQuery<TEntity>['filters'] = {};
 
         if (debouncedInputValue) {
+            // @ts-expect-error invalid type or TS bug
             filters[searchField] = {
                 [FilterOperator.ILike]: `${debouncedInputValue}%`,
             };
