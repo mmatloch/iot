@@ -1,9 +1,11 @@
 import EntityDates from '@components/EntityDates';
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
-import { Device, DeviceState } from '@definitions/entities/deviceTypes';
+import type { Device} from '@definitions/entities/deviceTypes';
+import { DeviceState } from '@definitions/entities/deviceTypes';
 import { MoreVert } from '@mui/icons-material';
 import { CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import DeviceDeactivatedBy from './DeviceDeactivatedBy';

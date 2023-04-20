@@ -1,4 +1,4 @@
-import { EventInstance } from '@definitions/entities/eventInstanceTypes';
+import type { EventInstance } from '@definitions/entities/eventInstanceTypes';
 import { Box, Stack, Tooltip, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
@@ -23,7 +23,7 @@ export default function EventRunPerformanceMetricsBar({ performanceMetrics }: Pr
                 {performanceMetrics.executionDuration.toFixed(5)}
                 ms
             </Typography>
-            <Stack direction="row" sx={{ width: '100%', height: HEIGHT, backgroundColor: COLORS.base }}>
+            <Stack direction="row" sx={{ width: '100%', mt: 1, height: HEIGHT, backgroundColor: COLORS.base }}>
                 {performanceMetrics.steps.map((step, index) => {
                     const width = (step.executionDuration / performanceMetrics.executionDuration) * 100;
 

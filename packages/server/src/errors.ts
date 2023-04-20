@@ -1,4 +1,5 @@
-import { BaseError, BaseErrorOptions, HttpError, HttpErrorOptions } from '@common/errors';
+import type { BaseErrorOptions, HttpErrorOptions } from '@common/errors';
+import { BaseError, HttpError } from '@common/errors';
 
 export enum ErrorCode {
     GenericInternalError = 1,

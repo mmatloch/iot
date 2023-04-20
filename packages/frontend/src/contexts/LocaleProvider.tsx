@@ -1,7 +1,8 @@
 import { AvailableLanguage } from '@definitions/localeTypes';
 import { setDefaultOptions } from 'date-fns';
 import { enUS, pl } from 'date-fns/locale';
-import { ReactNode, useEffect, useMemo } from 'react';
+import type { ReactNode} from 'react';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import useLocalStorage from 'use-local-storage';
 

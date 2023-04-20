@@ -1,4 +1,7 @@
-import { GenericEntity, StructuredError } from '@definitions/commonTypes';
+import type { GenericEntity, StructuredError } from '@definitions/commonTypes';
+import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+
+import type { Event } from './eventTypes';
 
 export enum EventInstanceState {
     UnknownError = 'UNKNOWN_ERROR',
@@ -24,6 +27,7 @@ interface PerformanceMetrics {
 
 export interface EventInstance extends GenericEntity {
     eventId: number;
+    event: Event;
     parentEventId: number | null;
     triggerContext: Record<string, unknown>;
     state: EventInstanceState;
@@ -31,3 +35,7 @@ export interface EventInstance extends GenericEntity {
     performanceMetrics: PerformanceMetrics;
     eventRunId: string;
 }
+
+type VirtualSearchFields = 'deviceId';
+export type EventInstancesSearchQuery = SearchQuery<EventInstance, VirtualSearchFields>;
+export type EventInstancesSearchResponse = SearchResponse<EventInstance>;

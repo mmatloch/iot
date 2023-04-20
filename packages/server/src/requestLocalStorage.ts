@@ -1,6 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 
-import { UserRole } from './entities/userEntity';
+import type { UserRole } from './entities/userEntity';
 
 export interface RequestUser {
     _id: number;

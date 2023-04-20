@@ -1,11 +1,13 @@
 import EntityDates from '@components/EntityDates';
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
 import UserEditDialog from '@components/UserEditDialog';
-import { User, UserState } from '@definitions/entities/userTypes';
+import type { User} from '@definitions/entities/userTypes';
+import { UserState } from '@definitions/entities/userTypes';
 import { MoreVert } from '@mui/icons-material';
 import { Box, CardContent, CardHeader, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import UserAvatar from './UserAvatar';

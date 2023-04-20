@@ -1,7 +1,7 @@
 import type { Event } from '../entities/eventEntity';
 import type { EventInstance } from '../entities/eventInstanceEntity';
 import { Errors } from '../errors';
-import { EventRunSummary, EventRunSummaryChild } from './eventRunDefinitions';
+import type { EventRunSummary, EventRunSummaryChild } from './eventRunDefinitions';
 import { getChildLocalStorage, getEventRunLocalStorage } from './eventRunLocalStorage';
 
 const findSummaryChild = (event: Event, children: EventRunSummaryChild[]): EventRunSummaryChild | undefined => {

@@ -13,6 +13,7 @@ import requestUserPlugin from './plugins/requestUserPlugin';
 import { createBridgeRest } from './rest/bridgeRest';
 import { createConfigurationsRest } from './rest/configurationsRest';
 import { createDevicesRest } from './rest/devicesRest';
+import { createEventInstancesRest } from './rest/eventInstancesRest';
 import { createEventSchedulerTasksRest } from './rest/eventSchedulerTasksRest';
 import { createEventsRest } from './rest/eventsRest';
 import { createSensorDataRest } from './rest/sensorDataRest';
@@ -52,6 +53,7 @@ createApplication({
             app.register(createEventsRest);
             app.register(createSensorDataRest);
             app.register(createEventSchedulerTasksRest);
+            app.register(createEventInstancesRest);
             app.register(createConfigurationsRest);
             app.register(createBridgeRest);
 

@@ -1,12 +1,14 @@
+import type {
+    CheckboxProps,
+    FormControlLabelProps,
+    FormControlProps} from '@mui/material';
 import {
     Checkbox,
-    CheckboxProps,
     FormControl,
-    FormControlLabel,
-    FormControlLabelProps,
-    FormControlProps,
+    FormControlLabel
 } from '@mui/material';
-import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
+import type { RegisterOptions} from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props extends CheckboxProps {
     name: string;

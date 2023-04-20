@@ -1,7 +1,9 @@
-import { FormControl, FormHelperText, InputLabel, MenuItem, Select, SelectProps } from '@mui/material';
+import type { SelectProps } from '@mui/material';
+import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import has from 'lodash/has';
 import { useId, useMemo } from 'react';
-import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
+import type { RegisterOptions} from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 interface SelectItem {
     value: string | number;

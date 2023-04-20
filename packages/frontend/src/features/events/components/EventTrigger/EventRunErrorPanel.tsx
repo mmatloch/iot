@@ -1,4 +1,4 @@
-import { EventInstance } from '@definitions/entities/eventInstanceTypes';
+import type { EventInstance } from '@definitions/entities/eventInstanceTypes';
 import { Alert, AlertTitle, Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 

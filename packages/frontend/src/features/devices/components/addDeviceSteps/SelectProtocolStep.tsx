@@ -1,4 +1,4 @@
-import { DeviceProtocol } from '@definitions/entities/deviceTypes';
+import type { DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { Box, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 

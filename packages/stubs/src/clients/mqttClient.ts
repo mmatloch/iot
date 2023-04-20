@@ -1,7 +1,8 @@
 import { promisify } from 'util';
 
 import _ from 'lodash';
-import { IClientSubscribeOptions, connect } from 'mqtt';
+import type { IClientSubscribeOptions} from 'mqtt';
+import { connect } from 'mqtt';
 
 import { getConfig } from '../config';
 import { getLogger } from '../logger';

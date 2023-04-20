@@ -1,5 +1,5 @@
 import { createApplicationPlugin } from '../applicationPlugin';
-import { ApplicationPlugin } from '../types';
+import type { ApplicationPlugin } from '../types';
 
 export interface LoggerPluginOptions extends Record<string, unknown> {
     logRequests?: boolean;

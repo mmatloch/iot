@@ -1,7 +1,8 @@
 import { useTriggerEvent } from '@api/eventsApi';
 import CircularProgressLoader from '@components/CircularProgressLoader';
-import { Event, EventActionOnInactive } from '@definitions/entities/eventTypes';
-import { EventsTriggerPayload } from '@definitions/eventTriggerTypes';
+import type { Event} from '@definitions/entities/eventTypes';
+import { EventActionOnInactive } from '@definitions/entities/eventTypes';
+import type { EventsTriggerPayload } from '@definitions/eventTriggerTypes';
 import { Send } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { Box, Divider, Toolbar } from '@mui/material';

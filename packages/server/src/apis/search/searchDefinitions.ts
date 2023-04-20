@@ -1,4 +1,4 @@
-import { EqualOperator, FindOperator } from 'typeorm';
+import type { EqualOperator, FindOperator } from 'typeorm';
 
 export enum SortValue {
     Asc = 'ASC',

@@ -1,10 +1,9 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery, SortValue } from '@definitions/searchTypes';
-import { FormControl, InputLabel, ListItem, MenuItem, Select, SelectChangeEvent } from '@mui/material';
-import get from 'lodash/get';
-import set from 'lodash/set';
-import { useId } from 'react';
+import type { SearchQuery } from '@definitions/searchTypes';
+import { SortValue } from '@definitions/searchTypes';
+import { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { useTranslation } from 'react-i18next';
+
+import SearchFilterSelect from './SearchFilterSelect';
 
 enum SortOption {
     Default = 0,
@@ -13,19 +12,29 @@ enum SortOption {
     RecentlyUpdated,
 }
 
-interface Props<TEntity extends GenericEntity, TSearchQuery extends SearchQuery<TEntity>> {
+const SEARCH_QUERY_BASE = {
+    sort: {
+        _createdAt: undefined,
+        _updatedAt: undefined,
+    },
+};
+
+interface Props<TSearchQuery extends SearchQuery> {
     searchQuery: TSearchQuery;
-    onFilterChange: (query: TSearchQuery) => void;
+    setSearchQuery: SetSearchQuery<TSearchQuery>;
 }
 
-export default function SearchFilterSorting<TEntity extends GenericEntity, TSearchQuery extends SearchQuery<TEntity>>({
-    onFilterChange,
+export default function SearchFilterSorting<TSearchQuery extends SearchQuery>({
+    setSearchQuery,
     searchQuery,
-}: Props<TEntity, TSearchQuery>) {
+}: Props<TSearchQuery>) {
     const { t } = useTranslation();
-    const labelId = useId();
 
     const sortingMap = [
+        {
+            option: SortOption.Default,
+            text: t('generic:default'),
+        },
         {
             path: 'sort._createdAt',
             value: SortValue.Desc,
@@ -46,54 +55,13 @@ export default function SearchFilterSorting<TEntity extends GenericEntity, TSear
         },
     ];
 
-    const getSelectedSorting = (): SortOption | undefined => {
-        if (!searchQuery.sort) {
-            return SortOption.Default;
-        }
-
-        const sortingMapItem = sortingMap.find(({ path, value }) => get(searchQuery, path) === value);
-
-        return sortingMapItem?.option || SortOption.Default;
-    };
-
-    const selectedSorting = getSelectedSorting();
-
-    const onSortingChange = (event: SelectChangeEvent<SortOption>) => {
-        const obj = {
-            sort: {
-                _createdAt: undefined,
-                _updatedAt: undefined,
-            },
-        } as TSearchQuery;
-
-        const sortingMapItem = sortingMap.find(({ option }) => option === event.target.value);
-
-        if (sortingMapItem) {
-            set(obj, sortingMapItem.path, sortingMapItem.value);
-        }
-
-        onFilterChange(obj);
-    };
-
     return (
-        <ListItem>
-            <FormControl sx={{ width: '100%', mt: 1 }}>
-                <InputLabel id={labelId}>{t('generic:search.sorting.title')}</InputLabel>
-                <Select
-                    labelId={labelId}
-                    onChange={onSortingChange}
-                    value={selectedSorting}
-                    label={t('generic:search.sorting.title')}
-                >
-                    <MenuItem value={SortOption.Default}>{t('generic:default')}</MenuItem>
-
-                    {sortingMap.map((item, index) => (
-                        <MenuItem value={item.option} key={index}>
-                            {item.text}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        </ListItem>
+        <SearchFilterSelect
+            label={t('generic:search.sorting.title')}
+            searchQueryBase={SEARCH_QUERY_BASE as TSearchQuery}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            filterMap={sortingMap}
+        />
     );
 }

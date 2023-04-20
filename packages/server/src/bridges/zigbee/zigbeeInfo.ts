@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { ZigbeeInfo } from './zigbeeDefinitions';
+import type { ZigbeeInfo } from './zigbeeDefinitions';
 
 let info: ZigbeeInfo | undefined;
 

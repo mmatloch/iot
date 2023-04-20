@@ -1,12 +1,12 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
-import { SetSearchQuery } from '@hooks/search/useSearchQuery';
+import type { GenericEntity } from '@definitions/commonTypes';
+import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+import type { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { Pagination } from '@mui/material';
 
 interface Props<TEntity extends GenericEntity> {
     data: SearchResponse<TEntity>;
     disabled: boolean;
-    setSearchQuery: SetSearchQuery<TEntity>;
+    setSearchQuery: SetSearchQuery<SearchQuery<TEntity>>;
     searchQuery: SearchQuery<TEntity>;
 }
 

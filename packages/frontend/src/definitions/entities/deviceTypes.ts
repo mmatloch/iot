@@ -1,6 +1,6 @@
-import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 
-import { GenericEntity } from '../commonTypes';
+import type { GenericEntity } from '../commonTypes';
 import type { User } from './userTypes';
 
 export enum DeviceType {

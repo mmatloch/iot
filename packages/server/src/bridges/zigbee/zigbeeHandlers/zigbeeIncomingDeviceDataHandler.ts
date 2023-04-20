@@ -1,9 +1,9 @@
-import { Device } from '../../../entities/deviceEntity';
-import { EventTriggerType } from '../../../events/eventDefinitions';
+import { EventTriggerType } from '../../../definitions/eventDefinitions';
+import type { Device } from '../../../entities/deviceEntity';
 import { eventTriggerInNewContext } from '../../../events/eventTriggerInNewContext';
 import { getLogger } from '../../../logger';
 import { createEventsService } from '../../../services/eventsService';
-import { ZigbeeDeviceData } from '../zigbeeDefinitions';
+import type { ZigbeeDeviceData } from '../zigbeeDefinitions';
 
 const logger = getLogger();
 

@@ -14,9 +14,7 @@ import {
     Raw,
 } from 'typeorm';
 
-import {
-    FilterLogicalOperator,
-    FilterOperator,
+import type {
     SearchFilterOperatorValue,
     SearchFilterWithFilterOperatorValue,
     SearchQuery,
@@ -25,8 +23,10 @@ import {
     SortValue,
     WhereQueryValue,
 } from './searchDefinitions';
+import { FilterLogicalOperator, FilterOperator } from './searchDefinitions';
 import { SearchError } from './searchErrors';
-import { RawSearchQuery, searchQuerySchema } from './searchQuerySchema';
+import type { RawSearchQuery } from './searchQuerySchema';
+import { searchQuerySchema } from './searchQuerySchema';
 
 const isSimpleValue = (value: unknown): value is SimpleFilterValue => {
     return _.isString(value) || _.isNumber(value) || _.isBoolean(value);
@@ -52,6 +52,11 @@ const buildMap: BuildMap = {
 
 const ALLOWED_FIELDS = Object.keys(searchQuerySchema.properties);
 
+interface VirtualField {
+    sourceField: string;
+    mapQuery: (value: SimpleFilterValue) => RawSearchQuery['filters'];
+}
+
 export interface BuildQueryFromRawOptions<TEntity> {
     size: {
         default: number;
@@ -64,6 +69,7 @@ export interface BuildQueryFromRawOptions<TEntity> {
     };
     filters: {
         allowedFields: (keyof TEntity)[];
+        virtualFields?: VirtualField[];
     };
     relations: {
         allowedFields: (keyof TEntity)[];
@@ -74,6 +80,29 @@ export const buildQueryFromRaw = <TEntity>(
     rawSearchQuery: RawSearchQuery,
     opts: BuildQueryFromRawOptions<TEntity>,
 ): SearchQuery => {
+    const processVirtualFields = () => {
+        if (!opts.filters.virtualFields) {
+            return;
+        }
+
+        opts.filters.virtualFields.forEach(({ sourceField, mapQuery }) => {
+            const sourceValue = rawSearchQuery.filters?.[sourceField];
+
+            if (_.isUndefined(sourceValue)) {
+                return;
+            }
+
+            if (!isSimpleValue(sourceValue)) {
+                throw SearchError.invalidFieldValue(sourceField);
+            }
+
+            delete rawSearchQuery.filters?.[sourceField];
+            _.merge(rawSearchQuery.filters, mapQuery(sourceValue));
+        });
+    };
+
+    processVirtualFields();
+
     const queryKeys = Object.keys(rawSearchQuery);
 
     queryKeys.forEach((key) => {

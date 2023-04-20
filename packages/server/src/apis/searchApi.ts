@@ -1,12 +1,14 @@
-import { TSchema, Type } from '@sinclair/typebox';
-import { FindManyOptions } from 'typeorm';
+import type { TSchema} from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
+import type { FindManyOptions } from 'typeorm';
 
-import { GenericService } from '../services/genericService';
-import { PaginationStrategy } from './search/pagination/paginationStrategy';
+import type { GenericService } from '../services/genericService';
+import type { PaginationStrategy } from './search/pagination/paginationStrategy';
 import { matchPaginationStrategy } from './search/pagination/paginationStrategyMatcher';
-import { BuildQueryFromRawOptions, buildQueryFromRaw } from './search/queryBuilder';
-import { SearchResponse } from './search/searchDefinitions';
-import { RawSearchQuery } from './search/searchQuerySchema';
+import type { BuildQueryFromRawOptions} from './search/queryBuilder';
+import { buildQueryFromRaw } from './search/queryBuilder';
+import type { SearchResponse } from './search/searchDefinitions';
+import type { RawSearchQuery } from './search/searchQuerySchema';
 
 export const createSearchResponseSchema = (hitSchema: TSchema) => {
     return Type.Object({

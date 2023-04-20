@@ -1,5 +1,5 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
+import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 
 import type { Event } from './eventTypes';
 

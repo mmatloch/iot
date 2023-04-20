@@ -1,13 +1,14 @@
-import { GenericEntity } from '@definitions/commonTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
 import { Tooltip, Typography } from '@mui/material';
 import { formatFullDate, formatRelativeDate } from '@utils/dateFormatters';
 import { Trans, useTranslation } from 'react-i18next';
 
 interface Props {
     entity: GenericEntity;
+    hideCreator?: boolean;
 }
 
-export default function CreatedAtText({ entity }: Props) {
+export default function CreatedAtText({ entity, hideCreator }: Props) {
     const { t } = useTranslation();
 
     const createdBy = entity._createdByUser?.name || entity._createdBy || 'SYSTEM';
@@ -16,7 +17,7 @@ export default function CreatedAtText({ entity }: Props) {
         <Tooltip describeChild title={formatFullDate(entity._createdAt)}>
             <Typography variant="subtitle2">
                 <Trans
-                    i18nKey="generic:dates.createdAt"
+                    i18nKey={hideCreator ? 'generic:dates.createdAt' : 'generic:dates.createdAtAndBy'}
                     t={t}
                     values={{ when: formatRelativeDate(entity._createdAt), by: createdBy }}
                     components={{ strong: <strong /> }}

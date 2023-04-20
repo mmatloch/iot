@@ -1,4 +1,5 @@
-import i18n, { Resource, ResourceLanguage } from 'i18next';
+import type { Resource, ResourceLanguage } from 'i18next';
+import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import lowerFirst from 'lodash/lowerFirst';
 import upperFirst from 'lodash/upperFirst';

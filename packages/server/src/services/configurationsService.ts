@@ -1,12 +1,13 @@
 import _ from 'lodash';
 import { Raw } from 'typeorm';
 
-import { GenericDataPublisher } from '../bridges/generic/genericDataPublisher';
+import type { GenericDataPublisher } from '../bridges/generic/genericDataPublisher';
 import { getZigbeeDataPublisher } from '../bridges/zigbee/zigbeeDataPublisher';
-import { Configuration, ConfigurationDto, ConfigurationType } from '../entities/configurationEntity';
+import type { Configuration, ConfigurationDto} from '../entities/configurationEntity';
+import { ConfigurationType } from '../entities/configurationEntity';
 import { Errors } from '../errors';
 import { createConfigurationsRepository } from '../repositories/configurationsRepository';
-import { GenericService } from './genericService';
+import type { GenericService } from './genericService';
 
 export interface ConfigurationsService extends GenericService<Configuration, ConfigurationDto> {
     searchByDataType: (type: ConfigurationType) => Promise<Configuration[]>;

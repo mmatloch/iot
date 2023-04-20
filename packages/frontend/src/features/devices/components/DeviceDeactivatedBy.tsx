@@ -1,6 +1,7 @@
+import type {
+    DeviceDeactivatedBy as IDeviceDeactivatedBy} from '@definitions/entities/deviceTypes';
 import {
-    DeviceDeactivatedByType,
-    DeviceDeactivatedBy as IDeviceDeactivatedBy,
+    DeviceDeactivatedByType
 } from '@definitions/entities/deviceTypes';
 import { Alert, Typography } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';

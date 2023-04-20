@@ -1,4 +1,4 @@
-import { TObject, TProperties } from '@sinclair/typebox';
+import type { TObject, TProperties } from '@sinclair/typebox';
 import _ from 'lodash';
 
 export const mergeSchemas = <TargetProp extends TProperties, SrcProp extends TProperties>(

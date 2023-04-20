@@ -1,11 +1,12 @@
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
-import {
+import type {
     FastifyBaseLogger,
     FastifyInstance,
     FastifyServerOptions,
     RawReplyDefaultExpression,
     RawRequestDefaultExpression,
-    RawServerDefault,
+    RawServerDefault} from 'fastify';
+import {
     fastify,
 } from 'fastify';
 import fp from 'fastify-plugin';

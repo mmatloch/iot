@@ -4,14 +4,15 @@ import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
-import { Event, EventsSearchQuery } from '@definitions/entities/eventTypes';
+import type { EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { SortValue } from '@definitions/searchTypes';
 import EventCard from '@features/events/components/EventCard';
 import EventFilterMenu from '@features/events/components/EventFilterMenu';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
 import { Box, Container } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -35,7 +36,7 @@ export default function Events() {
     const navigate = useNavigate();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
 
-    const { searchQuery, setSearchQuery } = useSearchQuery<Event>({
+    const { searchQuery, setSearchQuery } = useSearchQuery<EventsSearchQuery>({
         defaultQuery: defaultQuery,
     });
     const { data, isSuccess, isLoading, isPreviousData } = useEvents(searchQuery);
@@ -91,7 +92,7 @@ export default function Events() {
 
             <EventFilterMenu
                 searchQuery={searchQuery}
-                onFilterChange={setSearchQuery}
+                setSearchQuery={setSearchQuery}
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
             />

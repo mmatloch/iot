@@ -9,7 +9,7 @@ import {
     EventTriggerType,
 } from '@definitions/entities/eventTypes';
 import { UserRole, UserState } from '@definitions/entities/userTypes';
-import { Locale } from '@definitions/localeTypes';
+import type { Locale } from '@definitions/localeTypes';
 
 export const PolishLocale: Locale = {
     generic: {
@@ -28,8 +28,10 @@ export const PolishLocale: Locale = {
         statusCode: 'Kod statusu',
         showDetails: 'Pokaż szczegóły',
         dates: {
-            createdAt: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
-            updatedAt: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+            createdAtAndBy: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+            updatedAtAndBy: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
+            createdAt: 'Utworzono <strong>{{when}}</strong>',
+            updatedAt: 'Zaktualizowano <strong>{{when}}</strong>',
         },
         entity: {
             id: 'ID',
@@ -286,8 +288,10 @@ export const PolishLocale: Locale = {
         },
     },
     eventInstances: {
+        title: 'Instancje zdarzeń',
         entity: {
             triggeredBy: 'Wywołany przez',
+            triggerContext: 'Kontekst',
             performanceMetrics: {
                 executionDuration: 'Czas wykonywania',
                 steps: 'Kroki',

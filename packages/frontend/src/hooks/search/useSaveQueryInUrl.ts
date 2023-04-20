@@ -1,20 +1,20 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SEARCH_QUERY_FIELDS, SearchQuery } from '@definitions/searchTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
+import { SEARCH_QUERY_FIELDS } from '@definitions/searchTypes';
 import { omitQueryDefaults, parseQuery, serializeQuery } from '@utils/searchQuery';
-import { pick } from 'lodash';
+import { omit, pick } from 'lodash';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-export function useSaveQueryInUrl<TEntity extends GenericEntity>(
-    searchQuery: SearchQuery<TEntity>,
-    defaultQuery: SearchQuery<TEntity>,
+export function useSaveQueryInUrl<TSearchQuery extends SearchQuery>(
+    searchQuery: TSearchQuery,
+    defaultQuery: TSearchQuery,
 ) {
     const [currentSearchParams, setSearchParams] = useSearchParams();
 
     useEffect(() => {
         setSearchParams(
             serializeQuery({
-                ...parseQuery(currentSearchParams.toString()),
+                ...omit(parseQuery(currentSearchParams.toString()), SEARCH_QUERY_FIELDS),
                 ...pick(omitQueryDefaults(searchQuery, defaultQuery), SEARCH_QUERY_FIELDS),
             }),
         );

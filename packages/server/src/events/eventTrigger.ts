@@ -1,14 +1,15 @@
 import { BaseError, transformErrorBody } from '@common/errors';
 
 import type { PerformanceMetrics } from '../definitions';
-import { EventInstanceState } from '../entities//eventInstanceEntity';
+import type { EventTriggerOptions } from '../definitions/eventDefinitions';
+import { EventActionOnInactive, EventState } from '../definitions/eventDefinitions';
+import { EventInstanceState } from '../definitions/eventInstanceDefinitions';
 import type { Event } from '../entities/eventEntity';
 import { ErrorCode, Errors, getErrorCode } from '../errors';
 import { createEventProcessor } from '../events/eventProcessor';
 import { getEventRunSummary } from '../events/eventRunSummary';
 import { getLogger } from '../logger';
 import { createEventInstancesService } from '../services/eventInstancesService';
-import { EventActionOnInactive, EventState, EventTriggerOptions } from './eventDefinitions';
 import type { EventTriggerContext } from './eventRunDefinitions';
 import { getChildLocalStorage } from './eventRunLocalStorage';
 import { createEventRunSdk } from './sdks/sdk';
@@ -101,6 +102,7 @@ export const eventTrigger = async (event: Event, context: EventTriggerContext, o
         }
 
         const eventInstance = await createEventInstancesService().create({
+            event,
             eventId: event._id,
             parentEventId: summary.parentEvent?._id || null,
             triggerContext: context,
@@ -115,6 +117,7 @@ export const eventTrigger = async (event: Event, context: EventTriggerContext, o
     }
 
     const eventInstance = await createEventInstancesService().create({
+        event,
         eventId: event._id,
         parentEventId: summary.parentEvent?._id || null,
         triggerContext: context,

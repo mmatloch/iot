@@ -1,7 +1,7 @@
 import { useAuth } from '@hooks/useAuth';
-import { Event, Home, ManageAccounts, PendingActions, SpeakerPhone } from '@mui/icons-material';
+import { ContentPasteSearch, Event, Home, ManageAccounts, PendingActions, SpeakerPhone } from '@mui/icons-material';
 import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
-import { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -51,20 +51,24 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             adminOnly: true,
         },
         {
-            icon: <Event />,
-            text: t('events:title'),
-            navigateTo: AppRoute.Events.Root,
-            adminOnly: true,
-        },
-        {
             icon: <SpeakerPhone />,
             text: t('devices:title'),
             navigateTo: AppRoute.Devices.Root,
         },
         {
+            icon: <Event />,
+            text: t('events:title'),
+            navigateTo: AppRoute.Events.Root,
+        },
+        {
             icon: <PendingActions />,
             text: t('eventScheduler:title'),
             navigateTo: AppRoute.EventScheduler.Root,
+        },
+        {
+            icon: <ContentPasteSearch />,
+            text: t('eventInstances:title'),
+            navigateTo: AppRoute.EventInstances.Root,
         },
     ].filter((item) => {
         if (isAdmin) {

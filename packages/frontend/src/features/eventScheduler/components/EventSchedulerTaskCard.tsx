@@ -1,9 +1,11 @@
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
-import { EventSchedulerTask, EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
+import type { EventSchedulerTask} from '@definitions/entities/eventSchedulerTypes';
+import { EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
 import { MoreVert } from '@mui/icons-material';
 import { Alert, AlertTitle, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 import { formatFullDate, formatRelativeDate } from '@utils/dateFormatters';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import EventSchedulerTaskMenu from './EventSchedulerTaskMenu';

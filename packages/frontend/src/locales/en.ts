@@ -9,7 +9,7 @@ import {
     EventTriggerType,
 } from '@definitions/entities/eventTypes';
 import { UserRole, UserState } from '@definitions/entities/userTypes';
-import { Locale } from '@definitions/localeTypes';
+import type { Locale } from '@definitions/localeTypes';
 
 export const EnglishLocale: Locale = {
     generic: {
@@ -28,8 +28,10 @@ export const EnglishLocale: Locale = {
         statusCode: 'Status code',
         showDetails: 'Show details',
         dates: {
-            createdAt: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
-            updatedAt: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            createdAtAndBy: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            updatedAtAndBy: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
+            createdAt: 'Created <strong>{{when}}</strong>',
+            updatedAt: 'Updated <strong>{{when}}</strong>',
         },
         entity: {
             id: 'ID',
@@ -286,8 +288,10 @@ export const EnglishLocale: Locale = {
         },
     },
     eventInstances: {
+        title: 'Event instances',
         entity: {
             triggeredBy: 'Triggered by',
+            triggerContext: 'Context',
             performanceMetrics: {
                 executionDuration: 'Execution duration',
                 steps: 'Steps',

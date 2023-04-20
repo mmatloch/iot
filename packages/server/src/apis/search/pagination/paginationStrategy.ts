@@ -1,5 +1,5 @@
-import { SearchQuery, SearchResponse } from '../searchDefinitions';
-import { RawSearchQuery } from '../searchQuerySchema';
+import type { SearchQuery, SearchResponse } from '../searchDefinitions';
+import type { RawSearchQuery } from '../searchQuerySchema';
 
 export interface PaginationStrategy {
     doesQueryMatchStrategy: (rawSearchQuery: RawSearchQuery) => boolean;

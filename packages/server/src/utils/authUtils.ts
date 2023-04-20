@@ -1,4 +1,5 @@
-import { Validator, createValidator } from '@common/validator';
+import type { Validator} from '@common/validator';
+import { createValidator } from '@common/validator';
 import { Type } from '@sinclair/typebox';
 import JWT from 'jsonwebtoken';
 

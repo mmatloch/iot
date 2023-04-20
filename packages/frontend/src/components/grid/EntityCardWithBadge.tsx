@@ -1,5 +1,6 @@
-import { Badge, BadgeProps, Card, CardProps, styled } from '@mui/material';
-import { ReactNode } from 'react';
+import type { BadgeProps, CardProps} from '@mui/material';
+import { Badge, Card, styled } from '@mui/material';
+import type { ReactNode } from 'react';
 
 interface Props extends CardProps {
     badgeColor: BadgeProps['color'];

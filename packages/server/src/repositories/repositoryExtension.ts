@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { DeepPartial, Repository } from 'typeorm';
+import type { DeepPartial, Repository } from 'typeorm';
 
-import { GenericEntity } from '../entities/generic/genericEntity';
+import type { GenericEntity } from '../entities/generic/genericEntity';
 
 interface Options {
     loadRelations?: boolean;

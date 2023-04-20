@@ -4,12 +4,14 @@ import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
 import SearchToolbar from '@components/search/SearchToolbar';
+import { EventSchedulerTasksSearchQuery } from '@definitions/entities/eventSchedulerTypes';
 import EventSchedulerTaskCard from '@features/eventScheduler/components/EventSchedulerTaskCard';
 import EventSchedulerTaskFilterMenu from '@features/eventScheduler/components/EventSchedulerTaskFilterMenu';
 import { useSearchQuery } from '@hooks/search/useSearchQuery';
 import Layout from '@layout/Layout';
 import { Box, Container } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +22,7 @@ export default function Scheduler() {
     const navigate = useNavigate();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
 
-    const { setSearchQuery, searchQuery } = useSearchQuery({});
+    const { setSearchQuery, searchQuery } = useSearchQuery<EventSchedulerTasksSearchQuery>({});
     const { data, isLoading, isSuccess, isPreviousData } = useEventSchedulerTasks(searchQuery);
 
     if (isLoading) {
@@ -70,7 +72,7 @@ export default function Scheduler() {
 
             <EventSchedulerTaskFilterMenu
                 searchQuery={searchQuery}
-                onFilterChange={setSearchQuery}
+                setSearchQuery={setSearchQuery}
                 onClose={closeFilterMenu}
                 anchorEl={filterMenuAnchorEl}
             />

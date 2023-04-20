@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import type { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class CreatedByUpdatedBy1661175358951 implements MigrationInterface {
     name = 'CreatedByUpdatedBy1661175358951';

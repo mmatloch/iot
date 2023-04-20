@@ -1,5 +1,6 @@
 import { useDevices } from '@api/devicesApi';
-import { Device, DeviceProtocol } from '@definitions/entities/deviceTypes';
+import type { Device} from '@definitions/entities/deviceTypes';
+import { DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { subMinutes } from 'date-fns';
 import { useState } from 'react';

@@ -1,9 +1,9 @@
 import { useRequestBridge } from '@api/bridgeApi';
 import { BridgeRequestType } from '@definitions/bridgeTypes';
-import { Configuration } from '@definitions/entities/configurationTypes';
+import type { Configuration } from '@definitions/entities/configurationTypes';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {

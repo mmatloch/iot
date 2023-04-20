@@ -1,12 +1,14 @@
-import {
-    Autocomplete,
+import type {
     AutocompleteRenderInputParams,
     BaseTextFieldProps,
-    TextField,
-    UseAutocompleteProps,
+    UseAutocompleteProps} from '@mui/material';
+import {
+    Autocomplete,
+    TextField
 } from '@mui/material';
 import { useCallback } from 'react';
-import { Controller, RegisterOptions, useFormContext } from 'react-hook-form';
+import type { RegisterOptions} from 'react-hook-form';
+import { Controller, useFormContext } from 'react-hook-form';
 
 type AutocompleteProps<T> = UseAutocompleteProps<T, false, true, false>;
 

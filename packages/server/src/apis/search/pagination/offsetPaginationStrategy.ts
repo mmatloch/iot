@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { PaginationStrategy } from './paginationStrategy';
+import type { PaginationStrategy } from './paginationStrategy';
 
 const DEFAULT_PAGE = 1;
 

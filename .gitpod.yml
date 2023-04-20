@@ -7,6 +7,10 @@ ports:
     port: 5432
     onOpen: ignore
     visibility: public
+  - name: PgAdmin
+    port: 5050
+    onOpen: ignore
+    visibility: public
   - name: Mosquitto
     port: 1883
     onOpen: ignore

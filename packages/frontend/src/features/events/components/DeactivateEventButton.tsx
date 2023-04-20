@@ -1,5 +1,6 @@
 import { useUpdateEvent } from '@api/eventsApi';
-import { Event, EventState } from '@definitions/entities/eventTypes';
+import type { Event} from '@definitions/entities/eventTypes';
+import { EventState } from '@definitions/entities/eventTypes';
 import { PublishedWithChanges } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';

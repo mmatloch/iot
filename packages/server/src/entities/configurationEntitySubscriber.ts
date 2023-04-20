@@ -1,13 +1,15 @@
-import {
+import type {
     EntitySubscriberInterface,
     InsertEvent,
-    EventSubscriber as OrmEventSubscriber,
     RemoveEvent,
-    UpdateEvent,
+    UpdateEvent} from 'typeorm';
+import {
+    EventSubscriber as OrmEventSubscriber
 } from 'typeorm';
 
 import { Configuration } from './configurationEntity';
-import { CreateEntitySubscriber, EntityListenerMap, EntitySubscriberEvent } from './subscriberDefinitions';
+import type { CreateEntitySubscriber, EntityListenerMap} from './subscriberDefinitions';
+import { EntitySubscriberEvent } from './subscriberDefinitions';
 
 @OrmEventSubscriber()
 export class ConfigurationSubscriber implements EntitySubscriberInterface<Configuration> {

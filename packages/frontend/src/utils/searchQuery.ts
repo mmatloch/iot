@@ -1,5 +1,4 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery } from '@definitions/searchTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
 import { flatten } from 'flat';
 import { cloneDeep, get, isEqual, isUndefined, set, unset } from 'lodash';
 import Qs from 'qs';
@@ -11,13 +10,13 @@ export const serializeQuery = (query: unknown): string => {
     });
 };
 
-export const parseQuery = <T extends GenericEntity>(query: string): SearchQuery<T> => {
-    return Qs.parse(query);
+export const parseQuery = <TSearchQuery extends SearchQuery>(query: string): TSearchQuery => {
+    return Qs.parse(query) as unknown as TSearchQuery;
 };
 
-export const omitQueryDefaults = <T extends GenericEntity>(current: SearchQuery<T>, defaults: SearchQuery<T>) => {
+export const omitQueryDefaults = <TSearchQuery extends SearchQuery>(current: TSearchQuery, defaults: TSearchQuery) => {
     const currentClone = cloneDeep(current);
-    const flat = flatten<SearchQuery<T>, Record<string, unknown>>(current);
+    const flat = flatten<TSearchQuery, Record<string, unknown>>(current);
 
     Object.entries(flat).forEach(([path, value]) => {
         const defaultValue = get(defaults, path);
@@ -30,9 +29,12 @@ export const omitQueryDefaults = <T extends GenericEntity>(current: SearchQuery<
     return currentClone;
 };
 
-export const mergeQuery = <T extends GenericEntity>(source: SearchQuery<T>, other: SearchQuery<T>): SearchQuery<T> => {
+export const mergeQuery = <TSearchQuery extends SearchQuery>(
+    source: TSearchQuery,
+    other: TSearchQuery,
+): TSearchQuery => {
     const sourceClone = cloneDeep(source);
-    const flatOther = flatten<SearchQuery<T>, Record<string, unknown>>(other);
+    const flatOther = flatten<TSearchQuery, Record<string, unknown>>(other);
 
     Object.entries(flatOther).forEach(([path, value]) => {
         if (isUndefined(value)) {

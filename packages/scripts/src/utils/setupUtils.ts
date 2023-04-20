@@ -3,7 +3,7 @@ import crypto from 'node:crypto';
 import { CliUx } from '@oclif/core';
 
 import { PRODUCTION_IMAGE_REPO, PROJECT_NAME } from './constants';
-import { SetupState } from './setupCache';
+import type { SetupState } from './setupCache';
 
 const { ux } = CliUx;
 

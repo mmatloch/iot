@@ -1,5 +1,6 @@
 import { useUpdateEvent } from '@api/eventsApi';
-import { Event, EventDto, EventState } from '@definitions/entities/eventTypes';
+import type { Event, EventDto} from '@definitions/entities/eventTypes';
+import { EventState } from '@definitions/entities/eventTypes';
 import ActivateEventButton from '@features/events/components/ActivateEventButton';
 import DeactivateEventButton from '@features/events/components/DeactivateEventButton';
 import EventEditorForm from '@features/events/components/EventEditorForm';
@@ -12,7 +13,8 @@ import { getChangedFields } from '@utils/entityHelpers';
 import { omitGenericEntityFields } from '@utils/entityHelpers';
 import { Allotment } from 'allotment';
 import { useSnackbar } from 'notistack';
-import { DefaultValues, FormProvider, useForm } from 'react-hook-form';
+import type { DefaultValues} from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 interface Props {

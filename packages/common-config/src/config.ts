@@ -3,7 +3,8 @@ import path from 'node:path';
 
 import type { Static, TSchema } from '@sinclair/typebox';
 import Ajv from 'ajv';
-import traverseSchema, { Callback } from 'json-schema-traverse';
+import type { Callback } from 'json-schema-traverse';
+import traverseSchema from 'json-schema-traverse';
 import _ from 'lodash';
 
 import { ConfigValidationError } from './configValidationError';

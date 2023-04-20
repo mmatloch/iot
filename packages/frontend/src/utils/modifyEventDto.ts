@@ -1,4 +1,5 @@
-import { EventDto, EventMetadataTaskType, EventTriggerType } from '@definitions/entities/eventTypes';
+import type { EventDto} from '@definitions/entities/eventTypes';
+import { EventMetadataTaskType, EventTriggerType } from '@definitions/entities/eventTypes';
 import { cloneDeep } from 'lodash';
 
 const isStatic = (dto: EventDto) =>

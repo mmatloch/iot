@@ -1,25 +1,35 @@
 import { useEvents } from '@api/eventsApi';
-import { Event } from '@definitions/entities/eventTypes';
+import type { Event, EventsSearchQuery } from '@definitions/entities/eventTypes';
 import { useDebounce } from '@hooks/useDebounce';
-import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
-import { useState } from 'react';
+import type { AutocompleteProps, TextFieldProps } from '@mui/material';
+import { Autocomplete, TextField } from '@mui/material';
+import { mergeQuery } from '@utils/searchQuery';
+import { useMemo, useState } from 'react';
 
 export interface Props extends Omit<AutocompleteProps<Event, false, true, false>, 'renderInput' | 'options'> {
     InputProps?: TextFieldProps;
     defaultValue?: Event;
+    searchQuery?: EventsSearchQuery;
 }
 
-export default function EventAutocomplete({ InputProps, ...props }: Props) {
+export default function EventAutocomplete({ InputProps, searchQuery, ...props }: Props) {
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue, 200);
 
-    const { data, isLoading } = useEvents({
-        filters: {
-            displayName: {
-                $iLike: `${debouncedSearchValue}%`,
+    const eventsQuery = useMemo(() => {
+        return mergeQuery(
+            {
+                filters: {
+                    displayName: {
+                        $iLike: `${debouncedSearchValue}%`,
+                    },
+                },
             },
-        },
-    });
+            searchQuery ?? {},
+        );
+    }, [debouncedSearchValue, searchQuery]);
+
+    const { data, isLoading } = useEvents(eventsQuery);
 
     const handleChange = (_: unknown, value: string) => {
         setSearchValue(value);

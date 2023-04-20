@@ -1,6 +1,6 @@
 import { useUpdateDevice } from '@api/devicesApi';
 import FormInputText from '@components/forms/FormInputText';
-import { Device } from '@definitions/entities/deviceTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
 import { LoadingButton } from '@mui/lab';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormGroup } from '@mui/material';
 import { useSnackbar } from 'notistack';

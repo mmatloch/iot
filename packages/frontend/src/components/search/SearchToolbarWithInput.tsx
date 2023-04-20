@@ -1,9 +1,9 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery } from '@definitions/searchTypes';
-import { SetSearchQuery } from '@hooks/search/useSearchQuery';
+import type { GenericEntity } from '@definitions/commonTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
+import type { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { Add, FilterList } from '@mui/icons-material';
 import { Box, Button, Toolbar, Typography } from '@mui/material';
-import { MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import SearchTextInput from './SearchTextInput';
@@ -15,7 +15,7 @@ interface Props<TEntity extends GenericEntity> {
 
     searchLabel: string;
     searchField: keyof TEntity;
-    setSearchQuery: SetSearchQuery<TEntity>;
+    setSearchQuery: SetSearchQuery<SearchQuery<TEntity>>;
     searchQuery: SearchQuery<TEntity>;
 }
 

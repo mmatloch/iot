@@ -1,7 +1,8 @@
 import { useConfigurations } from '@api/configurationsApi';
 import ErrorDialog from '@components/ErrorDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
-import { Device, DeviceProtocol } from '@definitions/entities/deviceTypes';
+import type { Device} from '@definitions/entities/deviceTypes';
+import { DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { FilterOperator } from '@definitions/searchTypes';
 import { Box, Step, StepContent, StepLabel, Stepper, Typography } from '@mui/material';
 import { getConfigurationTypeByProtocol } from '@utils/configurationUtils';

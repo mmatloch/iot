@@ -5,7 +5,8 @@ import ProfileMenu from '@features/profile/components/ProfileMenu';
 import UserAvatar from '@features/users/components/UserAvatar';
 import { Menu } from '@mui/icons-material';
 import { AppBar, Box, IconButton, Toolbar } from '@mui/material';
-import { MouseEvent, useState } from 'react';
+import type { MouseEvent} from 'react';
+import { useState } from 'react';
 
 interface Props {
     onMenuClick: () => void;

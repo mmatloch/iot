@@ -1,6 +1,7 @@
 import { transformErrorBody } from '@common/errors';
 import _ from 'lodash';
-import { SerializerFn, TransportTargetOptions, pino } from 'pino';
+import type { SerializerFn, TransportTargetOptions} from 'pino';
+import { pino } from 'pino';
 
 export interface LoggerOptions {
     level: string;

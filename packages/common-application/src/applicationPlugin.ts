@@ -1,5 +1,5 @@
 import { createFastifyPlugin } from './fastifyAbstract';
-import { ApplicationPlugin, ApplicationPluginOptions } from './types';
+import type { ApplicationPlugin, ApplicationPluginOptions } from './types';
 
 interface CreateApplicationPluginOptions {
     name: string;

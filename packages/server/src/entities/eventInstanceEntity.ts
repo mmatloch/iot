@@ -1,18 +1,13 @@
-import { TransformedErrorBody } from '@common/errors';
-import { Static, Type } from '@sinclair/typebox';
+import type { TransformedErrorBody } from '@common/errors';
+import type { Static } from '@sinclair/typebox';
+import { Type } from '@sinclair/typebox';
 import { Column, Entity, Index } from 'typeorm';
 
-import { PerformanceMetrics } from '../definitions';
+import type { PerformanceMetrics } from '../definitions';
+import { EventInstanceState } from '../definitions/eventInstanceDefinitions';
 import { mergeSchemas } from '../utils/schemaUtils';
+import type { Event } from './eventEntity';
 import { GenericTimeseriesEntity, genericEntitySchema } from './generic/genericEntity';
-
-export enum EventInstanceState {
-    UnknownError = 'UNKNOWN_ERROR',
-    FailedOnCondition = 'FAILED_ON_CONDITION',
-    FailedOnAction = 'FAILED_ON_ACTION',
-    Success = 'SUCCESS',
-    ConditionNotMet = 'CONDITION_NOT_MET',
-}
 
 @Entity({ name: 'eventinstances' })
 @Index(['eventId', '_createdAt'])
@@ -23,6 +18,9 @@ export class EventInstance extends GenericTimeseriesEntity {
 
     @Column('integer')
     eventId!: number;
+
+    @Column('jsonb')
+    event!: Event;
 
     @Column({
         type: 'jsonb',
@@ -58,6 +56,7 @@ export class EventInstance extends GenericTimeseriesEntity {
 }
 
 export const eventInstanceDtoSchema = Type.Object({
+    event: Type.Any(),
     eventId: Type.Integer(),
     parentEventId: Type.Union([Type.Null(), Type.Integer()]), // Integer must be second because Ajv will convert Null to 0
     triggerContext: Type.Record(Type.String(), Type.Unknown()),

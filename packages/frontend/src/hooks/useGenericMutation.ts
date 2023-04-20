@@ -1,5 +1,7 @@
-import { RequestOptions, createHttpClient } from '@clients/httpClient';
-import { UseMutationOptions, useMutation } from 'react-query';
+import type { RequestOptions} from '@clients/httpClient';
+import { createHttpClient } from '@clients/httpClient';
+import type { UseMutationOptions} from 'react-query';
+import { useMutation } from 'react-query';
 
 type DefaultVariables = Record<string, unknown>;
 

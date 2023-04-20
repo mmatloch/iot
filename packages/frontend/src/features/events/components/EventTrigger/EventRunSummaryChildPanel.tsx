@@ -1,4 +1,4 @@
-import { EventRunSummaryChild } from '@definitions/eventTriggerTypes';
+import type { EventRunSummaryChild } from '@definitions/eventTriggerTypes';
 import { Card, CardContent, Divider, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 

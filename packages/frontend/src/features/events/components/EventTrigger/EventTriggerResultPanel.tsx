@@ -1,4 +1,4 @@
-import { EventRunSummaryChild, EventsTriggerResponse } from '@definitions/eventTriggerTypes';
+import type { EventRunSummaryChild, EventsTriggerResponse } from '@definitions/eventTriggerTypes';
 import { ChevronRight, ExpandMore } from '@mui/icons-material';
 import { TreeView } from '@mui/lab';
 import { Box, Chip, Divider } from '@mui/material';

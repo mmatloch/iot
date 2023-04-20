@@ -1,6 +1,7 @@
 import FormInputSelect from '@components/forms/FormInputSelect';
 import FormInputText from '@components/forms/FormInputText';
-import { EventDto, EventTriggerType } from '@definitions/entities/eventTypes';
+import type { EventDto} from '@definitions/entities/eventTypes';
+import { EventTriggerType } from '@definitions/entities/eventTypes';
 import { Divider, FormGroup } from '@mui/material';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';

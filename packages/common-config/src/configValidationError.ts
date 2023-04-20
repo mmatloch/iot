@@ -1,4 +1,4 @@
-import { ErrorObject } from 'ajv';
+import type { ErrorObject } from 'ajv';
 
 type ValidationErrorDetails = ErrorObject[] | null | undefined;
 

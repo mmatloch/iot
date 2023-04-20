@@ -1,5 +1,5 @@
-import { GenericEntity } from '../commonTypes';
-import { SearchQuery, SearchResponse } from '../searchTypes';
+import type { GenericEntity } from '../commonTypes';
+import type { SearchQuery, SearchResponse } from '../searchTypes';
 
 export enum EventTriggerType {
     Api = 'API',
@@ -104,5 +104,6 @@ export interface EventDto {
 
 export type Event = EventDto & GenericEntity;
 
-export type EventsSearchQuery = SearchQuery<Event>;
+type VirtualSearchFields = 'deviceId';
+export type EventsSearchQuery = SearchQuery<Event, VirtualSearchFields>;
 export type EventsSearchResponse = SearchResponse<Event>;

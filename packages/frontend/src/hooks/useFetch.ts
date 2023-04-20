@@ -1,9 +1,11 @@
-import { GenericEntity } from '@definitions/commonTypes';
-import { SearchQuery } from '@definitions/searchTypes';
+import type { GenericEntity } from '@definitions/commonTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
 import { serializeQuery } from '@utils/searchQuery';
-import { UseQueryOptions, useQuery } from 'react-query';
+import type { UseQueryOptions} from 'react-query';
+import { useQuery } from 'react-query';
 
-import { RequestOptions, createHttpClient } from '../clients/httpClient';
+import type { RequestOptions} from '../clients/httpClient';
+import { createHttpClient } from '../clients/httpClient';
 
 interface UseFetchRequestOptions<TSearchQuery> extends RequestOptions {
     query?: TSearchQuery;

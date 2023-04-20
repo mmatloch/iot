@@ -1,6 +1,6 @@
 import { readFile } from 'node:fs/promises';
 
-import { Application } from '@common/application';
+import type { Application } from '@common/application';
 import { BaseError } from '@common/errors';
 import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';

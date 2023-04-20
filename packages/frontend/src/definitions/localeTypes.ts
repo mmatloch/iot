@@ -1,14 +1,14 @@
-import { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from './entities/deviceTypes';
-import { EventInstanceState } from './entities/eventInstanceTypes';
-import { EventSchedulerTaskState } from './entities/eventSchedulerTypes';
-import {
+import type { DevicePowerSource, DeviceProtocol, DeviceState, DeviceType } from './entities/deviceTypes';
+import type { EventInstanceState } from './entities/eventInstanceTypes';
+import type { EventSchedulerTaskState } from './entities/eventSchedulerTypes';
+import type {
     EventActionOnInactive,
     EventMetadataOnMultipleInstances,
     EventMetadataTaskType,
     EventState,
     EventTriggerType,
 } from './entities/eventTypes';
-import { UserRole, UserState } from './entities/userTypes';
+import type { UserRole, UserState } from './entities/userTypes';
 
 export enum AvailableLanguage {
     English = 'en',
@@ -33,7 +33,9 @@ export interface Locale {
         showDetails: string;
         dates: {
             createdAt: string;
+            createdAtAndBy: string;
             updatedAt: string;
+            updatedAtAndBy: string;
         };
         entity: {
             id: string;
@@ -237,8 +239,10 @@ export interface Locale {
         };
     };
     eventInstances: {
+        title: string;
         entity: {
             triggeredBy: string;
+            triggerContext: string;
             performanceMetrics: {
                 executionDuration: string;
                 steps: string;

@@ -1,6 +1,7 @@
 import { useUpdateUser } from '@api/usersApi';
 import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
-import { User, UserState } from '@definitions/entities/userTypes';
+import type { User} from '@definitions/entities/userTypes';
+import { UserState } from '@definitions/entities/userTypes';
 import { Edit, PublishedWithChanges } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';

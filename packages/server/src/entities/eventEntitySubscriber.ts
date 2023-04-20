@@ -1,7 +1,9 @@
-import { EntitySubscriberInterface, InsertEvent, EventSubscriber as OrmEventSubscriber, UpdateEvent } from 'typeorm';
+import type { EntitySubscriberInterface, InsertEvent, UpdateEvent } from 'typeorm';
+import { EventSubscriber as OrmEventSubscriber } from 'typeorm';
 
 import { Event } from './eventEntity';
-import { CreateEntitySubscriber, EntityListenerMap, EntitySubscriberEvent } from './subscriberDefinitions';
+import type { CreateEntitySubscriber, EntityListenerMap} from './subscriberDefinitions';
+import { EntitySubscriberEvent } from './subscriberDefinitions';
 
 @OrmEventSubscriber()
 export class EventSubscriber implements EntitySubscriberInterface<Event> {

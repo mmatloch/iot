@@ -1,4 +1,4 @@
-import { GenericEntity } from '../commonTypes';
+import type { GenericEntity } from '../commonTypes';
 
 export enum UserRole {
     Admin = 'ADMIN',

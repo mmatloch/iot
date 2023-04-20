@@ -1,10 +1,11 @@
-import { ApplicationPlugin, createApplicationPlugin } from '@common/application';
+import type { ApplicationPlugin} from '@common/application';
+import { createApplicationPlugin } from '@common/application';
 import JWT, { JsonWebTokenError } from 'jsonwebtoken';
 import _ from 'lodash';
 
 import { getConfig } from '../config';
 import { Errors } from '../errors';
-import { RequestUser } from '../requestLocalStorage';
+import type { RequestUser } from '../requestLocalStorage';
 
 const config = getConfig();
 
