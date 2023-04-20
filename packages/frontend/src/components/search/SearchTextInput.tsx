@@ -1,5 +1,5 @@
 import type { GenericEntity } from '@definitions/commonTypes';
-import type { SearchFilterOperatorValue, SearchQuery } from '@definitions/searchTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
 import { FilterOperator } from '@definitions/searchTypes';
 import type { SetSearchQuery } from '@hooks/search/useSearchQuery';
 import { useDebounce } from '@hooks/useDebounce';
