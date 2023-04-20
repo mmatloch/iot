@@ -1,6 +1,7 @@
 import CronParser from 'cron-parser';
-import { addSeconds } from 'date-fns';
+import { addSeconds, subMilliseconds } from 'date-fns';
 import _ from 'lodash';
+import { LessThanOrEqual } from 'typeorm';
 import type { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata';
 
 import { getConfig } from '../../config';
@@ -14,13 +15,15 @@ import type { Event } from '../../entities/eventEntity';
 import { createEventSubscriber } from '../../entities/eventEntitySubscriber';
 import type { EventInstance } from '../../entities/eventInstanceEntity';
 import { createEventInstanceSubscriber } from '../../entities/eventInstanceEntitySubscriber';
-import type { EventSchedulerTask} from '../../entities/eventSchedulerTaskEntity';
+import type { EventSchedulerTask } from '../../entities/eventSchedulerTaskEntity';
 import { EventSchedulerTaskState } from '../../entities/eventSchedulerTaskEntity';
 import { createEventSchedulerTaskSubscriber } from '../../entities/eventSchedulerTaskEntitySubscriber';
 import { EntitySubscriberEvent } from '../../entities/subscriberDefinitions';
 import { getLogger } from '../../logger';
 import { createEventSchedulerTasksService } from '../../services/eventSchedulerTasksService';
 import { createEventsService } from '../../services/eventsService';
+import { FETCH_TASKS_INTERVAL, PROCESS_SKIPPED_TASKS_INTERVAL } from './eventSchedulerConstants';
+import { startLoop } from './eventSchedulerUtils';
 
 const logger = getLogger();
 const config = getConfig();
@@ -39,6 +42,9 @@ export const createEventScheduler = () => {
         logger.debug('Initializing event scheduler');
 
         setupEntitySubscribers();
+        processSkippedTasks();
+
+        startLoop(processSkippedTasks, () => PROCESS_SKIPPED_TASKS_INTERVAL);
     };
 
     const cancelEvent = async (event: Event) => {
@@ -58,6 +64,29 @@ export const createEventScheduler = () => {
             msg: `Canceled the '${event.displayName}' event (${event.metadata?.taskType})`,
             event,
         });
+    };
+
+    const calculateNextRun = (event: Event): string | null => {
+        if (!event.metadata) {
+            return null;
+        }
+
+        const { cronExpression, interval } = event.metadata;
+
+        if (cronExpression) {
+            const cronParserOptions = {
+                tz: timeZone,
+                iterator: false as const,
+            };
+
+            const parsedCron = CronParser.parseExpression(cronExpression, cronParserOptions);
+
+            return parsedCron.next().toISOString();
+        } else if (interval) {
+            return addSeconds(new Date(), interval).toISOString();
+        }
+
+        return null;
     };
 
     const scheduleEvent = async (event: Event) => {
@@ -98,23 +127,11 @@ export const createEventScheduler = () => {
             }
         }
 
-        const { cronExpression, interval } = event.metadata;
+        const nextRunAt = calculateNextRun(event);
 
-        let nextRunAt: string;
-        if (cronExpression) {
-            const cronParserOptions = {
-                tz: timeZone,
-                iterator: false as const,
-            };
-
-            const parsedCron = CronParser.parseExpression(cronExpression, cronParserOptions);
-
-            nextRunAt = parsedCron.next().toISOString();
-        } else if (interval) {
-            nextRunAt = addSeconds(new Date(), interval).toISOString();
-        } else {
+        if (!nextRunAt) {
             logger.error({
-                msg: `The scheduler encountered an invalid event, missing 'cronExpression' and 'interval'`,
+                msg: `The scheduler encountered an invalid event, failed to calculate the next run`,
                 event,
             });
 
@@ -287,6 +304,92 @@ export const createEventScheduler = () => {
         };
 
         createEventSchedulerTaskSubscriber(EntitySubscriberEvent.AfterRemove, onRemovedEventSchedulerTask);
+    };
+
+    const processSkippedTasks = async () => {
+        logger.trace(`Fetching skipped tasks from the database`);
+
+        const now = new Date();
+
+        let tasks: EventSchedulerTask[];
+
+        try {
+            // FETCH_TASKS_INTERVAL - 1 to prevent conflicts with task processor
+            const nextRunAt = LessThanOrEqual(subMilliseconds(now, FETCH_TASKS_INTERVAL - 1)) as unknown as string;
+
+            tasks = await eventSchedulerTasksService.search({
+                where: {
+                    nextRunAt,
+                    state: EventSchedulerTaskState.Queued,
+                },
+            });
+        } catch (e) {
+            logger.error({
+                msg: `Failed to fetch skipped tasks`,
+                err: e,
+            });
+
+            return;
+        }
+
+        if (tasks.length) {
+            logger.warn(`Found ${tasks.length} skipped event scheduler tasks`);
+
+            for (const task of tasks) {
+                const retryImmediatelyAfterBoot = Boolean(task.event.metadata?.retryImmediatelyAfterBoot);
+
+                if (retryImmediatelyAfterBoot) {
+                    logger.warn({
+                        msg: `Setting the skipped task '${task._id}' for immediate execution`,
+                        eventSchedulerTask: task,
+                    });
+
+                    try {
+                        await eventSchedulerTasksService.update(task, {
+                            nextRunAt: new Date().toISOString(),
+                        });
+                    } catch (e) {
+                        logger.error({
+                            msg: `Failed to update skipped task to run immediately after boot`,
+                            err: e,
+                            eventSchedulerTask: task,
+                        });
+
+                        return;
+                    }
+                } else {
+                    logger.warn({
+                        msg: `Setting the skipped task '${task._id}' for next execution according to schedule`,
+                        eventSchedulerTask: task,
+                    });
+
+                    const nextRunAt = calculateNextRun(task.event);
+
+                    if (!nextRunAt) {
+                        logger.error({
+                            msg: `The scheduler encountered an invalid event, failed to calculate the next run`,
+                            eventSchedulerTask: task,
+                        });
+
+                        return;
+                    }
+
+                    try {
+                        await eventSchedulerTasksService.update(task, {
+                            nextRunAt,
+                        });
+                    } catch (e) {
+                        logger.error({
+                            msg: `Failed to update skipped task with next run at`,
+                            err: e,
+                            eventSchedulerTask: task,
+                        });
+
+                        return;
+                    }
+                }
+            }
+        }
     };
 
     return {
