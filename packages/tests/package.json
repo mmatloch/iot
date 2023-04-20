@@ -6,7 +6,7 @@
   "dependencies": {
     "@common/config": "workspace:packages/common-config",
     "@faker-js/faker": "^7.5.0",
-    "@sinclair/typebox": "^0.24.32",
+    "@sinclair/typebox": "^0.28.0",
     "@swc/core": "^1.2.245",
     "@swc/jest": "^0.2.22",
     "@types/jest": "^29.0.0",

@@ -5,7 +5,7 @@
   "private": true,
   "author": "Mateusz Matloch",
   "dependencies": {
-    "@sinclair/typebox": "^0.24.32",
+    "@sinclair/typebox": "^0.28.0",
     "ajv": "^8.11.0",
     "json-schema-traverse": "^1.0.0",
     "jsonpointer": "^5.0.1",

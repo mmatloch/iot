@@ -1156,7 +1156,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@common/validator", "workspace:packages/common-validator"],\
             ["@fastify/formbody", "npm:7.3.0"],\
             ["@fastify/type-provider-typebox", "virtual:b3243dc81f5fcba05aa43916ecae2bf678075069b180082ad2788c5a3d395cb0f5f32d969b7a5a2f6b3f7d14e39850c7665ce8d5e95708e1992f39f0a85ec6e7#npm:2.3.0"],\
-            ["@sinclair/typebox", "npm:0.24.32"],\
+            ["@sinclair/typebox", "npm:0.28.0"],\
             ["@types/lodash", "npm:4.14.184"],\
             ["@types/node", "npm:18.7.14"],\
             ["@types/qs", "npm:6.9.7"],\
@@ -1175,7 +1175,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./packages/common-config/",\
           "packageDependencies": [\
             ["@common/config", "workspace:packages/common-config"],\
-            ["@sinclair/typebox", "npm:0.24.32"],\
+            ["@sinclair/typebox", "npm:0.28.0"],\
             ["@types/lodash", "npm:4.14.184"],\
             ["@types/node", "npm:18.7.14"],\
             ["ajv", "npm:8.11.0"],\
@@ -1224,7 +1224,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@common/validator", "workspace:packages/common-validator"],\
             ["@common/errors", "workspace:packages/common-errors"],\
-            ["@sinclair/typebox", "npm:0.24.32"],\
+            ["@sinclair/typebox", "npm:0.28.0"],\
             ["@types/node", "npm:18.7.14"],\
             ["ajv", "npm:8.11.0"],\
             ["ajv-formats", "virtual:0519138a250e7695f599a3b7fcf72c941dfbbd256b1bcdc3a0644add55423a5f54d53773f19bd81c7761d908bd860133f86ad183b27ba8b78db6f1b83a8919b6#npm:2.1.1"],\
@@ -1621,7 +1621,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/__virtual__/@fastify-type-provider-typebox-virtual-67e502b6f5/0/cache/@fastify-type-provider-typebox-npm-2.3.0-333bbcc52d-d76ab6b186.zip/node_modules/@fastify/type-provider-typebox/",\
           "packageDependencies": [\
             ["@fastify/type-provider-typebox", "virtual:b3243dc81f5fcba05aa43916ecae2bf678075069b180082ad2788c5a3d395cb0f5f32d969b7a5a2f6b3f7d14e39850c7665ce8d5e95708e1992f39f0a85ec6e7#npm:2.3.0"],\
-            ["@sinclair/typebox", "npm:0.24.32"],\
+            ["@sinclair/typebox", "npm:0.28.0"],\
             ["@types/fastify", null],\
             ["@types/sinclair__typebox", null],\
             ["fastify", "npm:4.9.2"]\
@@ -2625,10 +2625,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],\
           "linkType": "HARD"\
         }],\
-        ["npm:0.24.32", {\
-          "packageLocation": "./.yarn/cache/@sinclair-typebox-npm-0.24.32-c3867bbb9c-c6aaa363a7.zip/node_modules/@sinclair/typebox/",\
+        ["npm:0.28.0", {\
+          "packageLocation": "./.yarn/cache/@sinclair-typebox-npm-0.28.0-ef634be8f4-41b7b3a32f.zip/node_modules/@sinclair/typebox/",\
           "packageDependencies": [\
-            ["@sinclair/typebox", "npm:0.24.32"]\
+            ["@sinclair/typebox", "npm:0.28.0"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -10922,7 +10922,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@common/errors", "workspace:packages/common-errors"],\
             ["@common/logger", "workspace:packages/common-logger"],\
             ["@common/validator", "workspace:packages/common-validator"],\
-            ["@sinclair/typebox", "npm:0.24.32"],\
+            ["@sinclair/typebox", "npm:0.28.0"],\
             ["@swc/core", "npm:1.2.245"],\
             ["@types/async", "npm:3.2.15"],\
             ["@types/jsonwebtoken", "npm:8.5.9"],\
@@ -11400,7 +11400,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@common/logger", "workspace:packages/common-logger"],\
             ["@common/validator", "workspace:packages/common-validator"],\
             ["@faker-js/faker", "npm:7.5.0"],\
-            ["@sinclair/typebox", "npm:0.24.32"],\
+            ["@sinclair/typebox", "npm:0.28.0"],\
             ["@swc/core", "npm:1.2.245"],\
             ["@types/jsonwebtoken", "npm:8.5.9"],\
             ["@types/lodash", "npm:4.14.184"],\
@@ -11551,7 +11551,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tests", "workspace:packages/tests"],\
             ["@common/config", "workspace:packages/common-config"],\
             ["@faker-js/faker", "npm:7.5.0"],\
-            ["@sinclair/typebox", "npm:0.24.32"],\
+            ["@sinclair/typebox", "npm:0.28.0"],\
             ["@swc/core", "npm:1.2.245"],\
             ["@swc/jest", "virtual:5aca97935bdda6ea6c9f7b18a617a0c9d0c4afc3585389cce9565d3b4ec7689e69ceb7c2bfaddd3aea7e7d2cabdcb832301d3e38c3249aa247ed79c72cd95dcc#npm:0.2.22"],\
             ["@types/jest", "npm:29.0.0"],\
