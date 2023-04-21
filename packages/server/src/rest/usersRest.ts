@@ -3,10 +3,9 @@ import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 import _ from 'lodash';
 
-import type { AccessControlSubject} from '../accessControl';
+import type { AccessControlSubject } from '../accessControl';
 import { createAccessControl } from '../accessControl';
-import type {
-    RestSearchOptions} from '../apis/searchApi';
+import type { RestSearchOptions } from '../apis/searchApi';
 import {
     SortValue,
     createOffsetPaginationStrategy,
@@ -14,7 +13,7 @@ import {
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
-import type { User, UserDto} from '../entities/userEntity';
+import type { User, UserDto } from '../entities/userEntity';
 import { UserRole, userDtoSchema, userSchema } from '../entities/userEntity';
 import { Errors } from '../errors';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';

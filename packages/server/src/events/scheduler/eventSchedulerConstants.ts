@@ -1,0 +1,2 @@
+export const FETCH_TASKS_INTERVAL = 5 * 1000;
+export const PROCESS_SKIPPED_TASKS_INTERVAL = 60 * 1000;

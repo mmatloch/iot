@@ -2,7 +2,7 @@ import { EOL } from 'node:os';
 
 import { Command, Flags } from '@oclif/core';
 import { cyan } from 'chalk';
-import { readFileSync, writeFileSync } from 'fs-extra';
+import { writeFileSync } from 'fs-extra';
 import _ from 'lodash';
 import { x } from 'qqjs';
 
@@ -52,13 +52,11 @@ export class StartCommand extends Command {
     private generateLocalEnv = (imageRepo: string, imageTag: string) => {
         this.log(cyan(`Generating environment files`));
 
-        const timeZone = readFileSync('/etc/timezone', { encoding: 'utf-8' }).trim();
-
         const envVariables = [
             `PROJECT_NAME=${PROJECT_NAME}`,
             `IMAGE_REPO=${imageRepo}`,
             `IMAGE_TAG=${imageTag}`,
-            `TZ=${timeZone}`,
+            `TZ=Europe/Warsaw`,
         ];
         writeFileSync(PATH.DeployLocal.DotEnv, envVariables.join(EOL));
     };

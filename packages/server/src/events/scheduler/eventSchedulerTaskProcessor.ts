@@ -1,11 +1,13 @@
 import { addMilliseconds, subMilliseconds } from 'date-fns';
 import { Between } from 'typeorm';
 
-import type { EventSchedulerTask} from '../../entities/eventSchedulerTaskEntity';
+import type { EventSchedulerTask } from '../../entities/eventSchedulerTaskEntity';
 import { EventSchedulerTaskState } from '../../entities/eventSchedulerTaskEntity';
 import { getLogger } from '../../logger';
 import { createEventSchedulerTasksService } from '../../services/eventSchedulerTasksService';
 import { eventTriggerInNewContext } from '../eventTriggerInNewContext';
+import { FETCH_TASKS_INTERVAL } from './eventSchedulerConstants';
+import { startLoop } from './eventSchedulerUtils';
 
 const logger = getLogger();
 
@@ -18,8 +20,6 @@ const getTimeoutToNextFullSecond = () => {
     return timeout;
 };
 
-const FETCH_TASKS_INTERVAL = 1000 * 5;
-
 export const createEventSchedulerTaskProcessor = () => {
     const eventSchedulerTasksService = createEventSchedulerTasksService();
     const taskQueue = new Map<number, EventSchedulerTask>();
@@ -31,13 +31,6 @@ export const createEventSchedulerTaskProcessor = () => {
 
         fetchTasks();
         startLoop(fetchTasks, () => FETCH_TASKS_INTERVAL);
-    };
-
-    const startLoop = (cb: () => void, timeoutFn: () => number) => {
-        setTimeout(() => {
-            cb();
-            startLoop(cb, timeoutFn);
-        }, timeoutFn());
     };
 
     const processQueue = () => {
