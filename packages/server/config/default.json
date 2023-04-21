@@ -4,7 +4,7 @@
     "urlPrefix": "/api"
   },
   "logger": {
-    "level": "debug"
+    "level": "info"
   },
   "externalServices": {
     "google": {
