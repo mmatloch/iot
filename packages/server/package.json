@@ -16,7 +16,7 @@
     "@sinclair/typebox": "^0.28.0",
     "async": "^3.2.4",
     "camelcase-keys": "^7.0.2",
-    "cron-parser": "^4.6.0",
+    "cron-parser": "^4.8.1",
     "date-fns": "^2.29.3",
     "fastq": "^1.13.0",
     "http-status-codes": "^2.2.0",

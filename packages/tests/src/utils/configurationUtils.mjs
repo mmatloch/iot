@@ -25,6 +25,9 @@ export const createConfigurationUtils = () => {
                     }),
                 },
             },
+            relations: {
+                _createdByUser: true,
+            },
         };
 
         const {

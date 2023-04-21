@@ -18,7 +18,7 @@
     "@mui/material": "^5.12.1",
     "allotment": "^1.17.0",
     "country-flag-icons": "^1.5.5",
-    "cron-parser": "^4.6.0",
+    "cron-parser": "^4.8.1",
     "date-fns": "^2.29.3",
     "flat": "^5.0.2",
     "i18next": "^21.9.1",
