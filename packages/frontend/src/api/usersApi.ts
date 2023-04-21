@@ -22,14 +22,16 @@ export interface SocialLoginResponse {
 export type UsersSearchQuery = SearchQuery<User>;
 export type UsersSearchResponse = SearchResponse<User>;
 
-export const createToken = (authorizationCode: string) =>
-    createHttpClient().request<TokenResponse>({
+interface CreateTokenRequest {
+    authorizationCode: string;
+}
+
+export const useCreateToken = () => {
+    return useGenericMutation<TokenResponse, CreateTokenRequest>({
         url: ApiRoute.Users.Token,
         method: 'POST',
-        body: {
-            authorizationCode,
-        },
     });
+};
 
 export const useGetSocialLogin = () =>
     useFetch<SocialLoginResponse>({

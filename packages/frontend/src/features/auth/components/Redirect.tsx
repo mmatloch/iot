@@ -1,4 +1,4 @@
-import { createToken } from '@api/usersApi';
+import { useCreateToken } from '@api/usersApi';
 import CircularProgressLoader from '@components/CircularProgressLoader';
 import { UserState } from '@definitions/entities/userTypes';
 import { HttpError } from '@errors/httpError';
@@ -18,15 +18,9 @@ export default function RedirectGoogle() {
     const navigate = useNavigate();
 
     const [searchParams] = useSearchParams();
-    const code = searchParams.get('code');
+    const authorizationCode = searchParams.get('code');
 
-    const sendAuthorizationCode = async (authorizationCode: string) => {
-        const {
-            body: { token },
-        } = await createToken(authorizationCode);
-
-        return token;
-    };
+    const { mutate: createToken, data: createTokenResponse, error: createTokenError } = useCreateToken();
 
     const getErrorMessage = useCallback(
         (error: Error) => {
@@ -45,34 +39,32 @@ export default function RedirectGoogle() {
     );
 
     useEffect(() => {
-        if (!code) {
+        if (createTokenError) {
+            if (createTokenError instanceof Error) {
+                const message = getErrorMessage(createTokenError);
+
+                enqueueSnackbar(message, {
+                    variant: 'error',
+                });
+
+                navigate(AppRoute.Auth.SignIn);
+            }
+        }
+    }, [createTokenError]);
+
+    useEffect(() => {
+        if (createTokenResponse) {
+            auth?.login(createTokenResponse.token);
+        }
+    }, [createTokenResponse]);
+
+    useEffect(() => {
+        if (!authorizationCode) {
             return;
         }
 
-        let ignore = false;
-
-        sendAuthorizationCode(code)
-            .then((token) => {
-                if (!ignore) {
-                    auth?.login(token);
-                }
-            })
-            .catch((e) => {
-                if (!ignore && e instanceof Error) {
-                    const message = getErrorMessage(e);
-
-                    enqueueSnackbar(message, {
-                        variant: 'error',
-                    });
-
-                    navigate(AppRoute.Auth.SignIn);
-                }
-            });
-
-        return () => {
-            ignore = true;
-        };
-    }, [auth, code, enqueueSnackbar, getErrorMessage, navigate]);
+        createToken({ authorizationCode });
+    }, [authorizationCode, createToken]);
 
     return <CircularProgressLoader variant="normal" />;
 }
