@@ -32,6 +32,7 @@ jobs:
         run: yarn script start
 
       - name: Run tests
+        shell: 'script -q -e -c "bash {0}"'
         run: yarn script test
 
       - name: Collect Docker Logs
