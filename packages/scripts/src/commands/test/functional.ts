@@ -24,7 +24,15 @@ export class TestFunctionalCommand extends Command {
     async run() {
         const { flags } = await this.parse(TestFunctionalCommand);
 
-        const cmd = `docker compose -p ${PROJECT_NAME} -f ${PATH.DeployLocal.DockerCompose} run -it tests`;
+        const composeArgs: string[] = [];
+
+        if (flags.watchAll) {
+            composeArgs.push('-it');
+        }
+
+        const cmd = `docker compose -p ${PROJECT_NAME} -f ${PATH.DeployLocal.DockerCompose} run ${composeArgs.join(
+            ' ',
+        )} tests`;
         const args = [`--watchAll=${flags.watchAll}`, '--selectProjects=functional'];
 
         if (flags.group) {
