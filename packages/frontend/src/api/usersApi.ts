@@ -1,6 +1,7 @@
-import { createHttpClient } from '@clients/httpClient';
+import { getAccessToken, removeAccessToken } from '@clients/httpClient';
 import type { User } from '@definitions/entities/userTypes';
 import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+import { HttpError } from '@errors/httpError';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 import { useQueryClient } from 'react-query';
@@ -76,5 +77,13 @@ export const useUser = () =>
         },
         {
             keepPreviousData: true,
+            onError(err) {
+                if (err instanceof HttpError) {
+                    // valid token but the user has been removed
+                    if (err.statusCode === 404 && getAccessToken()) {
+                        removeAccessToken();
+                    }
+                }
+            },
         },
     );
