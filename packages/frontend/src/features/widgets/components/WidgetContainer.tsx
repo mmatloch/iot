@@ -17,7 +17,7 @@ export const WidgetContainer = () => {
                 <Widget
                     icon={CleanWater}
                     title={'Zawór ogrodowy'}
-                    content={<Typography variant="caption">Uruchmiony od 37 minut</Typography>}
+                    content={<Typography variant="caption">Uruchomiony od 37 minut</Typography>}
                     action={<Switch defaultChecked color="success" />}
                 />
             </WidgetGridItem>
@@ -46,8 +46,12 @@ export const WidgetContainer = () => {
             <WidgetGridItem size={WidgetSize.Small}>
                 <Widget icon={Antenna} title={'Router bez obudowy'} />
             </WidgetGridItem>
-            <WidgetGridItem size={WidgetSize.Medium}>
+            <WidgetGridItem size={WidgetSize.Small}>
                 <Widget icon={Router} title={'Koordynator'} />
+            </WidgetGridItem>
+
+            <WidgetGridItem size={WidgetSize.Small}>
+                <Widget icon={Router} title={'Testowe urządzenie'} />
             </WidgetGridItem>
         </Grid>
     );

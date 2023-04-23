@@ -5,6 +5,7 @@ export enum WidgetSize {
     Small,
     Medium,
     Large,
+    ExtraLarge,
 }
 
 interface Props {
@@ -17,8 +18,10 @@ const getGridSize = (size: WidgetSize) => {
         case WidgetSize.Small:
             return 4;
         case WidgetSize.Medium:
-            return 8;
+            return 6;
         case WidgetSize.Large:
+            return 8;
+        case WidgetSize.ExtraLarge:
             return 12;
         default:
             return 4;

@@ -1,7 +1,22 @@
+import DevicesIcon from '@assets/icons/devices.png';
+import EventInstancesIcon from '@assets/icons/eventInstances.png';
+import EventsIcon from '@assets/icons/events.png';
+import EventSchedulerIcon from '@assets/icons/eventScheduler.png';
+import HomeIcon from '@assets/icons/home.png';
+import UserIcon from '@assets/icons/user.png';
 import { useAuth } from '@hooks/useAuth';
-import { ContentPasteSearch, Event, Home, ManageAccounts, PendingActions, SpeakerPhone } from '@mui/icons-material';
-import { Box, Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Toolbar } from '@mui/material';
-import type { FC, ReactNode } from 'react';
+import {
+    Avatar,
+    Box,
+    Drawer,
+    List,
+    ListItem,
+    ListItemButton,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+} from '@mui/material';
+import type { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +25,7 @@ import { AppRoute } from '../constants';
 const DRAWER_WIDTH = 300;
 
 interface ItemProps {
-    icon: ReactNode;
+    icon: string;
     text: string;
     navigateTo: string;
     adminOnly?: boolean;
@@ -20,7 +35,9 @@ const Item: FC<ItemProps> = ({ icon, text, navigateTo }) => {
     return (
         <ListItem disablePadding>
             <ListItemButton component={Link} to={navigateTo}>
-                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemIcon>
+                    <Avatar variant="square" src={icon} />
+                </ListItemIcon>
                 <ListItemText primary={text} />
             </ListItemButton>
         </ListItem>
@@ -40,33 +57,33 @@ export default function Sidebar({ isOpen, onClose }: Props) {
 
     const items = [
         {
-            icon: <Home />,
+            icon: HomeIcon,
             text: 'Home',
             navigateTo: AppRoute.Home,
         },
         {
-            icon: <ManageAccounts />,
+            icon: UserIcon,
             text: t('users:title'),
             navigateTo: AppRoute.Users,
             adminOnly: true,
         },
         {
-            icon: <SpeakerPhone />,
+            icon: DevicesIcon,
             text: t('devices:title'),
             navigateTo: AppRoute.Devices.Root,
         },
         {
-            icon: <Event />,
+            icon: EventsIcon,
             text: t('events:title'),
             navigateTo: AppRoute.Events.Root,
         },
         {
-            icon: <PendingActions />,
+            icon: EventSchedulerIcon,
             text: t('eventScheduler:title'),
             navigateTo: AppRoute.EventScheduler.Root,
         },
         {
-            icon: <ContentPasteSearch />,
+            icon: EventInstancesIcon,
             text: t('eventInstances:title'),
             navigateTo: AppRoute.EventInstances.Root,
         },
