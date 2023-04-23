@@ -261,4 +261,11 @@ export interface Locale {
             failedToDeleteTask: string;
         };
     };
+    dashboards: {
+        title: string;
+        creator: {
+            title: string;
+            addWidget: string;
+        };
+    };
 }

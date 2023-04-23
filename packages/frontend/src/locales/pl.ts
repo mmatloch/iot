@@ -319,4 +319,11 @@ export const PolishLocale: Locale = {
             failedToDeleteTask: 'Nie udało się anulować zaplanowanego zadania',
         },
     },
+    dashboards: {
+        title: 'Panele',
+        creator: {
+            title: 'Kreator paneli',
+            addWidget: 'Dodaj widżet',
+        },
+    },
 };

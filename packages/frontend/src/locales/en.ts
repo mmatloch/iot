@@ -319,4 +319,11 @@ export const EnglishLocale: Locale = {
             failedToDeleteTask: 'Failed to cancel scheduled task',
         },
     },
+    dashboards: {
+        title: 'Dashboards',
+        creator: {
+            title: 'Dashboard creator',
+            addWidget: 'Add widget',
+        },
+    },
 };

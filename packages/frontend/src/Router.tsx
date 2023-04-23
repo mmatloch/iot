@@ -4,6 +4,8 @@ import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from './constants';
 import AuthRedirectGoogle from './pages/AuthRedirectGoogle';
 import AuthSignIn from './pages/AuthSignIn';
+import DashboardCreatorPage from './pages/DashboardCreator';
+import DashboardsPage from './pages/Dashboards';
 import DeviceCreator from './pages/DeviceCreator';
 import Devices from './pages/Devices';
 import EventCreator from './pages/EventCreator';
@@ -30,6 +32,9 @@ export default function Router() {
 
             <Route path={AppRoute.EventScheduler.Root} element={<ProtectedRoute element={<Scheduler />} />} />
             <Route path={AppRoute.EventInstances.Root} element={<ProtectedRoute element={<EventInstances />} />} />
+
+            <Route path={AppRoute.Dashboards.Root} element={<ProtectedRoute element={<DashboardsPage />} />} />
+            <Route path={AppRoute.Dashboards.Creator} element={<ProtectedRoute element={<DashboardCreatorPage />} />} />
         </Routes>
     );
 }

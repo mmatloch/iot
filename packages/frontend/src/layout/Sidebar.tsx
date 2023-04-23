@@ -1,3 +1,4 @@
+import DashboardsIcon from '@assets/icons/app.png';
 import DevicesIcon from '@assets/icons/devices.png';
 import EventInstancesIcon from '@assets/icons/eventInstances.png';
 import EventsIcon from '@assets/icons/events.png';
@@ -66,6 +67,11 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             text: t('users:title'),
             navigateTo: AppRoute.Users,
             adminOnly: true,
+        },
+        {
+            icon: DashboardsIcon,
+            text: t('dashboards:title'),
+            navigateTo: AppRoute.Dashboards.Root,
         },
         {
             icon: DevicesIcon,

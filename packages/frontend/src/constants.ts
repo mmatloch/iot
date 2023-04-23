@@ -25,6 +25,9 @@ export const ApiRoute = {
     EventInstances: {
         Root: addPrefix('events/instances'),
     },
+    Dashboards: {
+        Root: addPrefix('dashboards'),
+    },
 };
 
 export const AppRoute = {
@@ -50,5 +53,9 @@ export const AppRoute = {
     },
     EventInstances: {
         Root: '/events/instances',
+    },
+    Dashboards: {
+        Root: '/dashboards',
+        Creator: '/dashboards/create',
     },
 };
