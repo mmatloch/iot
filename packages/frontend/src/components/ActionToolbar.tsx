@@ -1,4 +1,4 @@
-import { Add, FilterList } from '@mui/icons-material';
+import { Add, FilterList, Save } from '@mui/icons-material';
 import { Box, Button, Toolbar, Typography } from '@mui/material';
 import type { MouseEvent, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,10 +7,11 @@ interface Props {
     title: string;
     onFiltersClick?: (event: MouseEvent<HTMLButtonElement>) => void;
     onCreateClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+    onSaveClick?: (event: MouseEvent<HTMLButtonElement>) => void;
     buttons?: ReactNode;
 }
 
-export default function SearchToolbar({ title, buttons, onCreateClick, onFiltersClick }: Props) {
+export const ActionToolbar = ({ title, buttons, onCreateClick, onFiltersClick, onSaveClick }: Props) => {
     const { t } = useTranslation();
 
     return (
@@ -44,8 +45,14 @@ export default function SearchToolbar({ title, buttons, onCreateClick, onFilters
                     </Button>
                 )}
 
+                {onSaveClick && (
+                    <Button size="large" onClick={onSaveClick} endIcon={<Save fontSize="inherit" />}>
+                        {t('generic:save')}
+                    </Button>
+                )}
+
                 {buttons}
             </Box>
         </Toolbar>
     );
-}
+};

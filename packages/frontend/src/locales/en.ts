@@ -44,6 +44,7 @@ export const EnglishLocale: Locale = {
                 showOnlyActive: 'Show only active',
                 filterByEvent: 'Filter by event',
                 filterByDevice: 'Filter by device',
+                filterByWidget: 'Filter by widget',
             },
             sorting: {
                 title: 'Sorting',
@@ -324,6 +325,19 @@ export const EnglishLocale: Locale = {
         creator: {
             title: 'Dashboard creator',
             addWidget: 'Add widget',
+        },
+    },
+    widgets: {
+        title: 'Widgets',
+        entity: {
+            displayName: 'Name',
+            icon: 'Icon',
+        },
+        creator: {
+            title: 'Widget creator',
+        },
+        errors: {
+            failedToCreateWidget: 'Failed to create widget',
         },
     },
 };

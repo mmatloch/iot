@@ -28,6 +28,9 @@ export const ApiRoute = {
     Dashboards: {
         Root: addPrefix('dashboards'),
     },
+    Widgets: {
+        Root: addPrefix('widgets'),
+    },
 };
 
 export const AppRoute = {
@@ -57,5 +60,9 @@ export const AppRoute = {
     Dashboards: {
         Root: '/dashboards',
         Creator: '/dashboards/create',
+    },
+    Widgets: {
+        Root: '/widgets',
+        Creator: '/widgets/create',
     },
 };

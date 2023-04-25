@@ -1,5 +1,5 @@
 import { ActionToolbar } from '@components/ActionToolbar';
-import { Dashboards } from '@features/dashboards';
+import { Widgets } from '@features/widgets';
 import Layout from '@layout/Layout';
 import { Container } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -7,20 +7,20 @@ import { useNavigate } from 'react-router-dom';
 
 import { AppRoute } from '../constants';
 
-export default function DashboardsPage() {
+export default function WidgetsPage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
     const redirectToCreator = () => {
-        navigate(AppRoute.Dashboards.Creator);
+        navigate(AppRoute.Widgets.Creator);
     };
 
     return (
         <Layout>
             <Container>
-                <ActionToolbar title={t('dashboards:title')} onCreateClick={redirectToCreator} />
+                <ActionToolbar title={t('widgets:title')} onCreateClick={redirectToCreator} />
 
-                <Dashboards />
+                <Widgets />
             </Container>
         </Layout>
     );

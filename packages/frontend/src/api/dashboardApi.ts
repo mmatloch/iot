@@ -57,12 +57,12 @@ export const useCreateDashboard = () => {
 
     return useGenericMutation<Dashboard, DashboardDto>(
         {
-            url: ApiRoute.Events.Root,
+            url: ApiRoute.Dashboards.Root,
             method: 'POST',
         },
         {
             onSuccess: () => {
-                queryClient.invalidateQueries([ApiRoute.Events.Root]);
+                queryClient.invalidateQueries([ApiRoute.Dashboards.Root]);
             },
         },
     );

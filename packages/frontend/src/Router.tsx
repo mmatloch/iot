@@ -15,6 +15,8 @@ import Events from './pages/Events';
 import Home from './pages/Home';
 import Scheduler from './pages/Scheduler';
 import Users from './pages/Users';
+import WidgetsPage from './pages/Widgets';
+import WidgetCreatorPage from './pages/WidgetsCreator';
 
 export default function Router() {
     return (
@@ -35,6 +37,9 @@ export default function Router() {
 
             <Route path={AppRoute.Dashboards.Root} element={<ProtectedRoute element={<DashboardsPage />} />} />
             <Route path={AppRoute.Dashboards.Creator} element={<ProtectedRoute element={<DashboardCreatorPage />} />} />
+
+            <Route path={AppRoute.Widgets.Root} element={<ProtectedRoute element={<WidgetsPage />} />} />
+            <Route path={AppRoute.Widgets.Creator} element={<ProtectedRoute element={<WidgetCreatorPage />} />} />
         </Routes>
     );
 }

@@ -48,6 +48,7 @@ export interface Locale {
                 showOnlyActive: string;
                 filterByEvent: string;
                 filterByDevice: string;
+                filterByWidget: string;
             };
             sorting: {
                 title: string;
@@ -266,6 +267,19 @@ export interface Locale {
         creator: {
             title: string;
             addWidget: string;
+        };
+    };
+    widgets: {
+        title: string;
+        entity: {
+            displayName: string;
+            icon: string;
+        };
+        creator: {
+            title: string;
+        };
+        errors: {
+            failedToCreateWidget: string;
         };
     };
 }

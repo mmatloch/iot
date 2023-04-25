@@ -44,6 +44,7 @@ export const PolishLocale: Locale = {
                 showOnlyActive: 'Pokaż tylko aktywne',
                 filterByEvent: 'Filtruj po zdarzeniu',
                 filterByDevice: 'Filtruj po urządzeniu',
+                filterByWidget: 'Filtruj po widżecie',
             },
             sorting: {
                 title: 'Sortowanie',
@@ -324,6 +325,25 @@ export const PolishLocale: Locale = {
         creator: {
             title: 'Kreator paneli',
             addWidget: 'Dodaj widżet',
+        },
+    },
+    widgets: {
+        title: 'Widżety',
+        creator: {
+            title: 'Kreator widżetów',
+        },
+    },
+    widgets: {
+        title: 'Widżety',
+        entity: {
+            displayName: 'Nazwa',
+            icon: 'Ikona',
+        },
+        creator: {
+            title: 'Kreator widżetów',
+        },
+        errors: {
+            failedToCreateWidget: 'Nie udało się stworzyć widżetu',
         },
     },
 };

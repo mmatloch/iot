@@ -1,4 +1,5 @@
 import DashboardsIcon from '@assets/icons/app.png';
+import WidgetsIcon from '@assets/icons/application.png';
 import DevicesIcon from '@assets/icons/devices.png';
 import EventInstancesIcon from '@assets/icons/eventInstances.png';
 import EventsIcon from '@assets/icons/events.png';
@@ -72,6 +73,11 @@ export default function Sidebar({ isOpen, onClose }: Props) {
             icon: DashboardsIcon,
             text: t('dashboards:title'),
             navigateTo: AppRoute.Dashboards.Root,
+        },
+        {
+            icon: WidgetsIcon,
+            text: t('widgets:title'),
+            navigateTo: AppRoute.Widgets.Root,
         },
         {
             icon: DevicesIcon,
