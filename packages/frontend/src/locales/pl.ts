@@ -329,18 +329,16 @@ export const PolishLocale: Locale = {
     },
     widgets: {
         title: 'Widżety',
-        creator: {
-            title: 'Kreator widżetów',
-        },
-    },
-    widgets: {
-        title: 'Widżety',
         entity: {
             displayName: 'Nazwa',
             icon: 'Ikona',
         },
         creator: {
             title: 'Kreator widżetów',
+            defaults: {
+                displayName: 'Nazwa widżetu',
+                icon: 'home.png',
+            },
         },
         errors: {
             failedToCreateWidget: 'Nie udało się stworzyć widżetu',

@@ -335,6 +335,10 @@ export const EnglishLocale: Locale = {
         },
         creator: {
             title: 'Widget creator',
+            defaults: {
+                displayName: 'Widget name',
+                icon: 'home.png',
+            },
         },
         errors: {
             failedToCreateWidget: 'Failed to create widget',

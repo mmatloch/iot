@@ -1,9 +1,11 @@
 import type { IncomingMessage } from 'http';
+import { join } from 'path';
 
 import { ValidationError, transformError } from '@common/errors';
 import type { Logger } from '@common/logger';
 import { createValidator } from '@common/validator';
 import formBody from '@fastify/formbody';
+import staticPlugin from '@fastify/static';
 import _ from 'lodash';
 
 import { createApplicationFromFastify } from './fastifyAbstract';
@@ -16,6 +18,7 @@ interface CreateApplicationOptions {
     logger: Logger;
     loggerOptions: LoggerPluginOptions;
     urlPrefix: string;
+    staticFilesPath?: string;
     hooks?: {
         beforeReady?: (app: Application) => Promise<void>;
         beforeBootstrap?: (app: Application) => Promise<void>;
@@ -41,6 +44,17 @@ const bootstrapApplication = (app: Application, opts: CreateApplicationOptions) 
     app.register(formBody);
     app.register(loggerPlugin, opts.loggerOptions);
     app.register(statusPlugin);
+
+    if (opts.staticFilesPath) {
+        console.log('opts.staticFilesPath');
+        app.register(staticPlugin, {
+            root: opts.staticFilesPath,
+            prefix: '/static',
+            prefixAvoidTrailingSlash: true,
+            list: true,
+            index: false,
+        });
+    }
 };
 
 // https://github.com/yarnpkg/berry/blob/2cf0a8fe3e4d4bd7d4d344245d24a85a45d4c5c9/packages/yarnpkg-pnp/sources/loader/applyPatch.ts#L414-L435

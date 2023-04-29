@@ -16,8 +16,8 @@ export const useWidgetCreator = () => {
 
     const methods = useForm<WidgetDto>({
         defaultValues: {
-            displayName: '',
-            icon: '',
+            displayName: t('widgets:creator.defaults.displayName'),
+            icon: t('widgets:creator.defaults.icon'),
         },
     });
 

@@ -35,6 +35,7 @@ createApplication({
         logResponses: config.logger.logResponses,
     },
     urlPrefix: config.app.urlPrefix,
+    staticFilesPath: config.static.path,
     hooks: {
         beforeBootstrap: async (app) => {
             app.register(requestUserPlugin);

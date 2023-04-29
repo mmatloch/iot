@@ -1,6 +1,7 @@
-import CleanWater from '@assets/icons/clean-water.png';
+import { WidgetDto } from '@definitions/entities/widgetTypes';
 import { Switch, Typography } from '@mui/material';
 import { Responsive, WidthProvider } from 'react-grid-layout';
+import { useFormContext } from 'react-hook-form';
 
 import { Widget } from './Widget';
 
@@ -23,12 +24,16 @@ const breakpoints = {
 };
 
 export const WidgetEditorPreview = () => {
+    const { watch } = useFormContext<WidgetDto>();
+
+    const values = watch();
+
     return (
         <ResponsiveGridLayout className="layout" cols={cols} breakpoints={breakpoints}>
             <div key="1">
                 <Widget
-                    icon={CleanWater}
-                    title={'Zawór ogrodowy'}
+                    icon={values.icon}
+                    title={values.displayName}
                     content={<Typography variant="caption">Uruchomiony od 37 minut</Typography>}
                     action={<Switch defaultChecked color="success" />}
                 />

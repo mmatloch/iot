@@ -277,6 +277,10 @@ export interface Locale {
         };
         creator: {
             title: string;
+            defaults: {
+                displayName: string;
+                icon: string;
+            };
         };
         errors: {
             failedToCreateWidget: string;

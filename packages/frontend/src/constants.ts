@@ -31,6 +31,9 @@ export const ApiRoute = {
     Widgets: {
         Root: addPrefix('widgets'),
     },
+    Static: {
+        Root: addPrefix('static'),
+    },
 };
 
 export const AppRoute = {

@@ -2,6 +2,8 @@ import FormInputText from '@components/forms/FormInputText';
 import { FormGroup } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
+import { WidgetIconSelector } from './WidgetIconSelector';
+
 export const WidgetEditorForm = () => {
     const { t } = useTranslation();
 
@@ -14,12 +16,7 @@ export const WidgetEditorForm = () => {
                 margin="dense"
             />
 
-            <FormInputText
-                name="icon"
-                label={t('widgets:entity.icon')}
-                validation={{ required: true }}
-                margin="dense"
-            />
+            <WidgetIconSelector />
         </FormGroup>
     );
 };

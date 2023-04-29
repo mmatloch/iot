@@ -14,5 +14,8 @@
         "scope": "openid profile email"
       }
     }
+  },
+  "static": {
+    "path": "/usr/app/packages/static"
   }
 }
