@@ -9384,12 +9384,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"thread-stream@npm:thread-stream@2.0.1":
-  version: 2.0.1
-  resolution: "thread-stream@npm:2.0.1"
+"thread-stream@npm:thread-stream@2.3.0":
+  version: 2.3.0
+  resolution: "thread-stream@npm:2.3.0"
   dependencies:
     real-require: ^0.2.0
-  checksum: a78c904d4b22d7b59f774da380b04333e0c7d30505e320eda4bfa4c10e946229f16df6aedb13c7608415cb334657c4a4c6d5d45bf621f6ddb97d3a0141345989
+  checksum: e9ea58f9f36320165b41c2aae5c439bf68bd3575eb533c458483d8b290e31d519979e351408c7d6e248711611434332c2a3aae2165650b028cc3eb9b1052ac16
   languageName: node
   linkType: hard
 
