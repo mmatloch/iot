@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function DeviceProtocolList({ onSelect }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
 
     return (
         <List>
@@ -17,13 +17,13 @@ export default function DeviceProtocolList({ onSelect }: Props) {
                 <ListItemAvatar>
                     <ZigbeeDeviceAvatar />
                 </ListItemAvatar>
-                <ListItemText primary={t(`devices:protocol.${DeviceProtocol.Zigbee}`)} />
+                <ListItemText primary={t(`protocol.${DeviceProtocol.Zigbee}`)} />
             </ListItemButton>
             <ListItemButton onClick={() => onSelect(DeviceProtocol.Virtual)}>
                 <ListItemAvatar>
                     <VirtualDeviceAvatar />
                 </ListItemAvatar>
-                <ListItemText primary={t(`devices:protocol.${DeviceProtocol.Virtual}`)} />
+                <ListItemText primary={t(`protocol.${DeviceProtocol.Virtual}`)} />
             </ListItemButton>
         </List>
     );

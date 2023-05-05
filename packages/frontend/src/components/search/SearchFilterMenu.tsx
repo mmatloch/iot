@@ -35,7 +35,7 @@ export default function SearchFilterMenu<TEntity extends GenericEntity>({
             <MenuList sx={{ pt: 0, width: '350px' }}>
                 <ListSubheader sx={{ bgcolor: 'transparent' }}>
                     <Stack direction="row" alignItems="center" justifyContent="space-between" gap={1} sx={{ mb: 1 }}>
-                        <Typography>{t('generic:search.filtering.title')}</Typography>
+                        <Typography>{t('search.filtering.title')}</Typography>
 
                         <IconButton onClick={clearFilters}>
                             <FilterListOff />

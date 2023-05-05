@@ -16,7 +16,7 @@ interface Props {
 }
 
 export default function EventTriggerResultPanel({ data, error }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('events');
     const [selectedNode, setSelectedNode] = useState<EventRunSummaryChild>();
 
     if (error) {
@@ -42,7 +42,7 @@ export default function EventTriggerResultPanel({ data, error }: Props) {
             {data.map(({ runId, summary }) => {
                 return (
                     <Box key={runId}>
-                        <Chip label={`${t('events:editor.triggerPanel.runId')}: ${runId}`} sx={{ mb: 2 }} />
+                        <Chip label={`${t('editor.triggerPanel.runId')}: ${runId}`} sx={{ mb: 2 }} />
 
                         <TreeView
                             defaultCollapseIcon={<ExpandMore />}

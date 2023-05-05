@@ -17,6 +17,7 @@ i18n.use(LanguageDetector)
     .use(initReactI18next)
     // for all options read: https://www.i18next.com/overview/configuration-options
     .init({
+        defaultNS: 'common',
         fallbackLng: 'en',
         debug: false,
         resources: resources,

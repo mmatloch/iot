@@ -1,6 +1,6 @@
 import { useUpdateEvent } from '@api/eventsApi';
 import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
-import type { Event} from '@definitions/entities/eventTypes';
+import type { Event } from '@definitions/entities/eventTypes';
 import { EventState } from '@definitions/entities/eventTypes';
 import { Edit, Preview, PublishedWithChanges } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function EventMenu({ event, onClose, onEdit, anchorEl }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'events']);
     const { enqueueSnackbar } = useSnackbar();
     const { mutateAsync } = useUpdateEvent(event);
     const navigate = useNavigate();

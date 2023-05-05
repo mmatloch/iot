@@ -31,10 +31,10 @@ const getBadgeColor = (state: EventInstanceState) => {
 };
 
 export default function EventInstanceCard({ entity: eventInstance }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('eventInstances');
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
 
-    const stateTransKey = `eventInstances:state.${eventInstance.state}` as const;
+    const stateTransKey = `state.${eventInstance.state}` as const;
 
     const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setMenuAnchorEl(event.currentTarget);

@@ -17,7 +17,7 @@ interface Props {
 type FormInput = Pick<Device, 'displayName' | 'description'>;
 
 export default function DeviceEditDialog({ device, isOpen, onClose }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'devices']);
     const { mutateAsync, isLoading } = useUpdateDevice(device);
     const { enqueueSnackbar } = useSnackbar();
 

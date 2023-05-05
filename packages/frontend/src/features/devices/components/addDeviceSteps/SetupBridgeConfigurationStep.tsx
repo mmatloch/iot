@@ -19,11 +19,12 @@ export default function SetupBridgeConfigurationStep({ deviceProtocol, onCreated
         if (!isAdmin) {
             return (
                 <Alert severity="error">
-                    <AlertTitle>{t('generic:errors.permissionDenied')}</AlertTitle>
+                    <AlertTitle>{t('errors.permissionDenied')}</AlertTitle>
                     <Trans
-                        i18nKey="configurations:errors.noPermissionToCreateConfiguration"
+                        i18nKey="errors.noPermissionToCreateConfiguration"
                         t={t}
                         components={{ strong: <strong /> }}
+                        ns="configurations"
                     />
                 </Alert>
             );

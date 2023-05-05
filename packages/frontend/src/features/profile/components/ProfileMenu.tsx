@@ -11,7 +11,7 @@ interface Props {
 }
 
 export default function ProfileMenu({ anchorEl, onClose, onChangeLanguageClick, onEditProfileClick }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['auth', 'profile', 'i18n']);
     const auth = useAuth();
 
     const isMenuOpen = Boolean(anchorEl);

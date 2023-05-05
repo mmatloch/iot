@@ -1,6 +1,6 @@
 import { useDeleteEventSchedulerTask } from '@api/eventSchedulerApi';
 import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
-import type { EventSchedulerTask} from '@definitions/entities/eventSchedulerTypes';
+import type { EventSchedulerTask } from '@definitions/entities/eventSchedulerTypes';
 import { EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
 import { CancelScheduleSend, Preview } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function EventSchedulerTaskMenu({ eventSchedulerTask, onClose, anchorEl }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'events', 'eventScheduler']);
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
     const { mutateAsync } = useDeleteEventSchedulerTask(eventSchedulerTask);

@@ -22,7 +22,7 @@ export default function UserFilterMenu({ onClose, anchorEl, setSearchQuery, sear
             path: 'filters.state',
             checkValue: UserState.Active,
             uncheckValue: undefined,
-            text: t('generic:search.filtering.showOnlyActive'),
+            text: t('search.filtering.showOnlyActive'),
         },
     };
 

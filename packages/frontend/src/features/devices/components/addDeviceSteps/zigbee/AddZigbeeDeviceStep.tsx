@@ -1,5 +1,5 @@
 import { useDevices } from '@api/devicesApi';
-import type { Device} from '@definitions/entities/deviceTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
 import { DeviceProtocol } from '@definitions/entities/deviceTypes';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { subMinutes } from 'date-fns';
@@ -13,7 +13,7 @@ interface Props {
 }
 
 export default function AddZigbeeDeviceStep({ onDeviceSelect }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
     const [now] = useState(new Date());
 
     const { data } = useDevices(
@@ -32,7 +32,7 @@ export default function AddZigbeeDeviceStep({ onDeviceSelect }: Props) {
 
     return (
         <Box>
-            <Typography variant="h6">{t('devices:creator.addDevice.lookingForDevices')}</Typography>
+            <Typography variant="h6">{t('creator.addDevice.lookingForDevices')}</Typography>
 
             <CircularProgress sx={{ mt: 3 }} />
 

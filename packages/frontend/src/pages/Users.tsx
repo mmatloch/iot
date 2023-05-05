@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next';
 const SEARCH_FIELD = 'name';
 
 export default function Users() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('users');
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
     const { searchQuery, setSearchQuery } = useSearchQuery<UsersSearchQuery>({});
     const { data, isSuccess, isLoading, isPreviousData } = useUsers(searchQuery);
@@ -41,8 +41,8 @@ export default function Users() {
         <Layout>
             <Container>
                 <SearchToolbarWithInput
-                    title={t('users:title')}
-                    searchLabel={t('users:search.inputLabel')}
+                    title={t('title')}
+                    searchLabel={t('search.inputLabel')}
                     onFiltersClick={openFilterMenu}
                     setSearchQuery={setSearchQuery}
                     searchQuery={searchQuery}

@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function EventFilterMenu({ onClose, anchorEl, setSearchQuery, searchQuery }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'events']);
 
     const checkboxFilterMap: Record<string, CheckboxFilterMapItem> = {
         showOnlyActive: {

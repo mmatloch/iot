@@ -12,7 +12,7 @@ import SchedulerStaticCronForm from './Scheduler/SchedulerStaticCronForm';
 import SchedulerStaticIntervalForm from './Scheduler/SchedulerStaticIntervalForm';
 
 export default function EventEditorSchedulerMetadataForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['events', 'eventScheduler']);
 
     const currentTaskType = useWatch({
         name: 'metadata.taskType',

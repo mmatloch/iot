@@ -1,6 +1,6 @@
 import { useUpdateUser } from '@api/usersApi';
 import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
-import type { User} from '@definitions/entities/userTypes';
+import type { User } from '@definitions/entities/userTypes';
 import { UserState } from '@definitions/entities/userTypes';
 import { Edit, PublishedWithChanges } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function UserMenu({ user, onClose, onEdit, anchorEl }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'users']);
     const { enqueueSnackbar } = useSnackbar();
     const { mutateAsync } = useUpdateUser(user);
 

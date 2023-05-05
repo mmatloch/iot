@@ -1,6 +1,6 @@
 import { useCreateConfiguration } from '@api/configurationsApi';
 import FormInputText from '@components/forms/FormInputText';
-import type { ConfigurationDto} from '@definitions/entities/configurationTypes';
+import type { ConfigurationDto } from '@definitions/entities/configurationTypes';
 import { ConfigurationState, ConfigurationType } from '@definitions/entities/configurationTypes';
 import { LoadingButton } from '@mui/lab';
 import { FormGroup, Link } from '@mui/material';
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function CreateZigbeeBridgeConfigurationForm({ onSubmitSuccess }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'configurations']);
     const { enqueueSnackbar } = useSnackbar();
     const { mutateAsync, isLoading } = useCreateConfiguration();
 

@@ -14,13 +14,12 @@ const COLORS = {
 const HEIGHT = '40px';
 
 export default function EventRunPerformanceMetricsBar({ performanceMetrics }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('eventInstances');
 
     return (
         <>
             <Typography>
-                {t('eventInstances:entity.performanceMetrics.executionDuration')}:{' '}
-                {performanceMetrics.executionDuration.toFixed(5)}
+                {t('entity.performanceMetrics.executionDuration')}: {performanceMetrics.executionDuration.toFixed(5)}
                 ms
             </Typography>
             <Stack direction="row" sx={{ width: '100%', mt: 1, height: HEIGHT, backgroundColor: COLORS.base }}>

@@ -8,9 +8,9 @@ interface Props {
 }
 
 export default function DevicePowerSourceAvatar({ powerSource }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
 
-    const title = t(`devices:powerSource.${powerSource}`);
+    const title = t(`powerSource.${powerSource}`);
 
     switch (powerSource) {
         case DevicePowerSource.Battery:

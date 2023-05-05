@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function SchedulerRunAfterEventForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('events');
     const [searchValue, setSearchValue] = useState('');
     const debouncedSearchValue = useDebounce(searchValue, 200);
 
@@ -22,7 +22,7 @@ export default function SchedulerRunAfterEventForm() {
         <FormGroup>
             <FormLiveAutocomplete
                 name="metadata.runAfterEvent"
-                label={t('events:entity.metadata.runAfterEvent')}
+                label={t('entity.metadata.runAfterEvent')}
                 validation={{ required: true }}
                 margin="dense"
                 loading={isLoading}

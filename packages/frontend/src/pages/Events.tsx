@@ -32,7 +32,7 @@ const defaultQuery: EventsSearchQuery = {
 const SEARCH_FIELD = 'displayName';
 
 export default function Events() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('events');
     const navigate = useNavigate();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -65,8 +65,8 @@ export default function Events() {
         <Layout>
             <Container>
                 <SearchToolbarWithInput
-                    title={t('events:title')}
-                    searchLabel={t('events:search.inputLabel')}
+                    title={t('title')}
+                    searchLabel={t('search.inputLabel')}
                     onCreateClick={redirectToCreator}
                     onFiltersClick={openFilterMenu}
                     setSearchQuery={setSearchQuery}

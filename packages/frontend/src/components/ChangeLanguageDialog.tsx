@@ -27,7 +27,7 @@ interface Props {
 }
 
 export default function ChangeLanguageDialog({ isOpen, onClose }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('i18n');
     const { changeLanguage } = useLocale();
 
     const selectLanguage = (lang: AvailableLanguage) => {
@@ -37,7 +37,7 @@ export default function ChangeLanguageDialog({ isOpen, onClose }: Props) {
 
     return (
         <Dialog onClose={onClose} open={isOpen}>
-            <DialogTitle>{t('i18n:changeLanguage')}</DialogTitle>
+            <DialogTitle>{t('changeLanguage')}</DialogTitle>
             <List sx={{ pt: 0 }}>
                 <ListItem button onClick={() => selectLanguage(AvailableLanguage.English)}>
                     <ListItemButton text="English" icon={<US />} />

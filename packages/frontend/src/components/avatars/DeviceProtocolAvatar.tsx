@@ -10,9 +10,9 @@ interface Props {
 }
 
 export default function DeviceProtocolAvatar({ protocol }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
 
-    const title = t(`devices:protocol.${protocol}`);
+    const title = t(`protocol.${protocol}`);
 
     switch (protocol) {
         case DeviceProtocol.Zigbee:

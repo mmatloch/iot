@@ -5,7 +5,5 @@ import ErrorDialog from './ErrorDialog';
 export default function FailedToLoadDataDialog() {
     const { t } = useTranslation();
 
-    return (
-        <ErrorDialog title={t('generic:errors.failedToLoadData')} message={t('generic:errors.noInternetConnection')} />
-    );
+    return <ErrorDialog title={t('errors.failedToLoadData')} message={t('errors.noInternetConnection')} />;
 }

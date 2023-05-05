@@ -5606,7 +5606,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["esbuild-plugin-pino", "virtual:2499dbb93d824027565d71b0716c4fb8b548ad61955d0a0286bfb3c5b4058e227894b6691d96808c00f576db14870018375210362c26ee321ea99fd6ed041c74#npm:2.0.0"],\
             ["@types/esbuild", null],\
-            ["esbuild", "npm:0.17.18"]\
+            ["esbuild", "npm:0.17.18"],\
+            ["pino", "npm:8.12.1"],\
+            ["pino-pretty", "npm:10.0.0"],\
+            ["pino-roll", "npm:1.0.0-rc.1"],\
+            ["thread-stream", "npm:2.3.0"]\
           ],\
           "packagePeers": [\
             "@types/esbuild",\
@@ -11517,6 +11521,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/thread-stream-npm-2.1.0-b957ac7b19-f74b6ebaae.zip/node_modules/thread-stream/",\
           "packageDependencies": [\
             ["thread-stream", "npm:2.1.0"],\
+            ["real-require", "npm:0.2.0"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
+        ["npm:2.3.0", {\
+          "packageLocation": "./.yarn/cache/thread-stream-npm-2.3.0-77ee67ae69-e9ea58f9f3.zip/node_modules/thread-stream/",\
+          "packageDependencies": [\
+            ["thread-stream", "npm:2.3.0"],\
             ["real-require", "npm:0.2.0"]\
           ],\
           "linkType": "HARD"\
