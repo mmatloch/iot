@@ -1,11 +1,9 @@
 import crypto from 'node:crypto';
 
-import { CliUx } from '@oclif/core';
+import { ux } from '@oclif/core';
 
 import { PRODUCTION_IMAGE_REPO, PROJECT_NAME } from './constants';
 import type { SetupState } from './setupCache';
-
-const { ux } = CliUx;
 
 export const generateUsername = () => crypto.randomBytes(12).toString('hex');
 export const generatePassword = () => crypto.randomBytes(31).toString('hex');

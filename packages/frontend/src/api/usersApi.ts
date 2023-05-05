@@ -1,4 +1,3 @@
-import { createHttpClient } from '@clients/httpClient';
 import type { User } from '@definitions/entities/userTypes';
 import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 import { useFetch } from '@hooks/useFetch';
