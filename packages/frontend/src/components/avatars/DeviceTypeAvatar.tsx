@@ -8,9 +8,9 @@ interface Props {
 }
 
 export default function DeviceTypeAvatar({ type }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
 
-    const title = t(`devices:type.${type}`);
+    const title = t(`type.${type}`);
 
     switch (type) {
         case DeviceType.Coordinator:

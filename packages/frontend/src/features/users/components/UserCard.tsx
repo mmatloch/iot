@@ -1,12 +1,12 @@
 import EntityDates from '@components/EntityDates';
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
 import UserEditDialog from '@components/UserEditDialog';
-import type { User} from '@definitions/entities/userTypes';
+import type { User } from '@definitions/entities/userTypes';
 import { UserState } from '@definitions/entities/userTypes';
 import { MoreVert } from '@mui/icons-material';
 import { Box, CardContent, CardHeader, Grid, IconButton, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import type { MouseEvent} from 'react';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -31,15 +31,15 @@ const getBadgeColor = (state: UserState) => {
 };
 
 export default function UserCard({ entity: user }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('users');
     const theme = useTheme();
     const isMediumMedia = useMediaQuery(theme.breakpoints.up('sm'));
 
     const [userMenuAnchorEl, setUserMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
 
-    const roleTransKey = `users:role.${user.role}` as const;
-    const stateTransKey = `users:state.${user.state}` as const;
+    const roleTransKey = `role.${user.role}` as const;
+    const stateTransKey = `state.${user.state}` as const;
 
     const openUserMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setUserMenuAnchorEl(event.currentTarget);

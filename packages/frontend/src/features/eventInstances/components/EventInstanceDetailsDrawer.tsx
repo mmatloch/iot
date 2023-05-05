@@ -15,7 +15,7 @@ interface Props {
 const DRAWER_WIDTH = 300;
 
 export default function EventInstanceDetailsDrawer({ open, onClose, eventInstanceId }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('eventInstances');
     const { data, isSuccess, isLoading } = useEventInstance(eventInstanceId);
 
     if (isLoading) {
@@ -44,7 +44,7 @@ export default function EventInstanceDetailsDrawer({ open, onClose, eventInstanc
 
                 <Divider sx={{ my: 2 }} />
 
-                <Typography>{t('eventInstances:entity.triggerContext')}</Typography>
+                <Typography>{t('entity.triggerContext')}</Typography>
                 <pre>{JSON.stringify(data.triggerContext, null, 2)}</pre>
 
                 <Divider sx={{ my: 2 }} />

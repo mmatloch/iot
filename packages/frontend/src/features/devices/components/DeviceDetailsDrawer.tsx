@@ -16,7 +16,7 @@ interface Props {
 const DRAWER_WIDTH = 300;
 
 export default function DeviceDetailsDrawer({ open, onClose, deviceId }: Props) {
-    const {t} = useTranslation()
+    const { t } = useTranslation('devices');
     const { data, isSuccess, isLoading } = useDevice(deviceId);
 
     if (isLoading) {
@@ -57,7 +57,7 @@ export default function DeviceDetailsDrawer({ open, onClose, deviceId }: Props) 
 
                 <Divider sx={{ my: 2 }} />
                 <Typography>
-                    {t('devices:entity.ieeeAddress')}: {data.ieeeAddress}
+                    {t('entity.ieeeAddress')}: {data.ieeeAddress}
                 </Typography>
 
                 <Divider sx={{ my: 2 }} />

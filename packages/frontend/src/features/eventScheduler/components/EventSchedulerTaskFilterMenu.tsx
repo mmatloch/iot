@@ -50,12 +50,12 @@ export default function EventSchedulerTaskFilterMenu({ onClose, anchorEl, setSea
                         <EventAutocompleteWrapper
                             eventId={currentEventId}
                             onChange={handleEventSelect}
-                            InputProps={{ label: t('generic:search.filtering.filterByEvent') }}
+                            InputProps={{ label: t('search.filtering.filterByEvent') }}
                         />
                     ) : (
                         <EventAutocomplete
                             onChange={handleEventSelect}
-                            InputProps={{ label: t('generic:search.filtering.filterByEvent') }}
+                            InputProps={{ label: t('search.filtering.filterByEvent') }}
                         />
                     )}
                 </FormControl>

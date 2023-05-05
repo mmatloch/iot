@@ -30,10 +30,12 @@ export default function FormInputNumber(props: Props) {
                     type="number"
                     {...field}
                     {...props}
-                    {...register(props.name, {
-                        ...props.validation,
-                        valueAsNumber: true,
-                    })}
+                    {...register(
+                        props.name,
+                        Object.assign({}, props.validation, {
+                            valueAsNumber: true,
+                        }),
+                    )}
                     error={hasError}
                     helperText={helperText}
                 />

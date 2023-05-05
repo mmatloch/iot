@@ -19,7 +19,7 @@ interface FormInput {
 }
 
 export default function EventEditDialog({ event, isOpen, onClose }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'events']);
     const { mutateAsync, isLoading } = useUpdateEvent(event);
     const { enqueueSnackbar } = useSnackbar();
 

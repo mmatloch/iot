@@ -24,7 +24,7 @@ interface FormInput {
 }
 
 export default function EventTriggerPanel({ event }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('events');
     const { enqueueSnackbar } = useSnackbar();
 
     const { mutate, isLoading, data, error } = useTriggerEvent();
@@ -46,7 +46,7 @@ export default function EventTriggerPanel({ event }: Props) {
         try {
             parsedContext = JSON.parse(formInput.context);
         } catch {
-            enqueueSnackbar(t('events:errors.failedToParseTriggerContext'), {
+            enqueueSnackbar(t('errors.failedToParseTriggerContext'), {
                 variant: 'error',
             });
 
@@ -74,7 +74,7 @@ export default function EventTriggerPanel({ event }: Props) {
                     loading={isLoading}
                     startIcon={<Send />}
                 >
-                    {t('events:editor.triggerPanel.buttonText')}
+                    {t('editor.triggerPanel.buttonText')}
                 </LoadingButton>
             </Toolbar>
 

@@ -1,10 +1,10 @@
 import EntityDates from '@components/EntityDates';
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
-import type { Device} from '@definitions/entities/deviceTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
 import { DeviceState } from '@definitions/entities/deviceTypes';
 import { MoreVert } from '@mui/icons-material';
 import { CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
-import type { MouseEvent} from 'react';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -34,12 +34,12 @@ const getBadgeColor = (state: DeviceState) => {
 };
 
 export default function DeviceCard({ entity: device, hideMenu, raised }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
 
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
 
-    const stateTransKey = `devices:state.${device.state}` as const;
+    const stateTransKey = `state.${device.state}` as const;
 
     const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setMenuAnchorEl(event.currentTarget);

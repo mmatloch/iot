@@ -17,7 +17,7 @@ export default function UpdatedAtText({ entity, hideCreator }: Props) {
         <Tooltip describeChild title={formatFullDate(entity._updatedAt)}>
             <Typography variant="subtitle2">
                 <Trans
-                    i18nKey={hideCreator ? 'generic:dates.updatedAt' : 'generic:dates.updatedAtAndBy'}
+                    i18nKey={hideCreator ? 'dates.updatedAt' : 'dates.updatedAtAndBy'}
                     t={t}
                     values={{ when: formatRelativeDate(entity._updatedAt), by: updatedBy }}
                     components={{ strong: <strong /> }}

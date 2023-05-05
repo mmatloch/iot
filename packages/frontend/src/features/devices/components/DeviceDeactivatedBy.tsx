@@ -1,8 +1,5 @@
-import type {
-    DeviceDeactivatedBy as IDeviceDeactivatedBy} from '@definitions/entities/deviceTypes';
-import {
-    DeviceDeactivatedByType
-} from '@definitions/entities/deviceTypes';
+import type { DeviceDeactivatedBy as IDeviceDeactivatedBy } from '@definitions/entities/deviceTypes';
+import { DeviceDeactivatedByType } from '@definitions/entities/deviceTypes';
 import { Alert, Typography } from '@mui/material';
 import { Trans, useTranslation } from 'react-i18next';
 
@@ -11,14 +8,14 @@ interface Props {
 }
 
 export default function DeviceDeactivatedBy({ deactivatedBy }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
 
     if (deactivatedBy.type === DeviceDeactivatedByType.Bridge) {
         return (
             <Alert color="warning">
                 <Typography variant="subtitle2">
                     <Trans
-                        i18nKey="devices:deactivatedBy.bridge"
+                        i18nKey="deactivatedBy.bridge"
                         t={t}
                         values={{ name: deactivatedBy.name }}
                         components={{ strong: <strong /> }}
@@ -32,7 +29,7 @@ export default function DeviceDeactivatedBy({ deactivatedBy }: Props) {
         <Alert color="warning">
             <Typography variant="subtitle2">
                 <Trans
-                    i18nKey="devices:deactivatedBy.user"
+                    i18nKey="deactivatedBy.user"
                     t={t}
                     values={{ name: deactivatedBy._user.name }}
                     components={{ strong: <strong /> }}

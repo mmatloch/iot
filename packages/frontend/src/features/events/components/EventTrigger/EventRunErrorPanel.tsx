@@ -12,7 +12,7 @@ export default function EventRunErrorPanel({ error }: Props) {
     return (
         <Box>
             <Alert severity="error">
-                <AlertTitle>{t('generic:error')}</AlertTitle>
+                <AlertTitle>{t('error')}</AlertTitle>
 
                 <Typography variant="body2" sx={{ mb: 1 }}>
                     {error.message as string}

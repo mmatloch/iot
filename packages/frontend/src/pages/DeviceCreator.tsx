@@ -4,14 +4,14 @@ import { Box, Container, Paper, Toolbar, Typography } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 export default function DeviceCreator() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
 
     return (
         <Layout>
             <Container>
                 <Toolbar sx={{ mb: 3 }}>
                     <Typography sx={{ typography: { sm: 'h4', xs: 'h5' }, flexGrow: 1 }} component="div">
-                        {t('devices:creator.title')}
+                        {t('creator.title')}
                     </Typography>
                 </Toolbar>
 

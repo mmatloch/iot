@@ -28,7 +28,7 @@ export default function ErrorDialog({ title, message }: Props) {
                 <DialogContentText>{message}</DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={retry}>{t('generic:retry')}</Button>
+                <Button onClick={retry}>{t('retry')}</Button>
             </DialogActions>
         </Dialog>
     );

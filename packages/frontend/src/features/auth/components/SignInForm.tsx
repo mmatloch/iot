@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function SignInForm({ googleAuthUrl }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('auth');
 
     const redirectToGoogle = () => {
         location.replace(googleAuthUrl);
@@ -15,7 +15,7 @@ export default function SignInForm({ googleAuthUrl }: Props) {
 
     return (
         <div>
-            <h1>{t('auth:signIn.title')}</h1>
+            <h1>{t('signIn.title')}</h1>
 
             <ButtonGroup>
                 <Button size="large" startIcon={<GoogleIcon />} sx={{ px: 10, py: 2 }} onClick={redirectToGoogle}>

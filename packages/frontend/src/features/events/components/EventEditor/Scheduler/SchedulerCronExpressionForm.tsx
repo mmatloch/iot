@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import NextTriggerAtContainer from './NextTriggerAtContainer';
 
 export default function SchedulerCronExpressionForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'events']);
 
     const currentCronExpression = useWatch({
         name: 'metadata.cronExpression',

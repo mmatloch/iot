@@ -1,6 +1,6 @@
 import { useUpdateDevice } from '@api/devicesApi';
 import ListItemButtonWithIcon from '@components/ListItemButtonWithIcon';
-import type { Device} from '@definitions/entities/deviceTypes';
+import type { Device } from '@definitions/entities/deviceTypes';
 import { DeviceDeactivatedByType, DeviceState } from '@definitions/entities/deviceTypes';
 import { Edit, PublishedWithChanges, ViewSidebar } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 export default function DeviceMenu({ device, onClose, onEdit, anchorEl }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'devices']);
     const { enqueueSnackbar } = useSnackbar();
     const { mutateAsync } = useUpdateDevice(device);
     const { openDeviceDetails } = useDeviceDetails();

@@ -1,7 +1,7 @@
 import { useUpdateUser } from '@api/usersApi';
 import FormInputSelect from '@components/forms/FormInputSelect';
 import FormInputText from '@components/forms/FormInputText';
-import type { User} from '@definitions/entities/userTypes';
+import type { User } from '@definitions/entities/userTypes';
 import { UserRole } from '@definitions/entities/userTypes';
 import { useAuth } from '@hooks/useAuth';
 import { LoadingButton } from '@mui/lab';
@@ -29,7 +29,7 @@ export default function UserEditDialog({ user, isOpen, onClose }: Props) {
     const auth = useAuth();
     const isAdmin = auth?.isAdmin;
 
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'users']);
     const { mutateAsync, isLoading } = useUpdateUser(user);
     const { enqueueSnackbar } = useSnackbar();
 

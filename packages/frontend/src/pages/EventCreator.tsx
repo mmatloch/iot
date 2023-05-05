@@ -1,5 +1,5 @@
 import { useCreateEvent } from '@api/eventsApi';
-import type { EventDto} from '@definitions/entities/eventTypes';
+import type { EventDto } from '@definitions/entities/eventTypes';
 import { EventMetadataType, EventState, EventTriggerType } from '@definitions/entities/eventTypes';
 import EventEditorForm from '@features/events/components/EventEditorForm';
 import Layout from '@layout/Layout';
@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../constants';
 
 export default function EventCreator() {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'events']);
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 

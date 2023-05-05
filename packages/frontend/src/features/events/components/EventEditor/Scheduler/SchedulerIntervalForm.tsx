@@ -11,7 +11,7 @@ import NextTriggerAtContainer from './NextTriggerAtContainer';
 const NUMBER_OF_DATES = 5;
 
 export default function SchedulerIntervalForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['events', 'eventScheduler']);
 
     const currentInterval = useWatch({
         name: 'metadata.interval',

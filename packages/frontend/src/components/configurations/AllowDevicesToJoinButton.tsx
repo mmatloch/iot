@@ -14,7 +14,7 @@ interface Props {
 
 export default function AllowDevicesToJoinButton({ configuration, onSuccess, children }: Props) {
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslation();
+    const { t } = useTranslation('bridge');
     const { mutateAsync, isLoading } = useRequestBridge(configuration);
 
     const onClickHandler = async () => {
@@ -28,7 +28,7 @@ export default function AllowDevicesToJoinButton({ configuration, onSuccess, chi
             await mutateAsync(payload);
             onSuccess();
         } catch (e) {
-            enqueueSnackbar(t('bridge:errors.failedToRequestBridge'), {
+            enqueueSnackbar(t('errors.failedToRequestBridge'), {
                 variant: 'error',
             });
         }

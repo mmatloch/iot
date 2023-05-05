@@ -13,13 +13,13 @@ const EDITOR_OPTIONS = {
 };
 
 export default function EventTriggerContextForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('events');
 
     return (
         <FormGroup>
             <Box sx={{ mb: 1 }}>
-                <Typography variant="h6">{t('events:editor.triggerPanel.context.title')}</Typography>
-                <Typography variant="caption">{t('events:editor.triggerPanel.context.description')}</Typography>
+                <Typography variant="h6">{t('editor.triggerPanel.context.title')}</Typography>
+                <Typography variant="caption">{t('editor.triggerPanel.context.description')}</Typography>
             </Box>
 
             <Box sx={{ height: 150 }}>

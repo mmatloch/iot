@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function AllowToJoinStep({ configuration, onSuccess }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'devices']);
 
     return (
         <Box>
