@@ -1,6 +1,7 @@
-import type { BaseTextFieldProps} from '@mui/material';
+import { useFormErrorTranslation } from '@hooks/useFormErrorTranslation';
+import type { BaseTextFieldProps } from '@mui/material';
 import { TextField } from '@mui/material';
-import type { RegisterOptions} from 'react-hook-form';
+import { RegisterOptions, get } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
 
 interface Props extends Omit<BaseTextFieldProps, 'name'> {
@@ -15,6 +16,11 @@ export default function FormInputNumber(props: Props) {
         formState: { errors },
     } = useFormContext();
 
+    const error = get(errors, props.name);
+    const hasError = !!error;
+    const errorMessage = useFormErrorTranslation(error);
+    const helperText = errorMessage || props.helperText;
+
     return (
         <Controller
             name={props.name}
@@ -28,7 +34,8 @@ export default function FormInputNumber(props: Props) {
                         ...props.validation,
                         valueAsNumber: true,
                     })}
-                    error={!!errors[props.name]}
+                    error={hasError}
+                    helperText={helperText}
                 />
             )}
         />

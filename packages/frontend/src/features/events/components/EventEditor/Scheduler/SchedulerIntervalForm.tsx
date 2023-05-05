@@ -18,6 +18,10 @@ export default function SchedulerIntervalForm() {
     });
 
     const dates = useMemo(() => {
+        if (!currentInterval || Number.isNaN(currentInterval)) {
+            return [];
+        }
+
         const now = new Date();
 
         return times(NUMBER_OF_DATES, (i) => addSeconds(now, currentInterval * i + 1));
