@@ -7894,7 +7894,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-pretty@npm:^10.0.0":
+"pino-pretty@npm:^10.0.0, pino-pretty@npm:pino-pretty@10.0.0":
   version: 10.0.0
   resolution: "pino-pretty@npm:10.0.0"
   dependencies:
@@ -7918,7 +7918,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino-roll@npm:^1.0.0-rc.1":
+"pino-roll@npm:^1.0.0-rc.1, pino-roll@npm:pino-roll@1.0.0-rc.1":
   version: 1.0.0-rc.1
   resolution: "pino-roll@npm:1.0.0-rc.1"
   dependencies:
@@ -7934,7 +7934,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pino@npm:^8.12.1":
+"pino@npm:^8.12.1, pino@npm:pino@8.12.1":
   version: 8.12.1
   resolution: "pino@npm:8.12.1"
   dependencies:
@@ -9381,6 +9381,15 @@ __metadata:
   dependencies:
     real-require: ^0.2.0
   checksum: f74b6ebaaeaff1ddc1c683fd27fddbf719dc5ba19b8face9019039295cacc3317458d65c9ac7ab7301413667ef15f67ca851adc37cb9273436eef3155541c4c2
+  languageName: node
+  linkType: hard
+
+"thread-stream@npm:thread-stream@2.0.1":
+  version: 2.0.1
+  resolution: "thread-stream@npm:2.0.1"
+  dependencies:
+    real-require: ^0.2.0
+  checksum: a78c904d4b22d7b59f774da380b04333e0c7d30505e320eda4bfa4c10e946229f16df6aedb13c7608415cb334657c4a4c6d5d45bf621f6ddb97d3a0141345989
   languageName: node
   linkType: hard
 
