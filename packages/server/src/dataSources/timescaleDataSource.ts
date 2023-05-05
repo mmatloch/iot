@@ -5,6 +5,7 @@ import { Configuration } from '../entities/configurationEntity';
 import { ConfigurationSubscriber } from '../entities/configurationEntitySubscriber';
 import { Dashboard } from '../entities/dashboardEntity';
 import { Device } from '../entities/deviceEntity';
+import { DeviceFeature } from '../entities/deviceFeatureEntity';
 import { Event } from '../entities/eventEntity';
 import { EventSubscriber } from '../entities/eventEntitySubscriber';
 import { EventInstance } from '../entities/eventInstanceEntity';
@@ -32,7 +33,18 @@ export const timescaleDataSource = new DataSource({
     synchronize: false,
     migrationsRun: false,
     logging: false,
-    entities: [User, Device, Event, EventInstance, SensorData, EventSchedulerTask, Configuration, Widget, Dashboard],
+    entities: [
+        User,
+        Device,
+        Event,
+        EventInstance,
+        SensorData,
+        EventSchedulerTask,
+        Configuration,
+        Widget,
+        Dashboard,
+        DeviceFeature,
+    ],
     subscribers: [EventSubscriber, EventInstanceSubscriber, EventSchedulerTaskSubscriber, ConfigurationSubscriber],
     migrations: [
         Initialize1658620422887,

@@ -46,7 +46,6 @@ const bootstrapApplication = (app: Application, opts: CreateApplicationOptions) 
     app.register(statusPlugin);
 
     if (opts.staticFilesPath) {
-        console.log('opts.staticFilesPath');
         app.register(staticPlugin, {
             root: opts.staticFilesPath,
             prefix: '/static',

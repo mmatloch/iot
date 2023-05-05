@@ -1,9 +1,7 @@
 import { EOL } from 'node:os';
 
 import { EventState, EventTriggerType } from '../../definitions/eventDefinitions';
-import type {
-    Device,
-    DeviceDto} from '../../entities/deviceEntity';
+import type { Device, DeviceDto } from '../../entities/deviceEntity';
 import {
     DeviceDeactivatedByType,
     DevicePowerSource,
@@ -11,11 +9,19 @@ import {
     DeviceState,
     DeviceType,
 } from '../../entities/deviceEntity';
+import { DeviceFeatureType, DeviceFeatureUnit } from '../../entities/deviceFeatureEntity';
+import { getLogger } from '../../logger';
 import { createDevicesService } from '../../services/devicesService';
 import { createEventsService } from '../../services/eventsService';
-import type { ZigbeeDevice} from './zigbeeDefinitions';
+import { isSomeEnum } from '../../utils/isSomeEnum';
+import type { ZigbeeDevice, ZigbeeDeviceFeature } from './zigbeeDefinitions';
 import { ZigbeeDeviceType, ZigbeePowerSource } from './zigbeeDefinitions';
 import { getZigbeeInfo } from './zigbeeInfo';
+
+const logger = getLogger();
+
+const isDeviceFeatureUnit = isSomeEnum(DeviceFeatureUnit);
+const isDeviceFeatureType = isSomeEnum(DeviceFeatureType);
 
 const buildDeviceType = (zigbeeType: ZigbeeDeviceType): DeviceType => {
     switch (zigbeeType) {
@@ -149,6 +155,66 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
         watchCallbacks.add(cb);
     };
 
+    const buildFeatures = (zigbeeDevice: ZigbeeDevice, device?: Device): DeviceDto['features'] => {
+        const features: DeviceDto['features'] = [];
+
+        if (zigbeeDevice.type === ZigbeeDeviceType.Coordinator || zigbeeDevice.type === ZigbeeDeviceType.Unknown) {
+            return features;
+        }
+
+        const findUnit = (unit?: string): DeviceFeatureUnit | null => {
+            if (!unit) {
+                return null;
+            }
+
+            if (isDeviceFeatureUnit(unit)) {
+                return unit;
+            }
+
+            logger.error({
+                msg: `Unsupported unit '${unit}', setting null`,
+                zigbeeDevice,
+            });
+
+            return null;
+        };
+
+        const findType = (type: string): DeviceFeatureType => {
+            if (isDeviceFeatureType(type)) {
+                return type;
+            }
+
+            logger.error({
+                msg: `Unsupported type '${type}', setting ${DeviceFeatureType.Text}`,
+                zigbeeDevice,
+            });
+
+            return DeviceFeatureType.Text;
+        };
+
+        const createFeature = ({ type, property, description, unit }: ZigbeeDeviceFeature) => {
+            const existingFeature = device?.features.find((feature) => feature.propertyName === property);
+
+            // user can update it themselves, don't overwrite it
+            const featureDescription = existingFeature ? existingFeature.description : description;
+
+            features.push({
+                unit: unit ? findUnit(unit) : null,
+                type: findType(type),
+                propertyName: property,
+                description: featureDescription || '',
+            });
+        };
+
+        zigbeeDevice.definition.exposes.map(({ features, ...feature }) => {
+            createFeature(feature);
+
+            features?.forEach(createFeature);
+        });
+
+        return features;
+    };
+
     const buildToCreate = (zigbeeDevice: ZigbeeDevice): DeviceDto => {
         if (zigbeeDevice.type === ZigbeeDeviceType.Coordinator) {
             const bridgeInfo = getZigbeeInfo();
@@ -164,6 +230,8 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 vendor: 'Unknown',
                 manufacturer: 'Unknown',
                 powerSource: DevicePowerSource.Dc,
+                features: buildFeatures(zigbeeDevice),
+                featureState: {},
             };
         } else if (zigbeeDevice.type === ZigbeeDeviceType.Unknown) {
             return {
@@ -177,6 +245,8 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 vendor: 'Unknown',
                 manufacturer: 'Unknown',
                 powerSource: DevicePowerSource.Unknown,
+                features: buildFeatures(zigbeeDevice),
+                featureState: {},
             };
         } else {
             return {
@@ -190,6 +260,8 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 vendor: zigbeeDevice.definition.vendor,
                 manufacturer: zigbeeDevice.manufacturer,
                 powerSource: buildDevicePowerSource(zigbeeDevice.powerSource),
+                features: buildFeatures(zigbeeDevice),
+                featureState: {},
             };
         }
     };
@@ -220,6 +292,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
                 powerSource: buildDevicePowerSource(zigbeeDevice.powerSource),
                 state: buildDeviceState(zigbeeDevice),
                 description,
+                features: buildFeatures(zigbeeDevice, device),
             };
         }
     };

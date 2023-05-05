@@ -1,8 +1,9 @@
-import type { Static} from '@sinclair/typebox';
+import type { Static } from '@sinclair/typebox';
 import { Type } from '@sinclair/typebox';
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
+import { DeviceFeature, deviceFeatureSchema } from './deviceFeatureEntity';
 import { GenericEntity, genericEntitySchema } from './generic/genericEntity';
 import type { User } from './userEntity';
 
@@ -69,6 +70,13 @@ type DeviceDeactivatedBy =
           _user?: User;
       };
 
+interface DeviceFeatureStateEntry {
+    value: string | number | boolean;
+    updatedAt: string;
+}
+
+type DeviceFeatureState = Record<string, DeviceFeatureStateEntry>;
+
 @Entity({ name: 'devices' })
 export class Device extends GenericEntity {
     constructor() {
@@ -115,6 +123,12 @@ export class Device extends GenericEntity {
         nullable: true,
     })
     deactivatedBy!: DeviceDeactivatedBy | null;
+
+    @Column('jsonb')
+    features!: DeviceFeature[];
+
+    @Column('jsonb')
+    featureState!: DeviceFeatureState;
 }
 
 const deactivatedByBridgeSchema = Type.Object({
@@ -130,6 +144,11 @@ const deactivatedByUserSchema = Type.Object({
 
 const deactivatedBySchema = Type.Union([deactivatedByBridgeSchema, deactivatedByUserSchema]);
 
+const featureStateEntrySchema = Type.Object({
+    value: Type.Any(),
+    updatedAt: Type.String(),
+});
+
 export const deviceDtoSchema = Type.Object(
     {
         displayName: Type.String(),
@@ -143,6 +162,8 @@ export const deviceDtoSchema = Type.Object(
         protocol: Type.Enum(DeviceProtocol),
         state: Type.Enum(DeviceState),
         deactivatedBy: Type.Optional(Type.Union([deactivatedBySchema, Type.Null()])),
+        features: Type.Array(deviceFeatureSchema),
+        featureState: Type.Record(Type.String(), featureStateEntrySchema),
     },
     {
         additionalProperties: false,
