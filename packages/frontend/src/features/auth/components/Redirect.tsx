@@ -50,13 +50,13 @@ export default function RedirectGoogle() {
                 navigate(AppRoute.Auth.SignIn);
             }
         }
-    }, [createTokenError]);
+    }, [enqueueSnackbar, createTokenError, getErrorMessage, navigate]);
 
     useEffect(() => {
         if (createTokenResponse) {
             auth?.login(createTokenResponse.token);
         }
-    }, [createTokenResponse]);
+    }, [createTokenResponse, auth]);
 
     useEffect(() => {
         if (!authorizationCode) {

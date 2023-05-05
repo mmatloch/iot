@@ -3,11 +3,11 @@ import crypto from 'node:crypto';
 import { BaseError } from '@common/errors';
 import { faker } from '@faker-js/faker';
 import JWT from 'jsonwebtoken';
-import LRU from 'lru-cache';
+import { LRUCache } from 'lru-cache';
 
 import { getConfig } from '../config';
 
-const authorizationCodes = new LRU({
+const authorizationCodes = new LRUCache({
     max: 1000,
     ttl: 60 * 60 * 1000, // 1h
 });

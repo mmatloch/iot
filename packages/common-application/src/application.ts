@@ -52,7 +52,7 @@ const suppressExperimentalWarning = () => {
     // @ts-expect-error - TS complains about the return type of originalEmit.apply
     process.emit = function (name, data) {
         if (name === `warning` && _.get(data, 'name') === 'ExperimentalWarning') {
-            const warningMessage = _.get(data, 'message');
+            const warningMessage = _.get(data, 'message') as unknown as string | undefined;
 
             const hasWarningMessage = messages.some((message) => warningMessage?.includes(message));
 
