@@ -43,6 +43,7 @@ export const createEventScheduler = () => {
 
         setupEntitySubscribers();
         processSkippedTasks();
+        loadRelativeEvents();
 
         startLoop(processSkippedTasks, () => PROCESS_SKIPPED_TASKS_INTERVAL);
     };
@@ -390,6 +391,32 @@ export const createEventScheduler = () => {
                 }
             }
         }
+    };
+
+    /**
+     * Hotfix for https://github.com/mmatloch/iot/issues/35
+     * Theoretically, this could happen for any event if the service is restarted between the event trigger and the next task scheduling
+     */
+    const loadRelativeEvents = async () => {
+        logger.trace(`Loading relative events from the database`);
+
+        const schedulerEvents = await eventsService.search({
+            where: {
+                triggerType: EventTriggerType.Scheduler,
+                state: EventState.Active,
+            },
+        });
+
+        const relativeSchedulerEvents = schedulerEvents.filter((event) => {
+            return (
+                event.metadata?.taskType === EventMetadataTaskType.RelativeInterval ||
+                event.metadata?.taskType === EventMetadataTaskType.RelativeCron
+            );
+        });
+
+        logger.debug(`Found ${relativeSchedulerEvents.length} relative events to plan`);
+
+        await Promise.all(relativeSchedulerEvents.map(planEvent));
     };
 
     return {
