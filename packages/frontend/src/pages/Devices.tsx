@@ -21,7 +21,7 @@ import { AppRoute } from '../constants';
 const SEARCH_FIELD = 'displayName';
 
 export default function Devices() {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'devices']);
     const navigate = useNavigate();
 
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);

@@ -14,7 +14,7 @@ export default function EventTriggerResultError({ error }: Props) {
             <>
                 <Alert severity="error">
                     <AlertTitle>
-                        {t('generic:errors.errorOccured')} ({t('generic:statusCode')} {error.statusCode})
+                        {t('errors.errorOccured')} ({t('statusCode')} {error.statusCode})
                     </AlertTitle>
                     {error.message}
                 </Alert>
@@ -27,7 +27,7 @@ export default function EventTriggerResultError({ error }: Props) {
     return (
         <>
             <Alert severity="error">
-                <AlertTitle>{t('generic:errors.unknownErrorOccured')}</AlertTitle>
+                <AlertTitle>{t('errors.unknownErrorOccured')}</AlertTitle>
                 {error.message}
             </Alert>
         </>

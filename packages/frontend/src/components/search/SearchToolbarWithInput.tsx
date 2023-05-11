@@ -60,12 +60,12 @@ export default function SearchToolbarWithInput<TEntity extends GenericEntity>({
             <Box sx={{ mt: 1 }}>
                 {onCreateClick ? (
                     <Button size="large" onClick={onCreateClick} endIcon={<Add fontSize="inherit" />}>
-                        {t('generic:create')}
+                        {t('create')}
                     </Button>
                 ) : null}
 
                 <Button size="large" onClick={onFiltersClick} endIcon={<FilterList fontSize="inherit" />}>
-                    {t('generic:search.filters')}
+                    {t('search.filters')}
                 </Button>
             </Box>
         </Toolbar>

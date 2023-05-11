@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function EventInstanceMenu({ eventInstance, onClose, anchorEl }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'events']);
     const { openEventInstanceDetails } = useEventInstanceDetails();
     const navigate = useNavigate();
 

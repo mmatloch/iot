@@ -11,7 +11,7 @@ import EventEditorSchedulerMetadataForm from './EventEditorSchedulerMetadataForm
 import EventEditorTriggerFiltersForm from './EventEditorTriggerFiltersForm';
 
 export default function EventEditorBasicInformationForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('events');
 
     const currentTriggerType = useWatch<EventDto>({
         name: 'triggerType',
@@ -21,7 +21,7 @@ export default function EventEditorBasicInformationForm() {
         () =>
             Object.values(EventTriggerType).map((triggerType) => ({
                 value: triggerType,
-                label: t(`events:triggerType.${triggerType}`),
+                label: t(`triggerType.${triggerType}`),
             })),
         [t],
     );
@@ -30,7 +30,7 @@ export default function EventEditorBasicInformationForm() {
         <FormGroup>
             <FormInputText
                 name="displayName"
-                label={t('events:entity.displayName')}
+                label={t('entity.displayName')}
                 validation={{ required: true }}
                 margin="dense"
                 autoComplete="off"
@@ -38,7 +38,7 @@ export default function EventEditorBasicInformationForm() {
 
             <FormInputSelect
                 name="triggerType"
-                label={t('events:entity.triggerType')}
+                label={t('entity.triggerType')}
                 validation={{ required: true }}
                 margin="dense"
                 items={triggerSelectItems}

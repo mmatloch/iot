@@ -10,7 +10,7 @@ interface Props {
 }
 
 export default function EventRunSummaryChildPanel({ runSummary }: Props) {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation(['generic', 'eventInstances']);
 
     const stateTransKey = `eventInstances:state.${runSummary.eventInstance.state}` as const;
 

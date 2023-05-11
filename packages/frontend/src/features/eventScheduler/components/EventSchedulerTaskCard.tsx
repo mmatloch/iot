@@ -1,10 +1,10 @@
 import EntityCardWithBadge from '@components/grid/EntityCardWithBadge';
-import type { EventSchedulerTask} from '@definitions/entities/eventSchedulerTypes';
+import type { EventSchedulerTask } from '@definitions/entities/eventSchedulerTypes';
 import { EventSchedulerTaskState } from '@definitions/entities/eventSchedulerTypes';
 import { MoreVert } from '@mui/icons-material';
 import { Alert, AlertTitle, CardContent, CardHeader, IconButton, Typography } from '@mui/material';
 import { formatFullDate, formatRelativeDate } from '@utils/dateFormatters';
-import type { MouseEvent} from 'react';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,10 +25,10 @@ const getBadgeColor = (state: EventSchedulerTaskState) => {
 };
 
 export default function EventSchedulerTaskCard({ entity: task }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('eventScheduler');
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
 
-    const stateTransKey = `eventScheduler:state.${task.state}` as const;
+    const stateTransKey = `state.${task.state}` as const;
 
     const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setMenuAnchorEl(event.currentTarget);
@@ -50,7 +50,7 @@ export default function EventSchedulerTaskCard({ entity: task }: Props) {
             />
             <CardContent>
                 <Alert color="info" sx={{ mt: 1 }}>
-                    <AlertTitle>{t('eventScheduler:nextTrigger')}</AlertTitle>
+                    <AlertTitle>{t('nextTrigger')}</AlertTitle>
                     <Typography>{formatRelativeDate(task.nextRunAt)}</Typography>
                     <Typography>{formatFullDate(task.nextRunAt)}</Typography>
                 </Alert>

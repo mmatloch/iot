@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../constants';
 
 export default function Scheduler() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('eventScheduler');
     const navigate = useNavigate();
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -49,7 +49,7 @@ export default function Scheduler() {
         <Layout>
             <Container>
                 <ActionToolbar
-                    title={t('eventScheduler:title')}
+                    title={t('title')}
                     onCreateClick={redirectToEventCreator}
                     onFiltersClick={openFilterMenu}
                 />

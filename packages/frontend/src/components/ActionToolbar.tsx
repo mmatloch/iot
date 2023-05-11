@@ -35,19 +35,19 @@ export const ActionToolbar = ({ title, buttons, onCreateClick, onFiltersClick, o
             <Box sx={{ mt: 1 }}>
                 {onCreateClick && (
                     <Button size="large" onClick={onCreateClick} endIcon={<Add fontSize="inherit" />}>
-                        {t('generic:create')}
+                        {t('create')}
                     </Button>
                 )}
 
                 {onFiltersClick && (
                     <Button size="large" onClick={onFiltersClick} endIcon={<FilterList fontSize="inherit" />}>
-                        {t('generic:search.filters')}
+                        {t('search.filters')}
                     </Button>
                 )}
 
                 {onSaveClick && (
                     <Button size="large" onClick={onSaveClick} endIcon={<Save fontSize="inherit" />}>
-                        {t('generic:save')}
+                        {t('save')}
                     </Button>
                 )}
 

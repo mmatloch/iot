@@ -7,13 +7,13 @@ import EventEditorBasicInformationForm from './EventEditor/EventEditorBasicInfor
 import EventEditorConditionDefinitionForm from './EventEditor/EventEditorConditionDefinitionForm';
 
 export default function EventEditorForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('events');
 
     return (
         <Box>
             <Accordion defaultExpanded>
                 <AccordionSummary expandIcon={<ExpandMore />}>
-                    <Typography>{t('events:editor.basicInformation.title')}</Typography>
+                    <Typography>{t('editor.basicInformation.title')}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <EventEditorBasicInformationForm />
@@ -22,7 +22,7 @@ export default function EventEditorForm() {
 
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMore />}>
-                    <Typography>{t('events:editor.conditionDefinition.title')}</Typography>
+                    <Typography>{t('editor.conditionDefinition.title')}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <EventEditorConditionDefinitionForm />
@@ -31,7 +31,7 @@ export default function EventEditorForm() {
 
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMore />}>
-                    <Typography>{t('events:editor.actionDefinition.title')}</Typography>
+                    <Typography>{t('editor.actionDefinition.title')}</Typography>
                 </AccordionSummary>
                 <AccordionDetails>
                     <EventEditorActionDefinitionForm />

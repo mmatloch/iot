@@ -4,7 +4,7 @@ import type { Event } from '@definitions/entities/eventTypes';
 import { MoreVert } from '@mui/icons-material';
 import { CardContent, CardHeader, Grid, IconButton, Typography } from '@mui/material';
 import { getEventStateBadgeColor } from '@utils/badgeColor';
-import type { MouseEvent} from 'react';
+import type { MouseEvent } from 'react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -16,12 +16,12 @@ interface Props {
 }
 
 export default function EventCard({ entity: event }: Props) {
-    const { t, i18n } = useTranslation();
+    const { t, i18n } = useTranslation('events');
     const [eventMenuAnchorEl, setEventMenuAnchorEl] = useState<null | HTMLElement>(null);
     const [isEditDialogOpen, setEditDialogOpen] = useState(false);
 
-    const stateTransKey = `events:state.${event.state}` as const;
-    const triggerTypeTransKey = `events:triggerType.${event.triggerType}` as const;
+    const stateTransKey = `state.${event.state}` as const;
+    const triggerTypeTransKey = `triggerType.${event.triggerType}` as const;
 
     const openEventMenu = (event: MouseEvent<HTMLButtonElement>) => {
         setEventMenuAnchorEl(event.currentTarget);
@@ -55,7 +55,7 @@ export default function EventCard({ entity: event }: Props) {
                 <Grid container spacing={3}>
                     <Grid item>
                         <Typography>
-                            {t('events:entity.triggerType')}: {i18n.format(t(triggerTypeTransKey), 'lowerCase')}
+                            {t('entity.triggerType')}: {i18n.format(t(triggerTypeTransKey), 'lowerCase')}
                         </Typography>
                     </Grid>
                     <Grid item>

@@ -22,7 +22,7 @@ export default function DeviceFilterMenu({ onClose, anchorEl, setSearchQuery, se
             path: 'filters.state',
             checkValue: DeviceState.Active,
             uncheckValue: undefined,
-            text: t('generic:search.filtering.showOnlyActive'),
+            text: t('search.filtering.showOnlyActive'),
         },
     };
 

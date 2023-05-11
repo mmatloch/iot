@@ -55,7 +55,7 @@ export default function Sidebar({ isOpen, onClose }: Props) {
     const auth = useAuth();
     const isAdmin = auth?.isAdmin;
 
-    const { t } = useTranslation();
+    const { t } = useTranslation(['users', 'devices', 'events', 'eventScheduler', 'eventInstances']);
 
     const items = [
         {

@@ -20,7 +20,7 @@ interface Props {
 }
 
 export default function EventInstanceFilterMenu({ onClose, anchorEl, setSearchQuery, searchQuery }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'eventInstances']);
     const currentEventId = Number(searchQuery.filters?.eventId);
     const currentDeviceId = Number(searchQuery.filters?.deviceId);
 

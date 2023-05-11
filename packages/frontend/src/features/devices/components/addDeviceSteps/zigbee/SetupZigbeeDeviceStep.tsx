@@ -8,7 +8,7 @@ interface Props {
 }
 
 export default function SetupZigbeeDeviceStep({ device }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
     const { navigateAndOpenDeviceDetails } = useDeviceDetails();
 
     const onClick = () => {
@@ -18,10 +18,10 @@ export default function SetupZigbeeDeviceStep({ device }: Props) {
     return (
         <>
             <Alert severity="success" sx={{ mt: 1 }}>
-                {t('devices:creator.deviceSetup.deviceAdded')}
+                {t('creator.deviceSetup.deviceAdded')}
             </Alert>
             <Button sx={{ mt: 3 }} variant="contained" onClick={onClick}>
-                {t('devices:creator.deviceSetup.goToDeviceConfiguration')}
+                {t('creator.deviceSetup.goToDeviceConfiguration')}
             </Button>
         </>
     );

@@ -35,8 +35,7 @@ const SIZE_MAP = {
 };
 
 export default function EventInstances() {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
+    const { t } = useTranslation('eventInstances');
     const [filterMenuAnchorEl, setFilterMenuAnchorEl] = useState<null | HTMLElement>(null);
 
     const { searchQuery, setSearchQuery } = useSearchQuery<EventInstancesSearchQuery>({
@@ -65,7 +64,7 @@ export default function EventInstances() {
     return (
         <Layout>
             <Container>
-                <ActionToolbar title={t('eventInstances:title')} onFiltersClick={openFilterMenu} />
+                <ActionToolbar title={t('title')} onFiltersClick={openFilterMenu} />
 
                 <EntityCardGrid entities={data._hits} Item={EventInstanceCard} spacing={3} />
 

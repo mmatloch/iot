@@ -1,9 +1,4 @@
-import type {
-    DefaultFastifyInstance,
-    DefaultFastifyInstanceWithTypeProvider,
-    DefaultLogger,
-    RawServer,
-} from './fastifyAbstract';
+import type { DefaultFastifyInstance, DefaultFastifyInstanceWithTypeProvider } from './fastifyAbstract';
 
 export interface Application extends Omit<DefaultFastifyInstance, 'withTypeProvider'> {
     withTypeProvider(): Omit<DefaultFastifyInstanceWithTypeProvider, 'withTypeProvider'>;
@@ -18,9 +13,6 @@ export type ApplicationPlugin<Options extends ApplicationPluginOptions = Default
 ) => Promise<void>;
 
 declare module 'fastify' {
-    // https://github.com/fastify/fastify/issues/3636
-    function fastify(opts?: FastifyServerOptions<RawServer, DefaultLogger>): Application & PromiseLike<Application>;
-
     // https://github.com/fastify/fastify/issues/2110
     interface FastifyRequest extends Record<string, unknown> {}
 }

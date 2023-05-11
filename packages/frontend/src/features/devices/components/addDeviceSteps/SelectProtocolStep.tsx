@@ -9,11 +9,11 @@ interface Props {
 }
 
 export default function SelectProtocolStep({ onSelect }: Props) {
-    const { t } = useTranslation();
+    const { t } = useTranslation('devices');
 
     return (
         <Box>
-            <Typography>{t('devices:creator.selectProtocolStep.description')}</Typography>
+            <Typography>{t('creator.selectProtocolStep.description')}</Typography>
             <Box sx={{ mt: 2 }}>
                 <DeviceProtocolList onSelect={onSelect} />
             </Box>

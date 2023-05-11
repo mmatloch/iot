@@ -33,31 +33,31 @@ export default function SearchFilterSorting<TSearchQuery extends SearchQuery>({
     const sortingMap = [
         {
             option: SortOption.Default,
-            text: t('generic:default'),
+            text: t('default'),
         },
         {
             path: 'sort._createdAt',
             value: SortValue.Desc,
             option: SortOption.OldestFirst,
-            text: t('generic:search.sorting.oldestFirst'),
+            text: t('search.sorting.oldestFirst'),
         },
         {
             path: 'sort._createdAt',
             value: SortValue.Asc,
             option: SortOption.NewestFirst,
-            text: t('generic:search.sorting.newestFirst'),
+            text: t('search.sorting.newestFirst'),
         },
         {
             path: 'sort._updatedAt',
             value: SortValue.Desc,
             option: SortOption.RecentlyUpdated,
-            text: t('generic:search.sorting.recentlyUpdated'),
+            text: t('search.sorting.recentlyUpdated'),
         },
     ];
 
     return (
         <SearchFilterSelect
-            label={t('generic:search.sorting.title')}
+            label={t('search.sorting.title')}
             searchQueryBase={SEARCH_QUERY_BASE as TSearchQuery}
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}

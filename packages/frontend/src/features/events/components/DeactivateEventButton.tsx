@@ -1,5 +1,5 @@
 import { useUpdateEvent } from '@api/eventsApi';
-import type { Event} from '@definitions/entities/eventTypes';
+import type { Event } from '@definitions/entities/eventTypes';
 import { EventState } from '@definitions/entities/eventTypes';
 import { PublishedWithChanges } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
@@ -13,7 +13,7 @@ interface Props {
 export default function DeactivateEventButton({ event }: Props) {
     const { mutateAsync, isLoading } = useUpdateEvent(event);
     const { enqueueSnackbar } = useSnackbar();
-    const { t } = useTranslation();
+    const { t } = useTranslation(['generic', 'events']);
 
     const handleClick = async () => {
         try {

@@ -9,6 +9,7 @@ import { HTMLAttributes, ReactNode, useCallback } from 'react';
 import type { RegisterOptions } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
 
+
 type AutocompleteProps<T> = UseAutocompleteProps<T, false, true, false>;
 
 interface Props<T>
@@ -43,11 +44,23 @@ export default function FormLiveAutocomplete<T>({
         formState: { errors },
     } = useFormContext();
 
+    const error = get(errors, name);
+    const errorMessage = useFormErrorTranslation(error);
+    const hasError = !!error;
+
     const renderInput = useCallback(
         (params: AutocompleteRenderInputParams) => {
-            return <TextField {...params} margin={margin} label={label} error={!!errors[name]} />;
+            return (
+                <TextField
+                    {...params}
+                    margin={margin}
+                    label={label}
+                    error={hasError}
+                    helperText={errorMessage}
+                />
+            );
         },
-        [errors, margin, label, name],
+        [margin, label, hasError, errorMessage],
     );
 
     return (

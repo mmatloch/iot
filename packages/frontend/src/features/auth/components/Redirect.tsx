@@ -12,7 +12,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { AppRoute } from '../../../constants';
 
 export default function RedirectGoogle() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('auth');
     const { enqueueSnackbar } = useSnackbar();
     const auth = useAuth();
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ export default function RedirectGoogle() {
                     error.errorCode === getServerErrorCode(ServerErrorCode.CannotCreateTokenForUser) &&
                     (error.detail === UserState.PendingApproval || error.detail === UserState.Inactive)
                 ) {
-                    return t('auth:errors.userInactive');
+                    return t('errors.userInactive');
                 }
             }
 
@@ -50,13 +50,13 @@ export default function RedirectGoogle() {
                 navigate(AppRoute.Auth.SignIn);
             }
         }
-    }, [createTokenError]);
+    }, [enqueueSnackbar, createTokenError, getErrorMessage, navigate]);
 
     useEffect(() => {
         if (createTokenResponse) {
             auth?.login(createTokenResponse.token);
         }
-    }, [createTokenResponse]);
+    }, [createTokenResponse, auth]);
 
     useEffect(() => {
         if (!authorizationCode) {

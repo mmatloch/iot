@@ -5,13 +5,13 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function EventTriggerOptionsForm() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('events');
 
     const onInactiveSelectItems = useMemo(
         () =>
             Object.values(EventActionOnInactive).map((option) => ({
                 value: option,
-                label: t(`events:onInactive.${option}`),
+                label: t(`onInactive.${option}`),
             })),
         [t],
     );
@@ -19,13 +19,13 @@ export default function EventTriggerOptionsForm() {
     return (
         <Box sx={{ mb: 1 }}>
             <Typography variant="h6" sx={{ mb: 1 }}>
-                {t('events:editor.triggerPanel.options.title')}
+                {t('editor.triggerPanel.options.title')}
             </Typography>
 
             <FormInputSelect
                 name="options.onInactive"
-                label={t('events:editor.triggerPanel.onInactive.title')}
-                helperText={t('events:editor.triggerPanel.onInactive.description')}
+                label={t('editor.triggerPanel.onInactive.title')}
+                helperText={t('editor.triggerPanel.onInactive.description')}
                 validation={{ required: true }}
                 margin="dense"
                 items={onInactiveSelectItems}
