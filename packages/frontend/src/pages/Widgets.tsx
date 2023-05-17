@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../constants';
 
 export default function WidgetsPage() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('widgets');
     const navigate = useNavigate();
 
     const redirectToCreator = () => {
@@ -18,7 +18,7 @@ export default function WidgetsPage() {
     return (
         <Layout>
             <Container>
-                <ActionToolbar title={t('widgets:title')} onCreateClick={redirectToCreator} />
+                <ActionToolbar title={t('title')} onCreateClick={redirectToCreator} />
 
                 <Widgets />
             </Container>

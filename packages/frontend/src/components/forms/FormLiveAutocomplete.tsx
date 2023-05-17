@@ -1,3 +1,4 @@
+import { useFormErrorTranslation } from '@hooks/useFormErrorTranslation';
 import type {
     AutocompleteRenderInputParams,
     AutocompleteRenderOptionState,
@@ -6,9 +7,8 @@ import type {
 } from '@mui/material';
 import { Autocomplete, TextField } from '@mui/material';
 import { HTMLAttributes, ReactNode, useCallback } from 'react';
-import type { RegisterOptions } from 'react-hook-form';
+import { RegisterOptions, get } from 'react-hook-form';
 import { Controller, useFormContext } from 'react-hook-form';
-
 
 type AutocompleteProps<T> = UseAutocompleteProps<T, false, true, false>;
 
@@ -50,15 +50,7 @@ export default function FormLiveAutocomplete<T>({
 
     const renderInput = useCallback(
         (params: AutocompleteRenderInputParams) => {
-            return (
-                <TextField
-                    {...params}
-                    margin={margin}
-                    label={label}
-                    error={hasError}
-                    helperText={errorMessage}
-                />
-            );
+            return <TextField {...params} margin={margin} label={label} error={hasError} helperText={errorMessage} />;
         },
         [margin, label, hasError, errorMessage],
     );

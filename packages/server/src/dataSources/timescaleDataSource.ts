@@ -24,6 +24,7 @@ import { UserAvatar1661962398904 } from '../migrations/1661962398904-UserAvatar'
 import { ConfigurationPermitJoin1662924371554 } from '../migrations/1662924371554-ConfigurationPermitJoin';
 import { EventInstanceForeignKey1670009734264 } from '../migrations/1670009734264-EventInstanceForeignKey';
 import { WidgetsAndDashboards1682452308755 } from '../migrations/1682452308755-WidgetsAndDashboards';
+import { DeviceFeatures1684274710053 } from '../migrations/1684274710053-DeviceFeatures';
 
 const config = getConfig();
 
@@ -33,18 +34,7 @@ export const timescaleDataSource = new DataSource({
     synchronize: false,
     migrationsRun: false,
     logging: false,
-    entities: [
-        User,
-        Device,
-        Event,
-        EventInstance,
-        SensorData,
-        EventSchedulerTask,
-        Configuration,
-        Widget,
-        Dashboard,
-        DeviceFeature,
-    ],
+    entities: [User, Device, Event, EventInstance, SensorData, EventSchedulerTask, Configuration, Widget, Dashboard],
     subscribers: [EventSubscriber, EventInstanceSubscriber, EventSchedulerTaskSubscriber, ConfigurationSubscriber],
     migrations: [
         Initialize1658620422887,
@@ -56,5 +46,6 @@ export const timescaleDataSource = new DataSource({
         ConfigurationPermitJoin1662924371554,
         EventInstanceForeignKey1670009734264,
         WidgetsAndDashboards1682452308755,
+        DeviceFeatures1684274710053,
     ],
 });

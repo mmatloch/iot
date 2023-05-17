@@ -6,14 +6,14 @@ import { FormProvider } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 export default function WidgetCreatorPage() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('widgets');
     const { methods, handleSave, handleSubmit } = useWidgetCreator();
 
     return (
         <Layout>
             <FormProvider {...methods}>
                 <Container>
-                    <ActionToolbar title={t('widgets:creator.title')} onSaveClick={handleSubmit(handleSave)} />
+                    <ActionToolbar title={t('creator.title')} onSaveClick={handleSubmit(handleSave)} />
 
                     <WidgetEditorForm />
                 </Container>

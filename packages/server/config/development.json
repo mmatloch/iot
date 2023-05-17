@@ -1,7 +1,7 @@
 {
   "logger": {
     "level": "debug",
-    "logRequests": true,
-    "logResponses": true
+    "logRequests": false,
+    "logResponses": false
   }
 }

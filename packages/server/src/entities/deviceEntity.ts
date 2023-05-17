@@ -1,6 +1,6 @@
 import type { Static } from '@sinclair/typebox';
 import { Type } from '@sinclair/typebox';
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 
 import { mergeSchemas } from '../utils/schemaUtils';
 import { DeviceFeature, deviceFeatureSchema } from './deviceFeatureEntity';

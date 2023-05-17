@@ -1,5 +1,4 @@
 import type { IncomingMessage } from 'http';
-import { join } from 'path';
 
 import { ValidationError, transformError } from '@common/errors';
 import type { Logger } from '@common/logger';
