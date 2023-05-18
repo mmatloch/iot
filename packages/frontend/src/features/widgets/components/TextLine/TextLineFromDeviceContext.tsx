@@ -1,45 +1,51 @@
 import DeviceAutocomplete from '@components/devices/DeviceAutocomplete';
+import DeviceAutocompleteWrapper from '@components/devices/DeviceAutocompleteWrapper';
 import FormInputText from '@components/forms/FormInputText';
 import { Device } from '@definitions/entities/deviceTypes';
-import { Alert, FormControl, FormHelperText, MenuItem, Stack } from '@mui/material';
-import { useState } from 'react';
+import { useTextLinesForm } from '@features/widgets/hooks/useTextLinesForm';
+import { useWidgetForm } from '@features/widgets/hooks/useWidgetForm';
+import { Alert, Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
-const renderSuggestionItem = (): MentionProps['renderSuggestion'] => {
-    // eslint-disable-next-line react/display-name
-    return (suggestion) => {
-        const itemContent = suggestion.display;
+interface Props {
+    lineIndex: number;
+}
 
-        return (
-            <MenuItem component="div" style={{ height: '100%', width: '100%' }}>
-                {itemContent}
-            </MenuItem>
-        );
-    };
-};
+export const TextLineFromDeviceContext = ({ lineIndex }: Props) => {
+    const { t } = useTranslation();
+    const { update } = useTextLinesForm();
+    const { watch } = useWidgetForm();
+    const textLines = watch('textLines');
 
-export const TextLineFromDeviceContext = () => {
-    const [currentDevice, setDevice] = useState<Device>();
-    const [textLine, setTextLine] = useState('');
-
-    const handleDeviceChange = (_e: unknown, device: Device) => {
-        console.log(device);
-        setDevice(device);
-    };
-
-    const handleLineChange = (_, newValue) => {
-        console.log(newValue);
-        setTextLine(newValue);
+    const handleDeviceSelect = (_e: unknown, device: Device) => {
+        update(lineIndex, {
+            id: textLines[lineIndex].id,
+            value: textLines[lineIndex].value,
+            deviceId: device._id,
+            eventId: null,
+        });
     };
 
-    const hasFeatures = currentDevice?.features.length;
+    const currentDeviceId = textLines[lineIndex]?.deviceId;
 
     return (
         <Stack spacing={1}>
-            <DeviceAutocomplete onChange={handleDeviceChange} value={currentDevice} />
+            {currentDeviceId ? (
+                <DeviceAutocompleteWrapper
+                    deviceId={currentDeviceId}
+                    onChange={handleDeviceSelect}
+                    InputProps={{ label: t('search.filtering.filterByDevice') }}
+                />
+            ) : (
+                <DeviceAutocomplete
+                    onChange={handleDeviceSelect}
+                    InputProps={{ label: t('search.filtering.filterByDevice') }}
+                />
+            )}
 
-            {currentDevice && !hasFeatures && <Alert severity="error">This device has no features</Alert>}
+            {/* {currentDevice && !hasFeatures && <Alert severity="error">This device has no features</Alert>} */}
 
-            <FormInputText name="line" />
+            <FormInputText name={`textLines.${lineIndex}.value`} />
         </Stack>
     );
 };

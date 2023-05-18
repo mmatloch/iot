@@ -30,7 +30,7 @@ const breakpoints = {
 export const WidgetContainer = () => {
     return (
         <ResponsiveGridLayout className="layout" cols={cols} breakpoints={breakpoints}>
-            <div key="1">
+            {/* <div key="1">
                 <Widget
                     icon={CleanWater}
                     title={'Zawór ogrodowy'}
@@ -74,7 +74,7 @@ export const WidgetContainer = () => {
 
             <div key="7">
                 <Widget icon={Router} title={'Testowe urządzenie'} />
-            </div>
+            </div> */}
         </ResponsiveGridLayout>
     );
 };

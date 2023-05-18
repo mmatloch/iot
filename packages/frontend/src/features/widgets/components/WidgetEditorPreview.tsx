@@ -34,6 +34,7 @@ export const WidgetEditorPreview = () => {
                 <Widget
                     icon={values.icon}
                     title={values.displayName}
+                    textLines={values.textLines}
                     content={<Typography variant="caption">Uruchomiony od 37 minut</Typography>}
                     action={<Switch defaultChecked color="success" />}
                 />

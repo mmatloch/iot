@@ -1,3 +1,4 @@
+import { WidgetTextLine } from '@definitions/entities/widgetTypes';
 import { useIcon } from '@hooks/useIcon';
 import { Box, Card, CardContent, CardMedia, Stack, Typography } from '@mui/material';
 import { ReactNode } from 'react';
@@ -5,11 +6,12 @@ import { ReactNode } from 'react';
 interface Props {
     icon: string;
     title: ReactNode;
+    textLines: WidgetTextLine[];
     content?: ReactNode;
     action?: ReactNode;
 }
 
-export const Widget = ({ icon, title, action, content }: Props) => {
+export const Widget = ({ icon, title, action, textLines }: Props) => {
     const iconUrl = useIcon(icon);
 
     return (
@@ -25,7 +27,13 @@ export const Widget = ({ icon, title, action, content }: Props) => {
                     {title}
                 </Typography>
 
-                {content}
+                <Stack>
+                    {textLines.map((textLine) => (
+                        <Typography variant="caption" key={textLine.id}>
+                            {textLine.value}
+                        </Typography>
+                    ))}
+                </Stack>
             </CardContent>
 
             <Box sx={{ pb: 1 }} />

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../../../constants';
 
 export const useWidgetCreator = () => {
-    const { t } = useTranslation();
+    const { t } = useTranslation('widgets');
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
 
@@ -16,8 +16,9 @@ export const useWidgetCreator = () => {
 
     const methods = useForm<WidgetDto>({
         defaultValues: {
-            displayName: t('widgets:creator.defaults.displayName'),
-            icon: t('widgets:creator.defaults.icon'),
+            displayName: t('creator.defaults.displayName'),
+            icon: t('creator.defaults.icon'),
+            textLines: [],
         },
     });
 
@@ -29,7 +30,7 @@ export const useWidgetCreator = () => {
                 navigate(AppRoute.Widgets.Root);
             },
             onError: () => {
-                enqueueSnackbar(t('widgets:errors.failedToCreateWidget'), {
+                enqueueSnackbar(t('errors.failedToCreateWidget'), {
                     variant: 'error',
                 });
             },

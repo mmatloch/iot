@@ -2,19 +2,40 @@ import DeviceAutocomplete from '@components/devices/DeviceAutocomplete';
 import EventAutocomplete from '@components/events/EventAutocomplete';
 import { Device } from '@definitions/entities/deviceTypes';
 import { Event } from '@definitions/entities/eventTypes';
-import { Button, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { WidgetDto } from '@definitions/entities/widgetTypes';
+import { Button, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { useState } from 'react';
+import { useFieldArray, useForm } from 'react-hook-form';
 
+import { useTextLinesForm } from '../hooks/useTextLinesForm';
+import { useWidgetForm } from '../hooks/useWidgetForm';
 import { TextLineFromDeviceContext } from './TextLine/TextLineFromDeviceContext';
 
 interface Props {
-    onCancel: () => void;
+    lineIndex: number;
 }
 
-const Tmp = ({ onCancel }: Props) => {
-    const [value, setValue] = useState('DEVICE');
-    const handleChange = (_event: unknown, newValue: string) => {
-        setValue(newValue);
+enum SelectedButton {
+    Device = 'DEVICE',
+    Event = 'EVENT',
+}
+
+const Tmp = ({ lineIndex }: Props) => {
+    const { remove } = useTextLinesForm();
+    const { watch } = useWidgetForm();
+    const textLines = watch('textLines');
+
+    const [selectedButton, setSelectedButton] = useState(() => {
+        const currentValue = textLines[lineIndex];
+        return currentValue?.eventId ? SelectedButton.Event : SelectedButton.Device;
+    });
+
+    const handleRemove = () => {
+        remove(lineIndex);
+    };
+
+    const handleChange = (_event: unknown, newValue: SelectedButton) => {
+        setSelectedButton(newValue);
     };
 
     const handleEventChange = (_e: unknown, event: Event) => {
@@ -23,34 +44,52 @@ const Tmp = ({ onCancel }: Props) => {
 
     return (
         <>
-            <ToggleButtonGroup value={value} exclusive onChange={handleChange}>
-                <ToggleButton value="DEVICE">
+            <ToggleButtonGroup value={selectedButton} exclusive onChange={handleChange}>
+                <ToggleButton value={SelectedButton.Device}>
                     <Typography>Device</Typography>
                 </ToggleButton>
-                <ToggleButton value="EVENT">
+                <ToggleButton value={SelectedButton.Event}>
                     <Typography>Event</Typography>
                 </ToggleButton>
             </ToggleButtonGroup>
 
-            {value === 'DEVICE' && <TextLineFromDeviceContext />}
-            {value === 'EVENT' && <EventAutocomplete onChange={handleEventChange} />}
+            {selectedButton === SelectedButton.Device && <TextLineFromDeviceContext lineIndex={lineIndex} />}
+            {selectedButton === SelectedButton.Event && <EventAutocomplete onChange={handleEventChange} />}
 
-            <Button onClick={onCancel}>Save</Button>
-            <Button onClick={onCancel}>Cancel</Button>
+            <Button onClick={handleRemove}>Remove</Button>
         </>
     );
 };
 
+const TmpList = () => {
+    const { watch } = useWidgetForm();
+    const textLines = watch('textLines');
+
+    return (
+        <Stack spacing={1}>
+            {textLines.map((field, index) => (
+                <Tmp key={field.id} lineIndex={index} />
+            ))}
+        </Stack>
+    );
+};
+
 export const WidgetTextLineForm = () => {
-    const [isOpen, open] = useState(false);
+    const { append } = useTextLinesForm();
 
     const handleAddNextLine = () => {
-        open(true);
+        append({
+            value: '',
+            deviceId: null,
+            eventId: null,
+            id: window.crypto.randomUUID(),
+        });
     };
 
-    const handleCancel = () => {
-        open(false);
-    };
-
-    return isOpen ? <Tmp onCancel={handleCancel} /> : <Button onClick={handleAddNextLine}>Add text line</Button>;
+    return (
+        <>
+            <TmpList />
+            <Button onClick={handleAddNextLine}>Add text line</Button>
+        </>
+    );
 };

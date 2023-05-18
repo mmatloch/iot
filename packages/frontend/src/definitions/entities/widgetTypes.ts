@@ -2,9 +2,17 @@ import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 
 import type { GenericEntity } from '../commonTypes';
 
+export interface WidgetTextLine {
+    deviceId: number | null;
+    eventId: number | null;
+    value: string;
+    id: string;
+}
+
 export interface WidgetDto {
     displayName: string;
     icon: string;
+    textLines: WidgetTextLine[];
 }
 
 export interface Widget extends GenericEntity, WidgetDto {}
