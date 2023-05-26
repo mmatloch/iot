@@ -1,9 +1,11 @@
+import { usePreviewWidget } from '@api/widgetsApi';
+import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
+import FullScreenLoader from '@components/FullScreenLoader';
 import { WidgetDto } from '@definitions/entities/widgetTypes';
-import { Switch, Typography } from '@mui/material';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 import { useFormContext } from 'react-hook-form';
 
-import { Widget } from './Widget';
+import { WidgetCard } from './WidgetCard';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -23,21 +25,28 @@ const breakpoints = {
     xxs: 0,
 };
 
-export const WidgetEditorPreview = () => {
+const WidgetEditorPreviewContent = () => {
     const { watch } = useFormContext<WidgetDto>();
-
     const values = watch();
 
+    const { data: widget, isLoading, isSuccess } = usePreviewWidget(values);
+
+    if (isLoading) {
+        return <FullScreenLoader />;
+    }
+
+    if (!isSuccess) {
+        return <FailedToLoadDataDialog />;
+    }
+
+    return <WidgetCard widget={widget} />;
+};
+
+export const WidgetEditorPreview = () => {
     return (
         <ResponsiveGridLayout className="layout" cols={cols} breakpoints={breakpoints}>
             <div key="1">
-                <Widget
-                    icon={values.icon}
-                    title={values.displayName}
-                    textLines={values.textLines}
-                    content={<Typography variant="caption">Uruchomiony od 37 minut</Typography>}
-                    action={<Switch defaultChecked color="success" />}
-                />
+                <WidgetEditorPreviewContent />
             </div>
         </ResponsiveGridLayout>
     );

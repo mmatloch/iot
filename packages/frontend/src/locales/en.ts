@@ -27,6 +27,7 @@ export const EnglishLocale: Locale = {
         optional: 'Optional',
         statusCode: 'Status code',
         showDetails: 'Show details',
+        value: 'Value',
         dates: {
             createdAtAndBy: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
             updatedAtAndBy: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
@@ -51,6 +52,10 @@ export const EnglishLocale: Locale = {
                 oldestFirst: 'Oldest first',
                 newestFirst: 'Newest first',
                 recentlyUpdated: 'Recently updated',
+            },
+            selecting: {
+                selectDevice: 'Select device',
+                selectEvent: 'Select event',
             },
         },
         errors: {
@@ -103,6 +108,7 @@ export const EnglishLocale: Locale = {
     },
     devices: {
         title: 'Devices',
+        entityName: 'Device',
         state: {
             [DeviceState.Active]: 'Active',
             [DeviceState.Inactive]: 'Inactive',
@@ -197,6 +203,7 @@ export const EnglishLocale: Locale = {
     },
     events: {
         title: 'Events',
+        entityName: 'Event',
         state: {
             [EventState.Active]: 'Active',
             [EventState.Inactive]: 'Inactive',
@@ -339,6 +346,7 @@ export const EnglishLocale: Locale = {
                 displayName: 'Widget name',
                 icon: 'home.png',
             },
+            addTextLine: 'Add text line',
         },
         errors: {
             failedToCreateWidget: 'Failed to create widget',

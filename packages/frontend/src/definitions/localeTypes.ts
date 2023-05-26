@@ -31,6 +31,7 @@ export interface Locale {
         optional: string;
         statusCode: string;
         showDetails: string;
+        value: string;
         dates: {
             createdAt: string;
             createdAtAndBy: string;
@@ -55,6 +56,10 @@ export interface Locale {
                 oldestFirst: string;
                 newestFirst: string;
                 recentlyUpdated: string;
+            };
+            selecting: {
+                selectDevice: string;
+                selectEvent: string;
             };
         };
         errors: {
@@ -100,6 +105,7 @@ export interface Locale {
     };
     devices: {
         title: string;
+        entityName: string;
         state: Record<DeviceState, string>;
         powerSource: Record<DevicePowerSource, string>;
         type: Record<DeviceType, string>;
@@ -170,6 +176,7 @@ export interface Locale {
     };
     events: {
         title: string;
+        entityName: string;
         state: Record<EventState, string>;
         triggerType: Record<EventTriggerType, string>;
         metadataOnMultipleInstances: Record<EventMetadataOnMultipleInstances, string>;
@@ -281,6 +288,7 @@ export interface Locale {
                 displayName: string;
                 icon: string;
             };
+            addTextLine: string;
         };
         errors: {
             failedToCreateWidget: string;

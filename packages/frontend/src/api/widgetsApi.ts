@@ -62,3 +62,17 @@ export const useCreateWidget = () => {
         },
     );
 };
+
+export const usePreviewWidget = (widgetDto: WidgetDto, useQueryOptions?: UseQueryOptions<Widget, Error>) =>
+    useFetch<Widget>(
+        {
+            url: ApiRoute.Widgets.Preview,
+            method: 'POST',
+            body: widgetDto,
+        },
+        {
+            ...useQueryOptions,
+            queryKey: [widgetDto],
+            keepPreviousData: true,
+        },
+    );

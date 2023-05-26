@@ -5,7 +5,6 @@ import { Configuration } from '../entities/configurationEntity';
 import { ConfigurationSubscriber } from '../entities/configurationEntitySubscriber';
 import { Dashboard } from '../entities/dashboardEntity';
 import { Device } from '../entities/deviceEntity';
-import { DeviceFeature } from '../entities/deviceFeatureEntity';
 import { Event } from '../entities/eventEntity';
 import { EventSubscriber } from '../entities/eventEntitySubscriber';
 import { EventInstance } from '../entities/eventInstanceEntity';

@@ -4,7 +4,7 @@ import FormInputText from '@components/forms/FormInputText';
 import { Device } from '@definitions/entities/deviceTypes';
 import { useTextLinesForm } from '@features/widgets/hooks/useTextLinesForm';
 import { useWidgetForm } from '@features/widgets/hooks/useWidgetForm';
-import { Alert, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -34,18 +34,16 @@ export const TextLineFromDeviceContext = ({ lineIndex }: Props) => {
                 <DeviceAutocompleteWrapper
                     deviceId={currentDeviceId}
                     onChange={handleDeviceSelect}
-                    InputProps={{ label: t('search.filtering.filterByDevice') }}
+                    InputProps={{ label: t('search.selecting.selectDevice') }}
                 />
             ) : (
                 <DeviceAutocomplete
                     onChange={handleDeviceSelect}
-                    InputProps={{ label: t('search.filtering.filterByDevice') }}
+                    InputProps={{ label: t('search.selecting.selectDevice') }}
                 />
             )}
 
-            {/* {currentDevice && !hasFeatures && <Alert severity="error">This device has no features</Alert>} */}
-
-            <FormInputText name={`textLines.${lineIndex}.value`} />
+            <FormInputText name={`textLines.${lineIndex}.value`} label={t('value')} />
         </Stack>
     );
 };

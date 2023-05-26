@@ -7,7 +7,7 @@ import Router from '@assets/icons/wireless-router.png';
 import { Switch, Typography } from '@mui/material';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
-import { Widget } from './Widget';
+import { WidgetCard } from './WidgetCard';
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 

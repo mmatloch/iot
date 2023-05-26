@@ -27,6 +27,7 @@ export const PolishLocale: Locale = {
         optional: 'Opcjonalne',
         statusCode: 'Kod statusu',
         showDetails: 'Pokaż szczegóły',
+        value: 'Wartość',
         dates: {
             createdAtAndBy: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
             updatedAtAndBy: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
@@ -51,6 +52,10 @@ export const PolishLocale: Locale = {
                 oldestFirst: 'Najpierw najstarsze',
                 newestFirst: 'Najpierw najnowsze',
                 recentlyUpdated: 'Ostatnio aktualizowane',
+            },
+            selecting: {
+                selectDevice: 'Wybierz urządzenie',
+                selectEvent: 'Wybierz zdarzenie',
             },
         },
         errors: {
@@ -103,6 +108,7 @@ export const PolishLocale: Locale = {
     },
     devices: {
         title: 'Urządzenia',
+        entityName: 'Urządzenie',
         state: {
             [DeviceState.Active]: 'Aktywne',
             [DeviceState.Inactive]: 'Nieaktywne',
@@ -197,6 +203,7 @@ export const PolishLocale: Locale = {
     },
     events: {
         title: 'Zdarzenia',
+        entityName: 'Zdarzenie',
         state: {
             [EventState.Active]: 'Aktywny',
             [EventState.Inactive]: 'Nieaktywny',
@@ -339,6 +346,7 @@ export const PolishLocale: Locale = {
                 displayName: 'Nazwa widżetu',
                 icon: 'home.png',
             },
+            addTextLine: 'Dodaj wiersz tekstu',
         },
         errors: {
             failedToCreateWidget: 'Nie udało się stworzyć widżetu',

@@ -10,7 +10,7 @@ export const WidgetEditorForm = () => {
 
     return (
         <>
-            <Stack spacing={1}>
+            <Stack spacing={1} sx={{ mb: 1 }}>
                 <FormInputText
                     name="displayName"
                     label={t('entity.displayName')}

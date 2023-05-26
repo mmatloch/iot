@@ -36,6 +36,7 @@
     "react-query": "^3.39.3",
     "react-resizable": "^3.0.5",
     "react-router-dom": "^6.11.1",
+    "react-use": "^17.4.0",
     "use-local-storage": "^3.0.0",
     "whatwg-mimetype": "^3.0.0"
   },

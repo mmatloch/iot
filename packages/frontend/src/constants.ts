@@ -30,6 +30,7 @@ export const ApiRoute = {
     },
     Widgets: {
         Root: addPrefix('widgets'),
+        Preview: addPrefix('widgets/preview'),
     },
     Static: {
         Root: addPrefix('static'),

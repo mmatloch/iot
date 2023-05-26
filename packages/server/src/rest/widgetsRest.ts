@@ -60,6 +60,13 @@ const getWidgetSchema = {
     },
 };
 
+const previewWidgetSchema = {
+    body: widgetDtoSchema,
+    response: {
+        [StatusCodes.OK]: widgetSchema,
+    },
+};
+
 const updateWidgetSchema = {
     params: Type.Object({
         id: Type.Integer(),
@@ -126,5 +133,15 @@ export const createWidgetsRest: ApplicationPlugin = async (app) => {
         const updatedWidget = await service.update(widget, request.body);
 
         return reply.status(StatusCodes.OK).send(updatedWidget);
+    });
+
+    app.withTypeProvider().post('/widgets/preview', { schema: previewWidgetSchema }, async (request, reply) => {
+        const accessControl = createAccessControl();
+        accessControl.authorize();
+
+        const service = createWidgetsService();
+        const widget = await service.getPreview(request.body);
+
+        return reply.status(StatusCodes.OK).send(widget);
     });
 };
