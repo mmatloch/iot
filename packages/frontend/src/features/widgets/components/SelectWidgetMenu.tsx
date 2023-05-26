@@ -6,16 +6,19 @@ import WidgetAutocomplete from './WidgetAutocomplete';
 
 interface Props {
     onClose: () => void;
+    onSelect: (widget: Widget) => void;
     anchorEl: HTMLElement | null;
 }
 
-export const SelectWidgetMenu = ({ onClose, anchorEl }: Props) => {
-    const { t } = useTranslation();
+export const SelectWidgetMenu = ({ onClose, onSelect, anchorEl }: Props) => {
+    const { t } = useTranslation(['generic', 'dashboards']);
 
     const isMenuOpen = Boolean(anchorEl);
 
     const handleWidgetSelect = (_: unknown, selectedWidget: Widget | null) => {
-        console.log(selectedWidget);
+        if (selectedWidget) {
+            onSelect(selectedWidget);
+        }
     };
 
     return (

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { AppRoute } from '../constants';
 
 export default function DashboardsPage() {
-    const { t } = useTranslation();
+    const { t } = useTranslation('dashboards');
     const navigate = useNavigate();
 
     const redirectToCreator = () => {
@@ -18,7 +18,7 @@ export default function DashboardsPage() {
     return (
         <Layout>
             <Container>
-                <ActionToolbar title={t('dashboards:title')} onCreateClick={redirectToCreator} />
+                <ActionToolbar title={t('title')} onCreateClick={redirectToCreator} />
 
                 <Dashboards />
             </Container>
