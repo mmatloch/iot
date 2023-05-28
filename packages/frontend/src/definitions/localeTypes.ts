@@ -32,6 +32,7 @@ export interface Locale {
         statusCode: string;
         showDetails: string;
         value: string;
+        delete: string;
         dates: {
             createdAt: string;
             createdAtAndBy: string;
@@ -271,9 +272,23 @@ export interface Locale {
     };
     dashboards: {
         title: string;
+        entity: {
+            displayName: string;
+        };
         creator: {
             title: string;
             addWidget: string;
+            defaults: {
+                displayName: string;
+            };
+        };
+        editor: {
+            title: string;
+        };
+        errors: {
+            failedToCreateDashboard: string;
+            failedToUpdateDashboard: string;
+            failedToDeleteDashboard: string;
         };
     };
     widgets: {
@@ -290,8 +305,13 @@ export interface Locale {
             };
             addTextLine: string;
         };
+        editor: {
+            title: string;
+        };
         errors: {
             failedToCreateWidget: string;
+            failedToUpdateWidget: string;
+            failedToDeleteWidget: string;
         };
     };
 }

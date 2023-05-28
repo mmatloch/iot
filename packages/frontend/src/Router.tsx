@@ -5,6 +5,7 @@ import { AppRoute } from './constants';
 import AuthRedirectGoogle from './pages/AuthRedirectGoogle';
 import AuthSignIn from './pages/AuthSignIn';
 import DashboardCreatorPage from './pages/DashboardCreator';
+import DashboardEditorWrapperPage from './pages/DashboardEditorWrapper';
 import DashboardsPage from './pages/Dashboards';
 import DeviceCreator from './pages/DeviceCreator';
 import Devices from './pages/Devices';
@@ -15,8 +16,9 @@ import Events from './pages/Events';
 import Home from './pages/Home';
 import Scheduler from './pages/Scheduler';
 import Users from './pages/Users';
+import WidgetCreatorPage from './pages/WidgetCreator';
+import WidgetEditorWrapperPage from './pages/WidgetEditorWrapper';
 import WidgetsPage from './pages/Widgets';
-import WidgetCreatorPage from './pages/WidgetsCreator';
 
 export default function Router() {
     return (
@@ -37,9 +39,14 @@ export default function Router() {
 
             <Route path={AppRoute.Dashboards.Root} element={<ProtectedRoute element={<DashboardsPage />} />} />
             <Route path={AppRoute.Dashboards.Creator} element={<ProtectedRoute element={<DashboardCreatorPage />} />} />
+            <Route
+                path={AppRoute.Dashboards.Editor}
+                element={<ProtectedRoute element={<DashboardEditorWrapperPage />} />}
+            />
 
             <Route path={AppRoute.Widgets.Root} element={<ProtectedRoute element={<WidgetsPage />} />} />
             <Route path={AppRoute.Widgets.Creator} element={<ProtectedRoute element={<WidgetCreatorPage />} />} />
+            <Route path={AppRoute.Widgets.Editor} element={<ProtectedRoute element={<WidgetEditorWrapperPage />} />} />
         </Routes>
     );
 }

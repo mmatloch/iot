@@ -28,6 +28,7 @@ export const PolishLocale: Locale = {
         statusCode: 'Kod statusu',
         showDetails: 'Pokaż szczegóły',
         value: 'Wartość',
+        delete: 'Usuń',
         dates: {
             createdAtAndBy: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
             updatedAtAndBy: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
@@ -329,9 +330,23 @@ export const PolishLocale: Locale = {
     },
     dashboards: {
         title: 'Panele',
+        entity: {
+            displayName: 'Nazwa',
+        },
         creator: {
             title: 'Kreator paneli',
             addWidget: 'Dodaj widżet',
+            defaults: {
+                displayName: 'Nazwa panelu',
+            },
+        },
+        editor: {
+            title: 'Edytor paneli',
+        },
+        errors: {
+            failedToCreateDashboard: 'Nie udało się stworzyć panelu',
+            failedToUpdateDashboard: 'Nie udało się zaktualizować panelu',
+            failedToDeleteDashboard: 'Nie udało się usunąć panelu',
         },
     },
     widgets: {
@@ -348,8 +363,13 @@ export const PolishLocale: Locale = {
             },
             addTextLine: 'Dodaj wiersz tekstu',
         },
+        editor: {
+            title: 'Edytor widżetów',
+        },
         errors: {
             failedToCreateWidget: 'Nie udało się stworzyć widżetu',
+            failedToUpdateWidget: 'Nie udało się zaktualizować widżetu',
+            failedToDeleteWidget: 'Nie udało się usunąć widżetu',
         },
     },
 };

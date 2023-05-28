@@ -67,6 +67,15 @@ const previewWidgetSchema = {
     },
 };
 
+const deleteWidgetSchema = {
+    params: Type.Object({
+        id: Type.Integer(),
+    }),
+    response: {
+        [StatusCodes.NO_CONTENT]: Type.Null(),
+    },
+};
+
 const updateWidgetSchema = {
     params: Type.Object({
         id: Type.Integer(),
@@ -77,7 +86,7 @@ const updateWidgetSchema = {
     },
 };
 
-const updatableFields = ['displayName'];
+const updatableFields = ['displayName', 'icon', 'textLines'];
 
 const checkUpdatableFields = (widget: Partial<WidgetDto>) => {
     Object.keys(widget).forEach((key) => {
@@ -133,6 +142,18 @@ export const createWidgetsRest: ApplicationPlugin = async (app) => {
         const updatedWidget = await service.update(widget, request.body);
 
         return reply.status(StatusCodes.OK).send(updatedWidget);
+    });
+
+    app.withTypeProvider().delete('/widgets/:id', { schema: deleteWidgetSchema }, async (request, reply) => {
+        const accessControl = createAccessControl();
+        accessControl.authorize();
+
+        const service = createWidgetsService();
+        const widget = await service.findByIdOrFail(request.params.id);
+
+        await service.hardDelete(widget);
+
+        return reply.status(StatusCodes.NO_CONTENT).send();
     });
 
     app.withTypeProvider().post('/widgets/preview', { schema: previewWidgetSchema }, async (request, reply) => {

@@ -28,6 +28,7 @@ export const EnglishLocale: Locale = {
         statusCode: 'Status code',
         showDetails: 'Show details',
         value: 'Value',
+        delete: 'Delete',
         dates: {
             createdAtAndBy: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
             updatedAtAndBy: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
@@ -329,9 +330,23 @@ export const EnglishLocale: Locale = {
     },
     dashboards: {
         title: 'Dashboards',
+        entity: {
+            displayName: 'Name',
+        },
         creator: {
             title: 'Dashboard creator',
             addWidget: 'Add widget',
+            defaults: {
+                displayName: 'Dashboard name',
+            },
+        },
+        editor: {
+            title: 'Dashboard editor',
+        },
+        errors: {
+            failedToCreateDashboard: 'Failed to create dashboard',
+            failedToUpdateDashboard: 'Failed to update dashboard',
+            failedToDeleteDashboard: 'Failed to delete dashboard',
         },
     },
     widgets: {
@@ -348,8 +363,13 @@ export const EnglishLocale: Locale = {
             },
             addTextLine: 'Add text line',
         },
+        editor: {
+            title: 'Widget editor',
+        },
         errors: {
             failedToCreateWidget: 'Failed to create widget',
+            failedToUpdateWidget: 'Failed to update widget',
+            failedToDeleteWidget: 'Failed to delete widget',
         },
     },
 };

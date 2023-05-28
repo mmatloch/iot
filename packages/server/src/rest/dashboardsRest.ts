@@ -11,7 +11,13 @@ import {
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
-import { Dashboard, DashboardDto, dashboardDtoSchema, dashboardSchema } from '../entities/dashboardEntity';
+import {
+    Dashboard,
+    DashboardDto,
+    dashboardDtoSchema,
+    dashboardSchema,
+    reorderDashboardsDtoSchema,
+} from '../entities/dashboardEntity';
 import { Errors } from '../errors';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createDashboardsService } from '../services/dashboardsService';
@@ -70,7 +76,23 @@ const updateDashboardSchema = {
     },
 };
 
-const updatableFields = ['displayName', 'index', 'layout'];
+const deleteDashboardSchema = {
+    params: Type.Object({
+        id: Type.Integer(),
+    }),
+    response: {
+        [StatusCodes.NO_CONTENT]: Type.Null(),
+    },
+};
+
+const reorderDashboardsSchema = {
+    body: reorderDashboardsDtoSchema,
+    response: {
+        [StatusCodes.NO_CONTENT]: Type.Null(),
+    },
+};
+
+const updatableFields = ['displayName', 'layout'];
 
 const checkUpdatableFields = (dashboard: Partial<DashboardDto>) => {
     Object.keys(dashboard).forEach((key) => {
@@ -145,5 +167,31 @@ export const createDashboardsRest: ApplicationPlugin = async (app) => {
         const updatedDashboard = await service.update(dashboard, request.body);
 
         return reply.status(StatusCodes.OK).send(updatedDashboard);
+    });
+
+    app.withTypeProvider().delete('/dashboards/:id', { schema: deleteDashboardSchema }, async (request, reply) => {
+        const accessControl = createAccessControl();
+        accessControl.authorize();
+
+        const service = createDashboardsService();
+        const dashboard = await service.findByIdOrFail(request.params.id);
+
+        accessControl.authorize({
+            userId: dashboard.userId,
+        });
+
+        await service.hardDelete(dashboard);
+
+        return reply.status(StatusCodes.NO_CONTENT).send();
+    });
+
+    app.withTypeProvider().post('/dashboards/reorder', { schema: reorderDashboardsSchema }, async (request, reply) => {
+        const accessControl = createAccessControl();
+        const { userId } = accessControl.authorize();
+
+        const service = createDashboardsService();
+        await service.reorder(request.body, userId);
+
+        return reply.status(StatusCodes.NO_CONTENT).send();
     });
 };

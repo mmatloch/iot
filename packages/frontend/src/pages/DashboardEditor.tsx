@@ -1,6 +1,7 @@
 import { ActionToolbar } from '@components/ActionToolbar';
+import { Dashboard } from '@definitions/entities/dashboardTypes';
 import { Widget } from '@definitions/entities/widgetTypes';
-import { DashboardEditorForm, useDashboardCreator } from '@features/dashboards';
+import { DashboardEditorForm, useDashboardEditor } from '@features/dashboards';
 import { SelectWidgetMenu } from '@features/widgets';
 import Layout from '@layout/Layout';
 import { Add } from '@mui/icons-material';
@@ -9,9 +10,13 @@ import { MouseEvent, useState } from 'react';
 import { FormProvider } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
-export default function DashboardCreatorPage() {
+interface Props {
+    dashboard: Dashboard;
+}
+
+export default function DashboardEditorPage({ dashboard }: Props) {
     const { t } = useTranslation('dashboards');
-    const { methods, handleSave, handleSubmit, addWidget } = useDashboardCreator();
+    const { methods, handleSave, handleSubmit, addWidget } = useDashboardEditor({ dashboard });
 
     const [widgetMenuAnchorEl, setWidgetMenuAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -32,7 +37,7 @@ export default function DashboardCreatorPage() {
         <Layout>
             <FormProvider {...methods}>
                 <ActionToolbar
-                    title={t('creator.title')}
+                    title={t('editor.title')}
                     onSaveClick={handleSubmit(handleSave)}
                     buttons={
                         <Button size="large" onClick={openWidgetMenu} endIcon={<Add fontSize="inherit" />}>

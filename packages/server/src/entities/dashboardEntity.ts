@@ -27,6 +27,7 @@ export class Dashboard extends GenericEntity {
 const dashboardLayoutItemDtoSchema = Type.Object(
     {
         widgetId: Type.Integer(),
+        widget: Type.Optional(Type.Unknown()),
         width: Type.Integer(),
         height: Type.Integer(),
         positionX: Type.Integer(),
@@ -36,13 +37,28 @@ const dashboardLayoutItemDtoSchema = Type.Object(
 );
 
 export const dashboardDtoSchema = Type.Object({
-    userId: Type.Integer(),
     displayName: Type.String(),
     index: Type.Integer(),
     layout: Type.Array(dashboardLayoutItemDtoSchema),
 });
 
-export const dashboardSchema = mergeSchemas(dashboardDtoSchema, genericEntitySchema);
+const dashboardDtoWithUserIdSchema = Type.Object({
+    displayName: Type.String(),
+    userId: Type.Integer(),
+    index: Type.Integer(),
+    layout: Type.Array(dashboardLayoutItemDtoSchema),
+});
 
-export type DashboardDto = Static<typeof dashboardDtoSchema>;
+export const dashboardSchema = mergeSchemas(dashboardDtoWithUserIdSchema, genericEntitySchema);
+
+export type DashboardDto = Static<typeof dashboardDtoWithUserIdSchema>;
 export type DashboardLayoutItemDto = Static<typeof dashboardLayoutItemDtoSchema>;
+
+export const reorderDashboardsDtoSchema = Type.Array(
+    Type.Object({
+        dashboardId: Type.Integer(),
+        index: Type.Integer(),
+    }),
+);
+
+export type ReorderDashboardsDto = Static<typeof reorderDashboardsDtoSchema>;

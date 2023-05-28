@@ -3,6 +3,7 @@ import type {
     DashboardDto,
     DashboardsSearchQuery,
     DashboardsSearchResponse,
+    ReorderDashboardDto,
 } from '@definitions/entities/dashboardTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
@@ -52,12 +53,47 @@ export const useUpdateDashboard = (dashboard: Dashboard) => {
     );
 };
 
+export const useDeleteDashboard = (dashboard: Dashboard) => {
+    const queryClient = useQueryClient();
+
+    const url = `${ApiRoute.Dashboards.Root}/${dashboard._id}`;
+
+    return useGenericMutation<void, void>(
+        {
+            url: url,
+            method: 'DELETE',
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([ApiRoute.Dashboards.Root]);
+                queryClient.invalidateQueries([url]);
+            },
+        },
+    );
+};
+
 export const useCreateDashboard = () => {
     const queryClient = useQueryClient();
 
     return useGenericMutation<Dashboard, DashboardDto>(
         {
             url: ApiRoute.Dashboards.Root,
+            method: 'POST',
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([ApiRoute.Dashboards.Root]);
+            },
+        },
+    );
+};
+
+export const useReorderDashboards = () => {
+    const queryClient = useQueryClient();
+
+    return useGenericMutation<Dashboard, ReorderDashboardDto>(
+        {
+            url: ApiRoute.Dashboards.Reorder,
             method: 'POST',
         },
         {

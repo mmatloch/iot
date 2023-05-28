@@ -1,9 +1,11 @@
 import { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 
 import type { GenericEntity } from '../commonTypes';
+import { Widget } from './widgetTypes';
 
 export interface DashboardLayout {
     widgetId: number;
+    widget: Widget;
     width: number;
     height: number;
     positionX: number;
@@ -25,3 +27,8 @@ export interface DashboardDto {
 
 export type DashboardsSearchQuery = SearchQuery<Dashboard>;
 export type DashboardsSearchResponse = SearchResponse<Dashboard>;
+
+export type ReorderDashboardDto = {
+    dashboardId: number;
+    index: number;
+}[];

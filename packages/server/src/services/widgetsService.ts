@@ -11,6 +11,7 @@ import type { GenericService } from './genericService';
 
 export interface WidgetsService extends GenericService<Widget, WidgetDto> {
     getPreview: (dto: WidgetDto) => Promise<Widget>;
+    hardDelete: (widget: Widget) => Promise<void>;
 }
 
 const TEXT_LINE_REGEX = /{{(.+?)}}/g;
@@ -112,6 +113,12 @@ export const createWidgetsService = (): WidgetsService => {
         });
     };
 
+    const hardDelete: WidgetsService['hardDelete'] = async (widget) => {
+        await repository.delete({
+            _id: widget._id,
+        });
+    };
+
     const getPreview: WidgetsService['getPreview'] = async (dto) => {
         const now = new Date().toISOString();
 
@@ -137,5 +144,6 @@ export const createWidgetsService = (): WidgetsService => {
         searchAndCount,
         update,
         getPreview,
+        hardDelete,
     };
 };

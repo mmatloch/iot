@@ -47,6 +47,25 @@ export const useUpdateWidget = (widget: Widget) => {
     );
 };
 
+export const useDeleteWidget = (widget: Widget) => {
+    const queryClient = useQueryClient();
+
+    const url = `${ApiRoute.Widgets.Root}/${widget._id}`;
+
+    return useGenericMutation<void, void>(
+        {
+            url: url,
+            method: 'DELETE',
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([ApiRoute.Widgets.Root]);
+                queryClient.invalidateQueries([url]);
+            },
+        },
+    );
+};
+
 export const useCreateWidget = () => {
     const queryClient = useQueryClient();
 
