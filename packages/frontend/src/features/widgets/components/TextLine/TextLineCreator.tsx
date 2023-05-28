@@ -1,6 +1,7 @@
+import FormInputText from '@components/forms/FormInputText';
 import { useTextLinesForm } from '@features/widgets/hooks/useTextLinesForm';
 import { useWidgetForm } from '@features/widgets/hooks/useWidgetForm';
-import { Button, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { Button, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -12,6 +13,7 @@ interface Props {
 }
 
 enum SelectedButton {
+    Default = 'DEFAULT',
     Device = 'DEVICE',
     Event = 'EVENT',
 }
@@ -24,7 +26,15 @@ export const TextLineCreator = ({ lineIndex }: Props) => {
 
     const [selectedButton, setSelectedButton] = useState(() => {
         const currentValue = textLines[lineIndex];
-        return currentValue?.eventId ? SelectedButton.Event : SelectedButton.Device;
+        if (currentValue.eventId) {
+            return SelectedButton.Event;
+        }
+
+        if (currentValue.deviceId) {
+            return SelectedButton.Device;
+        }
+
+        return SelectedButton.Default;
     });
 
     const handleRemove = () => {
@@ -38,6 +48,10 @@ export const TextLineCreator = ({ lineIndex }: Props) => {
     return (
         <>
             <ToggleButtonGroup value={selectedButton} exclusive onChange={handleChange}>
+                <ToggleButton value={SelectedButton.Default}>
+                    <Typography>{t('default')}</Typography>
+                </ToggleButton>
+
                 <ToggleButton value={SelectedButton.Device}>
                     <Typography>{t('devices:entityName')}</Typography>
                 </ToggleButton>
@@ -46,10 +60,16 @@ export const TextLineCreator = ({ lineIndex }: Props) => {
                 </ToggleButton>
             </ToggleButtonGroup>
 
-            {selectedButton === SelectedButton.Device && <TextLineFromDeviceContext lineIndex={lineIndex} />}
-            {selectedButton === SelectedButton.Event && <TextLineFromEventContext lineIndex={lineIndex} />}
+            <Stack spacing={1} sx={{ mt: 1 }}>
+                {selectedButton === SelectedButton.Device && <TextLineFromDeviceContext lineIndex={lineIndex} />}
+                {selectedButton === SelectedButton.Event && <TextLineFromEventContext lineIndex={lineIndex} />}
 
-            <Button onClick={handleRemove}>{t('generic:clear')}</Button>
+                <FormInputText name={`textLines.${lineIndex}.value`} label={t('value')} />
+            </Stack>
+
+            <Button onClick={handleRemove} sx={{ my: 1 }}>
+                {t('generic:clear')}
+            </Button>
         </>
     );
 };
