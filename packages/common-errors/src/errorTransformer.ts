@@ -6,6 +6,7 @@ export interface TransformedErrorBody {
     errorCode?: string;
     detail?: string;
     validationDetails?: Record<string, unknown>;
+    validatedData?: unknown;
     stack?: string;
     cause?: TransformedErrorBody;
 }
@@ -46,12 +47,19 @@ const getValidationDetails = (error: Error): Record<string, unknown> | undefined
     }
 };
 
+const getValidatedData = (error: Error): unknown | undefined => {
+    if (_.has(error, 'validatedData')) {
+        return _.get(error, 'validatedData');
+    }
+};
+
 export const transformErrorBody = (error: Error): TransformedErrorBody => {
     return {
         errorCode: getErrorCode(error),
         message: error.message,
         detail: getDetail(error),
         validationDetails: getValidationDetails(error),
+        validatedData: getValidatedData(error),
         stack: error.stack,
         cause: error.cause ? transformErrorBody(error.cause as Error) : undefined,
     };

@@ -1,17 +1,17 @@
 import { promisify } from 'util';
 
-import type { Validator} from '@common/validator';
+import type { Validator } from '@common/validator';
 import { createValidator } from '@common/validator';
 import type { Static, TSchema } from '@sinclair/typebox';
 import toCamelCase from 'camelcase-keys';
 import fastq from 'fastq';
 import _ from 'lodash';
-import type { IClientSubscribeOptions} from 'mqtt';
+import type { IClientSubscribeOptions } from 'mqtt';
 import { connect } from 'mqtt';
 
 import { getConfig } from '../config';
 import { getLogger } from '../logger';
-import type { MqttMessageHandler} from './mqttHandlerStore';
+import type { MqttMessageHandler } from './mqttHandlerStore';
 import { createMqttHandlerStore } from './mqttHandlerStore';
 
 const config = getConfig();
@@ -118,7 +118,7 @@ export const createMqttClient = (): MqttClient => {
         const wrappedOnMessage = async (message: Buffer) => {
             try {
                 const parsedPayload = parseMessage(message);
-                validator.validateOrThrow(schema, parsedPayload);
+                validator.validateOrThrow(schema, parsedPayload, { includeDataInError: true });
 
                 return await onMessage(parsedPayload);
             } catch (e) {

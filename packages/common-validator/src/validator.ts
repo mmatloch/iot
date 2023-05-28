@@ -5,12 +5,25 @@ import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 import addKeywords from 'ajv-keywords';
 
+interface ValidateOrThrowOptions {
+    includeDataInError?: boolean;
+}
+
 export class Validator extends Ajv {
-    validateOrThrow<T extends TSchema>(schema: T, data: unknown): asserts data is Static<T>;
-    validateOrThrow<T>(schema: Schema | JSONSchemaType<T> | string, data: unknown): asserts data is T {
+    validateOrThrow<T extends TSchema>(
+        schema: T,
+        data: unknown,
+        opts?: ValidateOrThrowOptions,
+    ): asserts data is Static<T>;
+    validateOrThrow<T>(
+        schema: Schema | JSONSchemaType<T> | string,
+        data: unknown,
+        opts?: ValidateOrThrowOptions,
+    ): asserts data is T {
         if (!this.validate<T>(schema, data)) {
             throw new ValidationError({
                 details: this.errors,
+                validatedData: opts?.includeDataInError ? data : undefined,
             });
         }
     }
