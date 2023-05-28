@@ -23,6 +23,7 @@ export enum DeviceFeatureUnit {
     Volts = 'V',
     Liters = 'L',
     Decibels = 'dB',
+    DecibelMilliwatts = 'dBm',
     PartsPerBillion = 'ppb',
 }
 
