@@ -180,8 +180,10 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
         };
 
         const findType = (type: string): DeviceFeatureType => {
-            if (isDeviceFeatureType(type)) {
-                return type;
+            const typeUpper = type.toUpperCase(); // enums are UPPERCASE
+
+            if (isDeviceFeatureType(typeUpper)) {
+                return typeUpper;
             }
 
             logger.error({
