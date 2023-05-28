@@ -280,6 +280,17 @@ export const createEventScheduler = () => {
             }
 
             if (event.metadata?.recurring) {
+                if (
+                    event.metadata?.taskType === EventMetadataTaskType.RelativeCron ||
+                    event.metadata?.taskType === EventMetadataTaskType.RelativeInterval
+                ) {
+                    logger.debug({
+                        msg: `Skipping the scheduling of the relative '${event.displayName}' event`,
+                        event,
+                    });
+                    return;
+                }
+
                 try {
                     await scheduleEvent(event);
                 } catch (e) {
