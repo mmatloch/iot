@@ -28,7 +28,11 @@ export interface DashboardDto {
 export type DashboardsSearchQuery = SearchQuery<Dashboard>;
 export type DashboardsSearchResponse = SearchResponse<Dashboard>;
 
-export type ReorderDashboardDto = {
+export type ReorderDashboardsDto = {
     dashboardId: number;
     index: number;
 }[];
+
+export type ShareDashboardDto = {
+    userIds: number[];
+};

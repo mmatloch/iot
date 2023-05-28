@@ -1,13 +1,14 @@
 import _, { sortBy } from 'lodash';
 import { In } from 'typeorm';
 
-import { Dashboard, DashboardDto, ReorderDashboardsDto } from '../entities/dashboardEntity';
+import { Dashboard, DashboardDto, ReorderDashboardsDto, ShareDashboardDto } from '../entities/dashboardEntity';
 import { createDashboardsRepository } from '../repositories/dashboardsRepository';
 import type { GenericService } from './genericService';
 import { createWidgetsService } from './widgetsService';
 
 export interface DashboardsService extends GenericService<Dashboard, DashboardDto> {
     reorder: (dto: ReorderDashboardsDto, userId: number) => Promise<void>;
+    share: (dashboard: Dashboard, dto: ShareDashboardDto) => Promise<void>;
     hardDelete: (dashboard: Dashboard) => Promise<void>;
 }
 
@@ -118,6 +119,19 @@ export const createDashboardsService = (): DashboardsService => {
         );
     };
 
+    const share: DashboardsService['share'] = async (dashboard, dto) => {
+        const dtos: DashboardDto[] = dto.userIds.map((userId) => {
+            return {
+                displayName: dashboard.displayName,
+                index: dashboard.index,
+                layout: dashboard.layout,
+                userId,
+            };
+        });
+
+        await Promise.all(dtos.map((dto) => create(dto)));
+    };
+
     return {
         create,
         findByIdOrFail,
@@ -126,5 +140,6 @@ export const createDashboardsService = (): DashboardsService => {
         update,
         hardDelete,
         reorder,
+        share,
     };
 };

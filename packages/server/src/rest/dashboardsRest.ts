@@ -17,6 +17,7 @@ import {
     dashboardDtoSchema,
     dashboardSchema,
     reorderDashboardsDtoSchema,
+    shareDashboardDtoSchema,
 } from '../entities/dashboardEntity';
 import { Errors } from '../errors';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
@@ -87,6 +88,16 @@ const deleteDashboardSchema = {
 
 const reorderDashboardsSchema = {
     body: reorderDashboardsDtoSchema,
+    response: {
+        [StatusCodes.NO_CONTENT]: Type.Null(),
+    },
+};
+
+const shareDashboardSchema = {
+    params: Type.Object({
+        id: Type.Integer(),
+    }),
+    body: shareDashboardDtoSchema,
     response: {
         [StatusCodes.NO_CONTENT]: Type.Null(),
     },
@@ -191,6 +202,22 @@ export const createDashboardsRest: ApplicationPlugin = async (app) => {
 
         const service = createDashboardsService();
         await service.reorder(request.body, userId);
+
+        return reply.status(StatusCodes.NO_CONTENT).send();
+    });
+
+    app.withTypeProvider().post('/dashboards/:id/share', { schema: shareDashboardSchema }, async (request, reply) => {
+        const accessControl = createAccessControl();
+        accessControl.authorize();
+
+        const service = createDashboardsService();
+        const dashboard = await service.findByIdOrFail(request.params.id);
+
+        accessControl.authorize({
+            userId: dashboard.userId,
+        });
+
+        await service.share(dashboard, request.body);
 
         return reply.status(StatusCodes.NO_CONTENT).send();
     });
