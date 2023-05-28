@@ -31,6 +31,8 @@ export interface Locale {
         optional: string;
         statusCode: string;
         showDetails: string;
+        value: string;
+        delete: string;
         dates: {
             createdAt: string;
             createdAtAndBy: string;
@@ -48,12 +50,17 @@ export interface Locale {
                 showOnlyActive: string;
                 filterByEvent: string;
                 filterByDevice: string;
+                filterByWidget: string;
             };
             sorting: {
                 title: string;
                 oldestFirst: string;
                 newestFirst: string;
                 recentlyUpdated: string;
+            };
+            selecting: {
+                selectDevice: string;
+                selectEvent: string;
             };
         };
         errors: {
@@ -99,6 +106,7 @@ export interface Locale {
     };
     devices: {
         title: string;
+        entityName: string;
         state: Record<DeviceState, string>;
         powerSource: Record<DevicePowerSource, string>;
         type: Record<DeviceType, string>;
@@ -169,6 +177,7 @@ export interface Locale {
     };
     events: {
         title: string;
+        entityName: string;
         state: Record<EventState, string>;
         triggerType: Record<EventTriggerType, string>;
         metadataOnMultipleInstances: Record<EventMetadataOnMultipleInstances, string>;
@@ -259,6 +268,50 @@ export interface Locale {
         onMultipleInstancesDescription: string;
         errors: {
             failedToDeleteTask: string;
+        };
+    };
+    dashboards: {
+        title: string;
+        entity: {
+            displayName: string;
+        };
+        creator: {
+            title: string;
+            addWidget: string;
+            defaults: {
+                displayName: string;
+            };
+        };
+        editor: {
+            title: string;
+        };
+        errors: {
+            failedToCreateDashboard: string;
+            failedToUpdateDashboard: string;
+            failedToDeleteDashboard: string;
+        };
+    };
+    widgets: {
+        title: string;
+        entity: {
+            displayName: string;
+            icon: string;
+        };
+        creator: {
+            title: string;
+            defaults: {
+                displayName: string;
+                icon: string;
+            };
+            addTextLine: string;
+        };
+        editor: {
+            title: string;
+        };
+        errors: {
+            failedToCreateWidget: string;
+            failedToUpdateWidget: string;
+            failedToDeleteWidget: string;
         };
     };
 }

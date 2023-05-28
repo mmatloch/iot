@@ -23,5 +23,7 @@ export const generateDevicePostPayload = () => {
         type: generateDeviceType(),
         protocol: 'ZIGBEE',
         state: 'ACTIVE',
+        features: [],
+        featureState: {},
     };
 };

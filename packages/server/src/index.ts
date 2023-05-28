@@ -12,12 +12,14 @@ import requestLocalStoragePlugin from './plugins/requestLocalStoragePlugin';
 import requestUserPlugin from './plugins/requestUserPlugin';
 import { createBridgeRest } from './rest/bridgeRest';
 import { createConfigurationsRest } from './rest/configurationsRest';
+import { createDashboardsRest } from './rest/dashboardsRest';
 import { createDevicesRest } from './rest/devicesRest';
 import { createEventInstancesRest } from './rest/eventInstancesRest';
 import { createEventSchedulerTasksRest } from './rest/eventSchedulerTasksRest';
 import { createEventsRest } from './rest/eventsRest';
 import { createSensorDataRest } from './rest/sensorDataRest';
 import { createUsersRest } from './rest/usersRest';
+import { createWidgetsRest } from './rest/widgetsRest';
 
 const config = getConfig();
 
@@ -33,6 +35,7 @@ createApplication({
         logResponses: config.logger.logResponses,
     },
     urlPrefix: config.app.urlPrefix,
+    staticFilesPath: config.static.path,
     hooks: {
         beforeBootstrap: async (app) => {
             app.register(requestUserPlugin);
@@ -56,6 +59,8 @@ createApplication({
             app.register(createEventInstancesRest);
             app.register(createConfigurationsRest);
             app.register(createBridgeRest);
+            app.register(createDashboardsRest);
+            app.register(createWidgetsRest);
 
             await createZigbeeBridge(mqttClient).initialize();
 

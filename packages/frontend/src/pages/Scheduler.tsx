@@ -1,9 +1,9 @@
 import { useEventSchedulerTasks } from '@api/eventSchedulerApi';
+import { ActionToolbar } from '@components/ActionToolbar';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
-import SearchToolbar from '@components/search/SearchToolbar';
 import { EventSchedulerTasksSearchQuery } from '@definitions/entities/eventSchedulerTypes';
 import EventSchedulerTaskCard from '@features/eventScheduler/components/EventSchedulerTaskCard';
 import EventSchedulerTaskFilterMenu from '@features/eventScheduler/components/EventSchedulerTaskFilterMenu';
@@ -48,7 +48,7 @@ export default function Scheduler() {
     return (
         <Layout>
             <Container>
-                <SearchToolbar
+                <ActionToolbar
                     title={t('title')}
                     onCreateClick={redirectToEventCreator}
                     onFiltersClick={openFilterMenu}

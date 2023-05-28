@@ -1,14 +1,11 @@
 import { userInfo } from 'os';
 import { join } from 'path';
 
-import { Command } from '@oclif/core';
+import { Args, Command } from '@oclif/core';
 import _ from 'lodash';
 import { x } from 'qqjs';
 
 import { PATH, PROJECT_NAME, TYPEORM } from '../../utils/constants';
-
-interface Flags {}
-interface GlobalFlags {}
 
 interface Args {
     migrationName: string;
@@ -17,16 +14,12 @@ interface Args {
 export class MigrationGenerateCommand extends Command {
     static description = 'Generate migration files with schema changes you made';
 
-    static args = [
-        {
-            name: 'migrationName',
-            required: true,
-            description: 'the name of the migration',
-        },
-    ];
+    static args = {
+        migrationName: Args.string({ required: true, description: 'the name of the migration' }),
+    };
 
     async run() {
-        const { args } = await this.parse<Flags, GlobalFlags, Args>(MigrationGenerateCommand);
+        const { args } = await this.parse(MigrationGenerateCommand);
 
         const cmd = `${TYPEORM.CliCommand} -d ${TYPEORM.DataSourcePath} migration:generate ${join(
             TYPEORM.MigrationsPath,

@@ -4,7 +4,7 @@ import { AppRoute } from '../constants';
 import { HttpError } from '../errors/httpError';
 
 const getAuthorizationHeader = () => {
-    const token = window.localStorage.getItem('accessToken');
+    const token = getAccessToken();
 
     if (token) {
         return `JWT ${token}`;
@@ -13,7 +13,11 @@ const getAuthorizationHeader = () => {
     return;
 };
 
-const removeAccessToken = () => {
+export const getAccessToken = () => {
+    return window.localStorage.getItem('accessToken');
+};
+
+export const removeAccessToken = () => {
     window.localStorage.removeItem('accessToken');
 };
 

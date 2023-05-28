@@ -9,7 +9,7 @@ const logger = getLogger();
 
 // improve readability, until this is merged https://github.com/ajv-validator/ajv/issues/1346
 const removeAdditionalProperties = (zigbeeDevices: ZigbeeDevice[]): void => {
-    const propsToRemove = ['dateCode', 'endpoints', 'definition.exposes', 'definition.options'];
+    const propsToRemove = ['dateCode', 'endpoints', 'definition.options'];
 
     zigbeeDevices.forEach((element) => {
         propsToRemove.forEach((prop) => _.unset(element, prop));

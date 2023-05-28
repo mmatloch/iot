@@ -1,6 +1,7 @@
 import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
 
 import type { GenericEntity } from '../commonTypes';
+import { DeviceFeature } from './deviceFeatureTypes';
 import type { User } from './userTypes';
 
 export enum DeviceType {
@@ -50,6 +51,13 @@ export type DeviceDeactivatedBy =
           _user: User;
       };
 
+interface DeviceFeatureStateEntry {
+    value: string | number | boolean;
+    updatedAt: string;
+}
+
+type DeviceFeatureState = Record<string, DeviceFeatureStateEntry>;
+
 export interface Device extends GenericEntity {
     displayName: string;
     model: string;
@@ -62,6 +70,8 @@ export interface Device extends GenericEntity {
     protocol: DeviceProtocol;
     state: DeviceState;
     deactivatedBy: DeviceDeactivatedBy | null;
+    features: DeviceFeature[];
+    featureState: DeviceFeatureState;
 }
 
 export type DevicesSearchQuery = SearchQuery<Device>;

@@ -76,6 +76,9 @@ const schema = Type.Object({
             }),
         }),
     }),
+    static: Type.Object({
+        path: Type.String(),
+    }),
 });
 
 const config = createConfig({

@@ -1,10 +1,10 @@
 import { useEventInstances } from '@api/eventInstancesApi';
 import { useEvents } from '@api/eventsApi';
+import { ActionToolbar } from '@components/ActionToolbar';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import EntityCardGrid from '@components/grid/EntityCardGrid';
 import SearchPagination from '@components/search/SearchPagination';
-import SearchToolbar from '@components/search/SearchToolbar';
 import SearchToolbarWithInput from '@components/search/SearchToolbarWithInput';
 import type { EventInstance, EventInstancesSearchQuery } from '@definitions/entities/eventInstanceTypes';
 import type { EventsSearchQuery } from '@definitions/entities/eventTypes';
@@ -64,7 +64,7 @@ export default function EventInstances() {
     return (
         <Layout>
             <Container>
-                <SearchToolbar title={t('title')} onFiltersClick={openFilterMenu} />
+                <ActionToolbar title={t('title')} onFiltersClick={openFilterMenu} />
 
                 <EntityCardGrid entities={data._hits} Item={EventInstanceCard} spacing={3} />
 

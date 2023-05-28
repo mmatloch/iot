@@ -27,6 +27,8 @@ export const EnglishLocale: Locale = {
         optional: 'Optional',
         statusCode: 'Status code',
         showDetails: 'Show details',
+        value: 'Value',
+        delete: 'Delete',
         dates: {
             createdAtAndBy: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
             updatedAtAndBy: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
@@ -44,12 +46,17 @@ export const EnglishLocale: Locale = {
                 showOnlyActive: 'Show only active',
                 filterByEvent: 'Filter by event',
                 filterByDevice: 'Filter by device',
+                filterByWidget: 'Filter by widget',
             },
             sorting: {
                 title: 'Sorting',
                 oldestFirst: 'Oldest first',
                 newestFirst: 'Newest first',
                 recentlyUpdated: 'Recently updated',
+            },
+            selecting: {
+                selectDevice: 'Select device',
+                selectEvent: 'Select event',
             },
         },
         errors: {
@@ -102,6 +109,7 @@ export const EnglishLocale: Locale = {
     },
     devices: {
         title: 'Devices',
+        entityName: 'Device',
         state: {
             [DeviceState.Active]: 'Active',
             [DeviceState.Inactive]: 'Inactive',
@@ -196,6 +204,7 @@ export const EnglishLocale: Locale = {
     },
     events: {
         title: 'Events',
+        entityName: 'Event',
         state: {
             [EventState.Active]: 'Active',
             [EventState.Inactive]: 'Inactive',
@@ -317,6 +326,50 @@ export const EnglishLocale: Locale = {
         onMultipleInstancesDescription: 'What should happen when this event has already been planned',
         errors: {
             failedToDeleteTask: 'Failed to cancel scheduled task',
+        },
+    },
+    dashboards: {
+        title: 'Dashboards',
+        entity: {
+            displayName: 'Name',
+        },
+        creator: {
+            title: 'Dashboard creator',
+            addWidget: 'Add widget',
+            defaults: {
+                displayName: 'Dashboard name',
+            },
+        },
+        editor: {
+            title: 'Dashboard editor',
+        },
+        errors: {
+            failedToCreateDashboard: 'Failed to create dashboard',
+            failedToUpdateDashboard: 'Failed to update dashboard',
+            failedToDeleteDashboard: 'Failed to delete dashboard',
+        },
+    },
+    widgets: {
+        title: 'Widgets',
+        entity: {
+            displayName: 'Name',
+            icon: 'Icon',
+        },
+        creator: {
+            title: 'Widget creator',
+            defaults: {
+                displayName: 'Widget name',
+                icon: 'home.png',
+            },
+            addTextLine: 'Add text line',
+        },
+        editor: {
+            title: 'Widget editor',
+        },
+        errors: {
+            failedToCreateWidget: 'Failed to create widget',
+            failedToUpdateWidget: 'Failed to update widget',
+            failedToDeleteWidget: 'Failed to delete widget',
         },
     },
 };

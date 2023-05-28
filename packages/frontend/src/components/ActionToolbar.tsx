@@ -1,15 +1,17 @@
-import { Add, FilterList } from '@mui/icons-material';
+import { Add, FilterList, Save } from '@mui/icons-material';
 import { Box, Button, Toolbar, Typography } from '@mui/material';
-import type { MouseEvent } from 'react';
+import type { MouseEvent, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
     title: string;
-    onFiltersClick: (event: MouseEvent<HTMLButtonElement>) => void;
+    onFiltersClick?: (event: MouseEvent<HTMLButtonElement>) => void;
     onCreateClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+    onSaveClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+    buttons?: ReactNode;
 }
 
-export default function SearchToolbar({ title, onCreateClick, onFiltersClick }: Props) {
+export const ActionToolbar = ({ title, buttons, onCreateClick, onFiltersClick, onSaveClick }: Props) => {
     const { t } = useTranslation();
 
     return (
@@ -31,16 +33,26 @@ export default function SearchToolbar({ title, onCreateClick, onFiltersClick }: 
             </Typography>
 
             <Box sx={{ mt: 1 }}>
-                {onCreateClick ? (
+                {onCreateClick && (
                     <Button size="large" onClick={onCreateClick} endIcon={<Add fontSize="inherit" />}>
                         {t('create')}
                     </Button>
-                ) : null}
+                )}
 
-                <Button size="large" onClick={onFiltersClick} endIcon={<FilterList fontSize="inherit" />}>
-                    {t('search.filters')}
-                </Button>
+                {onFiltersClick && (
+                    <Button size="large" onClick={onFiltersClick} endIcon={<FilterList fontSize="inherit" />}>
+                        {t('search.filters')}
+                    </Button>
+                )}
+
+                {onSaveClick && (
+                    <Button size="large" onClick={onSaveClick} endIcon={<Save fontSize="inherit" />}>
+                        {t('save')}
+                    </Button>
+                )}
+
+                {buttons}
             </Box>
         </Toolbar>
     );
-}
+};

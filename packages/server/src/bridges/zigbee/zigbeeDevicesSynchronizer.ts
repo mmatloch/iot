@@ -1,4 +1,4 @@
-import type { Device} from '../../entities/deviceEntity';
+import type { Device } from '../../entities/deviceEntity';
 import { DeviceDeactivatedByType, DeviceState } from '../../entities/deviceEntity';
 import { getLogger } from '../../logger';
 import type { ZigbeeDevice } from './zigbeeDefinitions';
@@ -18,6 +18,7 @@ export const createDeviceSynchronizer = (zigbeeDeviceManager: ZigbeeDeviceManage
                 logger.error({
                     msg: `Failed to create a device with ieeeAddress '${zigbeeDevice.ieeeAddress}'`,
                     device,
+                    zigbeeDevice,
                     err: e,
                 });
 

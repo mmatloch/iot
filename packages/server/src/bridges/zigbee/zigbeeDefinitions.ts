@@ -1,4 +1,4 @@
-import type { Static} from '@sinclair/typebox';
+import type { Static } from '@sinclair/typebox';
 import { Type } from '@sinclair/typebox';
 
 import { mergeSchemas } from '../../utils/schemaUtils';
@@ -34,10 +34,52 @@ export enum ZigbeeDeviceType {
 
 const powerSourceSchema = Type.Enum(ZigbeePowerSource);
 
+enum ZigbeeExposesType {
+    Binary = 'binary',
+    Numeric = 'numeric',
+    Enum = 'enum',
+    Text = 'text',
+    Composite = 'composite',
+    List = 'list',
+
+    Switch = 'switch',
+    Light = 'light',
+    Fan = 'fan',
+    Cover = 'cover',
+    Lock = 'lock',
+    Climate = 'climate',
+}
+
+const featureSchema = Type.Object({
+    type: Type.Enum(ZigbeeExposesType),
+    name: Type.String(),
+    property: Type.String(),
+    unit: Type.Optional(Type.String()),
+    description: Type.Optional(Type.String()),
+
+    valueOn: Type.Optional(Type.Unknown()),
+    valueOff: Type.Optional(Type.Unknown()),
+    valueToggle: Type.Optional(Type.Unknown()),
+
+    valueMax: Type.Optional(Type.Number()),
+    valueMin: Type.Optional(Type.Number()),
+    valueStep: Type.Optional(Type.Number()),
+
+    values: Type.Optional(Type.Array(Type.Unknown())),
+});
+
+const exposesSchema = mergeSchemas(
+    featureSchema,
+    Type.Object({
+        features: Type.Optional(Type.Array(featureSchema)),
+    }),
+);
+
 const definitionSchema = Type.Object({
     model: Type.String(),
     vendor: Type.String(),
     description: Type.String(),
+    exposes: Type.Array(exposesSchema),
 });
 
 const routerSchema = mergeSchemas(
@@ -127,3 +169,5 @@ const permitJoinDataSchema = Type.Object(
 );
 
 export const requestBridgeDataSchema = Type.Union([permitJoinDataSchema]);
+
+export type ZigbeeDeviceFeature = Static<typeof featureSchema>;

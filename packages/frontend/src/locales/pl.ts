@@ -27,6 +27,8 @@ export const PolishLocale: Locale = {
         optional: 'Opcjonalne',
         statusCode: 'Kod statusu',
         showDetails: 'Pokaż szczegóły',
+        value: 'Wartość',
+        delete: 'Usuń',
         dates: {
             createdAtAndBy: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
             updatedAtAndBy: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
@@ -44,12 +46,17 @@ export const PolishLocale: Locale = {
                 showOnlyActive: 'Pokaż tylko aktywne',
                 filterByEvent: 'Filtruj po zdarzeniu',
                 filterByDevice: 'Filtruj po urządzeniu',
+                filterByWidget: 'Filtruj po widżecie',
             },
             sorting: {
                 title: 'Sortowanie',
                 oldestFirst: 'Najpierw najstarsze',
                 newestFirst: 'Najpierw najnowsze',
                 recentlyUpdated: 'Ostatnio aktualizowane',
+            },
+            selecting: {
+                selectDevice: 'Wybierz urządzenie',
+                selectEvent: 'Wybierz zdarzenie',
             },
         },
         errors: {
@@ -102,6 +109,7 @@ export const PolishLocale: Locale = {
     },
     devices: {
         title: 'Urządzenia',
+        entityName: 'Urządzenie',
         state: {
             [DeviceState.Active]: 'Aktywne',
             [DeviceState.Inactive]: 'Nieaktywne',
@@ -196,6 +204,7 @@ export const PolishLocale: Locale = {
     },
     events: {
         title: 'Zdarzenia',
+        entityName: 'Zdarzenie',
         state: {
             [EventState.Active]: 'Aktywny',
             [EventState.Inactive]: 'Nieaktywny',
@@ -317,6 +326,50 @@ export const PolishLocale: Locale = {
         onMultipleInstancesDescription: 'Co powinno się stać, gdy to wydarzenie zostało już zaplanowane',
         errors: {
             failedToDeleteTask: 'Nie udało się anulować zaplanowanego zadania',
+        },
+    },
+    dashboards: {
+        title: 'Panele',
+        entity: {
+            displayName: 'Nazwa',
+        },
+        creator: {
+            title: 'Kreator paneli',
+            addWidget: 'Dodaj widżet',
+            defaults: {
+                displayName: 'Nazwa panelu',
+            },
+        },
+        editor: {
+            title: 'Edytor paneli',
+        },
+        errors: {
+            failedToCreateDashboard: 'Nie udało się stworzyć panelu',
+            failedToUpdateDashboard: 'Nie udało się zaktualizować panelu',
+            failedToDeleteDashboard: 'Nie udało się usunąć panelu',
+        },
+    },
+    widgets: {
+        title: 'Widżety',
+        entity: {
+            displayName: 'Nazwa',
+            icon: 'Ikona',
+        },
+        creator: {
+            title: 'Kreator widżetów',
+            defaults: {
+                displayName: 'Nazwa widżetu',
+                icon: 'home.png',
+            },
+            addTextLine: 'Dodaj wiersz tekstu',
+        },
+        editor: {
+            title: 'Edytor widżetów',
+        },
+        errors: {
+            failedToCreateWidget: 'Nie udało się stworzyć widżetu',
+            failedToUpdateWidget: 'Nie udało się zaktualizować widżetu',
+            failedToDeleteWidget: 'Nie udało się usunąć widżetu',
         },
     },
 };

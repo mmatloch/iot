@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { In } from 'typeorm';
 
-import type { Device, DeviceDto} from '../entities/deviceEntity';
+import type { Device, DeviceDto } from '../entities/deviceEntity';
 import { DeviceDeactivatedByType, DeviceState } from '../entities/deviceEntity';
 import { Errors } from '../errors';
 import { createDevicesRepository } from '../repositories/devicesRepository';

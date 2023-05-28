@@ -1,14 +1,11 @@
 import { userInfo } from 'os';
 import { join } from 'path';
 
-import { Command } from '@oclif/core';
+import { Args, Command } from '@oclif/core';
 import _ from 'lodash';
 import { x } from 'qqjs';
 
 import { PATH, PROJECT_NAME, TYPEORM } from '../../utils/constants';
-
-interface Flags {}
-interface GlobalFlags {}
 
 interface Args {
     migrationName: string;
@@ -17,16 +14,12 @@ interface Args {
 export class MigrationCreateCommand extends Command {
     static description = 'Create a new migration';
 
-    static args = [
-        {
-            name: 'migrationName',
-            required: true,
-            description: 'the name of the migration',
-        },
-    ];
+    static args = {
+        migrationName: Args.string({ required: true, description: 'the name of the migration' }),
+    };
 
     async run() {
-        const { args } = await this.parse<Flags, GlobalFlags, Args>(MigrationCreateCommand);
+        const { args } = await this.parse(MigrationCreateCommand);
 
         const cmd = `${TYPEORM.CliCommand} migration:create ${join(
             TYPEORM.MigrationsPath,

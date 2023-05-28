@@ -25,6 +25,17 @@ export const ApiRoute = {
     EventInstances: {
         Root: addPrefix('events/instances'),
     },
+    Dashboards: {
+        Root: addPrefix('dashboards'),
+        Reorder: addPrefix('dashboards/reorder'),
+    },
+    Widgets: {
+        Root: addPrefix('widgets'),
+        Preview: addPrefix('widgets/preview'),
+    },
+    Static: {
+        Root: addPrefix('static'),
+    },
 };
 
 export const AppRoute = {
@@ -51,4 +62,30 @@ export const AppRoute = {
     EventInstances: {
         Root: '/events/instances',
     },
+    Dashboards: {
+        Root: '/dashboards',
+        Creator: '/dashboards/create',
+        Editor: '/dashboards/:dashboardId',
+    },
+    Widgets: {
+        Root: '/widgets',
+        Creator: '/widgets/create',
+        Editor: '/widgets/:widgetId',
+    },
+};
+
+export const ResponsiveGridLayoutCols = {
+    lg: 12,
+    md: 6,
+    sm: 6,
+    xs: 6,
+    xxs: 3,
+};
+
+export const ResponsiveGridLayoutBreakpoints = {
+    lg: 1900,
+    md: 800,
+    sm: 768,
+    xs: 480,
+    xxs: 0,
 };
