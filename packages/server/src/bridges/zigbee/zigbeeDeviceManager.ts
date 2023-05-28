@@ -193,6 +193,11 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
         };
 
         const createFeature = ({ type, property, description, unit }: ZigbeeDeviceFeature) => {
+            // special 'type'
+            if (!property) {
+                return;
+            }
+
             const existingFeature = device?.features.find((feature) => feature.propertyName === property);
 
             // user can update it themselves, don't overwrite it

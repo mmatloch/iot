@@ -52,8 +52,8 @@ enum ZigbeeExposesType {
 
 const featureSchema = Type.Object({
     type: Type.Enum(ZigbeeExposesType),
-    name: Type.String(),
-    property: Type.String(),
+    name: Type.Optional(Type.String()),
+    property: Type.Optional(Type.String()),
     unit: Type.Optional(Type.String()),
     description: Type.Optional(Type.String()),
 
