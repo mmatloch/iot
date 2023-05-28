@@ -11,7 +11,6 @@ COPY ./packages/common-config ./packages/common-config
 COPY ./packages/common-errors ./packages/common-errors
 COPY ./packages/common-validator ./packages/common-validator
 COPY ./packages/common-logger ./packages/common-logger
-COPY ./packages/static ./packages/static
 
 COPY ./packages/server ./packages/server
 
@@ -26,6 +25,7 @@ WORKDIR /usr/app/packages/server
 COPY --from=builder /usr/app/packages/server/package.json ./
 COPY --from=builder /usr/app/packages/server/config ./config
 COPY --from=builder /usr/app/packages/server/dist ./dist
+COPY ./packages/static /usr/app/packages/static
 
 EXPOSE 3000
 
