@@ -11,6 +11,7 @@ COPY ./packages/common-config ./packages/common-config
 COPY ./packages/common-errors ./packages/common-errors
 COPY ./packages/common-validator ./packages/common-validator
 COPY ./packages/common-logger ./packages/common-logger
+COPY ./packages/static ./packages/static
 
 COPY ./packages/server ./packages/server
 
