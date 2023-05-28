@@ -29,6 +29,7 @@ export const PolishLocale: Locale = {
         showDetails: 'Pokaż szczegóły',
         value: 'Wartość',
         delete: 'Usuń',
+        share: 'Udostępnij',
         dates: {
             createdAtAndBy: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
             updatedAtAndBy: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
@@ -343,10 +344,15 @@ export const PolishLocale: Locale = {
         editor: {
             title: 'Edytor paneli',
         },
+        share: {
+            title: 'Udostępnij panel',
+            dashboardSharedSuccessfully: 'Panel został pomyślnie udostępniony',
+        },
         errors: {
             failedToCreateDashboard: 'Nie udało się stworzyć panelu',
             failedToUpdateDashboard: 'Nie udało się zaktualizować panelu',
             failedToDeleteDashboard: 'Nie udało się usunąć panelu',
+            failedToShareDashboard: 'Nie udało się udostępnić panelu',
         },
     },
     widgets: {

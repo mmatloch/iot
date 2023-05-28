@@ -3,7 +3,8 @@ import type {
     DashboardDto,
     DashboardsSearchQuery,
     DashboardsSearchResponse,
-    ReorderDashboardDto,
+    ReorderDashboardsDto,
+    ShareDashboardDto,
 } from '@definitions/entities/dashboardTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
@@ -91,9 +92,27 @@ export const useCreateDashboard = () => {
 export const useReorderDashboards = () => {
     const queryClient = useQueryClient();
 
-    return useGenericMutation<Dashboard, ReorderDashboardDto>(
+    return useGenericMutation<Dashboard, ReorderDashboardsDto>(
         {
             url: ApiRoute.Dashboards.Reorder,
+            method: 'POST',
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries([ApiRoute.Dashboards.Root]);
+            },
+        },
+    );
+};
+
+export const useShareDashboard = (dashboard: Dashboard) => {
+    const queryClient = useQueryClient();
+
+    const url = `${ApiRoute.Dashboards.Root}/${dashboard._id}/share`;
+
+    return useGenericMutation<void, ShareDashboardDto>(
+        {
+            url,
             method: 'POST',
         },
         {

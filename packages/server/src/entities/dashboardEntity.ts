@@ -62,3 +62,9 @@ export const reorderDashboardsDtoSchema = Type.Array(
 );
 
 export type ReorderDashboardsDto = Static<typeof reorderDashboardsDtoSchema>;
+
+export const shareDashboardDtoSchema = Type.Object({
+    userIds: Type.Array(Type.Integer()),
+});
+
+export type ShareDashboardDto = Static<typeof shareDashboardDtoSchema>;

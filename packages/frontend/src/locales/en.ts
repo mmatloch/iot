@@ -29,6 +29,7 @@ export const EnglishLocale: Locale = {
         showDetails: 'Show details',
         value: 'Value',
         delete: 'Delete',
+        share: 'Share',
         dates: {
             createdAtAndBy: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
             updatedAtAndBy: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
@@ -343,10 +344,15 @@ export const EnglishLocale: Locale = {
         editor: {
             title: 'Dashboard editor',
         },
+        share: {
+            title: 'Share dashboard',
+            dashboardSharedSuccessfully: 'Dashboard shared successfully',
+        },
         errors: {
             failedToCreateDashboard: 'Failed to create dashboard',
             failedToUpdateDashboard: 'Failed to update dashboard',
             failedToDeleteDashboard: 'Failed to delete dashboard',
+            failedToShareDashboard: 'Failed to share dashboard',
         },
     },
     widgets: {

@@ -33,6 +33,7 @@ export interface Locale {
         showDetails: string;
         value: string;
         delete: string;
+        share: string;
         dates: {
             createdAt: string;
             createdAtAndBy: string;
@@ -285,10 +286,15 @@ export interface Locale {
         editor: {
             title: string;
         };
+        share: {
+            title: string;
+            dashboardSharedSuccessfully: string;
+        };
         errors: {
             failedToCreateDashboard: string;
             failedToUpdateDashboard: string;
             failedToDeleteDashboard: string;
+            failedToShareDashboard: string;
         };
     };
     widgets: {
