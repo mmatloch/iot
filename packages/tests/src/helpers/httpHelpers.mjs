@@ -36,7 +36,7 @@ export const createHttpHelpers = (defaultResourceConfig, resourceConfigOverrides
         const testUser = {
             _id: faker.datatype.number({ min: 100_000_000 }),
             email: TEST_USER_EMAIL,
-            role: 'ADMIN',
+            role: 'USER',
             ...overrides,
         };
 

@@ -13,7 +13,6 @@ import {
     searchQuerySchema,
 } from '../apis/searchApi';
 import { EventInstance, eventInstanceSchema } from '../entities/eventInstanceEntity';
-import { UserRole } from '../entities/userEntity';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createEventInstancesService } from '../services/eventInstancesService';
 
@@ -75,9 +74,7 @@ export const createEventInstancesRest: ApplicationPlugin = async (app) => {
 
     app.withTypeProvider().get('/events/instances', { schema: searchEventInstancesSchema }, async (request, reply) => {
         const accessControl = createAccessControl();
-        accessControl.authorize({
-            role: UserRole.Admin,
-        });
+        accessControl.authorize();
 
         const searchResponse = await createRestSearch(createEventInstancesService()).query(
             request.query,

@@ -19,10 +19,11 @@ describe('Users getUser', () => {
 
         H.authorizeHttpClient({
             _id: currentUser._id,
-            role: 'USER',
         });
 
-        adminUserHelpers.authorizeHttpClient();
+        adminUserHelpers.authorizeHttpClient({
+            role: 'ADMIN',
+        });
     });
 
     it('should return the currently logged in user when using "@me"', async () => {

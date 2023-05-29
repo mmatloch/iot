@@ -16,7 +16,6 @@ import {
 import { EventActionOnInactive, EventTriggerType } from '../definitions/eventDefinitions';
 import type { Event, EventDto } from '../entities/eventEntity';
 import { eventDtoSchema, eventSchema, eventUpdateSchema } from '../entities/eventEntity';
-import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
 import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
@@ -142,9 +141,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
     app.withTypeProvider().post('/events', { schema: createEventSchema }, async (request, reply) => {
         const accessControl = createAccessControl();
-        accessControl.authorize({
-            role: UserRole.Admin,
-        });
+        accessControl.authorize();
 
         const service = createEventsService();
         const event = await service.create(request.body);
@@ -173,9 +170,7 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
 
     app.withTypeProvider().patch('/events/:id', { schema: updateEventSchema }, async (request, reply) => {
         const accessControl = createAccessControl();
-        accessControl.authorize({
-            role: UserRole.Admin,
-        });
+        accessControl.authorize();
 
         const service = createEventsService();
         const event = await service.findByIdOrFail(request.params.id);
@@ -192,10 +187,6 @@ export const createEventsRest: ApplicationPlugin = async (app) => {
     app.withTypeProvider().post('/events/trigger', { schema: triggerEventSchema }, async (request, reply) => {
         const accessControl = createAccessControl();
         accessControl.authorize();
-
-        if (request.body.filters.triggerType !== EventTriggerType.Api && !accessControl.hasRole(UserRole.Admin)) {
-            throw Errors.forbidden();
-        }
 
         const eventsService = createEventsService();
 

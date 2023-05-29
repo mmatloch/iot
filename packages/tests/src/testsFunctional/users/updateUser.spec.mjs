@@ -42,44 +42,6 @@ const adminUpdatableFields = userUpdatableFields.concat(userNotUpdatableFields);
  */
 
 describe('Users updateUser', () => {
-    describe('generic', () => {
-        const H = createUserHelpers();
-
-        beforeAll(() => {
-            H.authorizeHttpClient();
-        });
-
-        it('should return an error if the user does not exist', async () => {
-            // given
-            const payload = {
-                firstName: faker.name.firstName(),
-            };
-
-            // when & then
-            await H.patchById(faker.datatype.number({ min: 1000000 }), payload).expectNotFound({
-                message: 'User does not exist',
-                errorCode: 'SRV-5',
-            });
-        });
-
-        it('should return an error if a user with this email already exists', async () => {
-            // given
-            const firstUser = await createUser();
-            const secondUser = await createUser();
-
-            const payload = {
-                email: firstUser.email,
-            };
-
-            // when & then
-            await H.patchById(secondUser._id, payload).expectConflict({
-                message: `User already exists`,
-                detail: `Key (email)=(${firstUser.email}) already exists.`,
-                errorCode: 'SRV-6',
-            });
-        });
-    });
-
     describe('as ADMIN', () => {
         const H = createUserHelpers();
 
@@ -113,6 +75,36 @@ describe('Users updateUser', () => {
             expect(updatedUser._version).toBe(createdUser._version + 1);
             expect(new Date(updatedUser._updatedAt)).toBeAfter(new Date(createdUser._updatedAt));
             expect(updatedUser._createdAt).toBe(createdUser._createdAt);
+        });
+
+        it('should return an error if a user with this email already exists', async () => {
+            // given
+            const firstUser = await createUser();
+            const secondUser = await createUser();
+
+            const payload = {
+                email: firstUser.email,
+            };
+
+            // when & then
+            await H.patchById(secondUser._id, payload).expectConflict({
+                message: `User already exists`,
+                detail: `Key (email)=(${firstUser.email}) already exists.`,
+                errorCode: 'SRV-6',
+            });
+        });
+
+        it('should return an error if the user does not exist', async () => {
+            // given
+            const payload = {
+                firstName: faker.name.firstName(),
+            };
+
+            // when & then
+            await H.patchById(faker.datatype.number({ min: 1000000 }), payload).expectNotFound({
+                message: 'User does not exist',
+                errorCode: 'SRV-5',
+            });
         });
     });
 

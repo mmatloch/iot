@@ -3,8 +3,7 @@ import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
-import type {
-    RestSearchOptions} from '../apis/searchApi';
+import type { RestSearchOptions } from '../apis/searchApi';
 import {
     SortValue,
     createOffsetPaginationStrategy,
@@ -12,14 +11,12 @@ import {
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
-import type {
-    Configuration} from '../entities/configurationEntity';
+import type { Configuration } from '../entities/configurationEntity';
 import {
     configurationDtoSchema,
     configurationSchema,
     configurationUpdateSchema,
 } from '../entities/configurationEntity';
-import { UserRole } from '../entities/userEntity';
 import { Errors } from '../errors';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createConfigurationsService } from '../services/configurationsService';
@@ -97,9 +94,7 @@ export const createConfigurationsRest: ApplicationPlugin = async (app) => {
 
     app.withTypeProvider().post('/configurations', { schema: createConfigurationSchema }, async (request, reply) => {
         const accessControl = createAccessControl();
-        accessControl.authorize({
-            role: UserRole.Admin,
-        });
+        accessControl.authorize();
 
         const service = createConfigurationsService();
         const configuration = await service.create(request.body);
@@ -134,9 +129,7 @@ export const createConfigurationsRest: ApplicationPlugin = async (app) => {
         { schema: updateConfigurationSchema },
         async (request, reply) => {
             const accessControl = createAccessControl();
-            accessControl.authorize({
-                role: UserRole.Admin,
-            });
+            accessControl.authorize();
 
             const service = createConfigurationsService();
             const configuration = await service.findByIdOrFail(request.params.id);

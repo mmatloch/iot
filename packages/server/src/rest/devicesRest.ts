@@ -3,8 +3,7 @@ import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
-import type {
-    RestSearchOptions} from '../apis/searchApi';
+import type { RestSearchOptions } from '../apis/searchApi';
 import {
     SortValue,
     createOffsetPaginationStrategy,
@@ -12,16 +11,8 @@ import {
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
-import type {
-    Device,
-    DeviceDto} from '../entities/deviceEntity';
-import {
-    DeviceDeactivatedByType,
-    DeviceState,
-    deviceDtoSchema,
-    deviceSchema,
-} from '../entities/deviceEntity';
-import { UserRole } from '../entities/userEntity';
+import type { Device, DeviceDto } from '../entities/deviceEntity';
+import { DeviceDeactivatedByType, DeviceState, deviceDtoSchema, deviceSchema } from '../entities/deviceEntity';
 import { Errors } from '../errors';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createDevicesService } from '../services/devicesService';
@@ -110,9 +101,7 @@ export const createDevicesRest: ApplicationPlugin = async (app) => {
 
     app.withTypeProvider().post('/devices', { schema: createDeviceSchema }, async (request, reply) => {
         const accessControl = createAccessControl();
-        accessControl.authorize({
-            role: UserRole.Admin,
-        });
+        accessControl.authorize();
 
         const service = createDevicesService();
         const device = await service.create(request.body);
