@@ -81,12 +81,10 @@ export default function DeviceDetailsDrawer({ open, onClose, deviceId }: Props) 
 
                 {features.map((feature) => {
                     return (
-                        <>
-                            <Typography>
-                                {upperFirst(feature.propertyName)}: {feature.value.value}
-                                {feature.unit}
-                            </Typography>
-                        </>
+                        <Typography key={feature.propertyName}>
+                            {upperFirst(feature.propertyName)}: {feature.value.value}
+                            {feature.unit}
+                        </Typography>
                     );
                 })}
             </Box>

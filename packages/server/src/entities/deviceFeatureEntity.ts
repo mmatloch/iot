@@ -38,7 +38,6 @@ export enum DeviceFeatureType {
 
 const genericDeviceFeatureSchema = Type.Object({
     unit: Type.Union([Type.Enum(DeviceFeatureUnit), Type.Null()]),
-    propertyName: Type.String(),
     description: Type.String(),
 });
 
