@@ -1,8 +1,4 @@
-import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
-
-import type { GenericEntity } from '../commonTypes';
-import { DeviceFeatureEntry } from './deviceFeatureTypes';
-import type { User } from './userTypes';
+import type { User } from '../entities/userEntity';
 
 export enum DeviceType {
     Unknown = 'UNKNOWN',
@@ -24,14 +20,30 @@ export enum DevicePowerSource {
 
 export enum DeviceProtocol {
     Zigbee = 'ZIGBEE',
-    Virtual = 'VIRTUAL',
 }
 
 export enum DeviceState {
+    /**
+     * The device is configured and running fine
+     */
     Active = 'ACTIVE',
+    /**
+     * The device was turned off by the user or the bridge. No data is received or sent to it
+     */
     Inactive = 'INACTIVE',
+    /**
+     * The device is being interviewed by an external bridge
+     */
     Interviewing = 'INTERVIEWING',
+    /**
+     * An error occurred while adding, interviewing, or configuring the device.
+     *
+     * Not used at this point.
+     */
     Error = 'ERROR',
+    /**
+     * The newly added device. This state has a device that hasn't been interviewed yet
+     */
     New = 'NEW',
 }
 
@@ -48,32 +60,16 @@ export type DeviceDeactivatedBy =
     | {
           type: DeviceDeactivatedByType.User;
           userId: number;
-          _user: User;
+          _user?: User;
       };
 
+export type DeviceFeatureValue = string | number | boolean;
+
 interface DeviceFeatureStateEntry {
-    value: string | number | boolean;
+    value: DeviceFeatureValue;
     updatedAt: string;
 }
 
-type DeviceFeatureState = Record<string, DeviceFeatureStateEntry>;
-type DeviceFeatures = Record<string, DeviceFeatureEntry>;
+export type DeviceFeatureState = Record<string, DeviceFeatureStateEntry>;
 
-export interface Device extends GenericEntity {
-    displayName: string;
-    model: string;
-    vendor: string;
-    manufacturer: string;
-    description: string;
-    ieeeAddress: string;
-    powerSource: DevicePowerSource;
-    type: DeviceType;
-    protocol: DeviceProtocol;
-    state: DeviceState;
-    deactivatedBy: DeviceDeactivatedBy | null;
-    features: DeviceFeatures;
-    featureState: DeviceFeatureState;
-}
-
-export type DevicesSearchQuery = SearchQuery<Device>;
-export type DevicesSearchResponse = SearchResponse<Device>;
+export type DeviceData = Record<string, unknown>;

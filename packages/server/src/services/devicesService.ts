@@ -1,15 +1,20 @@
 import _ from 'lodash';
 import { In } from 'typeorm';
 
+import { DeviceData, DeviceDeactivatedByType, DeviceState } from '../definitions/deviceDefinitions';
+import { getDeviceFeatureState } from '../devices/deviceFeatures';
 import type { Device, DeviceDto } from '../entities/deviceEntity';
-import { DeviceDeactivatedByType, DeviceState } from '../entities/deviceEntity';
 import { Errors } from '../errors';
+import { getLogger } from '../logger';
 import { createDevicesRepository } from '../repositories/devicesRepository';
 import type { GenericService } from './genericService';
 import { createUsersService } from './usersService';
 
+const logger = getLogger();
+
 export interface DevicesService extends GenericService<Device, DeviceDto> {
     assertStateUpdate: (device: Device, newState: DeviceState) => void;
+    updateFeatures: (device: Device, data: DeviceData) => Promise<Device>;
 }
 
 export const createDevicesService = (): DevicesService => {
@@ -108,6 +113,32 @@ export const createDevicesService = (): DevicesService => {
         }
     };
 
+    const updateFeatures: DevicesService['updateFeatures'] = async (
+        device: Device,
+        deviceData: DeviceData,
+    ): Promise<Device> => {
+        const { newFeatureState, featureStateChanges } = getDeviceFeatureState(device, deviceData);
+
+        if (featureStateChanges.length) {
+            logger.debug({
+                msg: `Updating the '${device.displayName}' device, ${featureStateChanges.length} feature changes`,
+                device,
+            });
+
+            const service = createDevicesService();
+            return service.update(device, {
+                featureState: newFeatureState,
+            });
+        }
+
+        logger.debug({
+            msg: `No feature changes`,
+            device,
+        });
+
+        return device;
+    };
+
     return {
         create,
         search,
@@ -115,5 +146,6 @@ export const createDevicesService = (): DevicesService => {
         findByIdOrFail,
         update,
         assertStateUpdate,
+        updateFeatures,
     };
 };

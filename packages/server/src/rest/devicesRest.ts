@@ -11,8 +11,9 @@ import {
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
+import { DeviceDeactivatedByType, DeviceState } from '../definitions/deviceDefinitions';
 import type { Device, DeviceDto } from '../entities/deviceEntity';
-import { DeviceDeactivatedByType, DeviceState, deviceDtoSchema, deviceSchema } from '../entities/deviceEntity';
+import { deviceDtoSchema, deviceSchema } from '../entities/deviceEntity';
 import { Errors } from '../errors';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createDevicesService } from '../services/devicesService';

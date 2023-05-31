@@ -1,14 +1,16 @@
 import { EOL } from 'node:os';
 
-import { EventState, EventTriggerType } from '../../definitions/eventDefinitions';
-import type { Device, DeviceDto } from '../../entities/deviceEntity';
+import { get, set } from 'lodash';
+
 import {
     DeviceDeactivatedByType,
     DevicePowerSource,
     DeviceProtocol,
     DeviceState,
     DeviceType,
-} from '../../entities/deviceEntity';
+} from '../../definitions/deviceDefinitions';
+import { EventState, EventTriggerType } from '../../definitions/eventDefinitions';
+import type { Device, DeviceDto } from '../../entities/deviceEntity';
 import { DeviceFeatureType, DeviceFeatureUnit } from '../../entities/deviceFeatureEntity';
 import { getLogger } from '../../logger';
 import { createDevicesService } from '../../services/devicesService';
@@ -156,7 +158,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
     };
 
     const buildFeatures = (zigbeeDevice: ZigbeeDevice, device?: Device): DeviceDto['features'] => {
-        const features: DeviceDto['features'] = [];
+        const features: DeviceDto['features'] = {};
 
         if (zigbeeDevice.type === ZigbeeDeviceType.Coordinator || zigbeeDevice.type === ZigbeeDeviceType.Unknown) {
             return features;
@@ -194,23 +196,77 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
             return DeviceFeatureType.Text;
         };
 
-        const createFeature = ({ type, property, description, unit }: ZigbeeDeviceFeature) => {
+        const createFeature = ({
+            type,
+            property,
+            description,
+            unit,
+            valueMax,
+            valueMin,
+            valueOff,
+            valueOn,
+            valueStep,
+            valueToggle,
+            values,
+        }: ZigbeeDeviceFeature) => {
             // special 'type'
             if (!property) {
                 return;
             }
 
-            const existingFeature = device?.features.find((feature) => feature.propertyName === property);
+            const existingFeature = get(device?.features, property);
 
             // user can update it themselves, don't overwrite it
             const featureDescription = existingFeature ? existingFeature.description : description;
 
-            features.push({
+            const genericFeature = {
                 unit: unit ? findUnit(unit) : null,
-                type: findType(type),
-                propertyName: property,
                 description: featureDescription || '',
-            });
+            };
+
+            const featureType = findType(type);
+
+            switch (featureType) {
+                case DeviceFeatureType.Text:
+                    {
+                        set(features, property, {
+                            type: featureType,
+                            ...genericFeature,
+                        });
+                    }
+                    break;
+                case DeviceFeatureType.Numeric:
+                    {
+                        set(features, property, {
+                            type: featureType,
+                            valueMax,
+                            valueMin,
+                            valueStep,
+                            ...genericFeature,
+                        });
+                    }
+                    break;
+                case DeviceFeatureType.Binary:
+                    {
+                        set(features, property, {
+                            type: featureType,
+                            valueOff,
+                            valueOn,
+                            valueToggle,
+                            ...genericFeature,
+                        });
+                    }
+                    break;
+                case DeviceFeatureType.Enum:
+                    {
+                        set(features, property, {
+                            type: featureType,
+                            values,
+                            ...genericFeature,
+                        });
+                    }
+                    break;
+            }
         };
 
         zigbeeDevice.definition.exposes.map(({ features, ...feature }) => {

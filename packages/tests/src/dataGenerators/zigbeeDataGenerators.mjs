@@ -54,6 +54,14 @@ export const generateZigbeeIncomingData = {
             state: faker.helpers.arrayElement(['OFF', 'ON']),
         };
     },
+
+    //  https://www.zigbee2mqtt.io/devices/BASICZBR3.html#sonoff-basiczbr3
+    smartSwitch: () => {
+        return {
+            linkquality: generateZigbeeLinkQuality(),
+            state: faker.helpers.arrayElement(['OFF', 'ON']),
+        };
+    },
 };
 
 export const generateZigbeeDevice = {
@@ -101,7 +109,52 @@ export const generateZigbeeDevice = {
                 description: 'Temperature and humidity sensor',
                 model: 'SNZB-02',
                 vendor: 'SONOFF',
-                exposes: [],
+                exposes: [
+                    {
+                        access: 1,
+                        description: 'Remaining battery in %, can take up to 24 hours before reported.',
+                        name: 'battery',
+                        property: 'battery',
+                        type: 'numeric',
+                        unit: '%',
+                        valueMax: 100,
+                        valueMin: 0,
+                    },
+                    {
+                        access: 1,
+                        description: 'Measured temperature value',
+                        name: 'temperature',
+                        property: 'temperature',
+                        type: 'numeric',
+                        unit: '°C',
+                    },
+                    {
+                        access: 1,
+                        description: 'Measured relative humidity',
+                        name: 'humidity',
+                        property: 'humidity',
+                        type: 'numeric',
+                        unit: '%',
+                    },
+                    {
+                        access: 1,
+                        description: 'Voltage of the battery in millivolts',
+                        name: 'voltage',
+                        property: 'voltage',
+                        type: 'numeric',
+                        unit: 'mV',
+                    },
+                    {
+                        access: 1,
+                        description: 'Link quality (signal strength)',
+                        name: 'linkquality',
+                        property: 'linkquality',
+                        type: 'numeric',
+                        unit: 'lqi',
+                        valueMax: 255,
+                        valueMin: 0,
+                    },
+                ],
             },
             friendly_name: ieeeAddress,
             ieee_address: ieeeAddress,
@@ -141,16 +194,104 @@ export const generateZigbeeDevice = {
 
         return {
             definition: {
-                description: 'Smart plug (with power monitoring by polling)',
-                model: 'TS011F_plug_3',
+                description: 'Smart plug (with power monitoring)',
+                model: 'TS011F_plug_1',
                 vendor: 'TuYa',
-                exposes: [],
+                exposes: [
+                    {
+                        features: [
+                            {
+                                access: 7,
+                                description: 'On/off state of the switch',
+                                name: 'state',
+                                property: 'state',
+                                type: 'binary',
+                                valueOff: 'OFF',
+                                valueOn: 'ON',
+                                valueToggle: 'TOGGLE',
+                            },
+                        ],
+                        type: 'switch',
+                    },
+                    {
+                        access: 7,
+                        description: 'Recover state after power outage',
+                        name: 'power_outage_memory',
+                        property: 'power_outage_memory',
+                        type: 'enum',
+                        values: ['on', 'off', 'restore'],
+                    },
+                    {
+                        access: 7,
+                        description: 'LED indicator mode',
+                        name: 'indicator_mode',
+                        property: 'indicator_mode',
+                        type: 'enum',
+                        values: ['off', 'off/on', 'on/off', 'on'],
+                    },
+                    {
+                        access: 1,
+                        description: 'Instantaneous measured power',
+                        name: 'power',
+                        property: 'power',
+                        type: 'numeric',
+                        unit: 'W',
+                    },
+                    {
+                        access: 1,
+                        description: 'Instantaneous measured electrical current',
+                        name: 'current',
+                        property: 'current',
+                        type: 'numeric',
+                        unit: 'A',
+                    },
+                    {
+                        access: 1,
+                        description: 'Measured electrical potential value',
+                        name: 'voltage',
+                        property: 'voltage',
+                        type: 'numeric',
+                        unit: 'V',
+                    },
+                    {
+                        access: 1,
+                        description: 'Sum of consumed energy',
+                        name: 'energy',
+                        property: 'energy',
+                        type: 'numeric',
+                        unit: 'kWh',
+                    },
+                    {
+                        features: [
+                            {
+                                access: 3,
+                                description: 'Enables/disables physical input on the device',
+                                name: 'state',
+                                property: 'child_lock',
+                                type: 'binary',
+                                valueOff: 'UNLOCK',
+                                valueOn: 'LOCK',
+                            },
+                        ],
+                        type: 'lock',
+                    },
+                    {
+                        access: 1,
+                        description: 'Link quality (signal strength)',
+                        name: 'linkquality',
+                        property: 'linkquality',
+                        type: 'numeric',
+                        unit: 'lqi',
+                        valueMax: 255,
+                        valueMin: 0,
+                    },
+                ],
             },
             friendly_name: ieeeAddress,
             ieee_address: ieeeAddress,
             interview_completed: true,
             interviewing: false,
-            manufacturer: '_TZ3000_gjnozsaz',
+            manufacturer: '_TZ3000_amdymr7l',
             power_source: 'Mains (single phase)',
             supported: true,
             type: 'Router',
@@ -178,6 +319,53 @@ export const generateZigbeeDevice = {
         };
     },
 
+    smartSwitch: () => {
+        const ieeeAddress = generateZigbeeIeeeAddress();
+
+        return {
+            definition: {
+                description: 'Zigbee smart switch',
+                model: 'BASICZBR3',
+                vendor: 'SONOFF',
+                exposes: [
+                    {
+                        features: [
+                            {
+                                access: 7,
+                                description: 'On/off state of the switch',
+                                name: 'state',
+                                property: 'state',
+                                type: 'binary',
+                                valueOff: 'OFF',
+                                valueOn: 'ON',
+                                valueToggle: 'TOGGLE',
+                            },
+                        ],
+                        type: 'switch',
+                    },
+                    {
+                        access: 1,
+                        description: 'Link quality (signal strength)',
+                        name: 'linkquality',
+                        property: 'linkquality',
+                        type: 'numeric',
+                        unit: 'lqi',
+                        valueMax: 255,
+                        valueMin: 0,
+                    },
+                ],
+            },
+            friendly_name: ieeeAddress,
+            ieee_address: ieeeAddress,
+            interview_completed: true,
+            interviewing: false,
+            manufacturer: 'SONOFF',
+            power_source: 'Mains (single phase)',
+            supported: true,
+            type: 'Router',
+        };
+    },
+
     unknown: () => {
         const ieeeAddress = generateZigbeeIeeeAddress();
 
@@ -201,6 +389,7 @@ export const generateZigbeeDevices = (count = 1) =>
                 generateZigbeeDevice.smartPlug,
                 generateZigbeeDevice.smartLightSwitch,
                 generateZigbeeDevice.contactSensor,
+                generateZigbeeDevice.smartSwitch,
             ],
             count,
         )
