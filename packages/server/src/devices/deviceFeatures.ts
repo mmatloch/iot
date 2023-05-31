@@ -1,4 +1,4 @@
-import { get, set } from 'lodash';
+import { get, isUndefined, set } from 'lodash';
 
 import type { DeviceFeatureValue } from '../definitions/deviceDefinitions';
 import type { Device } from '../entities/deviceEntity';
@@ -43,10 +43,19 @@ export const getDeviceFeatureState = (device: Device, data: DeviceData) => {
     const featureStateChanges: DeviceFeatureStateChange[] = [];
 
     const newFeatureState = Object.entries(device.features).reduce((acc, [propertyName, feature]) => {
-        const rawValue = get(data, propertyName);
-        const parsedValue = parseFeatureValue(rawValue, device, feature);
-
         const currentValue = get(device.featureState, propertyName);
+
+        const rawValue = get(data, propertyName);
+
+        if (isUndefined(rawValue)) {
+            if (!isUndefined(currentValue)) {
+                set(acc, propertyName, currentValue);
+            }
+
+            return acc;
+        }
+
+        const parsedValue = parseFeatureValue(rawValue, device, feature);
 
         if (currentValue?.value === parsedValue) {
             set(acc, propertyName, currentValue);

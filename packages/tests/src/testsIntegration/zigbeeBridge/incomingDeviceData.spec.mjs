@@ -226,4 +226,50 @@ describe('Zigbee bridge incomingDeviceData', () => {
         expect(updatedDevice).toHaveProperty(['featureState', 'linkquality', 'value'], sensorData.linkquality);
         expect(updatedDevice).toHaveProperty(['featureState', 'linkquality', 'updatedAt']);
     });
+
+    it('should create the featureState for device with special type', async () => {
+        // given
+        const zigbeeDevice = generateZigbeeDevice.smartPlug();
+        await zigbeeDeviceHelpers.publish([zigbeeDevice]);
+
+        const deviceQuery = {
+            filters: {
+                ieeeAddress: zigbeeDevice.ieee_address,
+            },
+        };
+
+        const eventQuery = {
+            filters: {
+                displayName: `Incoming device data - ${zigbeeDevice.ieee_address}`,
+            },
+        };
+
+        const device = await findDevice(deviceQuery);
+        expect(device).toHaveProperty('featureState', {});
+
+        const event = await findEvent(eventQuery);
+
+        const H = createMqttHelpers(getZigbeeTopic(device).toReceiveData);
+
+        const sensorData = generateZigbeeIncomingData.smartPlug();
+
+        // when
+        await H.publish(sensorData);
+
+        // then
+        const eventInstanceQuery = {
+            filters: {
+                eventId: event._id,
+            },
+        };
+
+        await findEventInstance(eventInstanceQuery);
+
+        const updatedDevice = await findDevice(deviceQuery);
+        const stateBool = sensorData.state === 'ON';
+        expect(updatedDevice).toHaveProperty(['featureState', 'state', 'value'], stateBool);
+        expect(updatedDevice).toHaveProperty(['featureState', 'state', 'updatedAt']);
+        expect(updatedDevice).toHaveProperty(['featureState', 'linkquality', 'value'], sensorData.linkquality);
+        expect(updatedDevice).toHaveProperty(['featureState', 'linkquality', 'updatedAt']);
+    });
 });
