@@ -5,6 +5,7 @@ import DeviceTypeAvatar from '@components/avatars/DeviceTypeAvatar';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import { Box, Divider, Drawer, Stack, Toolbar, Typography } from '@mui/material';
+import { upperFirst } from 'lodash';
 import { useTranslation } from 'react-i18next';
 
 interface Props {
@@ -26,6 +27,18 @@ export default function DeviceDetailsDrawer({ open, onClose, deviceId }: Props) 
     if (!isSuccess) {
         return <FailedToLoadDataDialog />;
     }
+
+    const features = Object.entries(data.features)
+        .map(([propertyName, feature]) => {
+            const value = data.featureState[propertyName];
+
+            return {
+                unit: feature.unit,
+                propertyName,
+                value,
+            };
+        })
+        .filter((v) => v.value);
 
     return (
         <Drawer
@@ -63,6 +76,17 @@ export default function DeviceDetailsDrawer({ open, onClose, deviceId }: Props) 
                 <Divider sx={{ my: 2 }} />
 
                 <Typography>{data.description}</Typography>
+
+                <Divider sx={{ my: 2 }} />
+
+                {features.map((feature) => {
+                    return (
+                        <Typography key={feature.propertyName}>
+                            {upperFirst(feature.propertyName)}: {feature.value.value}
+                            {feature.unit}
+                        </Typography>
+                    );
+                })}
             </Box>
         </Drawer>
     );

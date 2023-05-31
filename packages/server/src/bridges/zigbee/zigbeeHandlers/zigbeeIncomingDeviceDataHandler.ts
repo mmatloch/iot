@@ -2,6 +2,7 @@ import { EventTriggerType } from '../../../definitions/eventDefinitions';
 import type { Device } from '../../../entities/deviceEntity';
 import { eventTriggerInNewContext } from '../../../events/eventTriggerInNewContext';
 import { getLogger } from '../../../logger';
+import { createDevicesService } from '../../../services/devicesService';
 import { createEventsService } from '../../../services/eventsService';
 import type { ZigbeeDeviceData } from '../zigbeeDefinitions';
 
@@ -9,8 +10,10 @@ const logger = getLogger();
 
 export const createIncomingDeviceDataHandler = (device: Device) => {
     return async (deviceData: ZigbeeDeviceData) => {
-        const eventsService = createEventsService();
+        const devicesService = createDevicesService();
+        await devicesService.updateFeatures(device, deviceData);
 
+        const eventsService = createEventsService();
         const events = await eventsService.search({
             where: {
                 triggerType: EventTriggerType.IncomingDeviceData,

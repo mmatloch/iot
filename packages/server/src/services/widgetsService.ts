@@ -32,8 +32,6 @@ export const createWidgetsService = (): WidgetsService => {
             where: { _id },
         });
 
-        await parseTextLines([widget]);
-
         return widget;
     };
 

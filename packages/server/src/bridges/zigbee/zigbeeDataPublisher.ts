@@ -1,12 +1,12 @@
-import type { Validator} from '@common/validator';
+import type { Validator } from '@common/validator';
 import { createValidator } from '@common/validator';
 import { Type } from '@sinclair/typebox';
 import _ from 'lodash';
 
 import type { MqttClient } from '../../clients/mqttClient';
+import { DeviceState } from '../../definitions/deviceDefinitions';
 import { EventTriggerType } from '../../definitions/eventDefinitions';
 import type { ZigbeeBridgeConfiguration } from '../../entities/configurationEntity';
-import { DeviceState } from '../../entities/deviceEntity';
 import { eventTriggerInNewContext } from '../../events/eventTriggerInNewContext';
 import { getLogger } from '../../logger';
 import { createEventsService } from '../../services/eventsService';

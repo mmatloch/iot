@@ -1,5 +1,5 @@
+import { DeviceDeactivatedByType, DeviceState } from '../../definitions/deviceDefinitions';
 import type { Device } from '../../entities/deviceEntity';
-import { DeviceDeactivatedByType, DeviceState } from '../../entities/deviceEntity';
 import { getLogger } from '../../logger';
 import type { ZigbeeDevice } from './zigbeeDefinitions';
 import type { ZigbeeDeviceManager } from './zigbeeDeviceManager';
