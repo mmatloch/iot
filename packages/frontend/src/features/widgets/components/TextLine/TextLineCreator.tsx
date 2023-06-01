@@ -1,7 +1,8 @@
 import FormInputText from '@components/forms/FormInputText';
 import { useTextLinesForm } from '@features/widgets/hooks/useTextLinesForm';
 import { useWidgetForm } from '@features/widgets/hooks/useWidgetForm';
-import { Button, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { TextDecrease, TextIncrease } from '@mui/icons-material';
+import { Button, ButtonGroup, IconButton, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -18,19 +19,23 @@ enum SelectedButton {
     Event = 'EVENT',
 }
 
+const FONT_SIZE_STEP = 4;
+const DEFAULT_FONT_SIZE = 14;
+
 export const TextLineCreator = ({ lineIndex }: Props) => {
     const { t } = useTranslation(['generic', 'devices', 'events']);
-    const { remove } = useTextLinesForm();
+    const { remove, update } = useTextLinesForm();
     const { watch } = useWidgetForm();
     const textLines = watch('textLines');
 
+    const currentTextLine = textLines[lineIndex];
+
     const [selectedButton, setSelectedButton] = useState(() => {
-        const currentValue = textLines[lineIndex];
-        if (currentValue.eventId) {
+        if (currentTextLine.eventId) {
             return SelectedButton.Event;
         }
 
-        if (currentValue.deviceId) {
+        if (currentTextLine.deviceId) {
             return SelectedButton.Device;
         }
 
@@ -43,6 +48,46 @@ export const TextLineCreator = ({ lineIndex }: Props) => {
 
     const handleChange = (_event: unknown, newValue: SelectedButton) => {
         setSelectedButton(newValue);
+    };
+
+    const handleTextDecrease = () => {
+        const { fontSize } = currentTextLine.styles;
+
+        let numericFontSize = Number(fontSize);
+
+        if (Number.isNaN(numericFontSize)) {
+            numericFontSize = DEFAULT_FONT_SIZE;
+        }
+
+        const updatedTextLine = {
+            ...currentTextLine,
+            styles: {
+                ...currentTextLine.styles,
+                fontSize: numericFontSize - FONT_SIZE_STEP,
+            },
+        };
+
+        update(lineIndex, updatedTextLine);
+    };
+
+    const handleTextIncrease = () => {
+        const { fontSize } = currentTextLine.styles;
+
+        let numericFontSize = Number(fontSize);
+
+        if (Number.isNaN(numericFontSize)) {
+            numericFontSize = DEFAULT_FONT_SIZE;
+        }
+
+        const updatedTextLine = {
+            ...currentTextLine,
+            styles: {
+                ...currentTextLine.styles,
+                fontSize: numericFontSize + FONT_SIZE_STEP,
+            },
+        };
+
+        update(lineIndex, updatedTextLine);
     };
 
     return (
@@ -64,7 +109,18 @@ export const TextLineCreator = ({ lineIndex }: Props) => {
                 {selectedButton === SelectedButton.Device && <TextLineFromDeviceContext lineIndex={lineIndex} />}
                 {selectedButton === SelectedButton.Event && <TextLineFromEventContext lineIndex={lineIndex} />}
 
-                <FormInputText name={`textLines.${lineIndex}.value`} label={t('value')} />
+                <Stack spacing={1}>
+                    <ButtonGroup>
+                        <IconButton onClick={handleTextDecrease}>
+                            <TextDecrease />
+                        </IconButton>
+                        <IconButton onClick={handleTextIncrease}>
+                            <TextIncrease />
+                        </IconButton>
+                    </ButtonGroup>
+
+                    <FormInputText name={`textLines.${lineIndex}.value`} label={t('value')} />
+                </Stack>
             </Stack>
 
             <Button onClick={handleRemove} sx={{ my: 1 }}>

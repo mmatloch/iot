@@ -69,6 +69,7 @@ export const WidgetContainer = ({ layout, onLayoutChange }: Props) => {
             onLayoutChange={handleLayoutChange}
             isDraggable={isEditable}
             isResizable={isEditable}
+            rowHeight={10}
         >
             {layout.map((entry) => {
                 return (

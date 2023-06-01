@@ -49,7 +49,7 @@ export const useDashboardEditor = ({ dashboard }: Props) => {
             widgetId: widget._id,
             widget,
             width: 1,
-            height: 1,
+            height: 7, // 70px
             positionX: 0,
             positionY: 0,
         };

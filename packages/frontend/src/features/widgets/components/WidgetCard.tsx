@@ -38,14 +38,14 @@ export const WidgetCard = ({ entity: widget, hideEditAction }: Props) => {
                     )}
                 </Stack>
 
-                <CardContent sx={{ flexGrow: 1, pb: 0 }}>
+                <CardContent sx={{ flexGrow: 1 }}>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         {widget.displayName}
                     </Typography>
 
                     <Stack>
                         {widget.textLines.map((textLine) => (
-                            <Typography variant="caption" key={textLine.id}>
+                            <Typography variant="caption" key={textLine.id} sx={textLine.styles}>
                                 {textLine.value}
                             </Typography>
                         ))}

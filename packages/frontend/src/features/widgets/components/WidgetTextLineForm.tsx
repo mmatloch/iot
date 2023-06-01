@@ -14,6 +14,7 @@ export const WidgetTextLineForm = () => {
             deviceId: null,
             eventId: null,
             id: window.crypto.randomUUID(),
+            styles: {},
         });
     };
 

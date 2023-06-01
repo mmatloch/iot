@@ -7,6 +7,7 @@ export interface WidgetTextLine {
     eventId: number | null;
     value: string;
     id: string;
+    styles: Record<string, unknown>;
 }
 
 export interface WidgetDto {

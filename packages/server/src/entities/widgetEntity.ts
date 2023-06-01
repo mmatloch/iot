@@ -26,6 +26,9 @@ const widgetTextLineSchema = Type.Object({
     value: Type.String(),
     deviceId: Type.Union([Type.Null(), Type.Integer()]),
     eventId: Type.Union([Type.Null(), Type.Integer()]),
+    styles: Type.Record(Type.String(), Type.Unknown(), {
+        default: {},
+    }),
 });
 
 export const widgetDtoSchema = Type.Object({
