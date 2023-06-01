@@ -2,7 +2,7 @@ import { useUpdateWidget } from '@api/widgetsApi';
 import { Widget, WidgetDto } from '@definitions/entities/widgetTypes';
 import { pick } from 'lodash';
 import { useSnackbar } from 'notistack';
-import { useForm } from 'react-hook-form';
+import { DefaultValues, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,7 +20,7 @@ export const useWidgetEditor = ({ widget }: Props) => {
     const { mutate } = useUpdateWidget(widget);
 
     const methods = useForm<WidgetDto>({
-        defaultValues: pick(widget, ['displayName', 'icon', 'textLines']),
+        defaultValues: pick(widget, ['displayName', 'icon', 'textLines']) as DefaultValues<WidgetDto>,
     });
 
     const { handleSubmit } = methods;
