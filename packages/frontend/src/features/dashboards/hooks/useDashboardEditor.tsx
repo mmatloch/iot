@@ -3,7 +3,7 @@ import { Dashboard, DashboardDto, DashboardLayout } from '@definitions/entities/
 import { Widget } from '@definitions/entities/widgetTypes';
 import { pick } from 'lodash';
 import { useSnackbar } from 'notistack';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { DefaultValues, useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 
@@ -21,7 +21,7 @@ export const useDashboardEditor = ({ dashboard }: Props) => {
     const { mutate } = useUpdateDashboard(dashboard);
 
     const methods = useForm<DashboardDto>({
-        defaultValues: pick(dashboard, ['displayName', 'index', 'layout']),
+        defaultValues: pick(dashboard, ['displayName', 'index', 'layout']) as DefaultValues<DashboardDto>,
     });
 
     const { handleSubmit } = methods;

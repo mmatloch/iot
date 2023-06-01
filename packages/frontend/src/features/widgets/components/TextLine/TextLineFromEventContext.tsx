@@ -21,6 +21,7 @@ export const TextLineFromEventContext = ({ lineIndex }: Props) => {
             value: textLines[lineIndex].value,
             eventId: event._id,
             deviceId: null,
+            styles: textLines[lineIndex].styles,
         });
     };
 
