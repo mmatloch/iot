@@ -1,8 +1,15 @@
-import type { Widget, WidgetDto, WidgetsSearchQuery, WidgetsSearchResponse } from '@definitions/entities/widgetTypes';
+import type {
+    Widget,
+    WidgetActionDto,
+    WidgetDto,
+    WidgetsSearchQuery,
+    WidgetsSearchResponse,
+} from '@definitions/entities/widgetTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 import type { UseQueryOptions } from 'react-query';
 import { useQueryClient } from 'react-query';
+import { generatePath } from 'react-router-dom';
 
 import { ApiRoute } from '../constants';
 
@@ -95,3 +102,10 @@ export const usePreviewWidget = (widgetDto: WidgetDto, useQueryOptions?: UseQuer
             keepPreviousData: true,
         },
     );
+
+export const useWidgetAction = (widget: Widget) => {
+    return useGenericMutation<void, WidgetActionDto>({
+        url: generatePath(ApiRoute.Widgets.Action, { widgetId: widget._id }),
+        method: 'POST',
+    });
+};

@@ -18,6 +18,9 @@ export enum ErrorCode {
     NoDataPublisherForConfiguration,
     CannotRequestBridgeForConfiguration,
     CannotUpdateDeviceState,
+    UnsupportedActionType,
+    FailedToRunWidgetCode,
+    InvalidWidgetAction,
 }
 
 const prefix = 'SRV';
@@ -147,5 +150,25 @@ export const Errors = {
             ...opts,
             errorCode: getErrorCode(ErrorCode.CannotUpdateDeviceState),
             message: `Cannot update the state of the device`,
+        }),
+
+    unsupportedActionType: (opts: Partial<HttpErrorOptions>): HttpError =>
+        HttpError.conflict({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.UnsupportedActionType),
+            message: `Unsupported action type`,
+        }),
+
+    failedToRunWidgetCode: (opts: Partial<HttpErrorOptions>): BaseError =>
+        HttpError.internalServerError({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.FailedToRunWidgetCode),
+            message: 'Failed to run widget code',
+        }),
+    invalidWidgetAction: (opts: Partial<HttpErrorOptions>): BaseError =>
+        HttpError.unprocessableEntity({
+            ...opts,
+            errorCode: getErrorCode(ErrorCode.InvalidWidgetAction),
+            message: 'Invalid widget action',
         }),
 };

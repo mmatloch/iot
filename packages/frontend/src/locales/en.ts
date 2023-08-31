@@ -385,6 +385,16 @@ export const EnglishLocale: Locale = {
                 icon: 'home.png',
             },
             addTextLine: 'Add text line',
+            addAction: 'Add action',
+            removeAction: 'Remove action',
+            actionOnDefinition: 'Switch on action definition',
+            actionOnContextDefinition: 'Switch on action context',
+            actionOffDefinition: 'Switch off action definition',
+            actionOffContextDefinition: 'Switch off action context',
+            actionStateDefintion: {
+                title: 'Action state definition',
+                description: 'Defines the position of the action switch',
+            },
         },
         editor: {
             title: 'Widget editor',
@@ -393,6 +403,7 @@ export const EnglishLocale: Locale = {
             failedToCreateWidget: 'Failed to create widget',
             failedToUpdateWidget: 'Failed to update widget',
             failedToDeleteWidget: 'Failed to delete widget',
+            failedToTriggerAction: 'Failed to trigger widget action',
         },
     },
 };

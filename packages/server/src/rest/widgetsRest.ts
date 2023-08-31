@@ -11,7 +11,13 @@ import {
     createSearchResponseSchema,
     searchQuerySchema,
 } from '../apis/searchApi';
-import { Widget, WidgetDto, widgetDtoSchema, widgetSchema } from '../entities/widgetEntity';
+import {
+    WidgetDto,
+    WidgetWithActionState,
+    widgetActionDtoSchema,
+    widgetDtoSchema,
+    widgetWithActionStateSchema,
+} from '../entities/widgetEntity';
 import { Errors } from '../errors';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createWidgetsService } from '../services/widgetsService';
@@ -19,18 +25,18 @@ import { createWidgetsService } from '../services/widgetsService';
 const createWidgetSchema = {
     body: widgetDtoSchema,
     response: {
-        [StatusCodes.CREATED]: widgetSchema,
+        [StatusCodes.CREATED]: widgetWithActionStateSchema,
     },
 };
 
 const searchWidgetsSchema = {
     querystring: searchQuerySchema,
     response: {
-        [StatusCodes.OK]: createSearchResponseSchema(widgetSchema),
+        [StatusCodes.OK]: createSearchResponseSchema(widgetWithActionStateSchema),
     },
 };
 
-const searchOptions: RestSearchOptions<Widget> = {
+const searchOptions: RestSearchOptions<WidgetWithActionState> = {
     size: {
         default: 10,
     },
@@ -56,14 +62,24 @@ const getWidgetSchema = {
         id: Type.Integer(),
     }),
     response: {
-        [StatusCodes.OK]: widgetSchema,
+        [StatusCodes.OK]: widgetWithActionStateSchema,
     },
 };
 
 const previewWidgetSchema = {
     body: widgetDtoSchema,
     response: {
-        [StatusCodes.OK]: widgetSchema,
+        [StatusCodes.OK]: widgetWithActionStateSchema,
+    },
+};
+
+const triggerWidgetActionSchema = {
+    params: Type.Object({
+        id: Type.Integer(),
+    }),
+    body: widgetActionDtoSchema,
+    response: {
+        [StatusCodes.NO_CONTENT]: Type.Null(),
     },
 };
 
@@ -82,11 +98,11 @@ const updateWidgetSchema = {
     }),
     body: Type.Partial(widgetDtoSchema),
     response: {
-        [StatusCodes.OK]: widgetSchema,
+        [StatusCodes.OK]: widgetWithActionStateSchema,
     },
 };
 
-const updatableFields = ['displayName', 'icon', 'textLines'];
+const updatableFields = ['displayName', 'icon', 'textLines', 'action'];
 
 const checkUpdatableFields = (widget: Partial<WidgetDto>) => {
     Object.keys(widget).forEach((key) => {
@@ -115,7 +131,10 @@ export const createWidgetsRest: ApplicationPlugin = async (app) => {
         const accessControl = createAccessControl();
         accessControl.authorize();
 
-        const searchResponse = await createRestSearch(createWidgetsService()).query(request.query, searchOptions);
+        const searchResponse = await createRestSearch<WidgetWithActionState, WidgetDto>(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            createWidgetsService() as any,
+        ).query(request.query, searchOptions);
 
         return reply.status(StatusCodes.OK).send(searchResponse);
     });
@@ -165,4 +184,20 @@ export const createWidgetsRest: ApplicationPlugin = async (app) => {
 
         return reply.status(StatusCodes.OK).send(widget);
     });
+
+    app.withTypeProvider().post(
+        '/widgets/:id/action',
+        { schema: triggerWidgetActionSchema },
+        async (request, reply) => {
+            const accessControl = createAccessControl();
+            accessControl.authorize();
+
+            const service = createWidgetsService();
+            const widget = await service.findByIdOrFail(request.params.id);
+
+            await service.triggerAction(widget, request.body);
+
+            return reply.status(StatusCodes.OK).send();
+        },
+    );
 };

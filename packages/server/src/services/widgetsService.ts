@@ -1,18 +1,26 @@
-import _, { isNumber } from 'lodash';
-import { In } from 'typeorm';
+import _, { cloneDeep, get, isNumber } from 'lodash';
+import { FindManyOptions, In } from 'typeorm';
 
 import { Device } from '../entities/deviceEntity';
 import { Event } from '../entities/eventEntity';
-import { Widget, WidgetDto } from '../entities/widgetEntity';
+import { Widget, WidgetActionDto, WidgetActionEntry, WidgetDto, WidgetWithActionState } from '../entities/widgetEntity';
+import { Errors } from '../errors';
+import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
 import { createWidgetsRepository } from '../repositories/widgetsRepository';
 import { parseWidgetText } from '../utils/widgetTextParser';
+import { createWidgetsSdk } from '../widgets/sdks/sdk';
+import { WidgetProcessContext, createWidgetProcessor } from '../widgets/widgetProcessor';
 import { createDevicesService } from './devicesService';
 import { createEventsService } from './eventsService';
 import type { GenericService } from './genericService';
 
-export interface WidgetsService extends GenericService<Widget, WidgetDto> {
-    getPreview: (dto: WidgetDto) => Promise<Widget>;
-    hardDelete: (widget: Widget) => Promise<void>;
+export interface WidgetsService
+    extends Omit<GenericService<WidgetWithActionState, WidgetDto>, 'search' | 'searchAndCount'> {
+    search: (query: FindManyOptions<Widget>) => Promise<WidgetWithActionState[]>;
+    searchAndCount: (query: FindManyOptions<Widget>) => Promise<[WidgetWithActionState[], number]>;
+    getPreview: (dto: WidgetDto) => Promise<WidgetWithActionState>;
+    hardDelete: (widget: WidgetWithActionState) => Promise<void>;
+    triggerAction: (widget: WidgetWithActionState, dto: WidgetActionDto) => Promise<void>;
 }
 
 export const createWidgetsService = (): WidgetsService => {
@@ -20,10 +28,16 @@ export const createWidgetsService = (): WidgetsService => {
     const devicesService = createDevicesService();
     const eventsService = createEventsService();
 
-    const create: WidgetsService['create'] = (dto) => {
+    const create: WidgetsService['create'] = async (dto) => {
+        if (dto.action) {
+            if (dto.action.on.eventId < 1 || dto.action.off.eventId < 1) {
+                throw Errors.invalidWidgetAction({ message: 'EventId must be defined' });
+            }
+        }
+
         const widget = repository.create(dto);
 
-        return repository.saveAndFind(widget);
+        return addActionState(await repository.saveAndFind(widget));
     };
 
     const findByIdOrFail: WidgetsService['findByIdOrFail'] = async (_id) => {
@@ -31,15 +45,14 @@ export const createWidgetsService = (): WidgetsService => {
             where: { _id },
         });
 
-        return widget;
+        return addActionState(widget);
     };
 
     const search: WidgetsService['search'] = async (query) => {
         const widgets = await repository.find(query);
 
         await parseTextLines(widgets);
-
-        return widgets;
+        return Promise.all(widgets.map(addActionState));
     };
 
     const searchAndCount: WidgetsService['searchAndCount'] = async (query) => {
@@ -47,7 +60,7 @@ export const createWidgetsService = (): WidgetsService => {
 
         await parseTextLines(result[0]);
 
-        return result;
+        return [await Promise.all(result[0].map(addActionState)), result[1]];
     };
 
     const update: WidgetsService['update'] = async (widget, updatedWidget) => {
@@ -57,7 +70,7 @@ export const createWidgetsService = (): WidgetsService => {
             return widget;
         }
 
-        return repository.saveAndFind(newWidget);
+        return addActionState(await repository.saveAndFind(newWidget));
     };
 
     const parseTextLines = async (widgets: Widget[] | WidgetDto[]) => {
@@ -115,16 +128,55 @@ export const createWidgetsService = (): WidgetsService => {
 
         await parseTextLines([dto]);
 
-        return repository.create({
-            ...dto,
-            _id: 1,
-            _version: 1,
-            _createdAt: now,
-            _createdBy: null,
-            _createdByUser: null,
-            _updatedAt: now,
-            _updatedBy: null,
-            _updatedByUser: null,
+        return Object.assign(
+            repository.create({
+                ...dto,
+                _id: 1,
+                _version: 1,
+                _createdAt: now,
+                _createdBy: null,
+                _createdByUser: null,
+                _updatedAt: now,
+                _updatedBy: null,
+                _updatedByUser: null,
+            }),
+            {
+                actionState: null,
+            },
+        );
+    };
+
+    const triggerAction: WidgetsService['triggerAction'] = async (widget, dto) => {
+        if (!widget.action) {
+            return;
+        }
+
+        const action: WidgetActionEntry = get(widget.action, dto.type);
+
+        if (!action) {
+            throw Errors.unsupportedActionType({});
+        }
+
+        const eventsService = createEventsService();
+
+        const event = await eventsService.findByIdOrFail(action.eventId);
+        await eventTriggerInNewContext(event, JSON.parse(action.eventContext));
+    };
+
+    const addActionState = async (widget: Widget) => {
+        let actionState = null;
+
+        if (widget.action) {
+            const widgetProcessor = createWidgetProcessor(createWidgetsSdk());
+
+            const context = cloneDeep(widget) as unknown as WidgetProcessContext;
+            const result = await widgetProcessor.runCode(widget.action.stateDefinition, context);
+
+            actionState = Boolean(result);
+        }
+
+        return Object.assign(widget, {
+            actionState,
         });
     };
 
@@ -136,5 +188,6 @@ export const createWidgetsService = (): WidgetsService => {
         update,
         getPreview,
         hardDelete,
+        triggerAction,
     };
 };

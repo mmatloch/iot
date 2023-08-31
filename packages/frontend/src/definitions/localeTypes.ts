@@ -327,6 +327,16 @@ export interface Locale {
                 icon: string;
             };
             addTextLine: string;
+            addAction: string;
+            removeAction: string;
+            actionOnDefinition: string;
+            actionOnContextDefinition: string;
+            actionOffDefinition: string;
+            actionOffContextDefinition: string;
+            actionStateDefintion: {
+                title: string;
+                description: string;
+            };
         };
         editor: {
             title: string;
@@ -335,6 +345,7 @@ export interface Locale {
             failedToCreateWidget: string;
             failedToUpdateWidget: string;
             failedToDeleteWidget: string;
+            failedToTriggerAction: string;
         };
     };
 }

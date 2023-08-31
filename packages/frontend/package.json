@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "sdk": "tsc --project tsconfig.sdk.json && node prepareSdk.js"
+    "sdk": "tsc --project tsconfig.sdk.json --outfile ./src/definitions/eventSdk.js && tsc --project tsconfig.sdk.json --outfile ./src/definitions/widgetSdk.js && node prepareSdk.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",

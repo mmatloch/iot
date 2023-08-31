@@ -19,6 +19,7 @@ export const useWidgetCreator = () => {
             displayName: t('creator.defaults.displayName'),
             icon: t('creator.defaults.icon'),
             textLines: [],
+            action: null,
         },
     });
 

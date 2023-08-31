@@ -24,7 +24,7 @@ const WidgetEditorPreviewContent = () => {
         return <FailedToLoadDataDialog />;
     }
 
-    return <WidgetCard entity={widget} />;
+    return <WidgetCard entity={widget} hideEditAction disableAction />;
 };
 
 export const WidgetEditorPreview = () => {
