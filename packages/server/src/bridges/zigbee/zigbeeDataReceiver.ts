@@ -74,7 +74,7 @@ export const createZigbeeDataReceiver = (mqttClient: MqttClient) => {
 
             try {
                 await mqttClient.addHandler({
-                    onMessage: createIncomingDeviceDataHandler(device),
+                    onMessage: createIncomingDeviceDataHandler(device._id),
                     onError: createIncomingDeviceDataErrorHandler(device),
                     topic: topic,
                     schema: zigbeeDeviceDataSchema,

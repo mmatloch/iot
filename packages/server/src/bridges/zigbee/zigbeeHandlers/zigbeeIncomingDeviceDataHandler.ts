@@ -8,9 +8,11 @@ import type { ZigbeeDeviceData } from '../zigbeeDefinitions';
 
 const logger = getLogger();
 
-export const createIncomingDeviceDataHandler = (device: Device) => {
+export const createIncomingDeviceDataHandler = (deviceId: number) => {
     return async (deviceData: ZigbeeDeviceData) => {
         const devicesService = createDevicesService();
+        const device = await devicesService.findByIdOrFail(deviceId);
+
         await devicesService.updateFeatures(device, deviceData);
 
         const eventsService = createEventsService();
