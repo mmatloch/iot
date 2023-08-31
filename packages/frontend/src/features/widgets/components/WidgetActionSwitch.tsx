@@ -18,7 +18,7 @@ export const WidgetActionSwitch = ({ widget, isDisabled }: Props) => {
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         mutate(
             {
-                type: event.target.checked ? 'off' : 'on',
+                type: event.target.checked ? 'on' : 'off',
             },
             {
                 onError: () => {
