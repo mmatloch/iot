@@ -9,6 +9,7 @@ import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
 import type { UseQueryOptions } from 'react-query';
 import { useQueryClient } from 'react-query';
+import { sleep } from 'react-query/types/core/utils';
 import { generatePath } from 'react-router-dom';
 
 import { ApiRoute } from '../constants';
@@ -104,8 +105,18 @@ export const usePreviewWidget = (widgetDto: WidgetDto, useQueryOptions?: UseQuer
     );
 
 export const useWidgetAction = (widget: Widget) => {
-    return useGenericMutation<void, WidgetActionDto>({
-        url: generatePath(ApiRoute.Widgets.Action, { widgetId: widget._id }),
-        method: 'POST',
-    });
+    const queryClient = useQueryClient();
+
+    return useGenericMutation<void, WidgetActionDto>(
+        {
+            url: generatePath(ApiRoute.Widgets.Action, { widgetId: widget._id }),
+            method: 'POST',
+        },
+        {
+            onSuccess: async () => {
+                await sleep(1000);
+                queryClient.invalidateQueries([ApiRoute.Dashboards.Root]);
+            },
+        },
+    );
 };
