@@ -5,6 +5,7 @@ services:
     volumes:
       - ../../server/src:/usr/app/packages/server/src
       - ../../server/config:/usr/app/packages/server/config
+      - ../../static:/usr/app/packages/static
       - ../../common-application/src:/usr/app/packages/common-application/src
       - ../../common-errors/src:/usr/app/packages/common-errors/src
       - ../../common-logger/src:/usr/app/packages/common-logger/src
