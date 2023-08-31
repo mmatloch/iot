@@ -5,8 +5,10 @@ import DeviceTypeAvatar from '@components/avatars/DeviceTypeAvatar';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import { Box, Divider, Drawer, Stack, Toolbar, Typography } from '@mui/material';
-import { upperFirst } from 'lodash';
 import { useTranslation } from 'react-i18next';
+
+import { mapFeatureNameToDisplay } from '../utils/mapFeatureNameToDisplay';
+import { mapFeatureValueToDisplay } from '../utils/mapFeatureValueToDisplay';
 
 interface Props {
     deviceId: number;
@@ -70,6 +72,9 @@ export default function DeviceDetailsDrawer({ open, onClose, deviceId }: Props) 
 
                 <Divider sx={{ my: 2 }} />
                 <Typography>
+                    {t('entity.id')}: {data._id}
+                </Typography>
+                <Typography>
                     {t('entity.ieeeAddress')}: {data.ieeeAddress}
                 </Typography>
 
@@ -82,7 +87,8 @@ export default function DeviceDetailsDrawer({ open, onClose, deviceId }: Props) 
                 {features.map((feature) => {
                     return (
                         <Typography key={feature.propertyName}>
-                            {upperFirst(feature.propertyName)}: {feature.value.value}
+                            {mapFeatureNameToDisplay(feature.propertyName)}:{' '}
+                            {mapFeatureValueToDisplay(feature.value.value)}
                             {feature.unit}
                         </Typography>
                     );

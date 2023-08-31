@@ -55,6 +55,9 @@ export default function EventCard({ entity: event }: Props) {
                 <Grid container spacing={3}>
                     <Grid item>
                         <Typography>
+                            {t('entity.id')}: {event._id}
+                        </Typography>
+                        <Typography>
                             {t('entity.triggerType')}: {i18n.format(t(triggerTypeTransKey), 'lowerCase')}
                         </Typography>
                     </Grid>

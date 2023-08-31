@@ -34,6 +34,8 @@ export interface Locale {
         value: string;
         delete: string;
         share: string;
+        on: string;
+        off: string;
         dates: {
             createdAt: string;
             createdAtAndBy: string;
@@ -113,9 +115,23 @@ export interface Locale {
         type: Record<DeviceType, string>;
         protocol: Record<DeviceProtocol, string>;
         entity: {
+            id: string;
             displayName: string;
             description: string;
             ieeeAddress: string;
+        };
+        featureNames: {
+            power: string;
+            state: string;
+            energy: string;
+            current: string;
+            voltage: string;
+            linkquality: string;
+            temperature: string;
+            humidity: string;
+            battery: string;
+            illuminance: string;
+            action: string;
         };
         deactivatedBy: {
             bridge: string;
@@ -185,6 +201,7 @@ export interface Locale {
         metadataTaskType: Record<EventMetadataTaskType, string>;
         onInactive: Record<EventActionOnInactive, string>;
         entity: {
+            id: string;
             displayName: string;
             triggerType: string;
             metadata: {

@@ -30,6 +30,8 @@ export const PolishLocale: Locale = {
         value: 'Wartość',
         delete: 'Usuń',
         share: 'Udostępnij',
+        on: 'Włączone',
+        off: 'Wyłączone',
         dates: {
             createdAtAndBy: 'Utworzono <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
             updatedAtAndBy: 'Zaktualizowano <strong>{{when}}</strong> przez <strong>{{by}}</strong>',
@@ -139,9 +141,23 @@ export const PolishLocale: Locale = {
             [DeviceProtocol.Virtual]: 'Urządzenie wirtualne',
         },
         entity: {
+            id: 'Identifikator',
             displayName: 'Nazwa',
             description: 'Opis',
             ieeeAddress: 'Adres IEEE',
+        },
+        featureNames: {
+            power: 'Moc',
+            state: 'Stan',
+            energy: 'Energia',
+            current: 'Prąd',
+            voltage: 'Napięcie',
+            linkquality: 'Jakość połączenia',
+            temperature: 'Temperatura',
+            humidity: 'Wilgotność',
+            battery: 'Bateria',
+            illuminance: 'Natężenie oświetlenia',
+            action: 'Akcja',
         },
         deactivatedBy: {
             bridge: 'Dezaktywowane przez most <strong>{{name}}</strong>',
@@ -234,6 +250,7 @@ export const PolishLocale: Locale = {
             [EventActionOnInactive.Skip]: 'Pomiń',
         },
         entity: {
+            id: 'Identyfikator',
             displayName: 'Nazwa',
             triggerType: 'Typ wyzwalacza',
             metadata: {

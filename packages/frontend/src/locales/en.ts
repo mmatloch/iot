@@ -30,6 +30,8 @@ export const EnglishLocale: Locale = {
         value: 'Value',
         delete: 'Delete',
         share: 'Share',
+        on: 'On',
+        off: 'Off',
         dates: {
             createdAtAndBy: 'Created <strong>{{when}}</strong> by <strong>{{by}}</strong>',
             updatedAtAndBy: 'Updated <strong>{{when}}</strong> by <strong>{{by}}</strong>',
@@ -139,9 +141,23 @@ export const EnglishLocale: Locale = {
             [DeviceProtocol.Virtual]: 'Virtual device',
         },
         entity: {
+            id: 'Identifier',
             displayName: 'Name',
             description: 'Description',
             ieeeAddress: 'IEEE address',
+        },
+        featureNames: {
+            power: 'Power',
+            state: 'State',
+            energy: 'Energy',
+            current: 'Current',
+            voltage: 'Voltage',
+            linkquality: 'Linkquality',
+            temperature: 'Temperature',
+            humidity: 'Humidity',
+            battery: 'Battery',
+            illuminance: 'Illuminance',
+            action: 'Action',
         },
         deactivatedBy: {
             bridge: 'Deactivated by <strong>{{name}}</strong> bridge',
@@ -234,6 +250,7 @@ export const EnglishLocale: Locale = {
             [EventActionOnInactive.Skip]: 'Skip',
         },
         entity: {
+            id: 'Identifier',
             displayName: 'Name',
             triggerType: 'Trigger type',
             metadata: {
