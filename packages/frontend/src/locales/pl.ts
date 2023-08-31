@@ -385,6 +385,16 @@ export const PolishLocale: Locale = {
                 icon: 'home.png',
             },
             addTextLine: 'Dodaj wiersz tekstu',
+            addAction: 'Dodaj akcję',
+            removeAction: 'Usuń akcję',
+            actionOnDefinition: 'Określenie akcji włącznika',
+            actionOnContextDefinition: 'Kontekst akcji włącznika',
+            actionOffDefinition: 'Określenie akcji wyłącznika',
+            actionOffContextDefinition: 'Kontekst akcji wyłącznika',
+            actionStateDefintion: {
+                title: 'Określenie stanu akcji',
+                description: 'Określa położenie przełącznika akcji',
+            },
         },
         editor: {
             title: 'Edytor widżetów',
@@ -393,6 +403,7 @@ export const PolishLocale: Locale = {
             failedToCreateWidget: 'Nie udało się stworzyć widżetu',
             failedToUpdateWidget: 'Nie udało się zaktualizować widżetu',
             failedToDeleteWidget: 'Nie udało się usunąć widżetu',
+            failedToTriggerAction: 'Nie udało się wykonać akcji widżetu',
         },
     },
 };

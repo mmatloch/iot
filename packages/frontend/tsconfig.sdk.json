@@ -7,10 +7,9 @@
     "noEmit": false,
     "emitDeclarationOnly": true,
     "declaration": true,
-    "outFile": "./src/definitions/eventSdk.js",
     "paths": {
       "@definitions/*": ["./src/definitions/*"]
     }
   },
-  "include": ["src/definitions/eventSdk.ts"]
+  "include": ["src/definitions/eventSdk.ts", "src/definitions/widgetSdk.ts"]
 }

@@ -20,7 +20,7 @@ export const useWidgetEditor = ({ widget }: Props) => {
     const { mutate } = useUpdateWidget(widget);
 
     const methods = useForm<WidgetDto>({
-        defaultValues: pick(widget, ['displayName', 'icon', 'textLines']) as DefaultValues<WidgetDto>,
+        defaultValues: pick(widget, ['displayName', 'icon', 'textLines', 'action']) as DefaultValues<WidgetDto>,
     });
 
     const { handleSubmit } = methods;

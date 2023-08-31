@@ -8,8 +8,6 @@ import prettier from 'prettier/standalone';
 import { forwardRef, useMemo } from 'react';
 import libEs5 from 'typescript/lib/lib.es5.d.ts?raw';
 
-import libSdk from '../../definitions/eventSdk.d.ts?raw';
-
 export interface Props {
     defaultValue?: string;
     value?: string;
@@ -20,6 +18,7 @@ export interface Props {
     language: string;
     filename?: string;
     editorOptions?: editor.IStandaloneEditorConstructionOptions;
+    extraLib?: string;
 }
 
 export type EditorRef = editor.IStandaloneCodeEditor;
@@ -32,7 +31,7 @@ const EDITOR_OPTIONS: editor.IStandaloneEditorConstructionOptions = {
 
 const Editor = forwardRef<EditorRef, Props>(
     (
-        { defaultValue, formatOnSave, onSave, onMount, onChange, language, value, filename, editorOptions },
+        { defaultValue, formatOnSave, onSave, onMount, onChange, language, value, filename, editorOptions, extraLib },
         editorRef,
     ) => {
         const { enqueueSnackbar } = useSnackbar();
@@ -78,7 +77,10 @@ const Editor = forwardRef<EditorRef, Props>(
                 allowNonTsExtensions: true,
             });
             javascript.addExtraLib(libEs5);
-            javascript.addExtraLib(libSdk);
+
+            if (extraLib) {
+                javascript.addExtraLib(extraLib);
+            }
         };
 
         const handleMount: OnMount = (editor) => {

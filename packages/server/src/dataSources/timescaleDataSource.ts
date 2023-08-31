@@ -24,6 +24,7 @@ import { ConfigurationPermitJoin1662924371554 } from '../migrations/166292437155
 import { EventInstanceForeignKey1670009734264 } from '../migrations/1670009734264-EventInstanceForeignKey';
 import { WidgetsAndDashboards1682452308755 } from '../migrations/1682452308755-WidgetsAndDashboards';
 import { DeviceFeatures1684274710053 } from '../migrations/1684274710053-DeviceFeatures';
+import { WidgetAction1693492083704 } from '../migrations/1693492083704-WidgetAction';
 
 const config = getConfig();
 
@@ -46,5 +47,6 @@ export const timescaleDataSource = new DataSource({
         EventInstanceForeignKey1670009734264,
         WidgetsAndDashboards1682452308755,
         DeviceFeatures1684274710053,
+        WidgetAction1693492083704,
     ],
 });

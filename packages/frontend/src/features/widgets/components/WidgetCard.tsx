@@ -4,14 +4,16 @@ import { MoreVert } from '@mui/icons-material';
 import { Box, Card, CardContent, CardMedia, IconButton, Stack, Typography } from '@mui/material';
 import { MouseEvent, useState } from 'react';
 
+import { WidgetActionSwitch } from './WidgetActionSwitch';
 import WidgetMenu from './WidgetMenu';
 
 interface Props {
     entity: Widget;
     hideEditAction?: boolean;
+    disableAction?: boolean;
 }
 
-export const WidgetCard = ({ entity: widget, hideEditAction }: Props) => {
+export const WidgetCard = ({ entity: widget, hideEditAction, disableAction }: Props) => {
     const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
 
     const openMenu = (event: MouseEvent<HTMLButtonElement>) => {
@@ -23,6 +25,8 @@ export const WidgetCard = ({ entity: widget, hideEditAction }: Props) => {
     };
 
     const iconUrl = useIcon(widget.icon);
+
+    const showAction = hideEditAction && widget.action;
 
     return (
         <>
@@ -36,6 +40,8 @@ export const WidgetCard = ({ entity: widget, hideEditAction }: Props) => {
                             <MoreVert />
                         </IconButton>
                     )}
+
+                    {showAction && <WidgetActionSwitch widget={widget} isDisabled={disableAction} />}
                 </Stack>
 
                 <CardContent sx={{ flexGrow: 1 }}>
