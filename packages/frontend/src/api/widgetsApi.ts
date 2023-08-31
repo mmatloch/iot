@@ -104,15 +104,8 @@ export const usePreviewWidget = (widgetDto: WidgetDto, useQueryOptions?: UseQuer
     );
 
 export const useWidgetAction = (widget: Widget) => {
-    const queryClient = useQueryClient();
-
-    return useGenericMutation<void, WidgetActionDto>(
-        {
-            url: generatePath(ApiRoute.Widgets.Action, { widgetId: widget._id }),
-            method: 'POST',
-        },
-        {
-            onSuccess: () => {},
-        },
-    );
+    return useGenericMutation<void, WidgetActionDto>({
+        url: generatePath(ApiRoute.Widgets.Action, { widgetId: widget._id }),
+        method: 'POST',
+    });
 };
