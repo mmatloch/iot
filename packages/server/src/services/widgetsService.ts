@@ -1,10 +1,11 @@
-import _, { get, isNumber } from 'lodash';
+import _, { isNumber } from 'lodash';
 import { In } from 'typeorm';
 
 import { Device } from '../entities/deviceEntity';
 import { Event } from '../entities/eventEntity';
 import { Widget, WidgetDto } from '../entities/widgetEntity';
 import { createWidgetsRepository } from '../repositories/widgetsRepository';
+import { parseWidgetText } from '../utils/widgetTextParser';
 import { createDevicesService } from './devicesService';
 import { createEventsService } from './eventsService';
 import type { GenericService } from './genericService';
@@ -13,8 +14,6 @@ export interface WidgetsService extends GenericService<Widget, WidgetDto> {
     getPreview: (dto: WidgetDto) => Promise<Widget>;
     hardDelete: (widget: Widget) => Promise<void>;
 }
-
-const TEXT_LINE_REGEX = /{{(.+?)}}/g;
 
 export const createWidgetsService = (): WidgetsService => {
     const repository = createWidgetsRepository();
@@ -61,12 +60,6 @@ export const createWidgetsService = (): WidgetsService => {
         return repository.saveAndFind(newWidget);
     };
 
-    const parseTextLine = (textLine: WidgetDto['textLines'][0], context: unknown) => {
-        return textLine.value.replace(TEXT_LINE_REGEX, (_match, propertyName) => {
-            return get(context, propertyName, 'UNKNOWN');
-        });
-    };
-
     const parseTextLines = async (widgets: Widget[] | WidgetDto[]) => {
         const deviceIds = widgets
             .map((widget) => widget.textLines.map((textLine) => textLine.deviceId))
@@ -106,7 +99,7 @@ export const createWidgetsService = (): WidgetsService => {
             widget.textLines.forEach((textLine) => {
                 const context = getTextLineContext(textLine);
 
-                textLine.value = parseTextLine(textLine, context);
+                textLine.value = parseWidgetText(textLine.value, context);
             });
         });
     };
