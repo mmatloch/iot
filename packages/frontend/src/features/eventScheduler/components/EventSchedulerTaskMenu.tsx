@@ -6,7 +6,7 @@ import { CancelScheduleSend, Preview } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { generatePath, useNavigate } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 
 import { AppRoute } from '../../../constants';
 
@@ -19,8 +19,9 @@ interface Props {
 export default function EventSchedulerTaskMenu({ eventSchedulerTask, onClose, anchorEl }: Props) {
     const { t } = useTranslation(['generic', 'events', 'eventScheduler']);
     const { enqueueSnackbar } = useSnackbar();
-    const navigate = useNavigate();
     const { mutateAsync } = useDeleteEventSchedulerTask(eventSchedulerTask);
+
+    const eventEditorLink = generatePath(AppRoute.Events.Editor, { eventId: String(eventSchedulerTask.event._id) });
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -38,13 +39,9 @@ export default function EventSchedulerTaskMenu({ eventSchedulerTask, onClose, an
         onClose();
     };
 
-    const openEventEditor = () => {
-        navigate(generatePath(AppRoute.Events.Editor, { eventId: String(eventSchedulerTask.event._id) }));
-    };
-
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
-            <MenuItem onClick={openEventEditor}>
+            <MenuItem component={Link} to={eventEditorLink}>
                 <ListItemButtonWithIcon text={t('events:editor.openInEditor')} icon={<Preview />} />
             </MenuItem>
             <MenuItem onClick={cancelTask}>

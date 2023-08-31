@@ -6,7 +6,7 @@ import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { generatePath, useNavigate } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 
 import { AppRoute } from '../../../constants';
 import DashboardShareDialog from './DashboardShareDialog';
@@ -19,16 +19,13 @@ interface Props {
 
 export default function DashboardMenu({ dashboard, onClose, anchorEl }: Props) {
     const { t } = useTranslation(['generic', 'dashboards']);
-    const navigate = useNavigate();
     const { mutateAsync } = useDeleteDashboard(dashboard);
     const { enqueueSnackbar } = useSnackbar();
     const [shareDialogState, setShareDialogState] = useState(false);
 
-    const isMenuOpen = Boolean(anchorEl);
+    const dashboardEditorLink = generatePath(AppRoute.Dashboards.Editor, { dashboardId: String(dashboard._id) });
 
-    const openDashboardEditor = () => {
-        navigate(generatePath(AppRoute.Dashboards.Editor, { dashboardId: String(dashboard._id) }));
-    };
+    const isMenuOpen = Boolean(anchorEl);
 
     const handleDelete = async () => {
         try {
@@ -51,7 +48,7 @@ export default function DashboardMenu({ dashboard, onClose, anchorEl }: Props) {
     return (
         <>
             <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
-                <MenuItem onClick={openDashboardEditor}>
+                <MenuItem component={Link} to={dashboardEditorLink}>
                     <ListItemButtonWithIcon text={t('edit')} icon={<Edit />} />
                 </MenuItem>
 

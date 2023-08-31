@@ -5,7 +5,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
 import { useSnackbar } from 'notistack';
 import { useTranslation } from 'react-i18next';
-import { generatePath, useNavigate } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 
 import { AppRoute } from '../../../constants';
 
@@ -17,15 +17,12 @@ interface Props {
 
 export default function WidgetMenu({ widget, onClose, anchorEl }: Props) {
     const { t } = useTranslation(['generic', 'widgets']);
-    const navigate = useNavigate();
     const { mutateAsync } = useDeleteWidget(widget);
     const { enqueueSnackbar } = useSnackbar();
 
-    const isMenuOpen = Boolean(anchorEl);
+    const widgetEditorLink = generatePath(AppRoute.Widgets.Editor, { widgetId: String(widget._id) });
 
-    const openWidgetEditor = () => {
-        navigate(generatePath(AppRoute.Widgets.Editor, { widgetId: String(widget._id) }));
-    };
+    const isMenuOpen = Boolean(anchorEl);
 
     const handleDelete = async () => {
         try {
@@ -39,7 +36,7 @@ export default function WidgetMenu({ widget, onClose, anchorEl }: Props) {
 
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
-            <MenuItem onClick={openWidgetEditor}>
+            <MenuItem component={Link} to={widgetEditorLink}>
                 <ListItemButtonWithIcon text={t('edit')} icon={<Edit />} />
             </MenuItem>
 

@@ -3,7 +3,7 @@ import { EventInstance } from '@definitions/entities/eventInstanceTypes';
 import { Preview, ViewSidebar } from '@mui/icons-material';
 import { Menu, MenuItem } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { generatePath, useNavigate } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 
 import { AppRoute } from '../../../constants';
 import { useEventInstanceDetails } from '../hooks/useEventInstanceDetails';
@@ -17,7 +17,8 @@ interface Props {
 export default function EventInstanceMenu({ eventInstance, onClose, anchorEl }: Props) {
     const { t } = useTranslation(['generic', 'events']);
     const { openEventInstanceDetails } = useEventInstanceDetails();
-    const navigate = useNavigate();
+
+    const eventEditorLink = generatePath(AppRoute.Events.Editor, { eventId: String(eventInstance.event._id) });
 
     const isMenuOpen = Boolean(anchorEl);
 
@@ -26,16 +27,12 @@ export default function EventInstanceMenu({ eventInstance, onClose, anchorEl }: 
         onClose();
     };
 
-    const openEventEditor = () => {
-        navigate(generatePath(AppRoute.Events.Editor, { eventId: String(eventInstance.event._id) }));
-    };
-
     return (
         <Menu anchorEl={anchorEl} open={isMenuOpen} onClose={onClose}>
             <MenuItem onClick={openDetails}>
                 <ListItemButtonWithIcon text={t('generic:showDetails')} icon={<ViewSidebar />} />
             </MenuItem>
-            <MenuItem onClick={openEventEditor}>
+            <MenuItem component={Link} to={eventEditorLink}>
                 <ListItemButtonWithIcon text={t('events:editor.openInEditor')} icon={<Preview />} />
             </MenuItem>
         </Menu>
