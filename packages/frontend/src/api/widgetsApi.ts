@@ -7,9 +7,9 @@ import type {
 } from '@definitions/entities/widgetTypes';
 import { useFetch } from '@hooks/useFetch';
 import { useGenericMutation } from '@hooks/useGenericMutation';
+import { sleep } from '@utils/sleep';
 import type { UseQueryOptions } from 'react-query';
 import { useQueryClient } from 'react-query';
-import { sleep } from 'react-query/types/core/utils';
 import { generatePath } from 'react-router-dom';
 
 import { ApiRoute } from '../constants';
