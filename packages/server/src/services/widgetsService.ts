@@ -172,7 +172,6 @@ export const createWidgetsService = (): WidgetsService => {
             const context = cloneDeep(widget) as unknown as WidgetProcessContext;
             const result = await widgetProcessor.runCode(widget.action.stateDefinition, context);
 
-            console.log(result);
             actionState = Boolean(result);
         }
 

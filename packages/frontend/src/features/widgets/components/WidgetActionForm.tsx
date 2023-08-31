@@ -10,8 +10,6 @@ export const WidgetActionForm = () => {
 
     const action = watch('action');
 
-    console.log(action);
-
     const handleAddAction = () => {
         setValue('action', {
             on: {
