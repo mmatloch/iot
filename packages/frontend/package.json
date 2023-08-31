@@ -10,12 +10,12 @@
     "sdk": "tsc --project tsconfig.sdk.json && node prepareSdk.js"
   },
   "dependencies": {
-    "@emotion/react": "^11.10.8",
-    "@emotion/styled": "^11.10.8",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@monaco-editor/react": "^4.5.1",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/lab": "^5.0.0-alpha.129",
-    "@mui/material": "^5.12.3",
+    "@mui/icons-material": "^5.14.7",
+    "@mui/lab": "^5.0.0-alpha.142",
+    "@mui/material": "^5.14.7",
     "allotment": "^1.19.0",
     "country-flag-icons": "^1.5.7",
     "cron-parser": "^4.8.1",
