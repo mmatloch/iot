@@ -73,6 +73,10 @@ export interface Locale {
             unknownErrorOccured: string;
             permissionDenied: string;
         };
+        websockets: {
+            connectionOpened: string;
+            connectionLost: string;
+        };
     };
     i18n: {
         changeLanguage: string;

@@ -20,6 +20,7 @@ import { createEventsRest } from './rest/eventsRest';
 import { createSensorDataRest } from './rest/sensorDataRest';
 import { createUsersRest } from './rest/usersRest';
 import { createWidgetsRest } from './rest/widgetsRest';
+import { createWebsocketRoute } from './websockets/websocketRoute';
 
 const config = getConfig();
 
@@ -36,6 +37,7 @@ createApplication({
     },
     urlPrefix: config.app.urlPrefix,
     staticFilesPath: config.static.path,
+    useWebsockets: true,
     hooks: {
         beforeBootstrap: async (app) => {
             app.register(requestUserPlugin);
@@ -61,6 +63,7 @@ createApplication({
             app.register(createBridgeRest);
             app.register(createDashboardsRest);
             app.register(createWidgetsRest);
+            app.register(createWebsocketRoute);
 
             await createZigbeeBridge(mqttClient).initialize();
 

@@ -69,6 +69,10 @@ export const PolishLocale: Locale = {
             unknownErrorOccured: 'Wystąpił nieznany błąd',
             permissionDenied: 'Brak uprawnień',
         },
+        websockets: {
+            connectionOpened: 'Połączono z serwerem',
+            connectionLost: 'Połączenie z serwerem zostało utracone. Ponawianie...',
+        },
     },
     i18n: {
         changeLanguage: 'Zmień język',

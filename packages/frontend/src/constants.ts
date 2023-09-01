@@ -2,6 +2,8 @@ const API_PREFIX = '/api';
 
 const addPrefix = (path: string) => `${API_PREFIX}/${path}`;
 
+export const WEBSOCKET_URL = `wss://${window.location.host}${addPrefix('live')}`;
+
 export const ApiRoute = {
     Users: {
         Root: addPrefix('users'),

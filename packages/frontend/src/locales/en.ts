@@ -69,6 +69,10 @@ export const EnglishLocale: Locale = {
             unknownErrorOccured: 'An unknown error occurred',
             permissionDenied: 'Permission denied',
         },
+        websockets: {
+            connectionOpened: 'Connected to the server',
+            connectionLost: 'The connection to the server has been lost. Retrying...',
+        },
     },
     i18n: {
         changeLanguage: 'Change language',

@@ -3,13 +3,14 @@ import { ActionToolbar } from '@components/ActionToolbar';
 import FailedToLoadDataDialog from '@components/FailedToLoadDataDialog';
 import FullScreenLoader from '@components/FullScreenLoader';
 import { Dashboard } from '@definitions/entities/dashboardTypes';
-import { useDashboardNavigation } from '@features/dashboards';
+import { useDashboardNavigation, useLiveDashboard } from '@features/dashboards';
 import { WidgetContainer } from '@features/widgets';
 import Layout from '@layout/Layout';
 import { first } from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
 
 export default function Home() {
+    useLiveDashboard();
     const { data, isLoading, isSuccess } = useDashboards({});
     const [currentDashboard, setCurrentDashboard] = useState<Dashboard>();
     const [currentDashboardIndex, setCurrentDashboardIndex] = useState(-1);

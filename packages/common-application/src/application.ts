@@ -5,6 +5,7 @@ import type { Logger } from '@common/logger';
 import { createValidator } from '@common/validator';
 import formBody from '@fastify/formbody';
 import staticPlugin from '@fastify/static';
+import websocketPlugin from '@fastify/websocket';
 import _ from 'lodash';
 
 import { createApplicationFromFastify } from './fastifyAbstract';
@@ -18,6 +19,7 @@ interface CreateApplicationOptions {
     loggerOptions: LoggerPluginOptions;
     urlPrefix: string;
     staticFilesPath?: string;
+    useWebsockets?: boolean;
     hooks?: {
         beforeReady?: (app: Application) => Promise<void>;
         beforeBootstrap?: (app: Application) => Promise<void>;
@@ -52,6 +54,10 @@ const bootstrapApplication = (app: Application, opts: CreateApplicationOptions) 
             list: true,
             index: false,
         });
+    }
+
+    if (opts.useWebsockets) {
+        app.register(websocketPlugin);
     }
 };
 
