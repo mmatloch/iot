@@ -18,9 +18,16 @@ export default function Home() {
     const dashboards = data?._hits;
 
     useEffect(() => {
-        if (dashboards && !currentDashboard) {
-            setCurrentDashboard(first(dashboards));
-            setCurrentDashboardIndex(0);
+        if (dashboards) {
+            if (currentDashboard) {
+                const foundDashboard = dashboards.find((dashboard) => currentDashboard._id === dashboard._id);
+                if (foundDashboard) {
+                    setCurrentDashboard(foundDashboard);
+                }
+            } else {
+                setCurrentDashboard(first(dashboards));
+                setCurrentDashboardIndex(0);
+            }
         }
     }, [dashboards, currentDashboard]);
 

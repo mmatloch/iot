@@ -21,19 +21,16 @@ export const useLiveDashboard = () => {
         shouldReconnect: () => true,
         onOpen: () => {
             closeSnackbar('WS_RETRY');
-
-            enqueueSnackbar(t('websockets.connectionOpened'), {
-                variant: 'success',
-                preventDuplicate: true,
-            });
         },
-        onClose() {
-            enqueueSnackbar(t('websockets.connectionLost'), {
-                variant: 'error',
-                preventDuplicate: true,
-                persist: true,
-                key: 'WS_RETRY',
-            });
+        onClose(event) {
+            if (!event.wasClean) {
+                enqueueSnackbar(t('websockets.connectionLost'), {
+                    variant: 'error',
+                    preventDuplicate: true,
+                    persist: true,
+                    key: 'WS_RETRY',
+                });
+            }
         },
         onMessage(event) {
             const data = JSON.parse(event.data);
