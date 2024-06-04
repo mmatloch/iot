@@ -1,6 +1,6 @@
 import { EOL } from 'node:os';
 
-import { get, set } from 'lodash';
+import { camelCase, get, set } from 'lodash';
 
 import {
     DeviceDeactivatedByType,
@@ -198,7 +198,7 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
 
         const createFeature = ({
             type,
-            property,
+            property: orginalProperty,
             description,
             unit,
             valueMax,
@@ -210,9 +210,11 @@ export const createZigbeeDeviceManager = (): ZigbeeDeviceManager => {
             values,
         }: ZigbeeDeviceFeature) => {
             // special 'type'
-            if (!property) {
+            if (!orginalProperty) {
                 return;
             }
+
+            const property = camelCase(orginalProperty);
 
             const existingFeature = get(device?.features, property);
 
