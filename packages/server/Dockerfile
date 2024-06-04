@@ -1,5 +1,5 @@
 # Stage 1
-FROM node:18.7-alpine as builder
+FROM node:lts-alpine as builder
 
 WORKDIR /usr/app
 
@@ -18,7 +18,7 @@ RUN yarn workspaces focus server
 RUN yarn workspace server run build
 
 # Stage 2
-FROM node:18.7-alpine
+FROM node:lts-alpine
 
 WORKDIR /usr/app/packages/server
 

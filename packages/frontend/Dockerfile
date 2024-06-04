@@ -1,5 +1,5 @@
 # Stage 1
-FROM node:18.7-alpine as builder
+FROM node:lts-alpine as builder
 
 WORKDIR /usr/app
 
