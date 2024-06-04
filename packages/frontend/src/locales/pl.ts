@@ -389,6 +389,7 @@ export const PolishLocale: Locale = {
                 icon: 'home.png',
             },
             addTextLine: 'Dodaj wiersz tekstu',
+            useDeviceSensorData: 'Użyj danych czujnika jako kontekstu',
             addAction: 'Dodaj akcję',
             removeAction: 'Usuń akcję',
             actionOnDefinition: 'Określenie akcji włącznika',

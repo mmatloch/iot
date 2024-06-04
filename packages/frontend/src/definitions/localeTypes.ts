@@ -331,6 +331,7 @@ export interface Locale {
                 icon: string;
             };
             addTextLine: string;
+            useDeviceSensorData: string;
             addAction: string;
             removeAction: string;
             actionOnDefinition: string;

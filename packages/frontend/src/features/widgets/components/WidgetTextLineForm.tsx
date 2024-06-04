@@ -12,6 +12,7 @@ export const WidgetTextLineForm = () => {
         append({
             value: '',
             deviceId: null,
+            useDeviceSensorData: false,
             eventId: null,
             id: window.crypto.randomUUID(),
             styles: {},

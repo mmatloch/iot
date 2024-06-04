@@ -389,6 +389,7 @@ export const EnglishLocale: Locale = {
                 icon: 'home.png',
             },
             addTextLine: 'Add text line',
+            useDeviceSensorData: 'Use Sensor Data as the context',
             addAction: 'Add action',
             removeAction: 'Remove action',
             actionOnDefinition: 'Switch on action definition',

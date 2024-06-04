@@ -5,6 +5,7 @@ import type { GenericEntity } from '../commonTypes';
 export interface WidgetTextLine {
     deviceId: number | null;
     eventId: number | null;
+    useDeviceSensorData: boolean;
     value: string;
     id: string;
     styles: Record<string, unknown>;

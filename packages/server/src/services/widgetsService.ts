@@ -3,6 +3,7 @@ import { FindManyOptions, In } from 'typeorm';
 
 import { Device } from '../entities/deviceEntity';
 import { Event } from '../entities/eventEntity';
+import { SensorData } from '../entities/sensorDataEntity';
 import { Widget, WidgetActionDto, WidgetActionEntry, WidgetDto, WidgetWithActionState } from '../entities/widgetEntity';
 import { Errors } from '../errors';
 import { eventTriggerInNewContext } from '../events/eventTriggerInNewContext';
@@ -13,6 +14,7 @@ import { WidgetProcessContext, createWidgetProcessor } from '../widgets/widgetPr
 import { createDevicesService } from './devicesService';
 import { createEventsService } from './eventsService';
 import type { GenericService } from './genericService';
+import { createSensorDataService } from './sensorDataService';
 
 export interface WidgetsService
     extends Omit<GenericService<WidgetWithActionState, WidgetDto>, 'search' | 'searchAndCount'> {
@@ -26,6 +28,7 @@ export interface WidgetsService
 export const createWidgetsService = (): WidgetsService => {
     const repository = createWidgetsRepository();
     const devicesService = createDevicesService();
+    const sensorDataService = createSensorDataService();
     const eventsService = createEventsService();
 
     const create: WidgetsService['create'] = async (dto) => {
@@ -75,7 +78,20 @@ export const createWidgetsService = (): WidgetsService => {
 
     const parseTextLines = async (widgets: Widget[] | WidgetDto[]) => {
         const deviceIds = widgets
-            .map((widget) => widget.textLines.map((textLine) => textLine.deviceId))
+            .map((widget) =>
+                widget.textLines
+                    .filter((textLine) => textLine.deviceId && !textLine.useDeviceSensorData)
+                    .map((textLine) => textLine.deviceId),
+            )
+            .flat()
+            .filter(isNumber);
+
+        const sensorDataDeviceIds = widgets
+            .map((widget) =>
+                widget.textLines
+                    .filter((textLine) => textLine.deviceId && textLine.useDeviceSensorData)
+                    .map((textLine) => textLine.deviceId),
+            )
             .flat()
             .filter(isNumber);
 
@@ -90,14 +106,24 @@ export const createWidgetsService = (): WidgetsService => {
             },
         });
 
+        const sensorData = await sensorDataService.getLatestForDevices(sensorDataDeviceIds);
+
         const events = await eventsService.search({
             where: {
                 _id: In(eventIds),
             },
         });
 
-        const getTextLineContext = (textLine: WidgetDto['textLines'][0]): Device | Event | Record<string, unknown> => {
+        console.log(sensorData, sensorDataDeviceIds);
+
+        const getTextLineContext = (
+            textLine: WidgetDto['textLines'][0],
+        ): Device | Event | SensorData | Record<string, unknown> => {
             if (textLine.deviceId) {
+                if (textLine.useDeviceSensorData) {
+                    return sensorData.find((sensorData) => sensorData.deviceId === textLine.deviceId) || {};
+                }
+
                 return devices.find((device) => device._id === textLine.deviceId) || {};
             }
 
@@ -111,6 +137,8 @@ export const createWidgetsService = (): WidgetsService => {
         widgets.forEach((widget) => {
             widget.textLines.forEach((textLine) => {
                 const context = getTextLineContext(textLine);
+
+                console.log(textLine.id, context);
 
                 textLine.value = parseWidgetText(textLine.value, context);
             });

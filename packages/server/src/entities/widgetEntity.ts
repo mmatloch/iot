@@ -28,6 +28,7 @@ const widgetTextLineSchema = Type.Object({
     id: Type.String(),
     value: Type.String(),
     deviceId: Type.Union([Type.Null(), Type.Integer()]),
+    useDeviceSensorData: Type.Boolean(),
     eventId: Type.Union([Type.Null(), Type.Integer()]),
     styles: Type.Record(Type.String(), Type.Unknown(), {
         default: {},

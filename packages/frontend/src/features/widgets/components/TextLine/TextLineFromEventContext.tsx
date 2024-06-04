@@ -15,12 +15,13 @@ export const TextLineFromEventContext = ({ lineIndex }: Props) => {
     const { watch } = useWidgetForm();
     const textLines = watch('textLines');
 
-    const handleEventSelect = (_e: unknown, event: Event) => {
+    const handleEventSelect = (_e: unknown, event?: Event) => {
         update(lineIndex, {
             id: textLines[lineIndex].id,
             value: textLines[lineIndex].value,
-            eventId: event._id,
+            eventId: event?._id ?? null,
             deviceId: null,
+            useDeviceSensorData: false,
             styles: textLines[lineIndex].styles,
         });
     };

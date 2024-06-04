@@ -20,6 +20,7 @@ export enum DevicePowerSource {
 
 export enum DeviceProtocol {
     Zigbee = 'ZIGBEE',
+    Virtual = 'VIRTUAL',
 }
 
 export enum DeviceState {
