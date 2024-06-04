@@ -114,8 +114,6 @@ export const createWidgetsService = (): WidgetsService => {
             },
         });
 
-        console.log(sensorData, sensorDataDeviceIds);
-
         const getTextLineContext = (
             textLine: WidgetDto['textLines'][0],
         ): Device | Event | SensorData | Record<string, unknown> => {
@@ -137,8 +135,6 @@ export const createWidgetsService = (): WidgetsService => {
         widgets.forEach((widget) => {
             widget.textLines.forEach((textLine) => {
                 const context = getTextLineContext(textLine);
-
-                console.log(textLine.id, context);
 
                 textLine.value = parseWidgetText(textLine.value, context);
             });
