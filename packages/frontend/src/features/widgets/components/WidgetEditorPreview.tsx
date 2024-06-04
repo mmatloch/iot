@@ -39,7 +39,7 @@ export const WidgetEditorPreview = () => {
                     {
                         i: '1',
                         h: 7,
-                        w: 3,
+                        w: 1,
                         x: 0,
                         y: 0,
                     },

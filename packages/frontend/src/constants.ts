@@ -82,7 +82,7 @@ export const ResponsiveGridLayoutCols = {
     md: 6,
     sm: 6,
     xs: 6,
-    xxs: 6,
+    xxs: 3,
 };
 
 export const ResponsiveGridLayoutBreakpoints = {
