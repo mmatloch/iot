@@ -67,11 +67,10 @@ export default function Home() {
     }
 
     return (
-        <div {...elementHandlers}>
+        <div {...elementHandlers} style={{ minHeight: '100vh' }}>
             <Layout>
                 {currentDashboard && (
                     <>
-                        <ActionToolbar title={currentDashboard.displayName} />
                         <WidgetContainer layout={currentDashboard.layout} />
                     </>
                 )}
