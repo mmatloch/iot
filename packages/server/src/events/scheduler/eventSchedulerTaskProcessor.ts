@@ -80,8 +80,10 @@ export const createEventSchedulerTaskProcessor = () => {
             eventSchedulerTask: task,
         });
 
+        let updatedTask: EventSchedulerTask;
+
         try {
-            await eventSchedulerTasksService.update(task, {
+            updatedTask = await eventSchedulerTasksService.update(task, {
                 state: EventSchedulerTaskState.Running,
             });
         } catch (e) {
@@ -97,14 +99,14 @@ export const createEventSchedulerTaskProcessor = () => {
         const context = {};
         await eventTriggerInNewContext(task.event, context);
 
-        taskQueue.delete(task._id);
+        taskQueue.delete(updatedTask._id);
 
         try {
-            await eventSchedulerTasksService.remove(task);
+            await eventSchedulerTasksService.remove(updatedTask);
         } catch (e) {
             logger.error({
                 msg: `Failed to remove task`,
-                eventSchedulerTask: task,
+                eventSchedulerTask: updatedTask,
                 err: e,
             });
         }
