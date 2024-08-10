@@ -1,6 +1,6 @@
 import { UserRole } from '@definitions/entities/userTypes';
 import { decodeJwt } from '@utils/decodeJwt';
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useLocalStorage from 'use-local-storage';
@@ -16,7 +16,7 @@ interface Props {
     children: ReactNode;
 }
 
-const parser = (v: string) => v;
+const parser = (v: string) => v.replaceAll('\u0000', '');
 const serializer = (v: string | undefined) => String(v);
 
 export const AuthProvider = ({ children }: Props) => {
