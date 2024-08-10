@@ -15,7 +15,7 @@
     "@monaco-editor/react": "^4.5.1",
     "@mui/icons-material": "^5.14.7",
     "@mui/lab": "^5.0.0-alpha.142",
-    "@mui/material": "^5.14.7",
+    "@mui/material": "^5.16.7",
     "allotment": "^1.19.0",
     "country-flag-icons": "^1.5.7",
     "cron-parser": "^4.8.1",
