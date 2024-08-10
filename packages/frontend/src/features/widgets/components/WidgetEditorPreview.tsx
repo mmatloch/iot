@@ -29,26 +29,29 @@ const WidgetEditorPreviewContent = () => {
 
 export const WidgetEditorPreview = () => {
     return (
-        <ResponsiveGridLayout
-            className="layout"
-            cols={ResponsiveGridLayoutCols}
-            breakpoints={ResponsiveGridLayoutBreakpoints}
-            rowHeight={10}
-            layouts={{
-                lg: [
-                    {
-                        i: '1',
-                        h: 7,
-                        w: 1,
-                        x: 0,
-                        y: 0,
-                    },
-                ],
-            }}
-        >
-            <div key="1">
-                <WidgetEditorPreviewContent />
-            </div>
-        </ResponsiveGridLayout>
+        <div>
+            {/* @ts-expect-error wrong type? */}
+            <ResponsiveGridLayout
+                className="layout"
+                cols={ResponsiveGridLayoutCols}
+                breakpoints={ResponsiveGridLayoutBreakpoints}
+                rowHeight={10}
+                layouts={{
+                    lg: [
+                        {
+                            i: '1',
+                            h: 7,
+                            w: 1,
+                            x: 0,
+                            y: 0,
+                        },
+                    ],
+                }}
+            >
+                <div key="1">
+                    <WidgetEditorPreviewContent />
+                </div>
+            </ResponsiveGridLayout>
+        </div>
     );
 };

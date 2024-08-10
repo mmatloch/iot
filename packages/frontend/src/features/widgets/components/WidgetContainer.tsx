@@ -61,23 +61,26 @@ export const WidgetContainer = ({ layout, onLayoutChange }: Props) => {
     };
 
     return (
-        <ResponsiveGridLayout
-            className="layout"
-            cols={ResponsiveGridLayoutCols}
-            breakpoints={ResponsiveGridLayoutBreakpoints}
-            layouts={{ lg: parseLayout(layout) }}
-            onLayoutChange={handleLayoutChange}
-            isDraggable={isEditable}
-            isResizable={isEditable}
-            rowHeight={10}
-        >
-            {layout.map((entry) => {
-                return (
-                    <div key={entry.widgetId}>
-                        <WidgetCard entity={entry.widget} hideEditAction />
-                    </div>
-                );
-            })}
-        </ResponsiveGridLayout>
+        <div>
+            {/* @ts-expect-error wrong type? */}
+            <ResponsiveGridLayout
+                className="layout"
+                cols={ResponsiveGridLayoutCols}
+                breakpoints={ResponsiveGridLayoutBreakpoints}
+                layouts={{ lg: parseLayout(layout) }}
+                onLayoutChange={handleLayoutChange}
+                isDraggable={isEditable}
+                isResizable={isEditable}
+                rowHeight={10}
+            >
+                {layout.map((entry) => {
+                    return (
+                        <div key={entry.widgetId}>
+                            <WidgetCard entity={entry.widget} hideEditAction />
+                        </div>
+                    );
+                })}
+            </ResponsiveGridLayout>
+        </div>
     );
 };

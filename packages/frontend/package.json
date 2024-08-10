@@ -26,7 +26,7 @@
     "lodash": "^4.17.21",
     "monaco-editor": "^0.50.0",
     "notistack": "^3.0.1",
-    "prettier": "^3.3.3",
+    "prettier": "^2.8.8",
     "qs": "^6.13.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -45,7 +45,7 @@
   "devDependencies": {
     "@types/flat": "^5.0.5",
     "@types/lodash": "^4.17.7",
-    "@types/prettier": "^3.0.0",
+    "@types/prettier": "^2.7.2",
     "@types/qs": "^6.9.15",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",

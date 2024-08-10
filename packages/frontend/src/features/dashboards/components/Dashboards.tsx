@@ -39,12 +39,15 @@ export const Dashboards = () => {
     };
 
     return (
-        <ResponsiveGridLayout cols={cols} isResizable={false} rowHeight={65} onLayoutChange={handleLayoutChange}>
-            {data?._hits.map((dashboard) => (
-                <div key={dashboard._id}>
-                    <DashboardCard entity={dashboard} />
-                </div>
-            ))}
-        </ResponsiveGridLayout>
+        <div>
+            {/* @ts-expect-error wrong type? */}
+            <ResponsiveGridLayout cols={cols} isResizable={false} rowHeight={65} onLayoutChange={handleLayoutChange}>
+                {data?._hits.map((dashboard) => (
+                    <div key={dashboard._id}>
+                        <DashboardCard entity={dashboard} />
+                    </div>
+                ))}
+            </ResponsiveGridLayout>
+        </div>
     );
 };
