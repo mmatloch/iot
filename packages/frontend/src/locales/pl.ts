@@ -44,6 +44,10 @@ export const PolishLocale: Locale = {
         },
         search: {
             filters: 'Filtry',
+            pagination: {
+                previous: 'Poprzednia',
+                next: 'Następna',
+            },
             filtering: {
                 title: 'Filtrowanie',
                 showOnlyActive: 'Pokaż tylko aktywne',

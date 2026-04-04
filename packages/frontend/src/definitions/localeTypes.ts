@@ -48,6 +48,10 @@ export interface Locale {
         };
         search: {
             filters: string;
+            pagination: {
+                previous: string;
+                next: string;
+            };
             filtering: {
                 title: string;
                 showOnlyActive: string;

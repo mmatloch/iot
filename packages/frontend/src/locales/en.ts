@@ -44,6 +44,10 @@ export const EnglishLocale: Locale = {
         },
         search: {
             filters: 'Filters',
+            pagination: {
+                previous: 'Previous',
+                next: 'Next',
+            },
             filtering: {
                 title: 'Filtering',
                 showOnlyActive: 'Show only active',

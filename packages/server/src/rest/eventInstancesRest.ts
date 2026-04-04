@@ -3,15 +3,10 @@ import { Type } from '@sinclair/typebox';
 import { StatusCodes } from 'http-status-codes';
 
 import { createAccessControl } from '../accessControl';
+import { buildQueryFromRaw } from '../apis/search/queryBuilder';
 import { FilterOperator } from '../apis/search/searchDefinitions';
-import type { RestSearchOptions } from '../apis/searchApi';
-import {
-    SortValue,
-    createOffsetPaginationStrategy,
-    createRestSearch,
-    createSearchResponseSchema,
-    searchQuerySchema,
-} from '../apis/searchApi';
+import type { BuildQueryFromRawOptions } from '../apis/search/queryBuilder';
+import { SortValue, searchQuerySchema } from '../apis/searchApi';
 import { EventInstance, eventInstanceSchema } from '../entities/eventInstanceEntity';
 import errorHandlerPlugin from '../plugins/errorHandlerPlugin';
 import { createEventInstancesService } from '../services/eventInstancesService';
@@ -26,20 +21,29 @@ const getEventInstanceSchema = {
 };
 
 const searchEventInstancesSchema = {
-    querystring: searchQuerySchema,
+    querystring: Type.Object({
+        ...searchQuerySchema.properties,
+        cursor: Type.Optional(Type.String()),
+    }),
     response: {
-        [StatusCodes.OK]: createSearchResponseSchema(eventInstanceSchema),
+        [StatusCodes.OK]: Type.Object({
+            _links: Type.Object({}),
+            _meta: Type.Object({
+                nextCursor: Type.Optional(Type.String()),
+            }),
+            _hits: Type.Array(eventInstanceSchema),
+        }),
     },
 };
 
-const searchOptions: RestSearchOptions<EventInstance> = {
+const searchOptions: BuildQueryFromRawOptions<EventInstance> = {
     size: {
         default: 10,
     },
     sort: {
-        allowedFields: ['_createdAt', '_updatedAt'],
+        allowedFields: ['_createdAt'],
         default: {
-            _updatedAt: SortValue.Desc,
+            _createdAt: SortValue.Desc,
         },
     },
     filters: {
@@ -61,9 +65,6 @@ const searchOptions: RestSearchOptions<EventInstance> = {
             },
         ],
     },
-    pagination: {
-        defaultStrategy: createOffsetPaginationStrategy(),
-    },
     relations: {
         allowedFields: ['_createdByUser', '_updatedByUser'],
     },
@@ -76,12 +77,14 @@ export const createEventInstancesRest: ApplicationPlugin = async (app) => {
         const accessControl = createAccessControl();
         accessControl.authorize();
 
-        const searchResponse = await createRestSearch(createEventInstancesService()).query(
-            request.query,
-            searchOptions,
-        );
+        const { cursor, ...rawSearchQuery } = request.query;
+        const query = buildQueryFromRaw(rawSearchQuery, searchOptions);
+        const searchResponse = await createEventInstancesService().searchConnection(query, cursor);
 
-        return reply.status(StatusCodes.OK).send(searchResponse);
+        return reply.status(StatusCodes.OK).send({
+            _links: {},
+            ...searchResponse,
+        });
     });
 
     app.withTypeProvider().get('/events/instances/:id', { schema: getEventInstanceSchema }, async (request, reply) => {

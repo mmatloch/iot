@@ -1,5 +1,5 @@
 import type { GenericEntity, StructuredError } from '@definitions/commonTypes';
-import type { SearchQuery, SearchResponse } from '@definitions/searchTypes';
+import type { SearchQuery } from '@definitions/searchTypes';
 
 import type { Event } from './eventTypes';
 
@@ -37,5 +37,14 @@ export interface EventInstance extends GenericEntity {
 }
 
 type VirtualSearchFields = 'deviceId';
-export type EventInstancesSearchQuery = SearchQuery<EventInstance, VirtualSearchFields>;
-export type EventInstancesSearchResponse = SearchResponse<EventInstance>;
+
+export interface EventInstancesSearchQuery extends SearchQuery<EventInstance, VirtualSearchFields> {
+    cursor?: string;
+}
+
+export interface EventInstancesSearchResponse {
+    _hits: EventInstance[];
+    _meta: {
+        nextCursor?: string;
+    };
+}
